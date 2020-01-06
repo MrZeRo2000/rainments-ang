@@ -26,10 +26,4 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('rainments-ang');
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('rainments-ang app is running!');
-  });
 });
