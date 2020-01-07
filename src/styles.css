@@ -2,7 +2,8 @@
 .jumbotron {
   padding: 15px 15px !important;
   border-radius: 0 !important;
-  background-image: url("assets/images/rain.jpg");
+  margin-bottom: 0 !important;
+  background-image: url("assets/images/rain3.jpg");
   background-size: cover;
 }
 html {

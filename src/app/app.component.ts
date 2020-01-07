@@ -7,6 +7,6 @@ import {environment} from '../environments/environment';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'rainments-ang';
+  title = 'Rainments';
   version = environment.VERSION;
 }

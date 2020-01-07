@@ -1,5 +1,10 @@
+<div class="jumbotron">
+  <h6 class="text-right">Version: {{version}}</h6>
+  <h1 class="display-4">{{ title }}</h1>
+</div>
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">Raimnents </a>
+  <a class="navbar-brand" href="#">&nbsp; </a>
   <ul class="navbar-nav mr-auto">
     <li class="nav-item active">
       <a class="nav-link" href="#">Home</a>
@@ -10,8 +15,35 @@
   </ul>
 </nav>
 
-<div class="jumbotron">
-  <h6 class="text-right">Version: {{version}}</h6>
-</div>
+<div class="container-fluid">
 
-<router-outlet></router-outlet>
+  <div class="row mt-3">
+    <div class="col-3">
+
+      <ul class="nav nav-pills flex-column">
+        <li class="nav-item">
+          <a class="nav-link active text-nowrap" href="#">Active</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Longer nav link</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Disabled</a>
+        </li>
+      </ul>
+
+    </div>
+
+    <div class="col-9">
+      <h2>Hello There</h2>
+    </div>
+
+  </div>
+
+  <router-outlet></router-outlet>
+
+
+</div>
