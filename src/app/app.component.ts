@@ -9,4 +9,6 @@ import {environment} from '../environments/environment';
 export class AppComponent {
   title = 'Rainments';
   version = environment.VERSION;
+
+  constructor() { }
 }
