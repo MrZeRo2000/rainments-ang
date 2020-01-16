@@ -1,29 +1,32 @@
 import { Component, OnInit } from '@angular/core';
 
+export class SettingItem {
+  constructor(public id: number, public name: string) {}
+}
+
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent implements OnInit {
-  items: Map<number, string> = new Map([
-    [100, 'Payment Objects'],
-    [200, 'Payment Groups'],
-    [300, 'Products']
-  ]);
-
-  selectedItem: number;
+  selectedItem: SettingItem;
+  settingItems: Array<SettingItem> = new Array<SettingItem>();
 
   constructor() {
-    this.selectedItem = this.items.keys().next().value;
+    this.settingItems.push(new SettingItem(100, 'Payment Objects'));
+    this.settingItems.push(new SettingItem(200, 'Payment Groups'));
+    this.settingItems.push(new SettingItem(300, 'Products'));
+
+    this.selectedItem = this.settingItems[0];
   }
 
   ngOnInit() {
   }
 
-  onItemClick(event, key) {
+  onItemClick(event, item) {
     event.preventDefault();
-    this.selectedItem = key;
+    this.selectedItem = item;
   }
 
 }

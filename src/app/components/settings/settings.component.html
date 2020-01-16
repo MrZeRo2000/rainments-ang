@@ -2,8 +2,8 @@
   <div class="col-2">
 
     <ul class="nav nav-pills flex-column">
-      <li class="nav-item" *ngFor="let item of items | getValues">
-        <a class="nav-link" href="#" [ngClass]="{'active': item.key === selectedItem}" (click)="onItemClick($event, item.key)">{{item.val}}</a>
+      <li class="nav-item" *ngFor="let item of settingItems">
+        <a class="nav-link" href="#" [ngClass]="{'active': item === selectedItem}" (click)="onItemClick($event, item)">{{item.name}}</a>
       </li>
     </ul>
 
