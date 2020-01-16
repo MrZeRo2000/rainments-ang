@@ -6,10 +6,24 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent implements OnInit {
+  items: Map<number, string> = new Map([
+    [100, 'Payment Objects'],
+    [200, 'Payment Groups'],
+    [300, 'Products']
+  ]);
 
-  constructor() { }
+  selectedItem: number;
+
+  constructor() {
+    this.selectedItem = this.items.keys().next().value;
+  }
 
   ngOnInit() {
+  }
+
+  onItemClick(event, key) {
+    event.preventDefault();
+    this.selectedItem = key;
   }
 
 }

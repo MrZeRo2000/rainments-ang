@@ -6,13 +6,15 @@ import { AppComponent } from './app.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { PaymentsDashboardComponent } from './components/payments-dashboard/payments-dashboard.component';
 import { NavTopComponent } from './components/nav-top/nav-top.component';
+import { GetValuesPipe } from './pipes/get-values.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     SettingsComponent,
     PaymentsDashboardComponent,
-    NavTopComponent
+    NavTopComponent,
+    GetValuesPipe
   ],
   imports: [
     BrowserModule,

@@ -1,24 +1,15 @@
 <div class="row mt-3">
-  <div class="col-3 text-truncate">
+  <div class="col-2">
 
     <ul class="nav nav-pills flex-column">
-      <li class="nav-item">
-        <a class="nav-link active text-nowrap" href="#">Active</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Longer nav link</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Disabled</a>
+      <li class="nav-item" *ngFor="let item of items | getValues">
+        <a class="nav-link" href="#" [ngClass]="{'active': item.key === selectedItem}" (click)="onItemClick($event, item.key)">{{item.val}}</a>
       </li>
     </ul>
 
   </div>
 
-  <div class="col-9">
+  <div class="col-10">
     <h2>Hello There</h2>
   </div>
 
