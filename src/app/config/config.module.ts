@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {RestDataSource} from './rest-data-source';
+import {RestUrlEnv} from './configuration';
 
 @NgModule({
   declarations: [],
@@ -8,7 +8,7 @@ import {RestDataSource} from './rest-data-source';
     CommonModule
   ],
   providers: [
-    RestDataSource
+    RestUrlEnv
   ]
 })
-export class ModelModule { }
+export class ConfigModule { }

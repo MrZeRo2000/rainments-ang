@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { PaymentsDashboardComponent } from './components/payments-dashboard/payments-dashboard.component';
 import { NavTopComponent } from './components/nav-top/nav-top.component';
+import {ModelModule} from './model/model.module';
+import {ConfigModule} from './config/config.module';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { NavTopComponent } from './components/nav-top/nav-top.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ModelModule,
+    ConfigModule
   ],
   providers: [],
   bootstrap: [AppComponent]
