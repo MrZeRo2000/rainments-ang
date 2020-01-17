@@ -1,0 +1,28 @@
+
+Install:
+npm install -g @angular/cli
+
+Start server:
+ng serve --open
+
+Install bootstrap:
+npm install bootstrap jquery --save
+
+Generate component:
+ng generate component password
+
+Generate service:
+ng generate service PassData
+
+Deploy:
+ng build --prod --base-href=/violetnote-ang/
+copy from dist to webapps directory
+
+Update angular to latest version:
+ng update @angular/cli @angular/core
+
+Update dependency to latest version:
+ng update ngx-bootstrap
+
+Run local json server:
+npm run server
