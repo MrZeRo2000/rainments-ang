@@ -8,13 +8,15 @@ import { PaymentsDashboardComponent } from './components/payments-dashboard/paym
 import { NavTopComponent } from './components/nav-top/nav-top.component';
 import {ModelModule} from './model/model.module';
 import {ConfigModule} from './config/config.module';
+import { PaymentObjectsTableComponent } from './components/payment-objects-table/payment-objects-table.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SettingsComponent,
     PaymentsDashboardComponent,
-    NavTopComponent
+    NavTopComponent,
+    PaymentObjectsTableComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,23 @@
+<p>payment-objects-table works!</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col" class="w-auto">ID</th>
+      <th scope="col" class="w-100">Name</th>
+      <th scope="col" class="w-auto">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of getPaymentObjects()">
+      <td>{{item.id}}</td>
+      <td>{{item.name}}</td>
+      <td class="text-nowrap">
+        <a class="btn btn-sm" (click)="onDeleteClick(item)">
+          <i class="fas fa-trash"></i>
+        </a>
+        <a class="btn btn-sm" (click)="onEditClick(item)">
+          <i class="fas fa-edit"></i>
+        </a>
+    </tr>
+  </tbody>
+</table>
