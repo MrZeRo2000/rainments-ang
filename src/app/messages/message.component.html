@@ -1,0 +1,5 @@
+<div class="container mt-2" *ngIf="displayMessage">
+  <div class="alert alert-danger" role="alert" *ngIf="displayMessage.messageType === MessageType.MT_ERROR">
+    Error: {{displayMessage.messageText}}
+  </div>
+</div>

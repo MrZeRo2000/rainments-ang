@@ -9,6 +9,8 @@ import { NavTopComponent } from './components/nav-top/nav-top.component';
 import {ModelModule} from './model/model.module';
 import {ConfigModule} from './config/config.module';
 import { PaymentObjectsTableComponent } from './components/payment-objects-table/payment-objects-table.component';
+import {MessagesModule} from './messages/messages.module';
+
 
 @NgModule({
   declarations: [
@@ -22,7 +24,8 @@ import { PaymentObjectsTableComponent } from './components/payment-objects-table
     BrowserModule,
     AppRoutingModule,
     ModelModule,
-    ConfigModule
+    ConfigModule,
+    MessagesModule
   ],
   providers: [],
   bootstrap: [AppComponent]
