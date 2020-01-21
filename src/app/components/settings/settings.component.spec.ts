@@ -6,6 +6,8 @@ import {PaymentObjectRepository} from '../../model/payment-object-repository';
 import {RestUrlEnv} from '../../config/configuration';
 import {RestDataSource} from '../../model/rest-data-source';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {AlertModule} from 'ngx-bootstrap';
+import {MessagesModule} from '../../messages/messages.module';
 
 describe('SettingsComponent', () => {
   let component: SettingsComponent;
@@ -15,7 +17,7 @@ describe('SettingsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ SettingsComponent, PaymentObjectsTableComponent ],
       providers: [RestUrlEnv, RestDataSource, PaymentObjectRepository],
-      imports: [HttpClientTestingModule]
+      imports: [HttpClientTestingModule, AlertModule.forRoot(), MessagesModule]
     })
     .compileComponents();
   }));

@@ -2,6 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MessageComponent } from './message.component';
 import {MessagesService} from './messages.service';
+import {AlertModule} from 'ngx-bootstrap';
+import {FormsModule} from '@angular/forms';
 
 describe('MessageComponent', () => {
   let component: MessageComponent;
@@ -9,8 +11,9 @@ describe('MessageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MessageComponent ],
-      providers: [MessagesService]
+      declarations: [ MessageComponent],
+      providers: [MessagesService],
+      imports: [AlertModule.forRoot(), FormsModule]
     })
     .compileComponents();
   }));

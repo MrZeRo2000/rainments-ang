@@ -16,13 +16,18 @@ export class MessageComponent implements OnInit {
   constructor(private messagesService: MessagesService) {
     messagesService.getLastMessage().subscribe((message) => {
       this.displayMessage = message;
+      /*
       setTimeout(() => {
         this.displayMessage = undefined;
       }, 5000);
+       */
     });
   }
 
   ngOnInit() {
   }
 
+  onClosed(): void {
+    this.displayMessage = undefined;
+  }
 }
