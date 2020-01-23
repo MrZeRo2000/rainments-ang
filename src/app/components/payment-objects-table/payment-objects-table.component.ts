@@ -19,6 +19,10 @@ export class PaymentObjectsTableComponent implements OnInit {
     return this.repository.getData();
   }
 
+  onAddClick(): void {
+    alert('on Add');
+  }
+
   onDeleteClick(item: PaymentObject): void {
     alert('OnDelete:' + item.id);
   }

@@ -1,8 +1,14 @@
-<div class="container text-center" *ngIf="repository.getLoading()">
+<div class="container-fluid text-center" *ngIf="repository.getLoading()">
   <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
 </div>
 
-<table class="table" *ngIf="getPaymentObjects().length > 0">
+<div class="container-fluid text-right" *ngIf="repository.getDataAvailable()">
+  <a class="btn btn-sm" (click)="onAddClick()">
+    <i class="fas fa-plus" style="font-size:24px"></i>
+  </a>
+</div>
+
+<table class="table" *ngIf="repository.getDataAvailable()">
   <thead>
     <tr>
       <th scope="col" class="w-auto">ID</th>
