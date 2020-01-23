@@ -10,6 +10,7 @@ import {ModelModule} from './model/model.module';
 import {ConfigModule} from './config/config.module';
 import { PaymentObjectsTableComponent } from './components/payment-objects-table/payment-objects-table.component';
 import {MessagesModule} from './messages/messages.module';
+import {FormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import {MessagesModule} from './messages/messages.module';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
     ModelModule,
     ConfigModule,
     MessagesModule
