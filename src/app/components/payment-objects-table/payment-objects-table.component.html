@@ -1,5 +1,8 @@
-<p>payment-objects-table works!</p>
-<table class="table">
+<div class="container text-center" *ngIf="repository.getLoading()">
+  <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+</div>
+
+<table class="table" *ngIf="getPaymentObjects().length > 0">
   <thead>
     <tr>
       <th scope="col" class="w-auto">ID</th>
