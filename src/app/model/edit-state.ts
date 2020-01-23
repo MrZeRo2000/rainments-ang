@@ -5,5 +5,5 @@ export enum EditMode {
 }
 
 export class EditState<T> {
-  constructor(public editMode: EditMode, public editItem: T) { }
+  constructor(public editMode: EditMode, public editItem: T, public submitted: boolean = false) { }
 }

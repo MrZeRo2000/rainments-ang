@@ -32,9 +32,13 @@
 </table>
 
 <div class="container-fluid" *ngIf="editState">
-  <form class="form-group">
+  <form class="form-group" [formGroup]="editForm">
     <label for="inputName">Name</label>
-    <input type="text" class="form-control" id="inputName" required name="name" placeholder="Name" [(ngModel)] = "editState.editItem.name">
+    <input type="text" class="form-control" autofocus [ngClass]="{'is-invalid': editForm.controls.name.errors && editState.submitted}" id="inputName" placeholder="Name" formControlName="name">
+    <div *ngIf="editForm.controls.name.errors && editState.submitted" class="invalid-feedback">
+      <div *ngIf="editForm.controls.name.errors.required">Name should not be empty</div>
+      <div *ngIf="editForm.controls.name.errors.existingName">Name should be unique</div>
+    </div>
     <div class="input-group mt-2">
       <button type="button" class="btn btn-outline-primary" (click)="onSubmit()">Submit</button>
       <button type="button" class="btn btn-outline-secondary ml-2" (click)="onCancel()">Cancel</button>

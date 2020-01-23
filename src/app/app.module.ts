@@ -6,11 +6,12 @@ import { AppComponent } from './app.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { PaymentsDashboardComponent } from './components/payments-dashboard/payments-dashboard.component';
 import { NavTopComponent } from './components/nav-top/nav-top.component';
-import {ModelModule} from './model/model.module';
-import {ConfigModule} from './config/config.module';
+import { ModelModule} from './model/model.module';
+import { ConfigModule} from './config/config.module';
 import { PaymentObjectsTableComponent } from './components/payment-objects-table/payment-objects-table.component';
-import {MessagesModule} from './messages/messages.module';
-import {FormsModule} from '@angular/forms';
+import { MessagesModule} from './messages/messages.module';
+import { ReactiveFormsModule} from '@angular/forms';
+
 
 
 @NgModule({
@@ -24,7 +25,7 @@ import {FormsModule} from '@angular/forms';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule,
+    ReactiveFormsModule,
     ModelModule,
     ConfigModule,
     MessagesModule
