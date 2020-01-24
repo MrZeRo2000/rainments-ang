@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {PaymentObjectRepository} from '../../model/payment-object-repository';
 import {PaymentObject} from '../../model/payment-object';
 import {EditMode, EditState} from '../../model/edit-state';
-import {AbstractControl, FormBuilder, FormControl, ValidatorFn, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-payment-objects-table',
@@ -12,10 +12,14 @@ import {AbstractControl, FormBuilder, FormControl, ValidatorFn, Validators} from
 export class PaymentObjectsTableComponent implements OnInit {
   EditMode = EditMode;
   editState: EditState<PaymentObject>;
-  editForm = this.fb.group({
-      name: ['', Validators.required]
-    }
-  );
+  editForm: FormGroup;
+
+  buildForm(): FormGroup {
+    return this.fb.group({
+        name: ['', Validators.required]
+      }
+    );
+  }
 
   nameUnique(): ValidatorFn {
     return (control: AbstractControl):
@@ -28,6 +32,12 @@ export class PaymentObjectsTableComponent implements OnInit {
 
   ngOnInit() {
     this.repository.loadData();
+    this.repository.getPersistSuccessObservable().subscribe((value) => {
+      if (value) {
+        this.editState = undefined;
+        this.repository.loadData();
+      }
+    });
   }
 
   getPaymentObjects(): PaymentObject[] {
@@ -35,6 +45,7 @@ export class PaymentObjectsTableComponent implements OnInit {
   }
 
   onAddClick(): void {
+    this.editForm = this.buildForm();
     this.editState = new EditState<PaymentObject>(EditMode.EM_CREATE, new PaymentObject());
   }
 
@@ -55,7 +66,8 @@ export class PaymentObjectsTableComponent implements OnInit {
     }
     if (this.editForm.valid) {
       this.editState.editItem = Object.assign({}, this.editForm.value);
-      alert('on submit:' + JSON.stringify(this.editForm.value) + ', item:' + this.editState.editItem.name);
+      // alert('on submit:' + JSON.stringify(this.editForm.value) + ', item:' + this.editState.editItem.name);
+      this.repository.postItem(this.editState.editItem);
     }
   }
 
@@ -65,6 +77,10 @@ export class PaymentObjectsTableComponent implements OnInit {
 
   onCancel(): void {
     this.editState = undefined;
+  }
+
+  getEditingState(): boolean {
+    return this.repository.getDataAvailable() && !this.editState;
   }
 
 }

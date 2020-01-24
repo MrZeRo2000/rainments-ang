@@ -2,13 +2,13 @@
   <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
 </div>
 
-<div class="container-fluid text-right" *ngIf="repository.getDataAvailable()">
+<div class="container-fluid text-right" *ngIf="getEditingState()">
   <a class="btn btn-sm" (click)="onAddClick()">
     <i class="fas fa-plus" style="font-size:24px"></i>
   </a>
 </div>
 
-<table class="table" *ngIf="repository.getDataAvailable() && !editState">
+<table class="table" *ngIf="getEditingState()">
   <thead>
     <tr>
       <th scope="col" class="w-auto">ID</th>
@@ -31,7 +31,7 @@
   </tbody>
 </table>
 
-<div class="container-fluid" *ngIf="editState">
+<div class="container-fluid" *ngIf="!getEditingState()">
   <form class="form-group" [formGroup]="editForm">
     <label for="inputName">Name</label>
     <input type="text" class="form-control" autofocus [ngClass]="{'is-invalid': editForm.controls.name.errors && editState.submitted}" id="inputName" placeholder="Name" formControlName="name">

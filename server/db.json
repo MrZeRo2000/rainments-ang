@@ -7,6 +7,18 @@
     {
       "id": 2,
       "name": "Second name"
+    },
+    {
+      "name": "New",
+      "id": 3
+    },
+    {
+      "name": "Another one",
+      "id": 4
+    },
+    {
+      "name": "Maa",
+      "id": 5
     }
   ]
 }
