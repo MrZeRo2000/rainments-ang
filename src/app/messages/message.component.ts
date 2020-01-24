@@ -28,6 +28,10 @@ export class MessageComponent implements OnInit {
   }
 
   onClosed(): void {
+    this.clearMessage();
+  }
+
+  clearMessage(): void {
     this.displayMessage = undefined;
   }
 }

@@ -1,6 +1,3 @@
-<div class="container-fluid text-center" *ngIf="repository.getLoading()">
-  <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
-</div>
 
 <div class="container-fluid text-right" *ngIf="getEditingState()">
   <a class="btn btn-sm" (click)="onAddClick()">
@@ -31,19 +28,22 @@
   </tbody>
 </table>
 
-<div class="container-fluid" *ngIf="!getEditingState()">
+<div class="container-fluid" *ngIf="editState">
   <form class="form-group" [formGroup]="editForm">
     <label for="inputName">Name</label>
-    <input type="text" class="form-control" autofocus [ngClass]="{'is-invalid': editForm.controls.name.errors && editState.submitted}" id="inputName" placeholder="Name" formControlName="name">
+    <input #inputName type="text" class="form-control" autofocus [ngClass]="{'is-invalid': editForm.controls.name.errors && editState.submitted}" id="inputName" placeholder="Name" formControlName="name">
     <div *ngIf="editForm.controls.name.errors && editState.submitted" class="invalid-feedback">
       <div *ngIf="editForm.controls.name.errors.required">Name should not be empty</div>
       <div *ngIf="editForm.controls.name.errors.existingName">Name should be unique</div>
     </div>
     <div class="input-group mt-2">
-      <button *ngIf="editState.editMode === EditMode.EM_CREATE" type="button" class="btn btn-outline-primary" (click)="onCreate()">Create</button>
-      <button *ngIf="editState.editMode === EditMode.EM_EDIT" type="button" class="btn btn-outline-primary" (click)="onSave()">Save</button>
-      <button type="button" class="btn btn-outline-secondary ml-2" (click)="onCancel()">Cancel</button>
+      <button *ngIf="editState.editMode === EditMode.EM_CREATE" type="button" class="btn btn-outline-primary" (click)="onCreate()" [disabled]="repository.getLoading()">Create</button>
+      <button *ngIf="editState.editMode === EditMode.EM_EDIT" type="button" class="btn btn-outline-primary" (click)="onSave()" [disabled]="repository.getLoading()">Save</button>
+      <button type="button" class="btn btn-outline-secondary ml-2" (click)="onCancel()" [disabled]="repository.getLoading()">Cancel</button>
     </div>
   </form>
 </div>
 
+<div class="container-fluid text-center" *ngIf="repository.getLoading()">
+  <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+</div>

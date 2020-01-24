@@ -16,6 +16,10 @@ export class MessagesService {
     this.lastMessage.next(message);
   }
 
+  resetMessage(): void {
+    this.reportMessage(undefined);
+  }
+
   getLastMessage(): Observable<Message> {
     return this.lastMessage;
   }

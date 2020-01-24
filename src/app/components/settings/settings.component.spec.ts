@@ -8,6 +8,7 @@ import {RestDataSource} from '../../model/rest-data-source';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {AlertModule} from 'ngx-bootstrap';
 import {MessagesModule} from '../../messages/messages.module';
+import {ReactiveFormsModule} from '@angular/forms';
 
 describe('SettingsComponent', () => {
   let component: SettingsComponent;
@@ -17,7 +18,7 @@ describe('SettingsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ SettingsComponent, PaymentObjectsTableComponent ],
       providers: [RestUrlEnv, RestDataSource, PaymentObjectRepository],
-      imports: [HttpClientTestingModule, AlertModule.forRoot(), MessagesModule]
+      imports: [HttpClientTestingModule, ReactiveFormsModule, AlertModule.forRoot(), MessagesModule]
     })
     .compileComponents();
   }));

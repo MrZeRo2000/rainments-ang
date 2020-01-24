@@ -1,8 +1,8 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {PaymentObjectRepository} from '../../model/payment-object-repository';
 import {PaymentObject} from '../../model/payment-object';
 import {EditMode, EditState} from '../../model/edit-state';
-import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-payment-objects-table',
@@ -13,6 +13,7 @@ export class PaymentObjectsTableComponent implements OnInit {
   EditMode = EditMode;
   editState: EditState<PaymentObject>;
   editForm: FormGroup;
+  @ViewChild('inputName', {static: true}) inputNameElement: ElementRef;
 
   buildForm(): FormGroup {
     return this.fb.group({
@@ -47,6 +48,7 @@ export class PaymentObjectsTableComponent implements OnInit {
   onAddClick(): void {
     this.editForm = this.buildForm();
     this.editState = new EditState<PaymentObject>(EditMode.EM_CREATE, new PaymentObject());
+    setTimeout(() => {this.inputNameElement.nativeElement.focus(); }, 100);
   }
 
   onDeleteClick(item: PaymentObject): void {

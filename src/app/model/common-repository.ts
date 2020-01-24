@@ -15,6 +15,7 @@ export class CommonRepository<T> {
   constructor(protected dataSource: RestDataSource, protected messagesService: MessagesService, private resourceName: string) { }
 
   loadData(): void {
+    this.messagesService.resetMessage();
     this.loading = true;
     this.dataSource.getResponse(this.resourceName).subscribe((data) => {
       if (data.ok) {
@@ -35,6 +36,7 @@ export class CommonRepository<T> {
   }
 
   postItem(item: T): void {
+    this.messagesService.resetMessage();
     this.loading = true;
     this.savingError = false;
     this.dataSource.postResponse(this.resourceName, item).subscribe((data) => {
