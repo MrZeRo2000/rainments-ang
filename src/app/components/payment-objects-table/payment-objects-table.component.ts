@@ -10,6 +10,7 @@ import {AbstractControl, FormBuilder, FormControl, ValidatorFn, Validators} from
   styleUrls: ['./payment-objects-table.component.css']
 })
 export class PaymentObjectsTableComponent implements OnInit {
+  EditMode = EditMode;
   editState: EditState<PaymentObject>;
   editForm = this.fb.group({
       name: ['', Validators.required]
@@ -46,7 +47,7 @@ export class PaymentObjectsTableComponent implements OnInit {
     this.editState = new EditState<PaymentObject>(EditMode.EM_CREATE, item);
   }
 
-  onSubmit(): void {
+  onCreate(): void {
     this.editState.submitted = true;
     const nameDuplicates = this.repository.getData().filter((v) => v.name === this.editForm.controls.name.value);
     if (nameDuplicates.length > 0) {
@@ -56,6 +57,10 @@ export class PaymentObjectsTableComponent implements OnInit {
       this.editState.editItem = Object.assign({}, this.editForm.value);
       alert('on submit:' + JSON.stringify(this.editForm.value) + ', item:' + this.editState.editItem.name);
     }
+  }
+
+  onSave(): void {
+
   }
 
   onCancel(): void {
