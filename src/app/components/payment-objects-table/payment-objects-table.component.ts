@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {PaymentObjectRepository} from '../../model/payment-object-repository';
 import {PaymentObject} from '../../model/payment-object';
 import {EditMode, EditState} from '../../model/edit-state';
@@ -9,11 +9,11 @@ import {AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators} from '
   templateUrl: './payment-objects-table.component.html',
   styleUrls: ['./payment-objects-table.component.css']
 })
-export class PaymentObjectsTableComponent implements OnInit {
+export class PaymentObjectsTableComponent implements OnInit  {
   EditMode = EditMode;
   editState: EditState<PaymentObject>;
   editForm: FormGroup;
-  @ViewChild('inputName', {static: true}) inputNameElement: ElementRef;
+  @ViewChild('inputName', {static: false}) inputNameElement: ElementRef;
 
   buildForm(): FormGroup {
     return this.fb.group({
@@ -45,10 +45,18 @@ export class PaymentObjectsTableComponent implements OnInit {
     return this.repository.getData();
   }
 
+  private requireFocus(): void {
+    setTimeout(() => this.setEditFocus());
+  }
+
+  private setEditFocus(): void {
+    this.inputNameElement.nativeElement.focus();
+  }
+
   onAddClick(): void {
     this.editForm = this.buildForm();
     this.editState = new EditState<PaymentObject>(EditMode.EM_CREATE, new PaymentObject());
-    setTimeout(() => {this.inputNameElement.nativeElement.focus(); }, 100);
+    this.requireFocus();
   }
 
   onDeleteClick(item: PaymentObject): void {
@@ -56,8 +64,10 @@ export class PaymentObjectsTableComponent implements OnInit {
   }
 
   onEditClick(item: PaymentObject): void {
-    alert('OnEdit:' + item.id);
-    this.editState = new EditState<PaymentObject>(EditMode.EM_CREATE, item);
+    this.editState = new EditState<PaymentObject>(EditMode.EM_EDIT, item);
+    this.editForm = this.buildForm();
+    this.editForm.patchValue(Object.assign({}, item));
+    this.requireFocus();
   }
 
   onCreate(): void {

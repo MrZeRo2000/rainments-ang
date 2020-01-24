@@ -31,7 +31,7 @@
 <div class="container-fluid" *ngIf="editState">
   <form class="form-group" [formGroup]="editForm">
     <label for="inputName">Name</label>
-    <input #inputName type="text" class="form-control" autofocus [ngClass]="{'is-invalid': editForm.controls.name.errors && editState.submitted}" id="inputName" placeholder="Name" formControlName="name">
+    <input #inputName type="text" class="form-control" [ngClass]="{'is-invalid': editForm.controls.name.errors && editState.submitted}" id="inputName" placeholder="Name" formControlName="name">
     <div *ngIf="editForm.controls.name.errors && editState.submitted" class="invalid-feedback">
       <div *ngIf="editForm.controls.name.errors.required">Name should not be empty</div>
       <div *ngIf="editForm.controls.name.errors.existingName">Name should be unique</div>
