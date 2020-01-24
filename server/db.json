@@ -1,44 +1,12 @@
 {
   "paymentobjects": [
     {
-      "id": 1,
-      "name": "First name"
+      "name": "First name",
+      "id": 1
     },
     {
       "id": 2,
       "name": "Second name"
-    },
-    {
-      "name": "New",
-      "id": 3
-    },
-    {
-      "name": "Another one",
-      "id": 4
-    },
-    {
-      "name": "Maa",
-      "id": 5
-    },
-    {
-      "name": "TZZ",
-      "id": 6
-    },
-    {
-      "name": "TZX",
-      "id": 7
-    },
-    {
-      "name": "New1",
-      "id": 8
-    },
-    {
-      "name": "NYY",
-      "id": 9
-    },
-    {
-      "name": "UU%%8",
-      "id": 10
     }
   ]
 }

@@ -61,6 +61,7 @@ export class PaymentObjectsTableComponent implements OnInit  {
 
   onDeleteClick(item: PaymentObject): void {
     alert('OnDelete:' + item.id);
+    this.repository.deleteItem(item.id);
   }
 
   onEditClick(item: PaymentObject): void {
@@ -77,14 +78,21 @@ export class PaymentObjectsTableComponent implements OnInit  {
       this.editForm.controls.name.setErrors({existingName: true});
     }
     if (this.editForm.valid) {
-      this.editState.editItem = Object.assign({}, this.editForm.value);
-      // alert('on submit:' + JSON.stringify(this.editForm.value) + ', item:' + this.editState.editItem.name);
-      this.repository.postItem(this.editState.editItem);
+      this.repository.postItem(Object.assign({}, this.editForm.value));
     }
   }
 
   onSave(): void {
-
+    this.editState.submitted = true;
+    const nameDuplicates = this.repository.getData().filter(
+      (v) => v.name === this.editForm.controls.name.value && v.id !== this.editState.editItem.id
+    );
+    if (nameDuplicates.length > 0) {
+      this.editForm.controls.name.setErrors({existingName: true});
+    }
+    if (this.editForm.valid) {
+      this.repository.putItem(this.editState.editItem.id, Object.assign({}, this.editForm.value));
+    }
   }
 
   onCancel(): void {

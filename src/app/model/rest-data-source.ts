@@ -20,4 +20,11 @@ export class RestDataSource {
     return this.http.post(this.restUrl + resourceName, body, { observe: 'response' });
   }
 
+  putResponse(resourceName: string, id: number, body: any): Observable<HttpResponse<any>> {
+    return this.http.put(this.restUrl + resourceName + '/' + id, body, { observe: 'response' });
+  }
+
+  deleteResponse(resourceName: string, id: number): Observable<HttpResponse<any>> {
+    return this.http.delete(this.restUrl + resourceName + '/' + id, { observe: 'response' });
+  }
 }
