@@ -3,6 +3,9 @@ import {PaymentObjectRepository} from '../../model/payment-object-repository';
 import {PaymentObject} from '../../model/payment-object';
 import {EditMode, EditState} from '../../model/edit-state';
 import {AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators} from '@angular/forms';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap';
+import {DialogConfirmationComponent} from '../dialog-confirmation/dialog-confirmation.component';
+import {Subject} from 'rxjs';
 
 @Component({
   selector: 'app-payment-objects-table',
@@ -10,6 +13,7 @@ import {AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators} from '
   styleUrls: ['./payment-objects-table.component.css']
 })
 export class PaymentObjectsTableComponent implements OnInit  {
+  bsModalRef: BsModalRef;
   EditMode = EditMode;
   editState: EditState<PaymentObject>;
   editForm: FormGroup;
@@ -29,7 +33,7 @@ export class PaymentObjectsTableComponent implements OnInit  {
     };
   }
 
-  constructor(private fb: FormBuilder, private repository: PaymentObjectRepository) { }
+  constructor(private fb: FormBuilder, private modalService: BsModalService, private repository: PaymentObjectRepository) { }
 
   ngOnInit() {
     this.repository.loadData();
@@ -60,8 +64,13 @@ export class PaymentObjectsTableComponent implements OnInit  {
   }
 
   onDeleteClick(item: PaymentObject): void {
-    alert('OnDelete:' + item.id);
-    this.repository.deleteItem(item.id);
+    const resultSubject: Subject<PaymentObject> = new Subject<PaymentObject>();
+    resultSubject.subscribe((result) => {
+      this.repository.deleteItem(result.id);
+    });
+    const message = '<strong>' + item.name + '</strong> will be deleted. <BR>Are you sure?';
+    const initialState  = {message, item, result: resultSubject};
+    this.bsModalRef = this.modalService.show(DialogConfirmationComponent, {initialState});
   }
 
   onEditClick(item: PaymentObject): void {
