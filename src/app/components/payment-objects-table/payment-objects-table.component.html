@@ -28,11 +28,9 @@
       <div *ngIf="editForm.controls.name.errors.required">Name should not be empty</div>
       <div *ngIf="editForm.controls.name.errors.existingName">Name should be unique</div>
     </div>
-    <div class="input-group mt-2">
-      <button *ngIf="getEditState().editMode === EditMode.EM_CREATE" type="button" class="btn btn-outline-primary" (click)="onCreate()" [disabled]="repository.getLoading()">Create</button>
-      <button *ngIf="getEditState().editMode === EditMode.EM_EDIT" type="button" class="btn btn-outline-primary" (click)="onSave()" [disabled]="repository.getLoading()">Save</button>
-      <button type="button" class="btn btn-outline-secondary ml-2" (click)="onCancel()" [disabled]="repository.getLoading()">Cancel</button>
-    </div>
+
+    <app-core-save-dialog-panel [editable]="this" [loadable]="repository" (createClick)="onCreate()" (saveClick)="onSave()" (cancelClick)="onCancel()"></app-core-save-dialog-panel>
+
   </form>
 </div>
 

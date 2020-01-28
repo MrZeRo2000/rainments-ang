@@ -1,0 +1,6 @@
+<div class="input-group mt-2">
+  <button *ngIf="editable.getEditState().editMode === EditMode.EM_CREATE" type="button" class="btn btn-outline-primary" (click)="onCreate()" [disabled]="loadable.getLoading()">Create</button>
+  <button *ngIf="editable.getEditState().editMode === EditMode.EM_EDIT" type="button" class="btn btn-outline-primary" (click)="onSave()" [disabled]="loadable.getLoading()">Save</button>
+  <button type="button" class="btn btn-outline-secondary ml-2" (click)="onCancel()" [disabled]="loadable.getLoading()">Cancel</button>
+</div>
+

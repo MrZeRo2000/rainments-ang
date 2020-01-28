@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { LoadingProgressComponent } from './loading-progress/loading-progress.component';
 import { AddPanelComponent } from './add-panel/add-panel.component';
 import { EditDeletePanelComponent } from './edit-delete-panel/edit-delete-panel.component';
+import { SaveDialogPanelComponent } from './save-dialog-panel/save-dialog-panel.component';
 
 
 
@@ -10,7 +11,8 @@ import { EditDeletePanelComponent } from './edit-delete-panel/edit-delete-panel.
   declarations: [
     LoadingProgressComponent,
     AddPanelComponent,
-    EditDeletePanelComponent
+    EditDeletePanelComponent,
+    SaveDialogPanelComponent
   ],
   imports: [
     CommonModule
@@ -18,7 +20,8 @@ import { EditDeletePanelComponent } from './edit-delete-panel/edit-delete-panel.
   exports: [
     LoadingProgressComponent,
     AddPanelComponent,
-    EditDeletePanelComponent
+    EditDeletePanelComponent,
+    SaveDialogPanelComponent
   ]
 })
 export class CoreModule { }
