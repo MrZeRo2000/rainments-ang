@@ -7,6 +7,10 @@
     {
       "id": 2,
       "name": "Second name"
+    },
+    {
+      "name": "New name 888",
+      "id": 3
     }
   ]
 }
