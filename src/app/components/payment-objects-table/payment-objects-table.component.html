@@ -1,9 +1,5 @@
 
-<div class="container-fluid text-right" *ngIf="getEditingState()">
-  <a class="btn btn-sm" (click)="onAddClick()">
-    <i class="fas fa-plus" style="font-size:24px"></i>
-  </a>
-</div>
+<app-core-add-panel [editable]="this" (addClick)="onAddClick()"></app-core-add-panel>
 
 <table class="table" *ngIf="getEditingState()">
   <thead>
@@ -18,18 +14,13 @@
       <td>{{item.id}}</td>
       <td>{{item.name}}</td>
       <td class="text-nowrap">
-        <a class="btn btn-sm" (click)="onDeleteClick(item)">
-          <i class="fas fa-trash"></i>
-        </a>
-        <a class="btn btn-sm" (click)="onEditClick(item)">
-          <i class="fas fa-edit"></i>
-        </a>
+        <app-core-edit-delete-panel [item]="item" (deleteClick)="onDeleteClick(item)" (editClick)="onEditClick(item)"></app-core-edit-delete-panel>
       </td>
     </tr>
   </tbody>
 </table>
 
-<div class="container-fluid" *ngIf="editState">
+<div *ngIf="editState">
   <form class="form-group" [formGroup]="editForm">
     <label for="inputName">Name</label>
     <input #inputName type="text" class="form-control" [ngClass]="{'is-invalid': editForm.controls.name.errors && editState.submitted}" id="inputName" placeholder="Name" formControlName="name">
@@ -38,13 +29,11 @@
       <div *ngIf="editForm.controls.name.errors.existingName">Name should be unique</div>
     </div>
     <div class="input-group mt-2">
-      <button *ngIf="editState.editMode === EditMode.EM_CREATE" type="button" class="btn btn-outline-primary" (click)="onCreate()" [disabled]="repository.getLoading()">Create</button>
-      <button *ngIf="editState.editMode === EditMode.EM_EDIT" type="button" class="btn btn-outline-primary" (click)="onSave()" [disabled]="repository.getLoading()">Save</button>
+      <button *ngIf="getEditState().editMode === EditMode.EM_CREATE" type="button" class="btn btn-outline-primary" (click)="onCreate()" [disabled]="repository.getLoading()">Create</button>
+      <button *ngIf="getEditState().editMode === EditMode.EM_EDIT" type="button" class="btn btn-outline-primary" (click)="onSave()" [disabled]="repository.getLoading()">Save</button>
       <button type="button" class="btn btn-outline-secondary ml-2" (click)="onCancel()" [disabled]="repository.getLoading()">Cancel</button>
     </div>
   </form>
 </div>
 
-<div class="container-fluid text-center" *ngIf="repository.getLoading()">
-  <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
-</div>
+<app-core-loading-progress [loadable]="repository"></app-core-loading-progress>

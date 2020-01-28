@@ -3,8 +3,9 @@ import {MessagesService} from '../messages/messages.service';
 import {ErrorMessage} from '../messages/message.model';
 import {Observable, Subject} from 'rxjs';
 import {HttpResponse} from '@angular/common/http';
+import {Loadable} from '../core/edit-intf';
 
-export class CommonRepository<T> {
+export class CommonRepository<T> implements Loadable {
   private data: T[] = new Array<T>();
   private loading = false;
   private loadingError = false;

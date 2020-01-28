@@ -6,13 +6,14 @@ import {AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators} from '
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {DialogConfirmationComponent} from '../dialog-confirmation/dialog-confirmation.component';
 import {Subject} from 'rxjs';
+import {Editable} from '../../core/edit-intf';
 
 @Component({
   selector: 'app-payment-objects-table',
   templateUrl: './payment-objects-table.component.html',
   styleUrls: ['./payment-objects-table.component.css']
 })
-export class PaymentObjectsTableComponent implements OnInit  {
+export class PaymentObjectsTableComponent implements OnInit, Editable  {
   bsModalRef: BsModalRef;
   EditMode = EditMode;
   editState: EditState<PaymentObject>;
@@ -112,4 +113,7 @@ export class PaymentObjectsTableComponent implements OnInit  {
     return this.repository.getDataAvailable() && !this.editState;
   }
 
+  getEditState(): EditState<PaymentObject> {
+    return this.editState;
+  }
 }

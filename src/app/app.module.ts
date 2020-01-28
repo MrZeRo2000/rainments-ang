@@ -13,6 +13,7 @@ import { MessagesModule} from './messages/messages.module';
 import { ReactiveFormsModule} from '@angular/forms';
 import { DialogConfirmationComponent } from './components/dialog-confirmation/dialog-confirmation.component';
 import {ModalModule} from 'ngx-bootstrap';
+import {CoreModule} from './core/core.module';
 
 
 
@@ -34,6 +35,7 @@ import {ModalModule} from 'ngx-bootstrap';
     AppRoutingModule,
     ReactiveFormsModule,
     ModalModule.forRoot(),
+    CoreModule,
     ModelModule,
     ConfigModule,
     MessagesModule
