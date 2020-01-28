@@ -1,4 +1,4 @@
-import {EditState} from '../model/edit-state';
+import {EditState} from './edit-state';
 
 export interface Editable {
   getEditingState(): boolean;

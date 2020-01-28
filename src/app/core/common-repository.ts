@@ -1,9 +1,9 @@
-import {RestDataSource} from './rest-data-source';
+import {RestDataSource} from '../model/rest-data-source';
 import {MessagesService} from '../messages/messages.service';
 import {ErrorMessage} from '../messages/message.model';
 import {Observable, Subject} from 'rxjs';
 import {HttpResponse} from '@angular/common/http';
-import {Loadable} from '../core/edit-intf';
+import {Loadable} from './edit-intf';
 import {CommonEntity} from './common-entity';
 
 export class CommonRepository<T extends CommonEntity> implements Loadable {

@@ -1,8 +1,7 @@
 import {RestDataSource} from './rest-data-source';
 import {PaymentObject} from './payment-object';
 import {Injectable} from '@angular/core';
-import {delay} from 'rxjs/operators';
-import {CommonRepository} from './common-repository';
+import {CommonRepository} from '../core/common-repository';
 import {MessagesService} from '../messages/messages.service';
 
 @Injectable()

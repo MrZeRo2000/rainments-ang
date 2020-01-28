@@ -1,14 +1,14 @@
 import {OnInit} from '@angular/core';
 import {Editable} from './edit-intf';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
-import {CommonRepository} from '../model/common-repository';
-import {EditMode, EditState} from '../model/edit-state';
-import {CommonEntity} from '../model/common-entity';
+import {CommonRepository} from './common-repository';
+import {EditMode, EditState} from './edit-state';
+import {CommonEntity} from './common-entity';
 import {FormGroup} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {DialogConfirmationComponent} from '../components/dialog-confirmation/dialog-confirmation.component';
 
-export abstract class CommonEditableTable<T extends CommonEntity> implements OnInit, Editable {
+export abstract class CommonEditableTableComponent<T extends CommonEntity> implements OnInit, Editable {
   bsModalRef: BsModalRef;
   editState: EditState<T>;
   editForm: FormGroup;
