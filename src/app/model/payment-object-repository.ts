@@ -1,4 +1,4 @@
-import {RestDataSource} from './rest-data-source';
+import {RestDataSource} from '../data-source/rest-data-source';
 import {PaymentObject} from './payment-object';
 import {Injectable} from '@angular/core';
 import {CommonRepository} from '../core/common-repository';

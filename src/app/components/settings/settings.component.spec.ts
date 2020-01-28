@@ -4,7 +4,7 @@ import { SettingsComponent } from './settings.component';
 import {PaymentObjectsTableComponent} from '../payment-objects-table/payment-objects-table.component';
 import {PaymentObjectRepository} from '../../model/payment-object-repository';
 import {RestUrlEnv} from '../../config/configuration';
-import {RestDataSource} from '../../model/rest-data-source';
+import {RestDataSource} from '../../data-source/rest-data-source';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {AlertModule, BsModalService, ModalModule} from 'ngx-bootstrap';
 import {MessagesModule} from '../../messages/messages.module';

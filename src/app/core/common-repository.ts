@@ -1,4 +1,4 @@
-import {RestDataSource} from '../model/rest-data-source';
+import {RestDataSource} from '../data-source/rest-data-source';
 import {MessagesService} from '../messages/messages.service';
 import {ErrorMessage} from '../messages/message.model';
 import {Observable, Subject} from 'rxjs';

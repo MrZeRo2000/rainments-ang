@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PaymentObjectsTableComponent } from './payment-objects-table.component';
 import {PaymentObjectRepository} from '../../model/payment-object-repository';
-import {RestDataSource} from '../../model/rest-data-source';
+import {RestDataSource} from '../../data-source/rest-data-source';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {RestUrlEnv} from '../../config/configuration';
 import {ReactiveFormsModule} from '@angular/forms';

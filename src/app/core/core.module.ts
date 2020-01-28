@@ -4,6 +4,7 @@ import { LoadingProgressComponent } from './loading-progress/loading-progress.co
 import { AddPanelComponent } from './add-panel/add-panel.component';
 import { EditDeletePanelComponent } from './edit-delete-panel/edit-delete-panel.component';
 import { SaveDialogPanelComponent } from './save-dialog-panel/save-dialog-panel.component';
+import {DataSourceModule} from '../data-source/data-source.module';
 
 
 
@@ -15,7 +16,8 @@ import { SaveDialogPanelComponent } from './save-dialog-panel/save-dialog-panel.
     SaveDialogPanelComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    DataSourceModule
   ],
   exports: [
     LoadingProgressComponent,
