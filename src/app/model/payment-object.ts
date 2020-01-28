@@ -1,4 +1,7 @@
-export class PaymentObject {
+import {CommonEntity} from './common-entity';
 
-  constructor(public id?: number, public name?: string) {}
+export class PaymentObject extends CommonEntity {
+  constructor(public id?: number, public name?: string) {
+    super(id);
+  }
 }
