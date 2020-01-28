@@ -6,9 +6,10 @@ import {PaymentObjectRepository} from '../../model/payment-object-repository';
 import {RestUrlEnv} from '../../config/configuration';
 import {RestDataSource} from '../../model/rest-data-source';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {AlertModule} from 'ngx-bootstrap';
+import {AlertModule, BsModalService, ModalModule} from 'ngx-bootstrap';
 import {MessagesModule} from '../../messages/messages.module';
 import {ReactiveFormsModule} from '@angular/forms';
+import {CoreModule} from '../../core/core.module';
 
 describe('SettingsComponent', () => {
   let component: SettingsComponent;
@@ -17,8 +18,8 @@ describe('SettingsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ SettingsComponent, PaymentObjectsTableComponent ],
-      providers: [RestUrlEnv, RestDataSource, PaymentObjectRepository],
-      imports: [HttpClientTestingModule, ReactiveFormsModule, AlertModule.forRoot(), MessagesModule]
+      providers: [RestUrlEnv, RestDataSource, PaymentObjectRepository, BsModalService],
+      imports: [HttpClientTestingModule, ReactiveFormsModule, AlertModule.forRoot(), ModalModule.forRoot(), MessagesModule, CoreModule]
     })
     .compileComponents();
   }));

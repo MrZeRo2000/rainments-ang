@@ -6,6 +6,8 @@ import {RestDataSource} from '../../model/rest-data-source';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {RestUrlEnv} from '../../config/configuration';
 import {ReactiveFormsModule} from '@angular/forms';
+import {CoreModule} from '../../core/core.module';
+import {BsModalService, ModalModule} from 'ngx-bootstrap';
 
 describe('PaymentObjectsTableComponent', () => {
   let component: PaymentObjectsTableComponent;
@@ -13,9 +15,9 @@ describe('PaymentObjectsTableComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PaymentObjectsTableComponent ],
-      providers: [RestUrlEnv, RestDataSource, PaymentObjectRepository],
-      imports: [HttpClientTestingModule, ReactiveFormsModule]
+      declarations: [ PaymentObjectsTableComponent],
+      providers: [RestUrlEnv, RestDataSource, PaymentObjectRepository, BsModalService ],
+      imports: [HttpClientTestingModule, ReactiveFormsModule, ModalModule.forRoot(), CoreModule]
     })
     .compileComponents();
   }));

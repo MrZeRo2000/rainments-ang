@@ -15,7 +15,6 @@ import {Editable} from '../../core/edit-intf';
 })
 export class PaymentObjectsTableComponent implements OnInit, Editable  {
   bsModalRef: BsModalRef;
-  EditMode = EditMode;
   editState: EditState<PaymentObject>;
   editForm: FormGroup;
   @ViewChild('inputName', {static: false}) inputNameElement: ElementRef;
