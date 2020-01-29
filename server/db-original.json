@@ -1,8 +1,8 @@
 {
-  "paymentobjects": [
+  "payment-objects": [
     {
-      "name": "First name",
-      "id": 1
+      "id": 1,
+      "name": "First name"
     },
     {
       "id": 2,
@@ -11,6 +11,17 @@
     {
       "name": "That's it again 79",
       "id": 3
+    }
+  ],
+  "payment-groups": [
+    {
+      "id": 1,
+      "name": "First group"
+    },
+    {
+      "id": 2,
+      "name": "Second group",
+      "url": "https://www.google.com"
     }
   ]
 }

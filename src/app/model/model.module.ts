@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import {RestDataSource} from '../data-source/rest-data-source';
 import {PaymentObjectRepository} from './payment-object-repository';
 import {HttpClientModule} from '@angular/common/http';
+import {PaymentGroupRepository} from './payment-group-repository';
 
 @NgModule({
   declarations: [],
@@ -13,7 +14,8 @@ import {HttpClientModule} from '@angular/common/http';
   providers: [
     HttpClientModule,
     RestDataSource,
-    PaymentObjectRepository
+    PaymentObjectRepository,
+    PaymentGroupRepository
   ]
 })
 export class ModelModule { }

@@ -14,6 +14,7 @@ import { ReactiveFormsModule} from '@angular/forms';
 import { DialogConfirmationComponent } from './components/dialog-confirmation/dialog-confirmation.component';
 import {ModalModule} from 'ngx-bootstrap';
 import {CoreModule} from './core/core.module';
+import { PaymentGroupsTableComponent } from './components/payment-groups-table/payment-groups-table.component';
 
 
 
@@ -24,7 +25,8 @@ import {CoreModule} from './core/core.module';
     PaymentsDashboardComponent,
     NavTopComponent,
     PaymentObjectsTableComponent,
-    DialogConfirmationComponent
+    DialogConfirmationComponent,
+    PaymentGroupsTableComponent
   ],
   // modal component not directly referenced in templates
   entryComponents: [

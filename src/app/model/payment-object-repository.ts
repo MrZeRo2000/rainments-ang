@@ -8,7 +8,7 @@ import {MessagesService} from '../messages/messages.service';
 export class PaymentObjectRepository extends CommonRepository<PaymentObject> {
 
   constructor(protected dataSource: RestDataSource, protected messagesService: MessagesService) {
-    super(dataSource, messagesService, 'paymentobjects');
+    super(dataSource, messagesService, 'payment-objects');
   }
 
 }
