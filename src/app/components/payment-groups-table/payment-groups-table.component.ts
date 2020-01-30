@@ -5,6 +5,7 @@ import {PaymentGroup} from '../../model/payment-group';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {BsModalService} from 'ngx-bootstrap';
 import {PaymentGroupRepository} from '../../model/payment-group-repository';
+import {urlValidator} from '../../core/url-validator.directive';
 
 @Component({
   selector: 'app-payment-groups-table',
@@ -25,13 +26,17 @@ export class PaymentGroupsTableComponent extends CommonEditableTableComponent<Pa
   protected buildForm(): FormGroup {
     return this.fb.group({
         name: ['', Validators.required],
-        url: ['', Validators.pattern()]
+        url: ['', urlValidator()]
       }
     );
   }
 
   protected getDisplayItemName(item: PaymentGroup): string {
     return item.name;
+  }
+
+  getPaymentGroups(): PaymentGroup[] {
+    return this.repository.getData();
   }
 
   protected setEditFocus(): void {
