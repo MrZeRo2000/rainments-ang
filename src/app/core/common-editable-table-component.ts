@@ -54,8 +54,15 @@ export abstract class CommonEditableTableComponent<T extends CommonEntity> imple
 
   protected validateSave(): void {}
 
-  onAddClick(): void {
+  private buildEditForm() {
     this.editForm = this.buildForm();
+    this.editForm.valueChanges.subscribe( (val) => {
+      this.editState.submitted = false;
+    });
+  }
+
+  onAddClick(): void {
+    this.buildEditForm();
     this.editState = new EditState<T>(EditMode.EM_CREATE, new this.ctor());
     this.requireFocus();
   }
@@ -72,7 +79,7 @@ export abstract class CommonEditableTableComponent<T extends CommonEntity> imple
 
   onEditClick(item: T): void {
     this.editState = new EditState<T>(EditMode.EM_EDIT, item);
-    this.editForm = this.buildForm();
+    this.buildEditForm();
     this.editForm.patchValue(Object.assign({}, item));
     this.requireFocus();
   }
