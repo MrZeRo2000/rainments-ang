@@ -20,3 +20,23 @@
   </tbody>
 </table>
 
+<div *ngIf="editState">
+  <form class="form-group" [formGroup]="editForm">
+    <label for="inputName">Name</label>
+    <input #inputName type="text" class="form-control" [ngClass]="{'is-invalid': editForm.controls.name.errors && editState.submitted}" id="inputName" placeholder="Name" formControlName="name">
+    <label for="inputUrl" class="mt-2">Url</label>
+    <input #inputUrl type="text" class="form-control" [ngClass]="{'is-invalid': editForm.controls.name.errors && editState.submitted}" id="inputUrl" placeholder="Url" formControlName="url">
+    <div *ngIf="editForm.controls.name.errors && editState.submitted" class="invalid-feedback">
+      <div *ngIf="editForm.controls.name.errors.required">Name should not be empty</div>
+    </div>
+    <div *ngIf="editForm.controls.url.errors && editState.submitted" class="invalid-feedback">
+      <div *ngIf="editForm.controls.url.errors.invalidUrl">Invalid Url</div>
+    </div>
+
+    <app-core-save-dialog-panel [editable]="this" [loadable]="repository" (createClick)="onCreate()" (saveClick)="onSave()" (cancelClick)="onCancel()"></app-core-save-dialog-panel>
+
+  </form>
+</div>
+
+<app-core-loading-progress [loadable]="repository"></app-core-loading-progress>
+

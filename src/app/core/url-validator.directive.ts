@@ -11,8 +11,8 @@ export function urlValidator(): ValidatorFn {
 
   return (control: AbstractControl): {[key: string]: any} => {
     const url = control.value;
-    const passed = !!urlPattern.test(url) && !(url === null) && !(url === undefined);
-    return passed ? {invalidUrl: {url}} : null;
+    const passed = !!urlPattern.test(url);
+    return !passed ? {invalidUrl: {url}} : null;
   };
 }
 
