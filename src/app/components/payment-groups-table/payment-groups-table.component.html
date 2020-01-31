@@ -22,7 +22,7 @@
 
 <div *ngIf="editState">
   <form class="form-group" [formGroup]="editForm">
-    <label for="inputName">Name</label>
+    <label for="inputName"><strong>Name</strong></label>
     <input #inputName type="text" class="form-control" [ngClass]="{'is-invalid': editForm.controls.name.errors && editState.submitted}" id="inputName" placeholder="Name" formControlName="name">
     <label for="inputUrl" class="mt-2">Url</label>
     <input #inputUrl type="text" class="form-control" [ngClass]="{'is-invalid': editForm.controls.url.errors && editState.submitted}" id="inputUrl" placeholder="Url" formControlName="url">

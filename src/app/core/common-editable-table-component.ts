@@ -56,9 +56,11 @@ export abstract class CommonEditableTableComponent<T extends CommonEntity> imple
 
   private buildEditForm() {
     this.editForm = this.buildForm();
+    /*
     this.editForm.valueChanges.subscribe( (val) => {
       this.editState.submitted = false;
     });
+     */
   }
 
   onAddClick(): void {

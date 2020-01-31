@@ -12,7 +12,7 @@ export function urlValidator(): ValidatorFn {
   return (control: AbstractControl): {[key: string]: any} => {
     const url = control.value;
     const passed = !!urlPattern.test(url);
-    return !passed ? {invalidUrl: {url}} : null;
+    return url && !passed ? {invalidUrl: {url}} : null;
   };
 }
 
