@@ -4,6 +4,7 @@ import {RestDataSource} from '../data-source/rest-data-source';
 import {PaymentObjectRepository} from './payment-object-repository';
 import {HttpClientModule} from '@angular/common/http';
 import {PaymentGroupRepository} from './payment-group-repository';
+import {ProductRepository} from './product-repository';
 
 @NgModule({
   declarations: [],
@@ -15,7 +16,8 @@ import {PaymentGroupRepository} from './payment-group-repository';
     HttpClientModule,
     RestDataSource,
     PaymentObjectRepository,
-    PaymentGroupRepository
+    PaymentGroupRepository,
+    ProductRepository
   ]
 })
 export class ModelModule { }

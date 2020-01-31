@@ -10,6 +10,8 @@ import {AlertModule, BsModalService, ModalModule} from 'ngx-bootstrap';
 import {MessagesModule} from '../../messages/messages.module';
 import {ReactiveFormsModule} from '@angular/forms';
 import {CoreModule} from '../../core/core.module';
+import {PaymentGroupsTableComponent} from '../payment-groups-table/payment-groups-table.component';
+import {PaymentGroupRepository} from '../../model/payment-group-repository';
 
 describe('SettingsComponent', () => {
   let component: SettingsComponent;
@@ -17,8 +19,8 @@ describe('SettingsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SettingsComponent, PaymentObjectsTableComponent ],
-      providers: [RestUrlEnv, RestDataSource, PaymentObjectRepository, BsModalService],
+      declarations: [ SettingsComponent, PaymentObjectsTableComponent, PaymentGroupsTableComponent ],
+      providers: [RestUrlEnv, RestDataSource, PaymentObjectRepository, PaymentGroupRepository, BsModalService],
       imports: [HttpClientTestingModule, ReactiveFormsModule, AlertModule.forRoot(), ModalModule.forRoot(), MessagesModule, CoreModule]
     })
     .compileComponents();
