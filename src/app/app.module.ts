@@ -15,6 +15,7 @@ import { DialogConfirmationComponent } from './components/dialog-confirmation/di
 import {ModalModule} from 'ngx-bootstrap';
 import {CoreModule} from './core/core.module';
 import { PaymentGroupsTableComponent } from './components/payment-groups-table/payment-groups-table.component';
+import { ProductsTableComponent } from './components/products-table/products-table.component';
 
 
 
@@ -26,7 +27,8 @@ import { PaymentGroupsTableComponent } from './components/payment-groups-table/p
     NavTopComponent,
     PaymentObjectsTableComponent,
     DialogConfirmationComponent,
-    PaymentGroupsTableComponent
+    PaymentGroupsTableComponent,
+    ProductsTableComponent
   ],
   // modal component not directly referenced in templates
   entryComponents: [

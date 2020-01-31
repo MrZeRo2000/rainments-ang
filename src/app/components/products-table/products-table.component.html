@@ -1,0 +1,42 @@
+
+<app-core-add-panel [editable]="this" (addClick)="onAddClick()"></app-core-add-panel>
+
+<table class="table" *ngIf="getEditingState()">
+  <thead>
+  <tr>
+    <th scope="col" class="w-auto">ID</th>
+    <th scope="col" class="w-100">Name</th>
+    <th scope="col" class="w-auto">Unit Name</th>
+    <th scope="col" class="w-auto">Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let item of getProducts()">
+    <td>{{item.id}}</td>
+    <td>{{item.name}}</td>
+    <td>{{item.unitName}}</td>
+    <td class="text-nowrap">
+      <app-core-edit-delete-panel [item]="item" (deleteClick)="onDeleteClick(item)" (editClick)="onEditClick(item)"></app-core-edit-delete-panel>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<div *ngIf="editState">
+  <form class="form-group" [formGroup]="editForm">
+    <label for="inputName"><strong>Name</strong></label>
+    <input #inputName type="text" class="form-control" [ngClass]="{'is-invalid': editForm.controls.name.errors && editState.submitted}" id="inputName" placeholder="Name" formControlName="name">
+    <label for="inputUnitName" class="mt-2">Unit Name</label>
+    <input #inputUnitName type="text" class="form-control" id="inputUnitName" placeholder="Unit Name" formControlName="unitName">
+    <div *ngIf="editForm.controls.name.errors && editState.submitted" class="invalid-feedback">
+      <div *ngIf="editForm.controls.name.errors.required">Name should not be empty</div>
+      <div *ngIf="editForm.controls.name.errors.existingName">Name should be unique</div>
+    </div>
+
+    <app-core-save-dialog-panel [editable]="this" [loadable]="repository" (createClick)="onCreate()" (saveClick)="onSave()" (cancelClick)="onCancel()"></app-core-save-dialog-panel>
+
+  </form>
+</div>
+
+<app-core-loading-progress [loadable]="repository"></app-core-loading-progress>
+
