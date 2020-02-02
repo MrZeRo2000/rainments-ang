@@ -1,4 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+@import 'variables';
+@import 'node_modules/@fortawesome/fontawesome-free/scss/fontawesome';
+@import "node_modules/@fortawesome/fontawesome-free/scss/solid";
+@import 'node_modules/bootstrap/scss/bootstrap';
+
+
 .jumbotron {
   padding: 15px 15px !important;
   border-radius: 0 !important;
@@ -6,13 +12,16 @@
   background-image: url("assets/images/rain3.jpg");
   background-size: cover;
 }
+
 html {
   position: relative;
   min-height: 100%;
 }
+
 body {
   margin-bottom: 50px !important;
 }
+
 .footer {
   position: absolute;
   bottom: 0;
@@ -22,9 +31,9 @@ body {
 }
 
 .w-5 {
-  width:5%!important
+  width: 5%!important;
 }
 
 .w-10 {
-  width:10%!important
+  width: 10%!important;
 }

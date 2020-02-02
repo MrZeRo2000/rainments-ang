@@ -8,7 +8,7 @@ import {ProductRepository} from '../../model/product-repository';
 @Component({
   selector: 'app-products-table',
   templateUrl: './products-table.component.html',
-  styleUrls: ['./products-table.component.css']
+  styleUrls: ['./products-table.component.scss']
 })
 export class ProductsTableComponent extends CommonEditableTableComponent<Product> {
   @ViewChild('inputName', {static: false}) inputNameElement: ElementRef;

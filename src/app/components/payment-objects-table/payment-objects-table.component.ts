@@ -8,7 +8,7 @@ import {CommonEditableTableComponent} from '../../core/common-editable-table-com
 @Component({
   selector: 'app-payment-objects-table',
   templateUrl: './payment-objects-table.component.html',
-  styleUrls: ['./payment-objects-table.component.css']
+  styleUrls: ['./payment-objects-table.component.scss']
 })
 export class PaymentObjectsTableComponent extends CommonEditableTableComponent<PaymentObject> {
   @ViewChild('inputName', {static: false}) inputNameElement: ElementRef;

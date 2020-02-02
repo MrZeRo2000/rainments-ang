@@ -4,7 +4,7 @@ import {Editable} from '../edit-intf';
 @Component({
   selector: 'app-core-add-panel',
   templateUrl: './add-panel.component.html',
-  styleUrls: ['./add-panel.component.css']
+  styleUrls: ['./add-panel.component.scss']
 })
 export class AddPanelComponent implements OnInit {
 

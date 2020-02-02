@@ -5,7 +5,7 @@ import {EditMode} from '../edit-state';
 @Component({
   selector: 'app-core-save-dialog-panel',
   templateUrl: './save-dialog-panel.component.html',
-  styleUrls: ['./save-dialog-panel.component.css']
+  styleUrls: ['./save-dialog-panel.component.scss']
 })
 export class SaveDialogPanelComponent implements OnInit {
   EditMode = EditMode;

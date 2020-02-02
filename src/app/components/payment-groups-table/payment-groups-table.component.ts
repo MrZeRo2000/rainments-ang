@@ -10,7 +10,7 @@ import {urlValidator} from '../../core/url-validator.directive';
 @Component({
   selector: 'app-payment-groups-table',
   templateUrl: './payment-groups-table.component.html',
-  styleUrls: ['./payment-groups-table.component.css']
+  styleUrls: ['./payment-groups-table.component.scss']
 })
 export class PaymentGroupsTableComponent extends CommonEditableTableComponent<PaymentGroup> {
   @ViewChild('inputName', {static: false}) inputNameElement: ElementRef;

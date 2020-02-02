@@ -4,7 +4,7 @@ import {Loadable} from '../edit-intf';
 @Component({
   selector: 'app-core-loading-progress',
   templateUrl: './loading-progress.component.html',
-  styleUrls: ['./loading-progress.component.css']
+  styleUrls: ['./loading-progress.component.scss']
 })
 export class LoadingProgressComponent implements OnInit {
 

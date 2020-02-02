@@ -17,8 +17,6 @@ import {CoreModule} from './core/core.module';
 import { PaymentGroupsTableComponent } from './components/payment-groups-table/payment-groups-table.component';
 import { ProductsTableComponent } from './components/products-table/products-table.component';
 
-
-
 @NgModule({
   declarations: [
     AppComponent,
