@@ -31,7 +31,7 @@ export class CommonRepository<T extends CommonEntity> implements Loadable {
       this.loading = false;
     }, error => {
       this.data.length = 0;
-      this.messagesService.reportMessage(new ErrorMessage( 'Network error:' + error.statusText));
+      this.messagesService.reportMessage(new ErrorMessage( 'Network error:' + error.message));
       this.loading = false;
       this.loadingError = true;
     });
