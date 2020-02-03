@@ -7,8 +7,9 @@ import {CommonEntity} from './common-entity';
 import {FormGroup} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {DialogConfirmationComponent} from '../components/dialog-confirmation/dialog-confirmation.component';
+import {CommonTableComponent} from './common-table-component';
 
-export abstract class CommonEditableTableComponent<T extends CommonEntity> implements OnInit, Editable {
+export abstract class CommonEditableTableComponent<T extends CommonEntity>extends CommonTableComponent<T> implements OnInit, Editable {
   bsModalRef: BsModalRef;
   editState: EditState<T>;
   editForm: FormGroup;
@@ -17,11 +18,13 @@ export abstract class CommonEditableTableComponent<T extends CommonEntity> imple
     private ctor: new() => T,
     protected modalService: BsModalService,
     protected repository: CommonRepository<T>
-  ) { }
+  ) {
+    super(repository);
+  }
 
   // OnInit
   ngOnInit() {
-    this.repository.loadData();
+    super.ngOnInit();
     this.repository.getPersistSuccessObservable().subscribe((value) => {
       if (value) {
         this.editState = undefined;
