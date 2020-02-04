@@ -15,7 +15,7 @@ Generate service:
 ng generate service PassData
 
 Deploy:
-ng build --prod --base-href=/violetnote-ang/
+ng build --prod --base-href=/rainments-ang/
 copy from dist to webapps directory
 
 Update angular to latest version:
@@ -26,3 +26,6 @@ ng update ngx-bootstrap
 
 Run local json server:
 npm run server
+
+Run with int configuration:
+ng serve --configuration=int

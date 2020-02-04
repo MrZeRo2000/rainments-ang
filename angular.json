@@ -60,6 +60,14 @@
                   "maximumError": "10kb"
                 }
               ]
+            },
+            "int": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.int.ts"
+                }
+              ]
             }
           }
         },
@@ -71,6 +79,9 @@
           "configurations": {
             "production": {
               "browserTarget": "rainments-ang:build:production"
+            },
+            "int": {
+              "browserTarget": "rainments-ang:build:int"
             }
           }
         },
