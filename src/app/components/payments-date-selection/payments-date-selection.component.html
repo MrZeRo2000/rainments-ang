@@ -1,1 +1,8 @@
 <p>payments-date-selection works!</p>
+<form class="form-inline" [formGroup]="editForm">
+<select class="browser-default custom-select" formControlName="month">
+  <option value="1">One</option>
+  <option value="2" selected>Two</option>
+  <option value="3">Three</option>
+</select>
+</form>
