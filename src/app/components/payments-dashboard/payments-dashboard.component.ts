@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {CommonTableComponent} from '../../core/common-table-component';
 import {PaymentObject} from '../../model/payment-object';
 import {PaymentObjectRepository} from '../../model/payment-object-repository';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-payments-dashboard',
@@ -10,7 +11,7 @@ import {PaymentObjectRepository} from '../../model/payment-object-repository';
 })
 export class PaymentsDashboardComponent extends CommonTableComponent<PaymentObject> implements OnInit {
 
-  constructor(protected repository: PaymentObjectRepository) {
+  constructor(protected repository: PaymentObjectRepository, private router: Router) {
     super(repository);
   }
 
@@ -22,4 +23,7 @@ export class PaymentsDashboardComponent extends CommonTableComponent<PaymentObje
     return this.repository.getData();
   }
 
+  onSelectPaymentObject(id: number) {
+    this.router.navigateByUrl('/payments/' + id);
+  }
 }

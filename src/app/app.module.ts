@@ -16,6 +16,8 @@ import {ModalModule} from 'ngx-bootstrap';
 import {CoreModule} from './core/core.module';
 import { PaymentGroupsTableComponent } from './components/payment-groups-table/payment-groups-table.component';
 import { ProductsTableComponent } from './components/products-table/products-table.component';
+import { PaymentsMasterComponent } from './components/payments-master/payments-master.component';
+import { PaymentsDateSelectionComponent } from './components/payments-date-selection/payments-date-selection.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { ProductsTableComponent } from './components/products-table/products-tab
     PaymentObjectsTableComponent,
     DialogConfirmationComponent,
     PaymentGroupsTableComponent,
-    ProductsTableComponent
+    ProductsTableComponent,
+    PaymentsMasterComponent,
+    PaymentsDateSelectionComponent
   ],
   // modal component not directly referenced in templates
   entryComponents: [

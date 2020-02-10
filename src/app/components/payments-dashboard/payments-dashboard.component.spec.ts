@@ -8,6 +8,7 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {ReactiveFormsModule} from '@angular/forms';
 import {CoreModule} from '../../core/core.module';
 import {MessagesModule} from '../../messages/messages.module';
+import {RouterTestingModule} from '@angular/router/testing';
 
 describe('PaymentsDashboardComponent', () => {
   let component: PaymentsDashboardComponent;
@@ -17,7 +18,7 @@ describe('PaymentsDashboardComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ PaymentsDashboardComponent ],
       providers: [RestUrlEnv, RestDataSource, PaymentObjectRepository],
-      imports: [HttpClientTestingModule, ReactiveFormsModule, CoreModule, MessagesModule]
+      imports: [HttpClientTestingModule, RouterTestingModule, ReactiveFormsModule, CoreModule, MessagesModule]
     })
     .compileComponents();
   }));
