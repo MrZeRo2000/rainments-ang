@@ -23,11 +23,12 @@ export class PaymentsDateSelectionComponent implements OnInit {
       new Date(this.lastSelectedDate.getFullYear() - 3, 0, 1),
       new Date(this.lastSelectedDate.getFullYear() + 1, 11, 31)
     );
+
+    this.editForm = this.buildForm();
   }
 
   ngOnInit() {
     this.selectedDate.emit(this.lastSelectedDate);
-    this.editForm = this.buildForm();
   }
 
   private buildForm(): FormGroup {

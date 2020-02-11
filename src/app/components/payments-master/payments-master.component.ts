@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 
 @Component({
@@ -16,11 +16,9 @@ export class PaymentsMasterComponent implements OnInit {
   }
 
   ngOnInit() {
-
   }
 
   onSelectDate(selectedDate: Date) {
-    console.log('selected date' + selectedDate);
     this.selectedDate = selectedDate;
   }
 
