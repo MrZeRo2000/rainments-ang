@@ -29,3 +29,9 @@ npm run server
 
 Run with int configuration:
 ng serve --configuration=int
+
+Run one selected test file only:
+ng test --include=src/app/core/date-range-generator*.ts
+
+Testing and debugging in IntelliJ:
+install Karma plugin
