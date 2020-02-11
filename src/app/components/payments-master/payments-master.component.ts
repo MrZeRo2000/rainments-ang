@@ -9,6 +9,7 @@ import {ActivatedRoute} from '@angular/router';
 export class PaymentsMasterComponent implements OnInit {
   private KEY_ID = 'id';
   paymentObjectId: number;
+  selectedDate: Date;
 
   constructor(private route: ActivatedRoute) {
     this.paymentObjectId = this.route.snapshot.params[this.KEY_ID];
@@ -16,6 +17,11 @@ export class PaymentsMasterComponent implements OnInit {
 
   ngOnInit() {
 
+  }
+
+  onSelectDate(selectedDate: Date) {
+    console.log('selected date' + selectedDate);
+    this.selectedDate = selectedDate;
   }
 
 }
