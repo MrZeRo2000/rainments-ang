@@ -9,7 +9,7 @@ import {Subject} from 'rxjs';
 import {DialogConfirmationComponent} from '../components/dialog-confirmation/dialog-confirmation.component';
 import {CommonTableComponent} from './common-table-component';
 
-export abstract class CommonEditableTableComponent<T extends CommonEntity>extends CommonTableComponent<T> implements OnInit, Editable {
+export abstract class CommonEditableTableComponent<T extends CommonEntity> extends CommonTableComponent<T> implements OnInit, Editable {
   bsModalRef: BsModalRef;
   editState: EditState<T>;
   editForm: FormGroup;
