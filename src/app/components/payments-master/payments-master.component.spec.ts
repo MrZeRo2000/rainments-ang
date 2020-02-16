@@ -4,6 +4,7 @@ import { PaymentsMasterComponent } from './payments-master.component';
 import {PaymentsDateSelectionComponent} from '../payments-date-selection/payments-date-selection.component';
 import {RouterTestingModule} from '@angular/router/testing';
 import {ReactiveFormsModule} from '@angular/forms';
+import {PaymentsTableComponent} from '../payments-table/payments-table.component';
 
 describe('PaymentsMasterComponent', () => {
   let component: PaymentsMasterComponent;
@@ -12,7 +13,7 @@ describe('PaymentsMasterComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, ReactiveFormsModule],
-      declarations: [ PaymentsMasterComponent, PaymentsDateSelectionComponent ]
+      declarations: [ PaymentsMasterComponent, PaymentsDateSelectionComponent, PaymentsTableComponent ]
     })
     .compileComponents();
   }));

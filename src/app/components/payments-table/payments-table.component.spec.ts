@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PaymentsTableComponent } from './payments-table.component';
+import {PaymentsMasterComponent} from '../payments-master/payments-master.component';
 
 describe('PaymentsTableComponent', () => {
   let component: PaymentsTableComponent;
@@ -8,7 +9,7 @@ describe('PaymentsTableComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PaymentsTableComponent ]
+      declarations: [ PaymentsTableComponent]
     })
     .compileComponents();
   }));
