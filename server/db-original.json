@@ -1,46 +1,16 @@
 {
   "payment-objects": [
-    {
-      "id": 1,
-      "name": "First name"
-    },
-    {
-      "id": 2,
-      "name": "Second name"
-    },
-    {
-      "name": "That's it again 79",
-      "id": 3
-    }
+    {"id":1,"name":"New Payment Object"}
   ],
   "payment-groups": [
-    {
-      "id": 1,
-      "name": "First group"
-    },
-    {
-      "id": 2,
-      "name": "Second group",
-      "url": "https://www.google.com"
-    }
+    {"id":1,"name":"New Group"}
   ],
   "products": [
-    {
-      "id": 1,
-      "name": "Product 1",
-      "unitName": "kg"
-    },
-    {
-      "id": 2,
-      "name": "Product 2",
-      "unitName": "km"
-    },
-    {
-      "id": 3,
-      "name": "Product 3"
-    }
+    {"id":1,"name":"New Product"},
+    {"id":2,"name":"New Product 2","unitName":"kg"}
   ],
   "payments": [
-
-  ]
+    {"id":1,"date":"2020-02-16T00:00:00","periodDate":"2020-01-01T00:00:00","paymentObject":{"id":1,"name":"New Payment Object"},"paymentGroup":{"id":1,"name":"New Group"},"product":{"id":1,"name":"New Product"},"productCounter":300,"paymentAmount":53.22,"commissionAmount":0.44}
+  ],
+  "payments-refs": {"paymentList":[{"id":1,"date":"2020-02-16T00:00:00","periodDate":"2020-01-01T00:00:00","paymentObject":{"id":1,"name":"New Payment Object"},"paymentGroup":{"id":1,"name":"New Group"},"product":{"id":1,"name":"New Product"},"productCounter":300,"paymentAmount":53.22,"commissionAmount":0.44}],"paymentObjectList":[{"id":1,"name":"New Payment Object"}],"paymentGroupList":[{"id":1,"name":"New Group"}],"productList":[{"id":1,"name":"New Product"},{"id":2,"name":"New Product 2","unitName":"kg"}]}
 }
