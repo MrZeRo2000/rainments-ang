@@ -1,6 +1,6 @@
 import {Inject, Injectable} from '@angular/core';
 import {RestUrl} from '../config/configuration';
-import {HttpClient, HttpResponse} from '@angular/common/http';
+import {HttpClient, HttpParams, HttpResponse} from '@angular/common/http';
 import {Observable} from 'rxjs';
 
 
@@ -12,8 +12,8 @@ export class RestDataSource {
     this.restUrl = restUrl;
   }
 
-  getResponse(resourceName: string): Observable<HttpResponse<any>> {
-    return this.http.get(this.restUrl + resourceName, { observe: 'response' });
+  getResponse(resourceName: string, params?: HttpParams): Observable<HttpResponse<any>> {
+    return this.http.get(this.restUrl + resourceName, { observe: 'response', params });
   }
 
   postResponse(resourceName: string, body: any): Observable<HttpResponse<any>> {

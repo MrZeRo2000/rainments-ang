@@ -2,7 +2,7 @@ import {RestDataSource} from '../data-source/rest-data-source';
 import {MessagesService} from '../messages/messages.service';
 import {ErrorMessage} from '../messages/message.model';
 import {Observable, Subject} from 'rxjs';
-import {HttpResponse} from '@angular/common/http';
+import {HttpParams, HttpResponse} from '@angular/common/http';
 import {Loadable} from './edit-intf';
 import {CommonEntity} from './common-entity';
 
@@ -14,10 +14,10 @@ export class CommonRepository<T extends CommonEntity> implements Loadable {
 
   constructor(protected dataSource: RestDataSource, protected messagesService: MessagesService, private resourceName: string) { }
 
-  loadData(): void {
+  loadData(params?: HttpParams): void {
     this.messagesService.resetMessage();
     this.loading = true;
-    this.dataSource.getResponse(this.resourceName).subscribe((data) => {
+    this.dataSource.getResponse(this.resourceName, params).subscribe((data) => {
       if (data.ok) {
         // this.data.length = 0;
         // Object.assign(this.data, data.body);

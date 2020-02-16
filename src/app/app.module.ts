@@ -18,6 +18,7 @@ import { PaymentGroupsTableComponent } from './components/payment-groups-table/p
 import { ProductsTableComponent } from './components/products-table/products-table.component';
 import { PaymentsMasterComponent } from './components/payments-master/payments-master.component';
 import { PaymentsDateSelectionComponent } from './components/payments-date-selection/payments-date-selection.component';
+import { PaymentsTableComponent } from './components/payments-table/payments-table.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { PaymentsDateSelectionComponent } from './components/payments-date-selec
     PaymentGroupsTableComponent,
     ProductsTableComponent,
     PaymentsMasterComponent,
-    PaymentsDateSelectionComponent
+    PaymentsDateSelectionComponent,
+    PaymentsTableComponent
   ],
   // modal component not directly referenced in templates
   entryComponents: [
