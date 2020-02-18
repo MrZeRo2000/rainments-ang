@@ -28,7 +28,7 @@ export abstract class CommonEditableTableComponent<T extends CommonEntity> exten
     this.repository.getPersistSuccessObservable().subscribe((value) => {
       if (value) {
         this.editState = undefined;
-        this.repository.loadData();
+        this.loadRepositoryData();
       }
     });
   }

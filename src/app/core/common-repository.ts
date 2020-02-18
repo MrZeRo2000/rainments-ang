@@ -12,12 +12,15 @@ export class CommonRepository<T extends CommonEntity> implements Loadable {
   private loadingError = false;
   private persistSuccess: Subject<boolean> = new Subject<boolean>();
 
-  constructor(protected dataSource: RestDataSource, protected messagesService: MessagesService, private resourceName: string) { }
+  constructor(
+    protected dataSource: RestDataSource,
+    protected messagesService: MessagesService,
+    private resourceName: string) { }
 
   loadData(params?: HttpParams): void {
     this.messagesService.resetMessage();
     this.loading = true;
-    this.dataSource.getResponse(this.resourceName, params).subscribe((data) => {
+    this.dataSource.getResponse(this.resourceName).subscribe((data) => {
       if (data.ok) {
         // this.data.length = 0;
         // Object.assign(this.data, data.body);

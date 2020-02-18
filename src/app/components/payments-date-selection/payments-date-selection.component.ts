@@ -16,7 +16,8 @@ export class PaymentsDateSelectionComponent implements OnInit {
 
   constructor(private fb: FormBuilder) {
     const currentDate = new Date();
-    this.lastSelectedDate = new Date(currentDate.setMonth(currentDate.getMonth() - 1));
+    const lastDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+    this.lastSelectedDate = new Date(lastDate.setMonth(lastDate.getMonth() - 1));
     this.selectedDate.subscribe((v) => this.lastSelectedDate = v);
 
     this.dr = new DateRangeGenerator(

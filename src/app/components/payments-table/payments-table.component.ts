@@ -22,11 +22,12 @@ export class PaymentsTableComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     for (const propName in changes) {
-      if (changes.hasOwnProperty(propName) && !changes[propName].isFirstChange()) {
-        this.checkInput();
+      if (changes.hasOwnProperty(propName) && changes[propName].isFirstChange()) {
         return;
       }
     }
+
+    this.checkInput();
   }
 
   private checkInput() {
