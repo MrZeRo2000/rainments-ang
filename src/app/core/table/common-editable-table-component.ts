@@ -1,25 +1,29 @@
 import {OnInit} from '@angular/core';
-import {Editable} from './edit-intf';
+import {Editable} from '../edit-intf';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
-import {ReadWriteRepository} from './read-write-repository';
-import {EditMode, EditState} from './edit-state';
-import {CommonEntity} from './common-entity';
+import {ReadWriteRepository} from '../read-write-repository';
+import {EditMode, EditState} from '../edit-state';
+import {CommonEntity} from '../common-entity';
 import {FormGroup} from '@angular/forms';
 import {Subject} from 'rxjs';
-import {DialogConfirmationComponent} from '../components/dialog-confirmation/dialog-confirmation.component';
+import {DialogConfirmationComponent} from '../../components/dialog-confirmation/dialog-confirmation.component';
 import {CommonTableComponent} from './common-table-component';
+import {ReadRepository} from '../read-repository';
 
-export abstract class CommonEditableTableComponent<T extends CommonEntity> extends CommonTableComponent<T> implements OnInit, Editable {
+export abstract class CommonEditableTableComponent<R, W extends CommonEntity>
+  extends CommonTableComponent<R, W>
+  implements OnInit, Editable {
   bsModalRef: BsModalRef;
-  editState: EditState<T>;
+  editState: EditState<W>;
   editForm: FormGroup;
 
   protected constructor(
-    private ctor: new() => T,
+    protected ctor: new() => W,
     protected modalService: BsModalService,
-    protected repository: ReadWriteRepository<T>
+    protected readRepository: ReadRepository<R>,
+    protected repository: ReadWriteRepository<W>
   ) {
-    super(repository);
+    super(readRepository, repository);
   }
 
   // OnInit
@@ -39,7 +43,7 @@ export abstract class CommonEditableTableComponent<T extends CommonEntity> exten
   }
 
   // Editable interface
-  getEditState(): EditState<T> {
+  getEditState(): EditState<W> {
     return this.editState;
   }
 
@@ -51,7 +55,7 @@ export abstract class CommonEditableTableComponent<T extends CommonEntity> exten
 
   protected abstract buildForm(): FormGroup;
 
-  protected abstract getDisplayItemName(item: T): string;
+  protected abstract getDisplayItemName(item: W): string;
 
   protected validateCreate(): void {}
 
@@ -68,12 +72,12 @@ export abstract class CommonEditableTableComponent<T extends CommonEntity> exten
 
   onAddClick(): void {
     this.buildEditForm();
-    this.editState = new EditState<T>(EditMode.EM_CREATE, new this.ctor());
+    this.editState = new EditState<W>(EditMode.EM_CREATE, new this.ctor());
     this.requireFocus();
   }
 
-  onDeleteClick(item: T): void {
-    const resultSubject: Subject<T> = new Subject<T>();
+  onDeleteClick(item: W): void {
+    const resultSubject: Subject<W> = new Subject<W>();
     resultSubject.subscribe((result) => {
       this.repository.deleteItem(result.id);
     });
@@ -82,8 +86,8 @@ export abstract class CommonEditableTableComponent<T extends CommonEntity> exten
     this.bsModalRef = this.modalService.show(DialogConfirmationComponent, {initialState});
   }
 
-  onEditClick(item: T): void {
-    this.editState = new EditState<T>(EditMode.EM_EDIT, item);
+  onEditClick(item: W): void {
+    this.editState = new EditState<W>(EditMode.EM_EDIT, item);
     this.buildEditForm();
     this.editForm.patchValue(Object.assign({}, item));
     this.requireFocus();

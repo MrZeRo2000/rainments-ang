@@ -1,18 +1,18 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {CommonEditableTableComponent} from '../../core/common-editable-table-component';
 import {PaymentObject} from '../../model/payment-object';
 import {PaymentGroup} from '../../model/payment-group';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {BsModalService} from 'ngx-bootstrap';
 import {PaymentGroupRepository} from '../../model/payment-group-repository';
 import {urlValidator} from '../../core/url-validator.directive';
+import {CommonSimpleEditableTableComponent} from '../../core/table/common-simple-editable-table-component';
 
 @Component({
   selector: 'app-payment-groups-table',
   templateUrl: './payment-groups-table.component.html',
   styleUrls: ['./payment-groups-table.component.scss']
 })
-export class PaymentGroupsTableComponent extends CommonEditableTableComponent<PaymentGroup> {
+export class PaymentGroupsTableComponent extends CommonSimpleEditableTableComponent<PaymentGroup> {
   @ViewChild('inputName', {static: false}) inputNameElement: ElementRef;
 
   constructor(

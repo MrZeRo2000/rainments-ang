@@ -1,11 +1,12 @@
-import {ReadWriteRepository} from './read-write-repository';
+import {ReadWriteRepository} from '../read-write-repository';
 import {OnInit} from '@angular/core';
 import {HttpParams} from '@angular/common/http';
+import {ReadRepository} from '../read-repository';
 
-export class CommonTableComponent<T> implements OnInit {
+export class CommonTableComponent<R, W> implements OnInit {
   protected config: CommonTableConfig;
 
-  constructor(protected repository: ReadWriteRepository<T>)  {
+  constructor(protected readRepository: ReadRepository<R>, protected repository: ReadWriteRepository<W>)  {
     this.config = this.getConfig();
   }
 
@@ -18,7 +19,7 @@ export class CommonTableComponent<T> implements OnInit {
   }
 
   loadRepositoryData(): void {
-    this.repository.loadData(this.getHttpParams());
+    this.readRepository.loadData(this.getHttpParams());
   }
 
   // OnInit

@@ -1,16 +1,16 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {CommonEditableTableComponent} from '../../core/common-editable-table-component';
 import {Product} from '../../model/product';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {BsModalService} from 'ngx-bootstrap';
 import {ProductRepository} from '../../model/product-repository';
+import {CommonSimpleEditableTableComponent} from '../../core/table/common-simple-editable-table-component';
 
 @Component({
   selector: 'app-products-table',
   templateUrl: './products-table.component.html',
   styleUrls: ['./products-table.component.scss']
 })
-export class ProductsTableComponent extends CommonEditableTableComponent<Product> {
+export class ProductsTableComponent extends CommonSimpleEditableTableComponent<Product> {
   @ViewChild('inputName', {static: false}) inputNameElement: ElementRef;
 
   constructor(

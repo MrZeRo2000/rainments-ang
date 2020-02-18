@@ -3,14 +3,14 @@ import {PaymentObjectRepository} from '../../model/payment-object-repository';
 import {PaymentObject} from '../../model/payment-object';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {BsModalService} from 'ngx-bootstrap';
-import {CommonEditableTableComponent} from '../../core/common-editable-table-component';
+import {CommonSimpleEditableTableComponent} from '../../core/table/common-simple-editable-table-component';
 
 @Component({
   selector: 'app-payment-objects-table',
   templateUrl: './payment-objects-table.component.html',
   styleUrls: ['./payment-objects-table.component.scss']
 })
-export class PaymentObjectsTableComponent extends CommonEditableTableComponent<PaymentObject> {
+export class PaymentObjectsTableComponent extends CommonSimpleEditableTableComponent<PaymentObject> {
   @ViewChild('inputName', {static: false}) inputNameElement: ElementRef;
 
   constructor(
