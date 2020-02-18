@@ -1,44 +1,11 @@
-import {RestDataSource} from '../data-source/rest-data-source';
-import {MessagesService} from '../messages/messages.service';
 import {ErrorMessage} from '../messages/message.model';
 import {Observable, Subject} from 'rxjs';
-import {HttpParams, HttpResponse} from '@angular/common/http';
-import {Loadable} from './edit-intf';
+import {HttpResponse} from '@angular/common/http';
 import {CommonEntity} from './common-entity';
+import {ReadRepository} from './read-repository';
 
-export class CommonRepository<T extends CommonEntity> implements Loadable {
-  private data: T[] = new Array<T>();
-  private loading = false;
-  private loadingError = false;
+export class ReadWriteRepository<T extends CommonEntity> extends ReadRepository<T> {
   private persistSuccess: Subject<boolean> = new Subject<boolean>();
-
-  constructor(
-    protected dataSource: RestDataSource,
-    protected messagesService: MessagesService,
-    private resourceName: string) { }
-
-  loadData(params?: HttpParams): void {
-    this.messagesService.resetMessage();
-    this.loading = true;
-    this.dataSource.getResponse(this.resourceName).subscribe((data) => {
-      if (data.ok) {
-        // this.data.length = 0;
-        // Object.assign(this.data, data.body);
-        this.data.splice(0, this.data.length, ...data.body);
-        this.loadingError = false;
-      } else {
-        this.data.length = 0;
-        this.messagesService.reportMessage(new ErrorMessage( 'Error reading from server:' + data.body));
-        this.loadingError = true;
-      }
-      this.loading = false;
-    }, error => {
-      this.data.length = 0;
-      this.messagesService.reportMessage(new ErrorMessage( 'Network error:' + error.message));
-      this.loading = false;
-      this.loadingError = true;
-    });
-  }
 
   private beforePersist(): void {
     this.messagesService.resetMessage();
@@ -79,14 +46,6 @@ export class CommonRepository<T extends CommonEntity> implements Loadable {
 
   getData(): T[] {
     return this.data;
-  }
-
-  getLoading(): boolean {
-    return this.loading;
-  }
-
-  getDataAvailable(): boolean {
-    return !this.loadingError && !this.getLoading();
   }
 
   getPersistSuccessObservable(): Subject<boolean> {

@@ -1,7 +1,7 @@
 import {OnInit} from '@angular/core';
 import {Editable} from './edit-intf';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
-import {CommonRepository} from './common-repository';
+import {ReadWriteRepository} from './read-write-repository';
 import {EditMode, EditState} from './edit-state';
 import {CommonEntity} from './common-entity';
 import {FormGroup} from '@angular/forms';
@@ -17,7 +17,7 @@ export abstract class CommonEditableTableComponent<T extends CommonEntity> exten
   protected constructor(
     private ctor: new() => T,
     protected modalService: BsModalService,
-    protected repository: CommonRepository<T>
+    protected repository: ReadWriteRepository<T>
   ) {
     super(repository);
   }
