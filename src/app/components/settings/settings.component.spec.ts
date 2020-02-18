@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SettingsComponent } from './settings.component';
 import {PaymentObjectsTableComponent} from '../payment-objects-table/payment-objects-table.component';
-import {PaymentObjectRepository} from '../../model/payment-object-repository';
+import {PaymentObjectRepository} from '../../repository/payment-object-repository';
 import {RestUrlEnv} from '../../config/configuration';
 import {RestDataSource} from '../../data-source/rest-data-source';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
@@ -11,8 +11,8 @@ import {MessagesModule} from '../../messages/messages.module';
 import {ReactiveFormsModule} from '@angular/forms';
 import {CoreModule} from '../../core/core.module';
 import {PaymentGroupsTableComponent} from '../payment-groups-table/payment-groups-table.component';
-import {PaymentGroupRepository} from '../../model/payment-group-repository';
-import {ProductRepository} from '../../model/product-repository';
+import {PaymentGroupRepository} from '../../repository/payment-group-repository';
+import {ProductRepository} from '../../repository/product-repository';
 import {ProductsTableComponent} from '../products-table/products-table.component';
 
 describe('SettingsComponent', () => {

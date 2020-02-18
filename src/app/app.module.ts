@@ -19,6 +19,7 @@ import { ProductsTableComponent } from './components/products-table/products-tab
 import { PaymentsMasterComponent } from './components/payments-master/payments-master.component';
 import { PaymentsDateSelectionComponent } from './components/payments-date-selection/payments-date-selection.component';
 import { PaymentsTableComponent } from './components/payments-table/payments-table.component';
+import {RepositoryModule} from './repository/repository.module';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { PaymentsTableComponent } from './components/payments-table/payments-tab
     CoreModule,
     ModelModule,
     ConfigModule,
-    MessagesModule
+    MessagesModule,
+    RepositoryModule
   ],
   providers: [],
   bootstrap: [AppComponent]

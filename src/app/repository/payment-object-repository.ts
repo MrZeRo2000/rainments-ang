@@ -1,5 +1,5 @@
 import {RestDataSource} from '../data-source/rest-data-source';
-import {PaymentObject} from './payment-object';
+import {PaymentObject} from '../model/payment-object';
 import {Injectable} from '@angular/core';
 import {ReadWriteRepository} from '../core/read-write-repository';
 import {MessagesService} from '../messages/messages.service';

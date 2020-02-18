@@ -3,7 +3,7 @@ import {PaymentObject} from '../../model/payment-object';
 import {PaymentGroup} from '../../model/payment-group';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {BsModalService} from 'ngx-bootstrap';
-import {PaymentGroupRepository} from '../../model/payment-group-repository';
+import {PaymentGroupRepository} from '../../repository/payment-group-repository';
 import {urlValidator} from '../../core/url-validator.directive';
 import {CommonSimpleEditableTableComponent} from '../../core/table/common-simple-editable-table-component';
 

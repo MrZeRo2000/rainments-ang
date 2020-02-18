@@ -1,5 +1,5 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
-import {PaymentObjectRepository} from '../../model/payment-object-repository';
+import {PaymentObjectRepository} from '../../repository/payment-object-repository';
 import {PaymentObject} from '../../model/payment-object';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {BsModalService} from 'ngx-bootstrap';

@@ -2,7 +2,7 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Product} from '../../model/product';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {BsModalService} from 'ngx-bootstrap';
-import {ProductRepository} from '../../model/product-repository';
+import {ProductRepository} from '../../repository/product-repository';
 import {CommonSimpleEditableTableComponent} from '../../core/table/common-simple-editable-table-component';
 
 @Component({

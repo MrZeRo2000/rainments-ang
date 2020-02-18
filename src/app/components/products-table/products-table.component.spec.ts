@@ -7,7 +7,7 @@ import {BsModalService, ModalModule} from 'ngx-bootstrap';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {ReactiveFormsModule} from '@angular/forms';
 import {CoreModule} from '../../core/core.module';
-import {ProductRepository} from '../../model/product-repository';
+import {ProductRepository} from '../../repository/product-repository';
 
 describe('ProductsTableComponent', () => {
   let component: ProductsTableComponent;

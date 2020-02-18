@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {PaymentObject} from '../../model/payment-object';
-import {PaymentObjectRepository} from '../../model/payment-object-repository';
+import {PaymentObjectRepository} from '../../repository/payment-object-repository';
 import {Router} from '@angular/router';
 import {CommonSimpleTableComponent} from '../../core/table/common-simple-table-component';
 

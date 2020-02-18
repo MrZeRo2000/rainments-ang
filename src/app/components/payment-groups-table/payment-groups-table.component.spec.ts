@@ -7,7 +7,7 @@ import {BsModalService, ModalModule} from 'ngx-bootstrap';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {ReactiveFormsModule} from '@angular/forms';
 import {CoreModule} from '../../core/core.module';
-import {PaymentGroupRepository} from '../../model/payment-group-repository';
+import {PaymentGroupRepository} from '../../repository/payment-group-repository';
 
 describe('PaymentGroupsTableComponent', () => {
   let component: PaymentGroupsTableComponent;
