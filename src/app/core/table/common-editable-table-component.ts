@@ -39,7 +39,7 @@ export abstract class CommonEditableTableComponent<R, W extends CommonEntity>
 
   // Editable interface
   getEditingState(): boolean {
-    return this.repository.getDataAvailable() && !this.editState;
+    return this.readRepository.getDataAvailable() && !this.editState;
   }
 
   // Editable interface

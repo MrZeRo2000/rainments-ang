@@ -80,4 +80,8 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   protected setEditFocus(): void {
   }
 
+  getPayments(): Payment[] {
+    return this.readRepository.getData()[0].paymentList;
+  }
+
 }

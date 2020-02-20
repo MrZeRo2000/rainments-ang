@@ -10,7 +10,7 @@
     {"id":2,"name":"New Product 2","unitName":"kg"}
   ],
   "payments": [
-    {"id":1,"date":"2020-02-16T00:00:00","periodDate":"2020-01-01T00:00:00","paymentObject":{"id":1,"name":"New Payment Object"},"paymentGroup":{"id":1,"name":"New Group"},"product":{"id":1,"name":"New Product"},"productCounter":300,"paymentAmount":53.22,"commissionAmount":0.44}
+    {"id":1,"date":"2020-02-16T00:00:00","periodDate":"2020-01-01T00:00:00","paymentObject":{"id":1,"name":"New Payment Object"},"paymentGroup":{"id":1,"name":"New Group"},"product":{"id":1,"name":"New Product","unitName":"kg"},"productCounter":300,"paymentAmount":53.22,"commissionAmount":0.44}
   ],
-  "payments-refs": {"paymentList":[{"id":1,"date":"2020-02-16T00:00:00","periodDate":"2020-01-01T00:00:00","paymentObject":{"id":1,"name":"New Payment Object"},"paymentGroup":{"id":1,"name":"New Group"},"product":{"id":1,"name":"New Product"},"productCounter":300,"paymentAmount":53.22,"commissionAmount":0.44}],"paymentObjectList":[{"id":1,"name":"New Payment Object"}],"paymentGroupList":[{"id":1,"name":"New Group"}],"productList":[{"id":1,"name":"New Product"},{"id":2,"name":"New Product 2","unitName":"kg"}]}
+  "payments-refs": {"paymentList":[{"id":1,"date":"2020-02-16T00:00:00","periodDate":"2020-01-01T00:00:00","paymentObject":{"id":1,"name":"New Payment Object"},"paymentGroup":{"id":1,"name":"New Group"},"product":{"id":1,"name":"New Product","unitName":"kg"},"productCounter":300,"paymentAmount":53.22,"commissionAmount":0.44}],"paymentObjectList":[{"id":1,"name":"New Payment Object"}],"paymentGroupList":[{"id":1,"name":"New Group"}],"productList":[{"id":1,"name":"New Product"},{"id":2,"name":"New Product 2","unitName":"kg"}]}
 }

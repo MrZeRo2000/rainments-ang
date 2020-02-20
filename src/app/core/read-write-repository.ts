@@ -44,10 +44,6 @@ export class ReadWriteRepository<T extends CommonEntity> extends ReadRepository<
     this.handlePersistHttpResponse(this.dataSource.deleteResponse(this.resourceName, id));
   }
 
-  getData(): T[] {
-    return this.data;
-  }
-
   getPersistSuccessObservable(): Subject<boolean> {
     return this.persistSuccess;
   }

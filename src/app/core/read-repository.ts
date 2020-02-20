@@ -49,4 +49,8 @@ export class ReadRepository<T> implements Loadable {
     });
   }
 
+  getData(): T[] {
+    return this.data;
+  }
+
 }

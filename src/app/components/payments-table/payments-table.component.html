@@ -1,1 +1,31 @@
 <p>payments-table works! PaymentObjectId={{paymentObjectId}} Date={{paymentPeriodDate}}</p>
+<app-core-add-panel [editable]="this" (addClick)="onAddClick()"></app-core-add-panel>
+
+<table class="table" *ngIf="getEditingState()">
+  <thead>
+  <tr>
+    <th scope="col" class="w-auto">ID</th>
+    <th scope="col" class="w-50">Group</th>
+    <th scope="col" class="w-50">Product</th>
+    <th scope="col" class="w-auto">Counter</th>
+    <th scope="col" class="w-auto">Payment</th>
+    <th scope="col" class="w-auto">Commission</th>
+    <th scope="col" class="w-auto">Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let item of getPayments()">
+    <td>{{item.id}}</td>
+    <td>{{item.paymentGroup.name}}</td>
+    <td>{{item.product.name}}</td>
+    <td>{{item.productCounter}} {{item.product.unitName}}</td>
+    <td>{{item.paymentAmount}}</td>
+    <td>{{item.commissionAmount}}</td>
+    <td class="text-nowrap">
+      <app-core-edit-delete-panel [item]="item" (deleteClick)="onDeleteClick(item)" (editClick)="onEditClick(item)"></app-core-edit-delete-panel>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<app-core-loading-progress [loadable]="readRepository"></app-core-loading-progress>
