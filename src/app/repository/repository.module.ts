@@ -5,6 +5,8 @@ import {RestDataSource} from '../data-source/rest-data-source';
 import {PaymentObjectRepository} from './payment-object-repository';
 import {PaymentGroupRepository} from './payment-group-repository';
 import {ProductRepository} from './product-repository';
+import {PaymentRepository} from './payment-repository';
+import {PaymentRefsRepository} from './payment-refs-repository';
 
 
 
@@ -19,7 +21,9 @@ import {ProductRepository} from './product-repository';
     RestDataSource,
     PaymentObjectRepository,
     PaymentGroupRepository,
-    ProductRepository
+    ProductRepository,
+    PaymentRepository,
+    PaymentRefsRepository
   ]
 })
 export class RepositoryModule { }
