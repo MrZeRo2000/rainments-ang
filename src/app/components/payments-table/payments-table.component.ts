@@ -25,6 +25,10 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   @Input()
   paymentPeriodDate: Date;
 
+  private static roundValue(value: any): number {
+    return Math.round(value * 100) / 100;
+  }
+
   constructor(
     private fb: FormBuilder,
     protected modalService: BsModalService,
@@ -76,18 +80,36 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     return this.fb.group({
       paymentGroup: [this.getPaymentGroups()[0] && this.getPaymentGroups()[0].id, Validators.required],
       product: [this.getProducts()[0] && this.getProducts()[0].id, Validators.required],
-      productCounter: ['0.00', Validators.compose([Validators.required, Validators.min(0)])],
-      paymentAmount: ['0.00', Validators.compose([Validators.required, Validators.min(0)])],
-      commissionAmount: ['0.00', Validators.compose([Validators.required, Validators.min(0)])]
+      productCounter: ['', Validators.compose([Validators.min(0)])],
+      paymentAmount: ['0', Validators.compose([Validators.required, Validators.min(0)])],
+      commissionAmount: ['0', Validators.compose([Validators.required, Validators.min(0)])]
       }
     );
   }
 
   protected getDisplayItemName(item: Payment): string {
-    return '';
+    return item.product.name;
   }
 
   protected setEditFocus(): void {
+  }
+
+  protected validateCreate(): void {
+    const productDuplicates = this.getPayments().filter(
+      v => v.product.id === this.editForm.controls.product.value
+    );
+    if (productDuplicates.length > 0) {
+      this.editForm.controls.product.setErrors({existingProduct: true});
+    }
+  }
+
+  protected validateSave(): void {
+    const productDuplicates = this.getPayments().filter(
+      v => v.product.id === this.editForm.controls.product.value && v.id !== this.editState.editItem.id
+    );
+    if (productDuplicates.length > 0) {
+      this.editForm.controls.product.setErrors({existingProduct: true});
+    }
   }
 
   getPayments(): Payment[] {
@@ -106,7 +128,26 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     return this.readRepository.getData()[0].productList;
   }
 
+  protected getWritableData(): Payment {
+    const paymentObject: PaymentObject = this.getPaymentObjects().find(value => value.id === this.paymentObjectId);
+    const paymentGroup: PaymentGroup = this.getPaymentGroups().find(value => value.id === this.editForm.controls.paymentGroup.value);
+    const product: Product = this.getProducts().find(value => value.id === this.editForm.controls.product.value);
+
+    return new Payment(
+      undefined,
+      new Date(),
+      new Date(this.paymentPeriodDate.setMinutes(this.paymentPeriodDate.getMinutes() - this.paymentPeriodDate.getTimezoneOffset())),
+      paymentObject,
+      paymentGroup,
+      product,
+      PaymentsTableComponent.roundValue(this.editForm.controls.productCounter.value),
+      PaymentsTableComponent.roundValue(this.editForm.controls.paymentAmount.value),
+      PaymentsTableComponent.roundValue(this.editForm.controls.commissionAmount.value)
+    );
+  }
+
   onCreate(): void {
+    /*
     const paymentObject: PaymentObject = this.getPaymentObjects().find(value => value.id === this.paymentObjectId);
     const paymentGroup: PaymentGroup = this.getPaymentGroups().find(value => value.id === this.editForm.controls.paymentGroup.value);
     const product: Product = this.getProducts().find(value => value.id === this.editForm.controls.product.value);
@@ -114,7 +155,7 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     const payment = new Payment(
         undefined,
         new Date(),
-        this.paymentPeriodDate,
+        new Date(this.paymentPeriodDate.setMinutes(this.paymentPeriodDate.getMinutes() - this.paymentPeriodDate.getTimezoneOffset())),
         paymentObject,
         paymentGroup,
         product,
@@ -124,7 +165,8 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     );
 
     alert(JSON.stringify(payment));
-    // super.onCreate();
+     */
+    super.onCreate();
   }
 
 }

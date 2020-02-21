@@ -1,7 +1,11 @@
 <div>payments-master works! {{this.paymentObjectId}} {{this.selectedDate}}</div>
 
+<div class="container">
+
 <app-payments-date-selection (selectedDate)="onSelectDate($event)"></app-payments-date-selection>
 
 <app-payments-table [paymentObjectId]="paymentObjectId" [paymentPeriodDate]="selectedDate"></app-payments-table>
 
 <app-message></app-message>
+
+</div>
