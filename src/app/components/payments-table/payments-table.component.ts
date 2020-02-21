@@ -3,12 +3,14 @@ import {reduce} from 'rxjs/operators';
 import {CommonEditableTableComponent} from '../../core/table/common-editable-table-component';
 import {PaymentRefs} from '../../model/payment-refs';
 import {Payment} from '../../model/payment';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {BsModalService} from 'ngx-bootstrap';
 import {PaymentRefsRepository} from '../../repository/payment-refs-repository';
 import {PaymentRepository} from '../../repository/payment-repository';
 import {CommonTableConfig} from '../../core/table/common-table-component';
 import {HttpParams} from '@angular/common/http';
+import {PaymentGroup} from '../../model/payment-group';
+import {Product} from '../../model/product';
 
 @Component({
   selector: 'app-payments-table',
@@ -70,7 +72,14 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   }
 
   protected buildForm(): FormGroup {
-    return undefined;
+    return this.fb.group({
+      paymentGroup: [this.getPaymentGroups()[0] && this.getPaymentGroups()[0].id, Validators.required],
+      product: [this.getProducts()[0] && this.getProducts()[0].id, Validators.required],
+      productCounter: ['0.00', Validators.compose([Validators.required, Validators.min(0)])],
+      paymentAmount: ['0.00', Validators.compose([Validators.required, Validators.min(0)])],
+      commissionAmount: ['0.00', Validators.compose([Validators.required, Validators.min(0)])]
+      }
+    );
   }
 
   protected getDisplayItemName(item: Payment): string {
@@ -82,6 +91,19 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
 
   getPayments(): Payment[] {
     return this.readRepository.getData()[0].paymentList;
+  }
+
+  getPaymentGroups(): PaymentGroup[] {
+    return this.readRepository.getData()[0].paymentGroupList;
+  }
+
+  getProducts(): Product[] {
+    return this.readRepository.getData()[0].productList;
+  }
+
+  onCreate(): void {
+    alert(JSON.stringify(this.editForm.value));
+    // super.onSave();
   }
 
 }

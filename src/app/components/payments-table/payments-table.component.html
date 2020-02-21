@@ -28,4 +28,31 @@
   </tbody>
 </table>
 
+<div *ngIf="getEditState()">
+  <form class="form-group" [formGroup]="editForm">
+
+    <label for="paymentGroup" class="mt-2"><strong>Payment group</strong></label>
+    <select class="browser-default custom-select" formControlName="paymentGroup" id="paymentGroup">
+      <option *ngFor="let item of getPaymentGroups()" value="{{item.id}}">{{item.name}}</option>
+    </select>
+
+    <label for="product" class="mt-2"><strong>Product</strong></label>
+    <select class="browser-default custom-select" formControlName="product" id="product">
+      <option *ngFor="let item of getProducts()" value="{{item.id}}">{{item.name}}</option>
+    </select>
+
+    <label for="productCounter" class="mt-2"><strong>Product counter</strong></label>
+    <input type="number" step="0.01" min="0.00" class="form-control" formControlName="productCounter" id="productCounter">
+
+    <label for="paymentAmount" class="mt-2"><strong>Payment amount</strong></label>
+    <input type="number" step="0.01" min="0.00"class="form-control" formControlName="paymentAmount" id="paymentAmount">
+
+    <label for="commissionAmount" class="mt-2"><strong>Commission amount</strong></label>
+    <input type="number" step="0.01" min="0.00"class="form-control" formControlName="commissionAmount" id="commissionAmount">
+
+    <app-core-save-dialog-panel [editable]="this" [loadable]="repository" (createClick)="onCreate()" (saveClick)="onSave()" (cancelClick)="onCancel()"></app-core-save-dialog-panel>
+
+  </form>
+</div>
+
 <app-core-loading-progress [loadable]="readRepository"></app-core-loading-progress>
