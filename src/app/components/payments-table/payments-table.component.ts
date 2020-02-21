@@ -11,6 +11,7 @@ import {CommonTableConfig} from '../../core/table/common-table-component';
 import {HttpParams} from '@angular/common/http';
 import {PaymentGroup} from '../../model/payment-group';
 import {Product} from '../../model/product';
+import {PaymentObject} from '../../model/payment-object';
 
 @Component({
   selector: 'app-payments-table',
@@ -93,6 +94,10 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     return this.readRepository.getData()[0].paymentList;
   }
 
+  getPaymentObjects(): PaymentObject[] {
+    return this.readRepository.getData()[0].paymentObjectList;
+  }
+
   getPaymentGroups(): PaymentGroup[] {
     return this.readRepository.getData()[0].paymentGroupList;
   }
@@ -102,8 +107,24 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   }
 
   onCreate(): void {
-    alert(JSON.stringify(this.editForm.value));
-    // super.onSave();
+    const paymentObject: PaymentObject = this.getPaymentObjects().find(value => value.id === this.paymentObjectId);
+    const paymentGroup: PaymentGroup = this.getPaymentGroups().find(value => value.id === this.editForm.controls.paymentGroup.value);
+    const product: Product = this.getProducts().find(value => value.id === this.editForm.controls.product.value);
+
+    const payment = new Payment(
+        undefined,
+        new Date(),
+        this.paymentPeriodDate,
+        paymentObject,
+        paymentGroup,
+        product,
+        this.editForm.controls.productCounter.value,
+        this.editForm.controls.paymentAmount.value,
+        this.editForm.controls.commissionAmount.value
+    );
+
+    alert(JSON.stringify(payment));
+    // super.onCreate();
   }
 
 }

@@ -70,6 +70,10 @@ export abstract class CommonEditableTableComponent<R, W extends CommonEntity>
      */
   }
 
+  protected getWritableData(): W {
+    return Object.assign({}, this.editForm.value);
+  }
+
   onAddClick(): void {
     this.buildEditForm();
     this.editState = new EditState<W>(EditMode.EM_CREATE, new this.ctor());
@@ -99,7 +103,7 @@ export abstract class CommonEditableTableComponent<R, W extends CommonEntity>
     this.validateCreate();
 
     if (this.editForm.valid) {
-      this.repository.postItem(Object.assign({}, this.editForm.value));
+      this.repository.postItem(this.getWritableData());
     }
   }
 
@@ -109,7 +113,7 @@ export abstract class CommonEditableTableComponent<R, W extends CommonEntity>
     this.validateSave();
 
     if (this.editForm.valid) {
-      this.repository.putItem(this.editState.editItem.id, Object.assign({}, this.editForm.value));
+      this.repository.putItem(this.editState.editItem.id, this.getWritableData());
     }
   }
 
