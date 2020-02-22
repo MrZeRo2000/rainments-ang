@@ -29,6 +29,12 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     return Math.round(value * 100) / 100;
   }
 
+  private getPaymentPeriodDate(): Date {
+    return new Date(
+      this.paymentPeriodDate.setMinutes(this.paymentPeriodDate.getMinutes() - this.paymentPeriodDate.getTimezoneOffset())
+    );
+  }
+
   constructor(
     private fb: FormBuilder,
     protected modalService: BsModalService,
@@ -65,7 +71,7 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   protected getHttpParams(): HttpParams {
     return new HttpParams()
       .append('paymentObjectId', this.paymentObjectId.toString())
-      .append('paymentPeriodDate', JSON.stringify(this.paymentPeriodDate))
+      .append('paymentPeriodDate', this.getPaymentPeriodDate().toJSON())
       ;
   }
 
@@ -136,7 +142,7 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     return new Payment(
       undefined,
       new Date(),
-      new Date(this.paymentPeriodDate.setMinutes(this.paymentPeriodDate.getMinutes() - this.paymentPeriodDate.getTimezoneOffset())),
+      this.getPaymentPeriodDate(),
       paymentObject,
       paymentGroup,
       product,
