@@ -10,15 +10,15 @@ export class CommonTableComponent<R, W> implements OnInit {
     this.config = this.getConfig();
   }
 
-  getConfig(): CommonTableConfig {
+  protected getConfig(): CommonTableConfig {
     return new CommonTableConfig(true);
   }
 
-  getHttpParams(): HttpParams {
+  protected getHttpParams(): HttpParams {
     return null;
   }
 
-  loadRepositoryData(): void {
+  protected loadRepositoryData(): void {
     this.readRepository.loadData(this.getHttpParams());
   }
 

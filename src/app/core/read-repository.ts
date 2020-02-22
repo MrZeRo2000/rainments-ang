@@ -25,7 +25,7 @@ export class ReadRepository<T> implements Loadable {
   loadData(params?: HttpParams): void {
     this.messagesService.resetMessage();
     this.loading = true;
-    this.dataSource.getResponse(this.resourceName).subscribe((data) => {
+    this.dataSource.getResponse(this.resourceName, params).subscribe((data) => {
       if (data.ok) {
         // this.data.length = 0;
         // Object.assign(this.data, data.body);
@@ -43,7 +43,8 @@ export class ReadRepository<T> implements Loadable {
       this.loading = false;
     }, error => {
       this.data.length = 0;
-      this.messagesService.reportMessage(new ErrorMessage( 'Network error:' + error.message));
+      const errorMessage = (error.error && error.error.message) || error.message;
+      this.messagesService.reportMessage(new ErrorMessage( 'Network error:' + errorMessage));
       this.loading = false;
       this.loadingError = true;
     });

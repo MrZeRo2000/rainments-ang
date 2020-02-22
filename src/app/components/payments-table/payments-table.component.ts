@@ -58,15 +58,15 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     this.checkInput();
   }
 
-  getConfig(): CommonTableConfig {
+  protected getConfig(): CommonTableConfig {
     return new CommonTableConfig(false);
   }
 
-  getHttpParams(): HttpParams {
-    const result = new HttpParams();
-    result.append('paymentObjectId', this.paymentObjectId.toString());
-    result.append('date', JSON.stringify(this.paymentPeriodDate));
-    return result;
+  protected getHttpParams(): HttpParams {
+    return new HttpParams()
+      .append('paymentObjectId', this.paymentObjectId.toString())
+      .append('paymentPeriodDate', JSON.stringify(this.paymentPeriodDate))
+      ;
   }
 
   private checkInput() {
