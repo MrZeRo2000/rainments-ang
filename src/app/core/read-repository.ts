@@ -32,6 +32,7 @@ export class ReadRepository<T> implements Loadable {
         if (Array.isArray(data.body)) {
           this.data.splice(0, this.data.length, ...data.body);
         } else {
+          this.data.length = 0;
           this.data.push(data.body);
         }
         this.loadingError = false;

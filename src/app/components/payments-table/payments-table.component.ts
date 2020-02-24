@@ -119,7 +119,7 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   }
 
   getPayments(): Payment[] {
-    return this.readRepository.getData()[0].paymentList;
+    return this.readRepository.getData()[0] ? this.readRepository.getData()[0].paymentList : [];
   }
 
   getPaymentObjects(): PaymentObject[] {

@@ -12,7 +12,7 @@ export class PaymentsMasterComponent implements OnInit {
   selectedDate: Date;
 
   constructor(private route: ActivatedRoute) {
-    this.paymentObjectId = this.route.snapshot.params[this.KEY_ID];
+    this.paymentObjectId = Number.parseInt(this.route.snapshot.params[this.KEY_ID], 0);
   }
 
   ngOnInit() {
