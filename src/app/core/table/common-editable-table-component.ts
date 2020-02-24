@@ -74,6 +74,10 @@ export abstract class CommonEditableTableComponent<R, W extends CommonEntity>
     return Object.assign({}, this.editForm.value);
   }
 
+  protected getEditValue(item: W): any {
+    return Object.assign({}, item);
+  }
+
   onAddClick(): void {
     this.buildEditForm();
     this.editState = new EditState<W>(EditMode.EM_CREATE, new this.ctor());
@@ -93,7 +97,7 @@ export abstract class CommonEditableTableComponent<R, W extends CommonEntity>
   onEditClick(item: W): void {
     this.editState = new EditState<W>(EditMode.EM_EDIT, item);
     this.buildEditForm();
-    this.editForm.patchValue(Object.assign({}, item));
+    this.editForm.patchValue(this.getEditValue(item));
     this.requireFocus();
   }
 

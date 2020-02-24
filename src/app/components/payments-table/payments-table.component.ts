@@ -136,8 +136,10 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
 
   protected getWritableData(): Payment {
     const paymentObject: PaymentObject = this.getPaymentObjects().find(value => value.id === this.paymentObjectId);
-    const paymentGroup: PaymentGroup = this.getPaymentGroups().find(value => value.id === this.editForm.controls.paymentGroup.value);
-    const product: Product = this.getProducts().find(value => value.id === this.editForm.controls.product.value);
+    const paymentGroup: PaymentGroup = this.getPaymentGroups().find(
+      value => value.id === Number.parseInt(this.editForm.controls.paymentGroup.value, 0));
+    const product: Product = this.getProducts().find(
+      value => value.id === Number.parseInt(this.editForm.controls.product.value, 0));
 
     return new Payment(
       undefined,
@@ -150,6 +152,13 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
       PaymentsTableComponent.roundValue(this.editForm.controls.paymentAmount.value),
       PaymentsTableComponent.roundValue(this.editForm.controls.commissionAmount.value)
     );
+  }
+
+  protected getEditValue(item: Payment): any {
+    const value = super.getEditValue(item);
+    value.paymentGroup = value.paymentGroup.id;
+    value.product = value.product.id;
+    return value;
   }
 
   onCreate(): void {

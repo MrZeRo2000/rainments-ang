@@ -23,7 +23,7 @@ export class ReadWriteRepository<T extends CommonEntity> extends ReadRepository<
         this.persistSuccess.next(false);
       }
     }, error => {
-      this.messagesService.reportMessage(new ErrorMessage( 'Network error:' + error.statusText));
+      this.messagesService.reportMessage(new ErrorMessage( 'Network error:' + this.getNetworkErrorMessage(error)));
       this.loading = false;
       this.persistSuccess.next(false);
     });
