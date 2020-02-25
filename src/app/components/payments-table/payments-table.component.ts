@@ -154,13 +154,6 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     );
   }
 
-  protected getEditValue(item: Payment): any {
-    const value = super.getEditValue(item);
-    value.paymentGroup = value.paymentGroup.id;
-    value.product = value.product.id;
-    return value;
-  }
-
   onCreate(): void {
     /*
     const paymentObject: PaymentObject = this.getPaymentObjects().find(value => value.id === this.paymentObjectId);
