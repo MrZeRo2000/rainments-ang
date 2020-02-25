@@ -154,27 +154,4 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     );
   }
 
-  onCreate(): void {
-    /*
-    const paymentObject: PaymentObject = this.getPaymentObjects().find(value => value.id === this.paymentObjectId);
-    const paymentGroup: PaymentGroup = this.getPaymentGroups().find(value => value.id === this.editForm.controls.paymentGroup.value);
-    const product: Product = this.getProducts().find(value => value.id === this.editForm.controls.product.value);
-
-    const payment = new Payment(
-        undefined,
-        new Date(),
-        new Date(this.paymentPeriodDate.setMinutes(this.paymentPeriodDate.getMinutes() - this.paymentPeriodDate.getTimezoneOffset())),
-        paymentObject,
-        paymentGroup,
-        product,
-        this.editForm.controls.productCounter.value,
-        this.editForm.controls.paymentAmount.value,
-        this.editForm.controls.commissionAmount.value
-    );
-
-    alert(JSON.stringify(payment));
-     */
-    super.onCreate();
-  }
-
 }
