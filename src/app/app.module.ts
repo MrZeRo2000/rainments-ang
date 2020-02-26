@@ -20,6 +20,7 @@ import { PaymentsMasterComponent } from './components/payments-master/payments-m
 import { PaymentsDateSelectionComponent } from './components/payments-date-selection/payments-date-selection.component';
 import { PaymentsTableComponent } from './components/payments-table/payments-table.component';
 import {RepositoryModule} from './repository/repository.module';
+import { PaymentsSummaryComponent } from './components/payments-summary/payments-summary.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import {RepositoryModule} from './repository/repository.module';
     ProductsTableComponent,
     PaymentsMasterComponent,
     PaymentsDateSelectionComponent,
-    PaymentsTableComponent
+    PaymentsTableComponent,
+    PaymentsSummaryComponent
   ],
   // modal component not directly referenced in templates
   entryComponents: [

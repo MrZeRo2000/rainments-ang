@@ -13,6 +13,7 @@ import {RestDataSource} from '../../data-source/rest-data-source';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {MessagesModule} from '../../messages/messages.module';
 import {CoreModule} from '../../core/core.module';
+import {PaymentsSummaryComponent} from '../payments-summary/payments-summary.component';
 
 describe('PaymentsMasterComponent', () => {
   let component: PaymentsMasterComponent;
@@ -22,7 +23,7 @@ describe('PaymentsMasterComponent', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule, ReactiveFormsModule, ModalModule.forRoot(), MessagesModule, CoreModule],
       providers: [RestUrlEnv, RestDataSource, BsModalService, PaymentRepository, PaymentRefsRepository],
-      declarations: [ PaymentsMasterComponent, PaymentsDateSelectionComponent, PaymentsTableComponent]
+      declarations: [ PaymentsMasterComponent, PaymentsDateSelectionComponent, PaymentsTableComponent, PaymentsSummaryComponent]
     })
     .compileComponents();
   }));
