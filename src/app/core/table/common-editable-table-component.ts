@@ -64,12 +64,15 @@ export abstract class CommonEditableTableComponent<R, W extends CommonEntity>
 
   private buildEditForm() {
     this.editForm = this.buildForm();
+    this.editForm.valueChanges.subscribe(value => this.editFormChanged(value));
     /*
     this.editForm.valueChanges.subscribe( (val) => {
       this.editState.submitted = false;
     });
      */
   }
+
+  protected editFormChanged(data: any) {}
 
   protected getWritableData(): W {
     return Object.assign({}, this.editForm.value);

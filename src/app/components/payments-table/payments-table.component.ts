@@ -25,6 +25,8 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   @Input()
   paymentPeriodDate: Date;
 
+  prevPeriodPayment: Payment;
+
   private static roundValue(value: any): number {
     return Math.round(value * 100) / 100;
   }
@@ -78,19 +80,31 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   private checkInput() {
     if (this.paymentObjectId && this.paymentPeriodDate) {
       console.log('Ready to load paymentObjectId=' + this.paymentObjectId + ', date=' + this.paymentPeriodDate);
+      this.onCancel();
       this.loadRepositoryData();
     }
   }
 
   protected buildForm(): FormGroup {
     return this.fb.group({
-      paymentGroup: [this.getPaymentGroups()[0] && this.getPaymentGroups()[0].id, Validators.required],
-      product: [this.getProducts()[0] && this.getProducts()[0].id, Validators.required],
+      paymentGroup: ['', Validators.required],
+      product: ['', Validators.required],
+      // paymentGroup: [this.getPaymentGroups()[0] && this.getPaymentGroups()[0].id, Validators.required],
+      // product: [this.getProducts()[0] && this.getProducts()[0].id, Validators.required],
       productCounter: ['', Validators.compose([Validators.min(0)])],
-      paymentAmount: ['0', Validators.compose([Validators.required, Validators.min(0)])],
-      commissionAmount: ['0', Validators.compose([Validators.required, Validators.min(0)])]
+      paymentAmount: ['', Validators.compose([Validators.required, Validators.min(0)])],
+      commissionAmount: ['', Validators.compose([Validators.min(0)])]
       }
     );
+  }
+
+  protected editFormChanged(data: any) {
+    super.editFormChanged(data);
+    if (data.product !== '') {
+      this.prevPeriodPayment = this.getPrevPeriodPaymentByProduct(Number.parseInt(data.product, 0));
+    } else {
+      this.prevPeriodPayment = undefined;
+    }
   }
 
   protected getDisplayItemName(item: Payment): string {
@@ -102,7 +116,7 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
 
   protected validateCreate(): void {
     const productDuplicates = this.getPayments().filter(
-      v => v.product.id === this.editForm.controls.product.value
+      v => v.product.id === Number.parseInt(this.editForm.controls.product.value, 0)
     );
     if (productDuplicates.length > 0) {
       this.editForm.controls.product.setErrors({existingProduct: true});
@@ -111,7 +125,7 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
 
   protected validateSave(): void {
     const productDuplicates = this.getPayments().filter(
-      v => v.product.id === this.editForm.controls.product.value && v.id !== this.editState.editItem.id
+      v => v.product.id === Number.parseInt(this.editForm.controls.product.value, 0) && v.id !== this.editState.editItem.id
     );
     if (productDuplicates.length > 0) {
       this.editForm.controls.product.setErrors({existingProduct: true});
@@ -120,6 +134,14 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
 
   getPayments(): Payment[] {
     return this.readRepository.getData()[0] ? this.readRepository.getData()[0].paymentList : [];
+  }
+
+  getPrevPeriodPayments(): Payment[] {
+    return this.readRepository.getData()[0] ? this.readRepository.getData()[0].prevPeriodPaymentList : [];
+  }
+
+  getPrevPeriodPaymentByProduct(productId: number): Payment {
+    return this.getPrevPeriodPayments().filter(value => value.product.id === productId)[0];
   }
 
   getPaymentObjects(): PaymentObject[] {
@@ -140,6 +162,7 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
       value => value.id === Number.parseInt(this.editForm.controls.paymentGroup.value, 0));
     const product: Product = this.getProducts().find(
       value => value.id === Number.parseInt(this.editForm.controls.product.value, 0));
+    const commissionAmount = this.editForm.controls.commissionAmount.value || 0;
 
     return new Payment(
       undefined,
@@ -150,7 +173,7 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
       product,
       PaymentsTableComponent.roundValue(this.editForm.controls.productCounter.value),
       PaymentsTableComponent.roundValue(this.editForm.controls.paymentAmount.value),
-      PaymentsTableComponent.roundValue(this.editForm.controls.commissionAmount.value)
+      PaymentsTableComponent.roundValue(commissionAmount)
     );
   }
 

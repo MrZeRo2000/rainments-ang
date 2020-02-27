@@ -2,7 +2,7 @@
 <app-core-add-panel [editable]="this" (addClick)="onAddClick()"></app-core-add-panel>
 
 <div class="row" *ngIf="getEditingState()">
-  <div class="col-sm-8">
+  <div class="col-md-6 col-lg-8 col-xl-9">
     <table class="table">
       <thead>
       <tr>
@@ -30,7 +30,7 @@
       </tbody>
     </table>
   </div>
-  <div class="col-sm-4"><app-payments-summary></app-payments-summary></div>
+  <div class="col-md-6 col-lg-4 col-xl-3"><app-payments-summary></app-payments-summary></div>
 </div>
 
 <div *ngIf="getEditState()">
@@ -39,6 +39,7 @@
     <label for="paymentGroup" class="mt-2"><strong>Payment group</strong></label>
     <select
       class="browser-default custom-select"
+      [ngClass]="{'is-invalid': editForm.controls.paymentGroup.errors && editState.submitted}"
       formControlName="paymentGroup"
       id="paymentGroup"
     >
@@ -82,7 +83,10 @@
     </table>
     -->
 
-    <label for="paymentAmount" class="mt-2"><strong>Payment amount</strong></label>
+    <div class="d-flex justify-content-between mt-2">
+      <label for="paymentAmount"><strong>Payment amount</strong></label>
+      <div class="text-muted">{{prevPeriodPayment && prevPeriodPayment.paymentAmount}}</div>
+    </div>
     <input
       type="number"
       step="0.01"
@@ -93,18 +97,25 @@
       id="paymentAmount"
     >
 
-    <label for="commissionAmount" class="mt-2"><strong>Commission amount</strong></label>
+    <div class="d-flex justify-content-between mt-2">
+      <label for="commissionAmount"><strong>Commission amount</strong></label>
+      <div class="text-muted">{{prevPeriodPayment && prevPeriodPayment.commissionAmount}}</div>
+    </div>
     <input
       type="number"
       step="0.01"
       min="0"
       class="form-control text-right"
-      [ngClass]="{'is-invalid': editForm.controls.commissionAmount.errors && editState.submitted}"
       formControlName="commissionAmount"
       id="commissionAmount"
     >
 
+    <div *ngIf="editForm.controls.paymentGroup.errors && editState.submitted" class="invalid-feedback">
+      <div *ngIf="editForm.controls.paymentGroup.errors.required">Payment group should not be empty</div>
+    </div>
+
     <div *ngIf="editForm.controls.product.errors && editState.submitted" class="invalid-feedback">
+      <div *ngIf="editForm.controls.product.errors.required">Product should not be empty</div>
       <div *ngIf="editForm.controls.product.errors.existingProduct">Product should not already exist</div>
     </div>
 
@@ -112,17 +123,9 @@
       <div *ngIf="editForm.controls.paymentAmount.errors.required">Payment amount should not be empty</div>
     </div>
 
-    <div *ngIf="editForm.controls.commissionAmount.errors && editState.submitted" class="invalid-feedback">
-      <div *ngIf="editForm.controls.commissionAmount.errors.required">Commission amount should not be empty</div>
-    </div>
-
     <app-core-save-dialog-panel [editable]="this" [loadable]="readRepository" (createClick)="onCreate()" (saveClick)="onSave()" (cancelClick)="onCancel()"></app-core-save-dialog-panel>
 
   </form>
-
-  <div *ngIf="editForm.controls.product.errors">Existing product: {{editForm.controls.product.errors.existingProduct}},
-    Submitted: {{editState.submitted}}
-  </div>
 
 </div>
 
