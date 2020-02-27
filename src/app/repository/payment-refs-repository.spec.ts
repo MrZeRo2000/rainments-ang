@@ -13,6 +13,6 @@ describe('PaymentRefsRepository', () => {
 
 
   it('should create an instance', () => {
-    expect(new PaymentRefsRepository(TestBed.get(RestDataSource), TestBed.get(MessagesService))).toBeTruthy();
+    expect(new PaymentRefsRepository(TestBed.inject(RestDataSource), TestBed.inject(MessagesService))).toBeTruthy();
   });
 });

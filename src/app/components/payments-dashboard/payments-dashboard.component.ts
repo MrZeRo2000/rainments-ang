@@ -11,7 +11,7 @@ import {CommonSimpleTableComponent} from '../../core/table/common-simple-table-c
 })
 export class PaymentsDashboardComponent extends CommonSimpleTableComponent<PaymentObject> implements OnInit {
 
-  constructor(protected repository: PaymentObjectRepository, private router: Router) {
+  constructor(public repository: PaymentObjectRepository, private router: Router) {
     super(repository);
   }
 

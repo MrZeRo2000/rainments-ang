@@ -11,12 +11,12 @@ import {CommonSimpleEditableTableComponent} from '../../core/table/common-simple
   styleUrls: ['./products-table.component.scss']
 })
 export class ProductsTableComponent extends CommonSimpleEditableTableComponent<Product> {
-  @ViewChild('inputName', {static: false}) inputNameElement: ElementRef;
+  @ViewChild('inputName') inputNameElement: ElementRef;
 
   constructor(
     private fb: FormBuilder,
     protected modalService: BsModalService,
-    protected repository: ProductRepository
+    public repository: ProductRepository
   ) {
     super(Product, modalService, repository);
   }

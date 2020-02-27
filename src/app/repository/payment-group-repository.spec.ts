@@ -12,6 +12,6 @@ describe('PaymentGroupRepository', () => {
   }));
 
   it('should create an instance', () => {
-    expect(new PaymentGroupRepository(TestBed.get(RestDataSource), TestBed.get(MessagesService))).toBeTruthy();
+    expect(new PaymentGroupRepository(TestBed.inject(RestDataSource), TestBed.inject(MessagesService))).toBeTruthy();
   });
 });

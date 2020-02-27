@@ -12,6 +12,6 @@ describe('PaymentObjectRepository', () => {
   }));
 
   it('should create an instance', () => {
-    expect(new PaymentObjectRepository(TestBed.get(RestDataSource), TestBed.get(MessagesService))).toBeTruthy();
+    expect(new PaymentObjectRepository(TestBed.inject(RestDataSource), TestBed.inject(MessagesService))).toBeTruthy();
   });
 });

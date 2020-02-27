@@ -12,6 +12,6 @@ describe('ProductRepository', () => {
   }));
 
   it('should create an instance', () => {
-    expect(new ProductRepository(TestBed.get(RestDataSource), TestBed.get(MessagesService))).toBeTruthy();
+    expect(new ProductRepository(TestBed.inject(RestDataSource), TestBed.inject(MessagesService))).toBeTruthy();
   });
 });

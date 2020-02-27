@@ -116,7 +116,7 @@
       <div *ngIf="editForm.controls.commissionAmount.errors.required">Commission amount should not be empty</div>
     </div>
 
-    <app-core-save-dialog-panel [editable]="this" [loadable]="repository" (createClick)="onCreate()" (saveClick)="onSave()" (cancelClick)="onCancel()"></app-core-save-dialog-panel>
+    <app-core-save-dialog-panel [editable]="this" [loadable]="readRepository" (createClick)="onCreate()" (saveClick)="onSave()" (cancelClick)="onCancel()"></app-core-save-dialog-panel>
 
   </form>
 

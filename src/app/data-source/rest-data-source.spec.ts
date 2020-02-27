@@ -13,12 +13,12 @@ describe('RestDataSource', () => {
   let instance: RestDataSource;
 
   it('should create an instance', () => {
-    instance = TestBed.get(RestDataSource);
+    instance = TestBed.inject(RestDataSource);
     expect(instance).toBeTruthy();
   });
 
   it('getting correct restUtl', () => {
-    instance = TestBed.get(RestDataSource);
+    instance = TestBed.inject(RestDataSource);
     expect(instance.restUrl).toBe(environment.restUrl);
   });
 

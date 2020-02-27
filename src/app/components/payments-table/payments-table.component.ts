@@ -38,14 +38,14 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   constructor(
     private fb: FormBuilder,
     protected modalService: BsModalService,
-    protected readRepository: PaymentRefsRepository,
-    protected editRepository: PaymentRepository
+    public readRepository: PaymentRefsRepository,
+    protected repository: PaymentRepository
   ) {
     super(
       Payment,
       modalService,
       readRepository,
-      editRepository
+      repository
     );
   }
 

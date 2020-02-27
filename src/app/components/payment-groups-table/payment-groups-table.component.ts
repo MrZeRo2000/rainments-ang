@@ -13,12 +13,12 @@ import {CommonSimpleEditableTableComponent} from '../../core/table/common-simple
   styleUrls: ['./payment-groups-table.component.scss']
 })
 export class PaymentGroupsTableComponent extends CommonSimpleEditableTableComponent<PaymentGroup> {
-  @ViewChild('inputName', {static: false}) inputNameElement: ElementRef;
+  @ViewChild('inputName') inputNameElement: ElementRef;
 
   constructor(
     private fb: FormBuilder,
     protected modalService: BsModalService,
-    protected repository: PaymentGroupRepository
+    public repository: PaymentGroupRepository
   ) {
     super(PaymentObject, modalService, repository);
   }
