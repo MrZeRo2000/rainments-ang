@@ -6,6 +6,7 @@ import { EditDeletePanelComponent } from './edit-delete-panel/edit-delete-panel.
 import { SaveDialogPanelComponent } from './save-dialog-panel/save-dialog-panel.component';
 import {DataSourceModule} from '../data-source/data-source.module';
 import { UrlValidatorDirective } from './url-validator.directive';
+import { PreviousMetricLabelComponent } from './previous-metric-label/previous-metric-label.component';
 
 
 
@@ -15,17 +16,19 @@ import { UrlValidatorDirective } from './url-validator.directive';
     AddPanelComponent,
     EditDeletePanelComponent,
     SaveDialogPanelComponent,
-    UrlValidatorDirective
+    UrlValidatorDirective,
+    PreviousMetricLabelComponent
   ],
   imports: [
     CommonModule,
     DataSourceModule
   ],
-  exports: [
-    LoadingProgressComponent,
-    AddPanelComponent,
-    EditDeletePanelComponent,
-    SaveDialogPanelComponent
-  ]
+    exports: [
+        LoadingProgressComponent,
+        AddPanelComponent,
+        EditDeletePanelComponent,
+        SaveDialogPanelComponent,
+        PreviousMetricLabelComponent
+    ]
 })
 export class CoreModule { }

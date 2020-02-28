@@ -26,6 +26,8 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   paymentPeriodDate: Date;
 
   prevPeriodPayment: Payment;
+  productUsage: number;
+  productUsageForm: FormGroup = this.fb.group({productUsageCounter: ['']});
 
   private static roundValue(value: any): number {
     return Math.round(value * 100) / 100;
@@ -98,10 +100,20 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     );
   }
 
+  private updateProductUsage() {
+    if (this.prevPeriodPayment && this.prevPeriodPayment.productCounter && this.editForm.controls.productCounter.value) {
+      this.productUsage = Number.parseFloat(this.editForm.controls.productCounter.value) - this.prevPeriodPayment.productCounter;
+    } else {
+      this.productUsage = undefined;
+    }
+    this.productUsageForm.controls.productUsageCounter.setValue(this.productUsage);
+  }
+
   protected editFormChanged(data: any) {
     super.editFormChanged(data);
     if (data.product !== '') {
       this.prevPeriodPayment = this.getPrevPeriodPaymentByProduct(Number.parseInt(data.product, 0));
+      this.updateProductUsage();
     } else {
       this.prevPeriodPayment = undefined;
     }
@@ -120,6 +132,9 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     );
     if (productDuplicates.length > 0) {
       this.editForm.controls.product.setErrors({existingProduct: true});
+    }
+    if (this.productUsage && this.productUsage < 0) {
+      this.editForm.controls.productCounter.setErrors({lessThanPreviousPeriod: true});
     }
   }
 

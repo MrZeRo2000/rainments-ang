@@ -10,7 +10,7 @@ import { ModelModule} from './model/model.module';
 import { ConfigModule} from './config/config.module';
 import { PaymentObjectsTableComponent } from './components/payment-objects-table/payment-objects-table.component';
 import { MessagesModule} from './messages/messages.module';
-import { ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { DialogConfirmationComponent } from './components/dialog-confirmation/dialog-confirmation.component';
 import {ModalModule} from 'ngx-bootstrap';
 import {CoreModule} from './core/core.module';
@@ -41,17 +41,18 @@ import { PaymentsSummaryComponent } from './components/payments-summary/payments
   entryComponents: [
     DialogConfirmationComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    ReactiveFormsModule,
-    ModalModule.forRoot(),
-    CoreModule,
-    ModelModule,
-    ConfigModule,
-    MessagesModule,
-    RepositoryModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        ReactiveFormsModule,
+        ModalModule.forRoot(),
+        CoreModule,
+        ModelModule,
+        ConfigModule,
+        MessagesModule,
+        RepositoryModule,
+        FormsModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

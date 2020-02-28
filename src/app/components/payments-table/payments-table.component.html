@@ -46,7 +46,7 @@
       <option *ngFor="let item of getPaymentGroups()" value="{{item.id}}">{{item.name}}</option>
     </select>
 
-    <div class="d-flex mt-2" [ngClass]="{'is-invalid': editForm.controls.product.errors && editState.submitted}">
+    <div class="d-flex mt-2" [ngClass]="{'is-invalid': (editForm.controls.product.errors || editForm.controls.productCounter.errors) && editState.submitted}">
       <div class="flex-grow-1">
         <label for="product"><strong>Product</strong></label>
         <select
@@ -58,7 +58,10 @@
         </select>
       </div>
       <div class="ml-2">
-        <label for="productCounter" class="text-nowrap"><strong>Counter</strong></label>
+        <div class="d-flex justify-content-between">
+          <label for="productCounter" class="text-nowrap"><strong>Counter</strong></label>
+          <app-core-previous-metric-label [metricValue]="prevPeriodPayment && prevPeriodPayment.productCounter"></app-core-previous-metric-label>
+        </div>
         <input
           type="number"
           step="0.01"
@@ -67,25 +70,25 @@
           class="form-control text-right"
           formControlName="productCounter"
           id="productCounter"
+          [ngClass]="{'is-invalid': editForm.controls.productCounter.errors && editState.submitted}"
         >
+      </div>
+      <div class="ml-2">
+        <form class="form-group" [formGroup]="productUsageForm">
+          <label for="productUsageCounter" class="text-nowrap"><strong>Usage</strong></label>
+          <input
+            class="form-control text-right"
+            id="productUsageCounter"
+            formControlName="productUsageCounter"
+            [readonly]="true"
+          >
+        </form>
       </div>
     </div>
 
-
-    <!--
-    <table>
-    <tr>
-      <td class="w-100">
-      </td>
-
-      <td class="auto">
-      </td>
-    </table>
-    -->
-
     <div class="d-flex justify-content-between mt-2">
       <label for="paymentAmount"><strong>Payment amount</strong></label>
-      <div class="text-muted">{{prevPeriodPayment && prevPeriodPayment.paymentAmount}}</div>
+      <app-core-previous-metric-label [metricValue]="prevPeriodPayment && prevPeriodPayment.paymentAmount"></app-core-previous-metric-label>
     </div>
     <input
       type="number"
@@ -99,7 +102,7 @@
 
     <div class="d-flex justify-content-between mt-2">
       <label for="commissionAmount"><strong>Commission amount</strong></label>
-      <div class="text-muted">{{prevPeriodPayment && prevPeriodPayment.commissionAmount}}</div>
+      <app-core-previous-metric-label [metricValue]="prevPeriodPayment && prevPeriodPayment.commissionAmount"></app-core-previous-metric-label>
     </div>
     <input
       type="number"
@@ -117,6 +120,10 @@
     <div *ngIf="editForm.controls.product.errors && editState.submitted" class="invalid-feedback">
       <div *ngIf="editForm.controls.product.errors.required">Product should not be empty</div>
       <div *ngIf="editForm.controls.product.errors.existingProduct">Product should not already exist</div>
+    </div>
+
+    <div *ngIf="editForm.controls.productCounter.errors && editState.submitted" class="invalid-feedback">
+      <div *ngIf="editForm.controls.productCounter.errors.lessThanPreviousPeriod">Counter should not be less than in the previous period</div>
     </div>
 
     <div *ngIf="editForm.controls.paymentAmount.errors && editState.submitted" class="invalid-feedback">
