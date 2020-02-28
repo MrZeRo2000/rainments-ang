@@ -33,11 +33,9 @@ export class PaymentsSummaryComponent implements OnInit {
       if (v === undefined) {
         accumulator.push(new PaymentSummary(currentValue.paymentGroup.name, currentValue.paymentAmount, currentValue.commissionAmount));
       } else {
-        v.paymentAmount = v.paymentAmount + currentValue.paymentAmount;
-        v.commissionAmount = v.commissionAmount + currentValue.commissionAmount;
+        v.addAmounts(currentValue.paymentAmount, currentValue.commissionAmount);
       }
-      totalSummary.paymentAmount += currentValue.paymentAmount;
-      totalSummary.commissionAmount += currentValue.commissionAmount;
+      totalSummary.addAmounts(currentValue.paymentAmount, currentValue.commissionAmount);
       return accumulator;
     }, this.summaryData);
     this.summaryData.unshift(totalSummary);

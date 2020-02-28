@@ -29,6 +29,8 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   productUsage: number;
   productUsageForm: FormGroup = this.fb.group({productUsageCounter: ['']});
 
+  selectedItems: Set<number> = new Set<number>();
+
   private static roundValue(value: any): number {
     return Math.round(value * 100) / 100;
   }
@@ -85,6 +87,11 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
       this.onCancel();
       this.loadRepositoryData();
     }
+  }
+
+  protected loadRepositoryData(): void {
+    super.loadRepositoryData();
+    this.selectedItems.clear();
   }
 
   protected buildForm(): FormGroup {
@@ -156,7 +163,7 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   }
 
   getPrevPeriodPaymentByProduct(productId: number): Payment {
-    return this.getPrevPeriodPayments().filter(value => value.product.id === productId)[0];
+    return this.getPrevPeriodPayments() && this.getPrevPeriodPayments().filter(value => value.product.id === productId)[0];
   }
 
   getPaymentObjects(): PaymentObject[] {
@@ -192,4 +199,11 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     );
   }
 
+  tableRowClick(id: number): void {
+    if (this.selectedItems.has(id)) {
+      this.selectedItems.delete(id);
+    } else {
+      this.selectedItems.add(id);
+    }
+  }
 }
