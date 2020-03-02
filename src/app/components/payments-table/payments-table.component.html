@@ -16,13 +16,13 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let item of getPayments()" (click)="tableRowClick(item.id)" [ngClass]="{'table-active': selectedItems.has(item.id)}">
+      <tr *ngFor="let item of getPayments()" (click)="tableRowClick(item)" [ngClass]="{'table-active': selectedItems.has(item)}">
         <td>{{item.id}}</td>
         <td>{{item.paymentGroup.name}}</td>
         <td>{{item.product.name}}</td>
-        <td>{{item.productCounter}} {{item.product.unitName}}</td>
-        <td>{{item.paymentAmount}}</td>
-        <td>{{item.commissionAmount}}</td>
+        <td class="text-right">{{item.productCounter}} {{item.product.unitName}}</td>
+        <td class="text-right">{{item.paymentAmount | amount}}</td>
+        <td class="text-right">{{item.commissionAmount | amount}}</td>
         <td class="text-nowrap">
           <app-core-edit-delete-panel [item]="item" (deleteClick)="onDeleteClick(item)" (editClick)="onEditClick(item)"></app-core-edit-delete-panel>
         </td>
@@ -30,7 +30,7 @@
       </tbody>
     </table>
   </div>
-  <div class="col-md-6 col-lg-4 col-xl-3"><app-payments-summary></app-payments-summary></div>
+  <div class="col-md-6 col-lg-4 col-xl-3"><app-payments-summary [selectedItems]="selectedItems"></app-payments-summary></div>
 </div>
 
 <div *ngIf="getEditState()">

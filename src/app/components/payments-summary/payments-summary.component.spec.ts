@@ -9,6 +9,7 @@ import {BsModalService, ModalModule} from 'ngx-bootstrap';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {ReactiveFormsModule} from '@angular/forms';
 import {CoreModule} from '../../core/core.module';
+import {IterableDiffers} from '@angular/core';
 
 describe('PaymentsSummaryComponent', () => {
   let component: PaymentsSummaryComponent;
@@ -17,7 +18,7 @@ describe('PaymentsSummaryComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ PaymentsSummaryComponent ],
-      providers: [RestUrlEnv, RestDataSource, PaymentRefsRepository],
+      providers: [RestUrlEnv, RestDataSource, PaymentRefsRepository, IterableDiffers],
       imports: [HttpClientTestingModule, CoreModule]
     })
     .compileComponents();

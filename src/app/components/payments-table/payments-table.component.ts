@@ -29,7 +29,7 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   productUsage: number;
   productUsageForm: FormGroup = this.fb.group({productUsageCounter: ['']});
 
-  selectedItems: Set<number> = new Set<number>();
+  selectedItems: Set<Payment> = new Set<Payment>();
 
   private static roundValue(value: any): number {
     return Math.round(value * 100) / 100;
@@ -199,11 +199,11 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     );
   }
 
-  tableRowClick(id: number): void {
-    if (this.selectedItems.has(id)) {
-      this.selectedItems.delete(id);
+  tableRowClick(item: Payment): void {
+    if (this.selectedItems.has(item)) {
+      this.selectedItems.delete(item);
     } else {
-      this.selectedItems.add(id);
+      this.selectedItems.add(item);
     }
   }
 }

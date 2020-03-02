@@ -7,7 +7,7 @@ import { SaveDialogPanelComponent } from './save-dialog-panel/save-dialog-panel.
 import {DataSourceModule} from '../data-source/data-source.module';
 import { UrlValidatorDirective } from './url-validator.directive';
 import { PreviousMetricLabelComponent } from './previous-metric-label/previous-metric-label.component';
-
+import { AmountPipe } from './pipes/amount.pipe';
 
 
 @NgModule({
@@ -17,18 +17,20 @@ import { PreviousMetricLabelComponent } from './previous-metric-label/previous-m
     EditDeletePanelComponent,
     SaveDialogPanelComponent,
     UrlValidatorDirective,
-    PreviousMetricLabelComponent
+    PreviousMetricLabelComponent,
+    AmountPipe
   ],
   imports: [
     CommonModule,
     DataSourceModule
   ],
-    exports: [
-        LoadingProgressComponent,
-        AddPanelComponent,
-        EditDeletePanelComponent,
-        SaveDialogPanelComponent,
-        PreviousMetricLabelComponent
-    ]
+  exports: [
+    LoadingProgressComponent,
+    AddPanelComponent,
+    EditDeletePanelComponent,
+    SaveDialogPanelComponent,
+    PreviousMetricLabelComponent,
+    AmountPipe
+  ]
 })
 export class CoreModule { }
