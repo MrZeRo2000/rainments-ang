@@ -1,4 +1,15 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnInit,
+  QueryList,
+  SimpleChanges,
+  ViewChild,
+  ViewChildren
+} from '@angular/core';
 import {reduce} from 'rxjs/operators';
 import {CommonEditableTableComponent} from '../../core/table/common-editable-table-component';
 import {PaymentRefs} from '../../model/payment-refs';
@@ -13,23 +24,40 @@ import {PaymentGroup} from '../../model/payment-group';
 import {Product} from '../../model/product';
 import {PaymentObject} from '../../model/payment-object';
 
+enum InlineEditor {
+  ProductCounter,
+  PaymentAmount,
+  CommissionAmount,
+}
+
+class InlineSelection {
+  constructor(public selectedItem: Payment, public inlineEditor: InlineEditor, public value: string) {
+  }
+}
+
 @Component({
   selector: 'app-payments-table',
   templateUrl: './payments-table.component.html',
   styleUrls: ['./payments-table.component.scss']
 })
-export class PaymentsTableComponent extends CommonEditableTableComponent<PaymentRefs, Payment> implements OnInit, OnChanges {
+export class PaymentsTableComponent extends CommonEditableTableComponent<PaymentRefs, Payment> implements OnInit, OnChanges, AfterViewInit {
   @Input()
   paymentObjectId: number;
 
   @Input()
   paymentPeriodDate: Date;
 
+  @ViewChildren('inlinePaymentAmount') inlinePaymentAmount: QueryList<ElementRef>;
+
   prevPeriodPayment: Payment;
   productUsage: number;
   productUsageForm: FormGroup = this.fb.group({productUsageCounter: ['']});
 
   selectedItems: Set<Payment> = new Set<Payment>();
+
+  inlineEditorType = InlineEditor;
+  inlineSelectionType = InlineSelection;
+  inlineSelection: InlineSelection;
 
   private static roundValue(value: any): number {
     return Math.round(value * 100) / 100;
@@ -68,6 +96,14 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     }
 
     this.checkInput();
+  }
+
+  ngAfterViewInit(): void {
+    this.inlinePaymentAmount.changes.subscribe(() => {
+      if (this.inlinePaymentAmount.length > 0) {
+        this.inlinePaymentAmount.first.nativeElement.focus();
+      }
+    });
   }
 
   protected getConfig(): CommonTableConfig {
@@ -223,5 +259,24 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     event.preventDefault();
     event.stopPropagation();
     console.log('clicked ' + item.id);
+
+    this.inlineSelection = new InlineSelection(item, InlineEditor.PaymentAmount, item.paymentAmount.toFixed(2));
   }
+
+  paymentAmountInlineOnClick(event: any): void {
+    event.stopPropagation();
+  }
+
+  paymentAmountFocusOut(): void {
+    this.inlineSelection = undefined;
+  }
+
+  paymentAmountKeyUp(event: any, item: Payment): void {
+    if (event.key === 'Escape') {
+      this.inlineSelection = undefined;
+    } else if (event.key === 'Enter') {
+      alert('Entered value ' + this.inlineSelection.value + ' for ' + JSON.stringify(item));
+    }
+  }
+
 }

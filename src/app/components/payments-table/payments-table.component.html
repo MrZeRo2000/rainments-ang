@@ -7,11 +7,11 @@
       <thead>
       <tr>
         <th scope="col" class="w-auto">ID</th>
-        <th scope="col" class="w-50">Group</th>
-        <th scope="col" class="w-50">Product</th>
-        <th scope="col" class="w-auto">Counter</th>
-        <th scope="col" class="w-auto">Payment</th>
-        <th scope="col" class="w-auto">Commission</th>
+        <th scope="col" class="w-20">Group</th>
+        <th scope="col" class="w-20">Product</th>
+        <th scope="col" class="w-10 text-right">Counter</th>
+        <th scope="col" class="w-20 text-right">Payment</th>
+        <th scope="col" class="w-10 text-right">Commission</th>
         <th scope="col" class="w-auto">Actions</th>
       </tr>
       </thead>
@@ -26,7 +26,22 @@
         </td>
         <td class="text-right text-nowrap">
           <span class="badge badge-secondary mr-2">{{getPrevPeriodPaymentAmountByProduct(item.product.id) | amount}}</span>
-          <a href="#" (click)="paymentAmountClick($event, item)">{{item.paymentAmount | amount}}</a>
+          <a href="#" (click)="paymentAmountClick($event, item)" *ngIf="!inlineSelection || inlineSelection.selectedItem.id !== item.id">{{item.paymentAmount | amount}}</a>
+          <div *ngIf="inlineSelection && inlineSelection.inlineEditor === inlineEditorType.PaymentAmount && inlineSelection.selectedItem.id === item.id">
+            <label>
+                <input
+                  #inlinePaymentAmount
+                  type="number"
+                  min="0"
+                  class="form-control text-right"
+                  id="paymentAmountInline"
+                  (focusout)="paymentAmountFocusOut()"
+                  (click)="paymentAmountInlineOnClick($event)"
+                  (keyup)="paymentAmountKeyUp($event, item)"
+                  [(ngModel)]="inlineSelection.value"
+                >
+              </label>
+          </div>
         </td>
         <td class="text-right text-nowrap">
           <span class="badge badge-secondary mr-2">{{getPrevPeriodCommissionAmountByProduct(item.product.id) | amount}}</span>
