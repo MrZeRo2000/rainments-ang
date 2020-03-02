@@ -20,9 +20,18 @@
         <td>{{item.id}}</td>
         <td>{{item.paymentGroup.name}}</td>
         <td>{{item.product.name}}</td>
-        <td class="text-right">{{item.productCounter}} {{item.product.unitName}}</td>
-        <td class="text-right">{{item.paymentAmount | amount}}</td>
-        <td class="text-right">{{item.commissionAmount | amount}}</td>
+        <td class="text-right text-nowrap">
+          <span class="badge badge-secondary mr-2">{{getPrevPeriodProductCounterByProduct(item.product.id)}}</span>
+          {{item.productCounter}} {{item.product.unitName}}
+        </td>
+        <td class="text-right text-nowrap">
+          <span class="badge badge-secondary mr-2">{{getPrevPeriodPaymentAmountByProduct(item.product.id) | amount}}</span>
+          <a href="#" (click)="paymentAmountClick($event, item)">{{item.paymentAmount | amount}}</a>
+        </td>
+        <td class="text-right text-nowrap">
+          <span class="badge badge-secondary mr-2">{{getPrevPeriodCommissionAmountByProduct(item.product.id) | amount}}</span>
+          {{item.commissionAmount | amount}}
+        </td>
         <td class="text-nowrap">
           <app-core-edit-delete-panel [item]="item" (deleteClick)="onDeleteClick(item)" (editClick)="onEditClick(item)"></app-core-edit-delete-panel>
         </td>
@@ -102,7 +111,7 @@
 
     <div class="d-flex justify-content-between mt-2">
       <label for="commissionAmount"><strong>Commission amount</strong></label>
-      <app-core-previous-metric-label [metricValue]="prevPeriodPayment && prevPeriodPayment.commissionAmount"></app-core-previous-metric-label>
+      <app-core-previous-metric-label [metricValue]="prevPeriodPayment && prevPeriodPayment.commissionAmount | amount"></app-core-previous-metric-label>
     </div>
     <input
       type="number"

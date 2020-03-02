@@ -166,6 +166,18 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     return this.getPrevPeriodPayments() && this.getPrevPeriodPayments().filter(value => value.product.id === productId)[0];
   }
 
+  getPrevPeriodProductCounterByProduct(productId: number): number {
+    return this.getPrevPeriodPaymentByProduct(productId) && this.getPrevPeriodPaymentByProduct(productId).productCounter;
+  }
+
+  getPrevPeriodPaymentAmountByProduct(productId: number): number {
+    return this.getPrevPeriodPaymentByProduct(productId) && this.getPrevPeriodPaymentByProduct(productId).paymentAmount;
+  }
+
+  getPrevPeriodCommissionAmountByProduct(productId: number): number {
+    return this.getPrevPeriodPaymentByProduct(productId) && this.getPrevPeriodPaymentByProduct(productId).commissionAmount;
+  }
+
   getPaymentObjects(): PaymentObject[] {
     return this.readRepository.getData()[0].paymentObjectList;
   }
@@ -205,5 +217,11 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     } else {
       this.selectedItems.add(item);
     }
+  }
+
+  paymentAmountClick(event: any, item: Payment): void {
+    event.preventDefault();
+    event.stopPropagation();
+    console.log('clicked ' + item.id);
   }
 }
