@@ -26,7 +26,7 @@
           <div *ngIf="inlineSelection && inlineSelection.inlineEditor === inlineEditorType.ProductCounter && inlineSelection.selectedItem.id === item.id">
             <label>
               <input
-                #inlineProductCounter
+                #inlineControl
                 type="number"
                 min="0"
                 class="form-control text-right"
@@ -46,7 +46,7 @@
           <div *ngIf="inlineSelection && inlineSelection.inlineEditor === inlineEditorType.PaymentAmount && inlineSelection.selectedItem.id === item.id">
             <label>
                 <input
-                  #inlinePaymentAmount
+                  #inlineControl
                   type="number"
                   min="0"
                   class="form-control text-right"
@@ -65,7 +65,7 @@
           <div *ngIf="inlineSelection && inlineSelection.inlineEditor === inlineEditorType.CommissionAmount && inlineSelection.selectedItem.id === item.id">
             <label>
               <input
-                #inlineCommissionAmount
+                #inlineControl
                 type="number"
                 min="0"
                 class="form-control text-right"

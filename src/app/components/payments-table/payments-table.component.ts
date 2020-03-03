@@ -47,9 +47,7 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   @Input()
   paymentPeriodDate: Date;
 
-  @ViewChildren('inlineProductCounter') inlineProductCounter: QueryList<ElementRef>;
-  @ViewChildren('inlinePaymentAmount') inlinePaymentAmount: QueryList<ElementRef>;
-  @ViewChildren('inlineCommissionAmount') inlineCommissionAmount: QueryList<ElementRef>;
+  @ViewChildren('inlineControl') inlineControl: QueryList<ElementRef>;
 
   prevPeriodPayment: Payment;
   productUsage: number;
@@ -102,9 +100,7 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
 
   ngAfterViewInit(): void {
     this.setupFocusOnInit([
-      this.inlineProductCounter,
-      this.inlinePaymentAmount,
-      this.inlineCommissionAmount]
+      this.inlineControl]
     );
   }
 
