@@ -255,28 +255,45 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     }
   }
 
-  paymentAmountClick(event: any, item: Payment): void {
+  inlineRefOnClick(event: any) {
     event.preventDefault();
     event.stopPropagation();
-    console.log('clicked ' + item.id);
-
-    this.inlineSelection = new InlineSelection(item, InlineEditor.PaymentAmount, item.paymentAmount.toFixed(2));
   }
 
-  paymentAmountInlineOnClick(event: any): void {
+  inlineControlOnClick(event: any): void {
     event.stopPropagation();
   }
 
-  paymentAmountFocusOut(): void {
+  inlineControlFocusOut(): void {
     this.inlineSelection = undefined;
   }
 
-  paymentAmountKeyUp(event: any, item: Payment): void {
-    if (event.key === 'Escape') {
+  inlineControlKeyUp(event: any, item: Payment): void {
+    if (event.key === 'Escape' || event.key === 'Enter') {
+      if (event.key === 'Enter') {
+        this.processInlineInput(item, this.inlineSelection.inlineEditor, this.inlineSelection.value);
+      }
       this.inlineSelection = undefined;
-    } else if (event.key === 'Enter') {
-      alert('Entered value ' + this.inlineSelection.value + ' for ' + JSON.stringify(item));
     }
+  }
+
+  productCounterAmountOnClick(event: any, item: Payment): void {
+    this.inlineRefOnClick(event);
+    this.inlineSelection = new InlineSelection(item, InlineEditor.ProductCounter, item.productCounter.toString());
+  }
+
+  paymentAmountOnClick(event: any, item: Payment): void {
+    this.inlineRefOnClick(event);
+    this.inlineSelection = new InlineSelection(item, InlineEditor.PaymentAmount, item.paymentAmount.toFixed(2));
+  }
+
+  commissionAmountOnClick(event: any, item: Payment): void {
+    this.inlineRefOnClick(event);
+    this.inlineSelection = new InlineSelection(item, InlineEditor.CommissionAmount, item.commissionAmount.toFixed(2));
+  }
+
+  processInlineInput(item: Payment, inlineEditor: InlineEditor, value: string): void {
+    alert('Entered value ' + value + ' for editor ' + JSON.stringify(inlineEditor) + ' for item ' + JSON.stringify(item));
   }
 
 }

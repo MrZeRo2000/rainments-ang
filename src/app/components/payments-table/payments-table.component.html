@@ -26,7 +26,7 @@
         </td>
         <td class="text-right text-nowrap">
           <span class="badge badge-secondary mr-2">{{getPrevPeriodPaymentAmountByProduct(item.product.id) | amount}}</span>
-          <a href="#" (click)="paymentAmountClick($event, item)" *ngIf="!inlineSelection || inlineSelection.selectedItem.id !== item.id">{{item.paymentAmount | amount}}</a>
+          <a href="#" (click)="paymentAmountOnClick($event, item)" *ngIf="!inlineSelection || inlineSelection.selectedItem.id !== item.id">{{item.paymentAmount | amount}}</a>
           <div *ngIf="inlineSelection && inlineSelection.inlineEditor === inlineEditorType.PaymentAmount && inlineSelection.selectedItem.id === item.id">
             <label>
                 <input
@@ -35,9 +35,9 @@
                   min="0"
                   class="form-control text-right"
                   id="paymentAmountInline"
-                  (focusout)="paymentAmountFocusOut()"
-                  (click)="paymentAmountInlineOnClick($event)"
-                  (keyup)="paymentAmountKeyUp($event, item)"
+                  (focusout)="inlineControlFocusOut()"
+                  (click)="inlineControlOnClick($event)"
+                  (keyup)="inlineControlKeyUp($event, item)"
                   [(ngModel)]="inlineSelection.value"
                 >
               </label>
@@ -45,7 +45,22 @@
         </td>
         <td class="text-right text-nowrap">
           <span class="badge badge-secondary mr-2">{{getPrevPeriodCommissionAmountByProduct(item.product.id) | amount}}</span>
-          {{item.commissionAmount | amount}}
+          <a href="#" (click)="commissionAmountOnClick($event, item)" *ngIf="!inlineSelection || inlineSelection.selectedItem.id !== item.id">{{item.commissionAmount | amount}}</a>
+          <div *ngIf="inlineSelection && inlineSelection.inlineEditor === inlineEditorType.CommissionAmount && inlineSelection.selectedItem.id === item.id">
+            <label>
+              <input
+                #inlineCommissionAmount
+                type="number"
+                min="0"
+                class="form-control text-right"
+                id="commissionAmountInline"
+                (focusout)="inlineControlFocusOut()"
+                (click)="inlineControlOnClick($event)"
+                (keyup)="inlineControlKeyUp($event, item)"
+                [(ngModel)]="inlineSelection.value"
+              >
+            </label>
+          </div>
         </td>
         <td class="text-nowrap">
           <app-core-edit-delete-panel [item]="item" (deleteClick)="onDeleteClick(item)" (editClick)="onEditClick(item)"></app-core-edit-delete-panel>
