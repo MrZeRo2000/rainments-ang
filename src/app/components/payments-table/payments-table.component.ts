@@ -47,7 +47,9 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   @Input()
   paymentPeriodDate: Date;
 
+  @ViewChildren('inlineProductCounter') inlineProductCounter: QueryList<ElementRef>;
   @ViewChildren('inlinePaymentAmount') inlinePaymentAmount: QueryList<ElementRef>;
+  @ViewChildren('inlineCommissionAmount') inlineCommissionAmount: QueryList<ElementRef>;
 
   prevPeriodPayment: Payment;
   productUsage: number;
@@ -99,11 +101,19 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   }
 
   ngAfterViewInit(): void {
-    this.inlinePaymentAmount.changes.subscribe(() => {
-      if (this.inlinePaymentAmount.length > 0) {
-        this.inlinePaymentAmount.first.nativeElement.focus();
+    this.setupFocusOnInit([
+      this.inlineProductCounter,
+      this.inlinePaymentAmount,
+      this.inlineCommissionAmount]
+    );
+  }
+
+  private setupFocusOnInit(viewQueryLists: QueryList<ElementRef>[]) {
+    viewQueryLists.forEach(value => value.changes.subscribe(() => {
+      if (value.length > 0) {
+        value.first.nativeElement.focus();
       }
-    });
+    }));
   }
 
   protected getConfig(): CommonTableConfig {
@@ -269,15 +279,17 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   }
 
   inlineControlKeyUp(event: any, item: Payment): void {
-    if (event.key === 'Escape' || event.key === 'Enter') {
-      if (event.key === 'Enter') {
-        this.processInlineInput(item, this.inlineSelection.inlineEditor, this.inlineSelection.value);
-      }
+    if (event.key === 'Escape') {
       this.inlineSelection = undefined;
+    } else if (event.key === 'Enter') {
+      if (this.checkInlineInput(item, this.inlineSelection.inlineEditor, this.inlineSelection.value)) {
+        this.processInlineInput(item, this.inlineSelection.inlineEditor, this.inlineSelection.value);
+        this.inlineSelection = undefined;
+      }
     }
   }
 
-  productCounterAmountOnClick(event: any, item: Payment): void {
+  productCounterOnClick(event: any, item: Payment): void {
     this.inlineRefOnClick(event);
     this.inlineSelection = new InlineSelection(item, InlineEditor.ProductCounter, item.productCounter.toString());
   }
@@ -292,8 +304,20 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     this.inlineSelection = new InlineSelection(item, InlineEditor.CommissionAmount, item.commissionAmount.toFixed(2));
   }
 
+  checkInlineInput(item: Payment, inlineEditor: InlineEditor, value: string): boolean {
+    if (inlineEditor === InlineEditor.ProductCounter) {
+      return this.checkInlineProductCounter(item, value);
+    } else {
+      return Number.parseInt(value, 0) >= 0;
+    }
+  }
+
   processInlineInput(item: Payment, inlineEditor: InlineEditor, value: string): void {
     alert('Entered value ' + value + ' for editor ' + JSON.stringify(inlineEditor) + ' for item ' + JSON.stringify(item));
   }
 
+  checkInlineProductCounter(item: Payment, value: string): boolean {
+    const prevPeriodProductCounter = this.getPrevPeriodProductCounterByProduct(item.product.id);
+    return prevPeriodProductCounter === undefined || prevPeriodProductCounter < Number.parseInt(value, 0);
+  }
 }
