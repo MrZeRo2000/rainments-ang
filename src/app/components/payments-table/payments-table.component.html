@@ -22,8 +22,8 @@
         <td>{{item.product.name}}</td>
         <td class="text-right text-nowrap">
           <span class="badge badge-secondary mr-2">{{getPrevPeriodProductCounterByProduct(item.product.id)}}</span>
-          <a href="#" (click)="productCounterOnClick($event, item)" *ngIf="!inlineSelection || inlineSelection.inlineEditor !== inlineEditorType.ProductCounter || inlineSelection.selectedItem.id !== item.id">{{item.productCounter | amount}}</a> {{item.product.unitName}}
-          <div *ngIf="inlineSelection && inlineSelection.inlineEditor === inlineEditorType.ProductCounter && inlineSelection.selectedItem.id === item.id">
+          <a href="#" (click)="productCounterOnClick($event, item)" *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.ProductCounter)">{{item.productCounter | amount}}</a> {{item.product.unitName}}
+          <div *ngIf="inlineEditHandler.isEditorVisible(item, inlineControlType.ProductCounter)">
             <label>
               <input
                 #inlineControl
@@ -31,19 +31,19 @@
                 min="0"
                 class="form-control text-right"
                 id="inlineProductCounter"
-                (focusout)="inlineControlFocusOut()"
-                (click)="inlineControlOnClick($event)"
-                (keyup)="inlineControlKeyUp($event, item)"
-                [(ngModel)]="inlineSelection.value"
-                [ngClass]="{'is-invalid': !checkInlineProductCounter(item, inlineSelection.value)}"
+                (focusout)="inlineEditHandler.inlineControlFocusOut()"
+                (click)="inlineEditHandler.inlineControlOnClick($event)"
+                (keyup)="inlineEditHandler.inlineControlKeyUp($event, item)"
+                [(ngModel)]="inlineEditHandler.inlineSelection.value"
+                [ngClass]="{'is-invalid': !inlineEditHandler.inputValidator(item, inlineEditHandler.inlineSelection)}"
               >
             </label>
           </div>
         </td>
         <td class="text-right text-nowrap">
           <span class="badge badge-secondary mr-2">{{getPrevPeriodPaymentAmountByProduct(item.product.id) | amount}}</span>
-          <a href="#" (click)="paymentAmountOnClick($event, item)" *ngIf="!inlineSelection || inlineSelection.inlineEditor !== inlineEditorType.PaymentAmount || inlineSelection.selectedItem.id !== item.id">{{item.paymentAmount | amount}}</a>
-          <div *ngIf="inlineSelection && inlineSelection.inlineEditor === inlineEditorType.PaymentAmount && inlineSelection.selectedItem.id === item.id">
+          <a href="#" (click)="paymentAmountOnClick($event, item)" *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.PaymentAmount)">{{item.paymentAmount | amount}}</a>
+          <div *ngIf="inlineEditHandler.isEditorVisible(item, inlineControlType.PaymentAmount)">
             <label>
                 <input
                   #inlineControl
@@ -51,18 +51,18 @@
                   min="0"
                   class="form-control text-right"
                   id="paymentAmountInline"
-                  (focusout)="inlineControlFocusOut()"
-                  (click)="inlineControlOnClick($event)"
-                  (keyup)="inlineControlKeyUp($event, item)"
-                  [(ngModel)]="inlineSelection.value"
+                  (focusout)="inlineEditHandler.inlineControlFocusOut()"
+                  (click)="inlineEditHandler.inlineControlOnClick($event)"
+                  (keyup)="inlineEditHandler.inlineControlKeyUp($event, item)"
+                  [(ngModel)]="inlineEditHandler.inlineSelection.value"
                 >
               </label>
           </div>
         </td>
         <td class="text-right text-nowrap">
           <span class="badge badge-secondary mr-2">{{getPrevPeriodCommissionAmountByProduct(item.product.id) | amount}}</span>
-          <a href="#" (click)="commissionAmountOnClick($event, item)" *ngIf="!inlineSelection || inlineSelection.inlineEditor !== inlineEditorType.CommissionAmount || inlineSelection.selectedItem.id !== item.id">{{item.commissionAmount | amount}}</a>
-          <div *ngIf="inlineSelection && inlineSelection.inlineEditor === inlineEditorType.CommissionAmount && inlineSelection.selectedItem.id === item.id">
+          <a href="#" (click)="commissionAmountOnClick($event, item)" *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.CommissionAmount)">{{item.commissionAmount | amount}}</a>
+          <div *ngIf="inlineEditHandler.isEditorVisible(item, inlineControlType.CommissionAmount)">
             <label>
               <input
                 #inlineControl
@@ -70,10 +70,10 @@
                 min="0"
                 class="form-control text-right"
                 id="commissionAmountInline"
-                (focusout)="inlineControlFocusOut()"
-                (click)="inlineControlOnClick($event)"
-                (keyup)="inlineControlKeyUp($event, item)"
-                [(ngModel)]="inlineSelection.value"
+                (focusout)="inlineEditHandler.inlineControlFocusOut()"
+                (click)="inlineEditHandler.inlineControlOnClick($event)"
+                (keyup)="inlineEditHandler.inlineControlKeyUp($event, item)"
+                [(ngModel)]="inlineEditHandler.inlineSelection.value"
               >
             </label>
           </div>

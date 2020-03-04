@@ -10,7 +10,6 @@ import {
   ViewChild,
   ViewChildren
 } from '@angular/core';
-import {reduce} from 'rxjs/operators';
 import {CommonEditableTableComponent} from '../../core/table/common-editable-table-component';
 import {PaymentRefs} from '../../model/payment-refs';
 import {Payment} from '../../model/payment';
@@ -23,16 +22,12 @@ import {HttpParams} from '@angular/common/http';
 import {PaymentGroup} from '../../model/payment-group';
 import {Product} from '../../model/product';
 import {PaymentObject} from '../../model/payment-object';
+import {InlineEditHandler, InlineEditSelection} from '../../core/inline-edit-handler';
 
-enum InlineEditor {
-  ProductCounter,
-  PaymentAmount,
-  CommissionAmount,
-}
-
-class InlineSelection {
-  constructor(public selectedItem: Payment, public inlineEditor: InlineEditor, public value: string) {
-  }
+enum InlineControl {
+  ProductCounter = 'productCounterControl',
+  PaymentAmount = 'paymentAmountControl',
+  CommissionAmount = 'commissionAmountControl',
 }
 
 @Component({
@@ -41,6 +36,7 @@ class InlineSelection {
   styleUrls: ['./payments-table.component.scss']
 })
 export class PaymentsTableComponent extends CommonEditableTableComponent<PaymentRefs, Payment> implements OnInit, OnChanges, AfterViewInit {
+
   @Input()
   paymentObjectId: number;
 
@@ -55,9 +51,8 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
 
   selectedItems: Set<Payment> = new Set<Payment>();
 
-  inlineEditorType = InlineEditor;
-  inlineSelectionType = InlineSelection;
-  inlineSelection: InlineSelection;
+  inlineControlType = InlineControl;
+  inlineEditHandler: InlineEditHandler<Payment>;
 
   private static roundValue(value: any): number {
     return Math.round(value * 100) / 100;
@@ -102,6 +97,20 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     this.setupFocusOnInit([
       this.inlineControl]
     );
+
+    this.inlineEditHandler = new InlineEditHandler<Payment>();
+    this.inlineEditHandler.inputValidator = ((item, selection) => {
+      if (selection.controlName === InlineControl.ProductCounter) {
+        const prevPeriodProductCounter = this.getPrevPeriodProductCounterByProduct(item.product.id);
+        return prevPeriodProductCounter === undefined || prevPeriodProductCounter <= Number.parseInt(selection.value, 0);
+      } else {
+        return true;
+      }
+    });
+
+    this.inlineEditHandler.inputProcessor = ((item, selection) => {
+      alert('HANDLER Entered value ' + selection.value + ' for editor ' + selection.controlName + ' for item ' + JSON.stringify(item));
+    });
   }
 
   private setupFocusOnInit(viewQueryLists: QueryList<ElementRef>[]) {
@@ -261,59 +270,30 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     }
   }
 
-  inlineRefOnClick(event: any) {
-    event.preventDefault();
-    event.stopPropagation();
-  }
-
-  inlineControlOnClick(event: any): void {
-    event.stopPropagation();
-  }
-
-  inlineControlFocusOut(): void {
-    this.inlineSelection = undefined;
-  }
-
-  inlineControlKeyUp(event: any, item: Payment): void {
-    if (event.key === 'Escape') {
-      this.inlineSelection = undefined;
-    } else if (event.key === 'Enter') {
-      if (this.checkInlineInput(item, this.inlineSelection.inlineEditor, this.inlineSelection.value)) {
-        this.processInlineInput(item, this.inlineSelection.inlineEditor, this.inlineSelection.value);
-        this.inlineSelection = undefined;
-      }
-    }
-  }
-
   productCounterOnClick(event: any, item: Payment): void {
-    this.inlineRefOnClick(event);
-    this.inlineSelection = new InlineSelection(item, InlineEditor.ProductCounter, item.productCounter.toString());
+    this.inlineEditHandler.inlineRefOnClick(event);
+    this.inlineEditHandler.inlineSelection = new InlineEditSelection<Payment>(
+      item,
+      InlineControl.ProductCounter,
+      item.productCounter.toString()
+    );
   }
 
   paymentAmountOnClick(event: any, item: Payment): void {
-    this.inlineRefOnClick(event);
-    this.inlineSelection = new InlineSelection(item, InlineEditor.PaymentAmount, item.paymentAmount.toFixed(2));
+    this.inlineEditHandler.inlineRefOnClick(event);
+    this.inlineEditHandler.inlineSelection = new InlineEditSelection<Payment>(
+      item,
+      InlineControl.PaymentAmount,
+      item.paymentAmount.toFixed(2)
+    );
   }
 
   commissionAmountOnClick(event: any, item: Payment): void {
-    this.inlineRefOnClick(event);
-    this.inlineSelection = new InlineSelection(item, InlineEditor.CommissionAmount, item.commissionAmount.toFixed(2));
-  }
-
-  checkInlineInput(item: Payment, inlineEditor: InlineEditor, value: string): boolean {
-    if (inlineEditor === InlineEditor.ProductCounter) {
-      return this.checkInlineProductCounter(item, value);
-    } else {
-      return Number.parseInt(value, 0) >= 0;
-    }
-  }
-
-  processInlineInput(item: Payment, inlineEditor: InlineEditor, value: string): void {
-    alert('Entered value ' + value + ' for editor ' + JSON.stringify(inlineEditor) + ' for item ' + JSON.stringify(item));
-  }
-
-  checkInlineProductCounter(item: Payment, value: string): boolean {
-    const prevPeriodProductCounter = this.getPrevPeriodProductCounterByProduct(item.product.id);
-    return prevPeriodProductCounter === undefined || prevPeriodProductCounter < Number.parseInt(value, 0);
+    this.inlineEditHandler.inlineRefOnClick(event);
+    this.inlineEditHandler.inlineSelection = new InlineEditSelection<Payment>(
+      item,
+      InlineControl.CommissionAmount,
+      item.commissionAmount.toFixed(2)
+    );
   }
 }
