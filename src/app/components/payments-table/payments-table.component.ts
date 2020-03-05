@@ -102,9 +102,10 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     this.inlineEditHandler.inputValidator = ((item, selection) => {
       if (selection.controlName === InlineControl.ProductCounter) {
         const prevPeriodProductCounter = this.getPrevPeriodProductCounterByProduct(item.product.id);
-        return prevPeriodProductCounter === undefined || prevPeriodProductCounter <= Number.parseInt(selection.value, 0);
+        return Number.parseInt(selection.value, 0) >= 0 &&
+          (prevPeriodProductCounter === undefined || prevPeriodProductCounter <= Number.parseInt(selection.value, 0));
       } else {
-        return true;
+        return Number.parseInt(selection.value, 0) >= 0;
       }
     });
 
@@ -221,6 +222,16 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     return this.getPrevPeriodPaymentByProduct(productId) && this.getPrevPeriodPaymentByProduct(productId).productCounter;
   }
 
+  getPrevPeriodProductCounterEditDiffByProduct(productId: number): number {
+    const prevPeriodValue = this.getPrevPeriodProductCounterByProduct(productId);
+    const inputValue = this.inlineEditHandler.inlineSelection && Number.parseInt(this.inlineEditHandler.inlineSelection.value, 0);
+    if (prevPeriodValue >= 0 && inputValue >= 0) {
+      return inputValue - prevPeriodValue;
+    } else {
+      return undefined;
+    }
+  }
+
   getPrevPeriodPaymentAmountByProduct(productId: number): number {
     return this.getPrevPeriodPaymentByProduct(productId) && this.getPrevPeriodPaymentByProduct(productId).paymentAmount;
   }
@@ -271,11 +282,19 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   }
 
   productCounterOnClick(event: any, item: Payment): void {
+    let initialValue = item.productCounter.toString();
+    if (item.productCounter === 0) {
+      const prevProductCounter = this.getPrevPeriodProductCounterByProduct(item.product.id);
+      if (prevProductCounter && prevProductCounter > 0) {
+        initialValue = prevProductCounter.toString();
+      }
+    }
+
     this.inlineEditHandler.inlineRefOnClick(event);
     this.inlineEditHandler.inlineSelection = new InlineEditSelection<Payment>(
       item,
       InlineControl.ProductCounter,
-      item.productCounter.toString()
+      initialValue
     );
   }
 
