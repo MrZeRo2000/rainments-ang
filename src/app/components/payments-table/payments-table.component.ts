@@ -102,8 +102,8 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     this.inlineEditHandler.inputValidator = ((item, selection) => {
       if (selection.controlName === InlineControl.ProductCounter) {
         const prevPeriodProductCounter = this.getPrevPeriodProductCounterByProduct(item.product.id);
-        return Number.parseInt(selection.value, 0) >= 0 &&
-          (prevPeriodProductCounter === undefined || prevPeriodProductCounter <= Number.parseInt(selection.value, 0));
+        return selection.value === null || prevPeriodProductCounter === undefined
+          || prevPeriodProductCounter <= Number.parseInt(selection.value, 0);
       } else {
         return Number.parseInt(selection.value, 0) >= 0;
       }
