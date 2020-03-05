@@ -1,6 +1,6 @@
 
 export class InlineEditSelection<T> {
-  constructor(public selectedItem: T, public controlName: string, public value: string) {
+  constructor(public selectedItem: T, public controlName: string, public value: string, public active: boolean = true) {
   }
 }
 
@@ -20,24 +20,25 @@ export class InlineEditHandler<T> {
   }
 
   public inlineControlFocusOut(): void {
-    this.inlineSelection = undefined;
+    this.inlineSelection.active = false;
   }
 
   public inlineControlKeyUp(event: any, item: T): void {
     if (event.key === 'Escape') {
-      this.inlineSelection = undefined;
+      this.inlineSelection.active = false;
     } else if (event.key === 'Enter') {
       if (!this.inputValidator || this.inputValidator(item, this.inlineSelection)) {
         if (this.inputProcessor) {
           this.inputProcessor(item, this.inlineSelection);
         }
-        this.inlineSelection = undefined;
+        this.inlineSelection.active = false;
       }
     }
   }
 
   public isEditorVisible(item: T, controlName: string): boolean {
-    return this.inlineSelection && this.inlineSelection.controlName === controlName && this.inlineSelection.selectedItem === item;
+    return this.inlineSelection && this.inlineSelection.active &&
+      this.inlineSelection.controlName === controlName && this.inlineSelection.selectedItem === item;
   }
 
 }

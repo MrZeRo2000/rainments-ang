@@ -104,6 +104,8 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
         const prevPeriodProductCounter = this.getPrevPeriodProductCounterByProduct(item.product.id);
         return selection.value === null || prevPeriodProductCounter === undefined
           || prevPeriodProductCounter <= Number.parseInt(selection.value, 0);
+      } else if (selection.controlName === InlineControl.CommissionAmount) {
+        return selection.value === null || Number.parseInt(selection.value, 0) >= 0;
       } else {
         return Number.parseInt(selection.value, 0) >= 0;
       }
