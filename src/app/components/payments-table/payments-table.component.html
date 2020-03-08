@@ -9,7 +9,7 @@
         <th scope="col" class="w-auto">ID</th>
         <th scope="col" class="w-20">Group</th>
         <th scope="col" class="w-20">Product</th>
-        <th scope="col" class="w-10 text-right">Counter</th>
+        <th scope="col" class="w-20 text-right">Counter</th>
         <th scope="col" class="w-20 text-right">Payment</th>
         <th scope="col" class="w-10 text-right">Commission</th>
         <th scope="col" class="w-auto">Actions</th>
@@ -24,6 +24,17 @@
           <div>
             <span class="badge badge-secondary mr-2">{{getPrevPeriodProductCounterByProduct(item.product.id)}}</span>
             <a href="#" (click)="productCounterOnClick($event, item)" *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.ProductCounter)">{{item.productCounter | amount}}</a> {{item.product.unitName}}
+          </div>
+          <div *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.ProductCounter) && getPrevPeriodProductCounterDiffByProduct(item)">
+            <span
+              class="badge mr-2"
+              [ngClass]="{
+                'badge-success': getPrevPeriodProductCounterDiffByProduct(item) >= 0,
+                'badge-danger': getPrevPeriodProductCounterDiffByProduct(item) < 0
+              }"
+            >
+              {{getPrevPeriodProductCounterDiffByProduct(item) | amount}}
+            </span> {{item.product.unitName}}
           </div>
 
           <label *ngIf="inlineEditHandler.isEditorVisible(item, inlineControlType.ProductCounter)" class="mt-2 mb-2">

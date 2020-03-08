@@ -12,6 +12,7 @@ import {CoreModule} from '../../core/core.module';
 import {PaymentRepository} from '../../repository/payment-repository';
 import {PaymentRefsRepository} from '../../repository/payment-refs-repository';
 import {PaymentsSummaryComponent} from '../payments-summary/payments-summary.component';
+import {AmountPipe} from '../../core/pipes/amount.pipe';
 
 describe('PaymentsTableComponent', () => {
   let component: PaymentsTableComponent;

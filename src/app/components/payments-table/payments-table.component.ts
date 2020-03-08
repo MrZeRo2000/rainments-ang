@@ -23,6 +23,7 @@ import {PaymentGroup} from '../../model/payment-group';
 import {Product} from '../../model/product';
 import {PaymentObject} from '../../model/payment-object';
 import {InlineEditHandler, InlineEditSelection} from '../../core/inline-edit-handler';
+import {AmountPipe} from '../../core/pipes/amount.pipe';
 
 enum InlineControl {
   ProductCounter = 'productCounterControl',
@@ -68,7 +69,8 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     private fb: FormBuilder,
     protected modalService: BsModalService,
     public readRepository: PaymentRefsRepository,
-    protected repository: PaymentRepository
+    protected repository: PaymentRepository,
+    private amountPipe: AmountPipe
   ) {
     super(
       Payment,
@@ -100,11 +102,13 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
 
     this.inlineEditHandler = new InlineEditHandler<Payment>();
     this.inlineEditHandler.inputValidator = ((item, selection) => {
+      /*
       if (selection.controlName === InlineControl.ProductCounter) {
         const prevPeriodProductCounter = this.getPrevPeriodProductCounterByProduct(item.product.id);
         return selection.value === null || prevPeriodProductCounter === undefined
           || prevPeriodProductCounter <= Number.parseInt(selection.value, 0);
-      } else if (selection.controlName === InlineControl.CommissionAmount) {
+      } else*/
+      if (selection.controlName === InlineControl.CommissionAmount) {
         return selection.value === null || Number.parseInt(selection.value, 0) >= 0;
       } else {
         return Number.parseInt(selection.value, 0) >= 0;
@@ -167,7 +171,7 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     } else {
       this.productUsage = undefined;
     }
-    this.productUsageForm.controls.productUsageCounter.setValue(this.productUsage);
+    this.productUsageForm.controls.productUsageCounter.setValue(this.amountPipe.transform(this.productUsage));
   }
 
   protected editFormChanged(data: any) {
@@ -222,6 +226,16 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
 
   getPrevPeriodProductCounterByProduct(productId: number): number {
     return this.getPrevPeriodPaymentByProduct(productId) && this.getPrevPeriodPaymentByProduct(productId).productCounter;
+  }
+
+  getPrevPeriodProductCounterDiffByProduct(item: Payment): number {
+    const prevPeriodValue = this.getPrevPeriodProductCounterByProduct(item.product.id);
+    const currentValue = item.productCounter;
+    if (prevPeriodValue && currentValue) {
+      return currentValue - prevPeriodValue;
+    } else {
+      return undefined;
+    }
   }
 
   getPrevPeriodProductCounterEditDiffByProduct(productId: number): number {

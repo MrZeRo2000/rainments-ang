@@ -31,6 +31,9 @@ import { AmountPipe } from './pipes/amount.pipe';
     SaveDialogPanelComponent,
     PreviousMetricLabelComponent,
     AmountPipe
+  ],
+  providers: [
+    AmountPipe
   ]
 })
 export class CoreModule { }
