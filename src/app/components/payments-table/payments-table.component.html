@@ -2,7 +2,7 @@
 <app-core-add-panel [editable]="this" (addClick)="onAddClick()"></app-core-add-panel>
 
 <div class="row" *ngIf="getEditingState()">
-  <div class="col-md-6 col-lg-8 col-xl-9">
+  <div class="col col-lg-8 col-xl-8">
     <table class="table table-hover">
       <thead>
       <tr>
@@ -52,15 +52,15 @@
             >
           </label>
 
-          <div *ngIf="inlineEditHandler.isEditorVisible(item, inlineControlType.ProductCounter) && getPrevPeriodProductCounterEditDiffByProduct(item.product.id)">
+          <div *ngIf="inlineEditHandler.isEditorVisible(item, inlineControlType.ProductCounter) && getPrevPeriodProductCounterEditDiffByProduct(item)">
             <span
               class="badge mr-2"
               [ngClass]="{
-                'badge-success': getPrevPeriodProductCounterEditDiffByProduct(item.product.id) >= 0,
-                'badge-danger': getPrevPeriodProductCounterEditDiffByProduct(item.product.id) < 0
+                'badge-success': getPrevPeriodProductCounterEditDiffByProduct(item) >= 0,
+                'badge-danger': getPrevPeriodProductCounterEditDiffByProduct(item) < 0
               }"
             >
-              {{getPrevPeriodProductCounterEditDiffByProduct(item.product.id)}}
+              {{getPrevPeriodProductCounterEditDiffByProduct(item) | amount}}
             </span> {{item.product.unitName}}
           </div>
         </td>
@@ -113,7 +113,7 @@
       </tbody>
     </table>
   </div>
-  <div class="col-md-6 col-lg-4 col-xl-3"><app-payments-summary [selectedItems]="selectedItems"></app-payments-summary></div>
+  <div class="col col-lg-4 col-xl-4"><app-payments-summary [selectedItems]="selectedItems"></app-payments-summary></div>
 </div>
 
 <div *ngIf="getEditState()">

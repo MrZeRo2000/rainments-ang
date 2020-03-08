@@ -238,9 +238,9 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     }
   }
 
-  getPrevPeriodProductCounterEditDiffByProduct(productId: number): number {
-    const prevPeriodValue = this.getPrevPeriodProductCounterByProduct(productId);
-    const inputValue = this.inlineEditHandler.inlineSelection && Number.parseInt(this.inlineEditHandler.inlineSelection.value, 0);
+  getPrevPeriodProductCounterEditDiffByProduct(item: Payment): number {
+    const prevPeriodValue = this.getPrevPeriodProductCounterByProduct(item.product.id);
+    const inputValue = this.inlineEditHandler.inlineSelection && Number.parseFloat(this.inlineEditHandler.inlineSelection.value);
     if (prevPeriodValue >= 0 && inputValue >= 0) {
       return inputValue - prevPeriodValue;
     } else {

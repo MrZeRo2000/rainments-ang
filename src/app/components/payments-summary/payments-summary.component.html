@@ -37,7 +37,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let item of getGroupSummary()">
-            <td class="text-left">{{item.groupName}}</td>
+            <td class="text-left text-nowrap">{{item.groupName}}</td>
             <td class="text-right">{{item.paymentAmount | amount}}</td>
             <td class="text-right">{{item.commissionAmount | amount}}</td>
           </tr>
