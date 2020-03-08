@@ -46,6 +46,9 @@ export class ReadRepository<T> implements Loadable {
           this.data.length = 0;
           this.data.push(data.body);
         }
+
+        this.afterLoadData(this.data);
+
         this.loadingError = false;
         this.loadSuccess.next(true);
       } else {
@@ -64,8 +67,10 @@ export class ReadRepository<T> implements Loadable {
     });
   }
 
+  protected afterLoadData(data: T[]) { }
+
   getData(): T[] {
-    return this.data;
+    return this.data || [];
   }
 
 }

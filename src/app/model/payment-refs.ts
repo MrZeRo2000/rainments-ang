@@ -9,6 +9,7 @@ export class PaymentRefs {
     public prevPeriodPaymentList?: Array<Payment>,
     public paymentObjectList?: Array<PaymentObject>,
     public paymentGroupList?: Array<PaymentGroup>,
-    public productList?: Array<Product>
+    public productList?: Array<Product>,
+    public prevProductPayments?: Map<number, Payment>
   ) {}
 }

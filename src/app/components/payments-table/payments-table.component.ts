@@ -102,13 +102,11 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
 
     this.inlineEditHandler = new InlineEditHandler<Payment>();
     this.inlineEditHandler.inputValidator = ((item, selection) => {
-      /*
       if (selection.controlName === InlineControl.ProductCounter) {
         const prevPeriodProductCounter = this.getPrevPeriodProductCounterByProduct(item.product.id);
         return selection.value === null || prevPeriodProductCounter === undefined
-          || prevPeriodProductCounter <= Number.parseInt(selection.value, 0);
-      } else*/
-      if (selection.controlName === InlineControl.CommissionAmount) {
+          || prevPeriodProductCounter <= Number.parseFloat(selection.value);
+      } else if (selection.controlName === InlineControl.CommissionAmount) {
         return selection.value === null || Number.parseInt(selection.value, 0) >= 0;
       } else {
         return Number.parseInt(selection.value, 0) >= 0;
@@ -210,6 +208,9 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     if (productDuplicates.length > 0) {
       this.editForm.controls.product.setErrors({existingProduct: true});
     }
+    if (this.productUsage && this.productUsage < 0) {
+      this.editForm.controls.productCounter.setErrors({lessThanPreviousPeriod: true});
+    }
   }
 
   getPayments(): Payment[] {
@@ -221,7 +222,10 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   }
 
   getPrevPeriodPaymentByProduct(productId: number): Payment {
-    return this.getPrevPeriodPayments() && this.getPrevPeriodPayments().filter(value => value.product.id === productId)[0];
+    // return this.getPrevPeriodPayments() && this.getPrevPeriodPayments().filter(value => value.product.id === productId)[0];
+    return this.readRepository.getData()[0] &&
+      this.readRepository.getData()[0].prevProductPayments &&
+      this.readRepository.getData()[0].prevProductPayments.get(productId);
   }
 
   getPrevPeriodProductCounterByProduct(productId: number): number {
