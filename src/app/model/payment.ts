@@ -13,7 +13,8 @@ export class Payment extends CommonEntity {
     public product?: Product,
     public productCounter?: number,
     public paymentAmount?: number,
-    public commissionAmount?: number) {
+    public commissionAmount?: number,
+    public prevPeriodPayment?: Payment) {
     super(id);
   }
 }

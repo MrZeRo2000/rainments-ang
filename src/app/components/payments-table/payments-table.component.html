@@ -22,7 +22,7 @@
         <td>{{item.product.name}}</td>
         <td class="text-right text-nowrap">
           <div>
-            <span class="badge badge-secondary mr-2">{{getPrevPeriodProductCounterByProduct(item.product.id)}}</span>
+            <span class="badge badge-secondary mr-2">{{getPrevPeriodProductCounter(item)}}</span>
             <a href="#" (click)="productCounterOnClick($event, item)" *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.ProductCounter)">{{item.productCounter | amount}}</a> {{item.product.unitName}}
           </div>
           <div *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.ProductCounter) && getPrevPeriodProductCounterDiffByProduct(item)">
@@ -66,7 +66,7 @@
         </td>
         <td class="text-right text-nowrap">
           <div>
-            <span class="badge badge-secondary mr-2">{{getPrevPeriodPaymentAmountByProduct(item.product.id) | amount}}</span>
+            <span class="badge badge-secondary mr-2">{{getPrevPeriodPaymentAmount(item) | amount}}</span>
             <a href="#" (click)="paymentAmountOnClick($event, item)" *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.PaymentAmount)">{{item.paymentAmount | amount}}</a>
           </div>
           <label *ngIf="inlineEditHandler.isEditorVisible(item, inlineControlType.PaymentAmount)" class="mt-2 mb-2">
@@ -86,7 +86,7 @@
         </td>
         <td class="text-right text-nowrap">
           <div>
-            <span class="badge badge-secondary mr-2">{{getPrevPeriodCommissionAmountByProduct(item.product.id) | amount}}</span>
+            <span class="badge badge-secondary mr-2">{{getPrevPeriodCommissionAmount(item) | amount}}</span>
             <a href="#" (click)="commissionAmountOnClick($event, item)" *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.CommissionAmount)">{{item.commissionAmount | amount}}</a>
           </div>
 

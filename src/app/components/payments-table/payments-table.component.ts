@@ -103,7 +103,7 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     this.inlineEditHandler = new InlineEditHandler<Payment>();
     this.inlineEditHandler.inputValidator = ((item, selection) => {
       if (selection.controlName === InlineControl.ProductCounter) {
-        const prevPeriodProductCounter = this.getPrevPeriodProductCounterByProduct(item.product.id);
+        const prevPeriodProductCounter = this.getPrevPeriodProductCounter(item);
         return selection.value === null || prevPeriodProductCounter === undefined
           || prevPeriodProductCounter <= Number.parseFloat(selection.value);
       } else if (selection.controlName === InlineControl.CommissionAmount) {
@@ -221,19 +221,18 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     return this.readRepository.getData()[0] ? this.readRepository.getData()[0].prevPeriodPaymentList : [];
   }
 
+  getPrevPeriodProductCounter(item: Payment): number {
+    return item.prevPeriodPayment && item.prevPeriodPayment.productCounter;
+  }
+
   getPrevPeriodPaymentByProduct(productId: number): Payment {
-    // return this.getPrevPeriodPayments() && this.getPrevPeriodPayments().filter(value => value.product.id === productId)[0];
     return this.readRepository.getData()[0] &&
       this.readRepository.getData()[0].prevProductPayments &&
       this.readRepository.getData()[0].prevProductPayments.get(productId);
   }
 
-  getPrevPeriodProductCounterByProduct(productId: number): number {
-    return this.getPrevPeriodPaymentByProduct(productId) && this.getPrevPeriodPaymentByProduct(productId).productCounter;
-  }
-
   getPrevPeriodProductCounterDiffByProduct(item: Payment): number {
-    const prevPeriodValue = this.getPrevPeriodProductCounterByProduct(item.product.id);
+    const prevPeriodValue = this.getPrevPeriodProductCounter(item);
     const currentValue = item.productCounter;
     if (prevPeriodValue && currentValue) {
       return currentValue - prevPeriodValue;
@@ -243,7 +242,7 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   }
 
   getPrevPeriodProductCounterEditDiffByProduct(item: Payment): number {
-    const prevPeriodValue = this.getPrevPeriodProductCounterByProduct(item.product.id);
+    const prevPeriodValue = this.getPrevPeriodProductCounter(item);
     const inputValue = this.inlineEditHandler.inlineSelection && Number.parseFloat(this.inlineEditHandler.inlineSelection.value);
     if (prevPeriodValue >= 0 && inputValue >= 0) {
       return inputValue - prevPeriodValue;
@@ -252,12 +251,12 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     }
   }
 
-  getPrevPeriodPaymentAmountByProduct(productId: number): number {
-    return this.getPrevPeriodPaymentByProduct(productId) && this.getPrevPeriodPaymentByProduct(productId).paymentAmount;
+  getPrevPeriodPaymentAmount(item: Payment): number {
+    return item.prevPeriodPayment && item.prevPeriodPayment.paymentAmount;
   }
 
-  getPrevPeriodCommissionAmountByProduct(productId: number): number {
-    return this.getPrevPeriodPaymentByProduct(productId) && this.getPrevPeriodPaymentByProduct(productId).commissionAmount;
+  getPrevPeriodCommissionAmount(item: Payment): number {
+    return item.prevPeriodPayment && item.prevPeriodPayment.commissionAmount;
   }
 
   getPaymentObjects(): PaymentObject[] {
@@ -304,7 +303,7 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   productCounterOnClick(event: any, item: Payment): void {
     let initialValue = item.productCounter.toString();
     if (item.productCounter === 0) {
-      const prevProductCounter = this.getPrevPeriodProductCounterByProduct(item.product.id);
+      const prevProductCounter = this.getPrevPeriodProductCounter(item);
       if (prevProductCounter && prevProductCounter > 0) {
         initialValue = prevProductCounter.toString();
       }
