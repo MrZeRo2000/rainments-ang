@@ -23,7 +23,7 @@
         <td class="text-right text-nowrap">
           <div>
             <span class="badge badge-secondary mr-2">{{getPrevPeriodProductCounter(item)}}</span>
-            <a href="#" (click)="productCounterOnClick($event, item)" *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.ProductCounter)">{{item.productCounter | amount}}</a> {{item.product.unitName}}
+            <a href="#" (click)="productCounterOnClick($event, item)" *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.ProductCounter)">{{item.productCounter}}</a> {{item.product.unitName}}
           </div>
           <div *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.ProductCounter) && getPrevPeriodProductCounterDiffByProduct(item)">
             <span

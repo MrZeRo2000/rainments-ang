@@ -80,7 +80,11 @@ export abstract class CommonEditableTableComponent<R, W extends CommonEntity>
 
   protected getEditValue(item: Payment): any {
     const value = {};
-    Object.keys(item).forEach(v => {if (item.hasOwnProperty(v)) {value[v] = item[v].id || item[v]; }});
+    Object.keys(item).forEach(v => {
+      if (item.hasOwnProperty(v) && item[v]) {
+        value[v] = item[v].id || item[v];
+      }
+    });
     return value;
   }
 
