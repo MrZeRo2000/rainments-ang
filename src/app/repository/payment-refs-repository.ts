@@ -8,7 +8,7 @@ import {Payment} from '../model/payment';
 @Injectable()
 export class PaymentRefsRepository extends ReadRepository<PaymentRefs> {
   constructor(protected dataSource: RestDataSource, protected messagesService: MessagesService) {
-    super(dataSource, messagesService, 'payments/refs');
+    super(dataSource, messagesService, 'payments:refs');
   }
 
   protected afterLoadData(data: PaymentRefs[]) {
