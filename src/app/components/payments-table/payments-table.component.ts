@@ -24,6 +24,7 @@ import {Product} from '../../model/product';
 import {PaymentObject} from '../../model/payment-object';
 import {InlineEditHandler, InlineEditSelection} from '../../core/inline-edit-handler';
 import {AmountPipe} from '../../core/pipes/amount.pipe';
+import {ColorScheme} from '../../core/colored-value-label/colored-value-label.component';
 
 enum InlineControl {
   ProductCounter = 'productCounterControl',
@@ -54,6 +55,8 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
 
   inlineControlType = InlineControl;
   inlineEditHandler: InlineEditHandler<Payment>;
+
+  colorSchemeType = ColorScheme;
 
   private static roundValue(value: any): number {
     return Math.round(value * 100) / 100;

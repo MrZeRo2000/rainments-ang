@@ -22,19 +22,14 @@
         <td>{{item.product.name}}</td>
         <td class="text-right text-nowrap">
           <div>
-            <span class="badge badge-secondary mr-2">{{getPrevPeriodProductCounter(item)}}</span>
+            <app-core-colored-value-label [value]="getPrevPeriodProductCounter(item)"></app-core-colored-value-label>
             <a href="#" (click)="productCounterOnClick($event, item)" *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.ProductCounter)">{{item.productCounter}}</a> {{item.product.unitName}}
           </div>
           <div *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.ProductCounter) && getPrevPeriodProductCounterDiffByProduct(item)">
-            <span
-              class="badge mr-2"
-              [ngClass]="{
-                'badge-success': getPrevPeriodProductCounterDiffByProduct(item) >= 0,
-                'badge-danger': getPrevPeriodProductCounterDiffByProduct(item) < 0
-              }"
-            >
-              {{getPrevPeriodProductCounterDiffByProduct(item) | amount}}
-            </span>{{item.product.unitName}}
+            <app-core-colored-value-label
+              [value]="getPrevPeriodProductCounterDiffByProduct(item) | amount"
+              [colorScheme]="colorSchemeType.POS_GREEN_NEG_RED">
+            </app-core-colored-value-label>{{item.product.unitName}}
           </div>
 
           <label *ngIf="inlineEditHandler.isEditorVisible(item, inlineControlType.ProductCounter)" class="mt-2 mb-2">
@@ -53,20 +48,19 @@
           </label>
 
           <div *ngIf="inlineEditHandler.isEditorVisible(item, inlineControlType.ProductCounter) && getPrevPeriodProductCounterEditDiffByProduct(item)">
-            <span
-              class="badge mr-2"
-              [ngClass]="{
-                'badge-success': getPrevPeriodProductCounterEditDiffByProduct(item) >= 0,
-                'badge-danger': getPrevPeriodProductCounterEditDiffByProduct(item) < 0
-              }"
+            <app-core-colored-value-label
+              [value]="getPrevPeriodProductCounterEditDiffByProduct(item) | amount"
+              [colorScheme]="colorSchemeType.POS_GREEN_NEG_RED"
             >
-              {{getPrevPeriodProductCounterEditDiffByProduct(item) | amount}}
-            </span>{{item.product.unitName}}
+            </app-core-colored-value-label>{{item.product.unitName}}
           </div>
         </td>
         <td class="text-right text-nowrap">
           <div>
-            <span class="badge badge-secondary mr-2">{{getPrevPeriodPaymentAmount(item) | amount}}</span>
+            <app-core-colored-value-label
+              [value]="getPrevPeriodPaymentAmount(item) | amount"
+            >
+            </app-core-colored-value-label>
             <a href="#" (click)="paymentAmountOnClick($event, item)" *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.PaymentAmount)">{{item.paymentAmount | amount}}</a>
           </div>
           <label *ngIf="inlineEditHandler.isEditorVisible(item, inlineControlType.PaymentAmount)" class="mt-2 mb-2">
@@ -86,7 +80,10 @@
         </td>
         <td class="text-right text-nowrap">
           <div>
-            <span class="badge badge-secondary mr-2">{{getPrevPeriodCommissionAmount(item) | amount}}</span>
+            <app-core-colored-value-label
+              [value]="getPrevPeriodCommissionAmount(item) | amount"
+            >
+            </app-core-colored-value-label>
             <a href="#" (click)="commissionAmountOnClick($event, item)" *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.CommissionAmount)">{{item.commissionAmount | amount}}</a>
           </div>
 
@@ -143,7 +140,7 @@
       <div class="ml-2">
         <div class="d-flex justify-content-between">
           <label for="productCounter" class="text-nowrap"><strong>Counter</strong></label>
-          <app-core-previous-metric-label [metricValue]="prevPeriodPayment && prevPeriodPayment.productCounter"></app-core-previous-metric-label>
+          <app-core-colored-value-label [value]="prevPeriodPayment && prevPeriodPayment.productCounter"></app-core-colored-value-label>
         </div>
         <input
           type="number"
@@ -171,7 +168,7 @@
 
     <div class="d-flex justify-content-between mt-2">
       <label for="paymentAmount"><strong>Payment amount</strong></label>
-      <app-core-previous-metric-label [metricValue]="prevPeriodPayment && prevPeriodPayment.paymentAmount"></app-core-previous-metric-label>
+      <app-core-colored-value-label [value]="prevPeriodPayment && prevPeriodPayment.paymentAmount"></app-core-colored-value-label>
     </div>
     <input
       type="number"
@@ -185,7 +182,7 @@
 
     <div class="d-flex justify-content-between mt-2">
       <label for="commissionAmount"><strong>Commission amount</strong></label>
-      <app-core-previous-metric-label [metricValue]="prevPeriodPayment && prevPeriodPayment.commissionAmount | amount"></app-core-previous-metric-label>
+      <app-core-colored-value-label [value]="prevPeriodPayment && prevPeriodPayment.commissionAmount | amount"></app-core-colored-value-label>
     </div>
     <input
       type="number"

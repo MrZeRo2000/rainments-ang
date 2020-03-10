@@ -6,8 +6,8 @@ import { EditDeletePanelComponent } from './edit-delete-panel/edit-delete-panel.
 import { SaveDialogPanelComponent } from './save-dialog-panel/save-dialog-panel.component';
 import {DataSourceModule} from '../data-source/data-source.module';
 import { UrlValidatorDirective } from './url-validator.directive';
-import { PreviousMetricLabelComponent } from './previous-metric-label/previous-metric-label.component';
 import { AmountPipe } from './pipes/amount.pipe';
+import { ColoredValueLabelComponent } from './colored-value-label/colored-value-label.component';
 
 
 @NgModule({
@@ -17,8 +17,8 @@ import { AmountPipe } from './pipes/amount.pipe';
     EditDeletePanelComponent,
     SaveDialogPanelComponent,
     UrlValidatorDirective,
-    PreviousMetricLabelComponent,
-    AmountPipe
+    ColoredValueLabelComponent,
+    AmountPipe,
   ],
   imports: [
     CommonModule,
@@ -29,7 +29,7 @@ import { AmountPipe } from './pipes/amount.pipe';
     AddPanelComponent,
     EditDeletePanelComponent,
     SaveDialogPanelComponent,
-    PreviousMetricLabelComponent,
+    ColoredValueLabelComponent,
     AmountPipe
   ],
   providers: [
