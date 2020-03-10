@@ -3,6 +3,7 @@ import {Observable, Subject} from 'rxjs';
 import {HttpResponse} from '@angular/common/http';
 import {CommonEntity} from './common-entity';
 import {ReadRepository} from './read-repository';
+import {PatchRequest} from '../model/patch-request';
 
 export class ReadWriteRepository<T extends CommonEntity> extends ReadRepository<T> {
   private persistSuccess: Subject<boolean> = new Subject<boolean>();
@@ -42,6 +43,11 @@ export class ReadWriteRepository<T extends CommonEntity> extends ReadRepository<
   deleteItem(id: number): void {
     this.beforePersist();
     this.handlePersistHttpResponse(this.dataSource.deleteResponse(this.resourceName, id));
+  }
+
+  patchItem(id: number, patchRequest: PatchRequest): void {
+    this.beforePersist();
+    this.handlePersistHttpResponse(this.dataSource.patchResponse(this.resourceName, id, patchRequest));
   }
 
   getPersistSuccessObservable(): Subject<boolean> {

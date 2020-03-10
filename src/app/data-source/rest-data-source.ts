@@ -27,4 +27,8 @@ export class RestDataSource {
   deleteResponse(resourceName: string, id: number): Observable<HttpResponse<any>> {
     return this.http.delete(this.restUrl + resourceName + '/' + id, { observe: 'response' });
   }
+
+  patchResponse(resourceName: string, id: number, body: any): Observable<HttpResponse<any>> {
+    return this.http.patch(this.restUrl + resourceName + '/' + id, body, { observe: 'response' });
+  }
 }

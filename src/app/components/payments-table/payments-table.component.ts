@@ -7,7 +7,6 @@ import {
   OnInit,
   QueryList,
   SimpleChanges,
-  ViewChild,
   ViewChildren
 } from '@angular/core';
 import {CommonEditableTableComponent} from '../../core/table/common-editable-table-component';
@@ -25,6 +24,7 @@ import {PaymentObject} from '../../model/payment-object';
 import {InlineEditHandler, InlineEditSelection} from '../../core/inline-edit-handler';
 import {AmountPipe} from '../../core/pipes/amount.pipe';
 import {ColorScheme} from '../../core/colored-value-label/colored-value-label.component';
+import {PatchRequest} from '../../model/patch-request';
 
 enum InlineControl {
   ProductCounter = 'productCounterControl',
@@ -117,7 +117,16 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     });
 
     this.inlineEditHandler.inputProcessor = ((item, selection) => {
-      alert('HANDLER Entered value ' + selection.value + ' for editor ' + selection.controlName + ' for item ' + JSON.stringify(item));
+      const patchRequest = new PatchRequest('replace', '/' + selection.controlName.replace('Control', ''));
+      if (selection.value) {
+        patchRequest.value = selection.value;
+      } else {
+        if (['paymentAmountControl', 'commissionAmountControl'].includes(selection.controlName)) {
+          patchRequest.value = '0';
+        }
+      }
+      this.repository.patchItem(item.id, patchRequest);
+      // alert('HANDLER Entered value ' + selection.value + ' for editor ' + selection.controlName + ' for item ' + JSON.stringify(item));
     });
   }
 
