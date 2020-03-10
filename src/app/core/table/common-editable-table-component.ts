@@ -72,6 +72,8 @@ export abstract class CommonEditableTableComponent<R, W extends CommonEntity>
      */
   }
 
+  protected editFormInit() {}
+
   protected editFormChanged(data: any) {}
 
   protected getWritableData(): W {
@@ -91,6 +93,7 @@ export abstract class CommonEditableTableComponent<R, W extends CommonEntity>
   onAddClick(): void {
     this.buildEditForm();
     this.editState = new EditState<W>(EditMode.EM_CREATE, new this.ctor());
+    this.editFormInit();
     this.requireFocus();
   }
 

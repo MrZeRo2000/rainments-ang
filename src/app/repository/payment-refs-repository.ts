@@ -20,10 +20,9 @@ export class PaymentRefsRepository extends ReadRepository<PaymentRefs> {
       if (prevPeriodPayments) {
         workData.paymentList.forEach(payment => {
           payment.prevPeriodPayment = prevPeriodPayments.filter(value => value.product.id === payment.product.id)[0];
-          if (payment.prevPeriodPayment) {
-            workData.prevProductPayments.set(payment.prevPeriodPayment.product.id, payment.prevPeriodPayment);
-          }
         });
+        prevPeriodPayments.forEach(prevPeriodPayment =>
+          workData.prevProductPayments.set(prevPeriodPayment.product.id, prevPeriodPayment));
       }
     }
   }

@@ -184,6 +184,11 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     this.productUsageForm.controls.productUsageCounter.setValue(this.amountPipe.transform(this.productUsage));
   }
 
+  protected editFormInit() {
+    super.editFormInit();
+    this.prevPeriodPayment = undefined;
+  }
+
   protected editFormChanged(data: any) {
     super.editFormChanged(data);
     if (data.product !== '') {
