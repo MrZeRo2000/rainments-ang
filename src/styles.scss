@@ -2,6 +2,7 @@
 @import 'variables';
 @import 'node_modules/@fortawesome/fontawesome-free/scss/fontawesome';
 @import "node_modules/@fortawesome/fontawesome-free/scss/solid";
+@import "node_modules/@fortawesome/fontawesome-free/scss/regular";
 @import 'node_modules/bootstrap/scss/bootstrap';
 
 
@@ -50,3 +51,8 @@ body {
   width: 20%!important;
 }
 
+.#{$fa-css-prefix}-lg {
+  font-size: (4em / 3);
+  line-height: (3em / 4);
+  vertical-align: -.075em;
+}
