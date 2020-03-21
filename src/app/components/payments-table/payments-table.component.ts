@@ -351,4 +351,13 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
       item.commissionAmount.toFixed(2)
     );
   }
+
+  uploadFile(event: any) {
+    alert('Uploading file:'+event.target.files[0].name);
+  }
+
+  importExcelButtonClick(event: any) {
+    event.preventDefault();
+    document.getElementById('importFile').click();
+  }
 }

@@ -1,5 +1,7 @@
 
-<app-core-add-panel [editable]="this" (addClick)="onAddClick()"></app-core-add-panel>
+<div class="mt-2 mb-2">
+  <app-core-add-panel [editable]="this" (addClick)="onAddClick()"></app-core-add-panel>
+</div>
 
 <table class="table" *ngIf="getEditingState()">
   <thead>
