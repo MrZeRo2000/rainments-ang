@@ -1,6 +1,13 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ImportPaymentObjectExcelComponent } from './import-payment-object-excel.component';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {ReactiveFormsModule} from '@angular/forms';
+import {CoreModule} from '../../core/core.module';
+import {RestUrlEnv} from '../../config/configuration';
+import {RestDataSource} from '../../data-source/rest-data-source';
+import {PaymentRepository} from '../../repository/payment-repository';
+import {PaymentObjectRepository} from '../../repository/payment-object-repository';
 
 describe('ImportPaymentObjectExcelComponent', () => {
   let component: ImportPaymentObjectExcelComponent;
@@ -8,7 +15,9 @@ describe('ImportPaymentObjectExcelComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ImportPaymentObjectExcelComponent ]
+      declarations: [ ImportPaymentObjectExcelComponent ],
+      imports: [HttpClientTestingModule, ReactiveFormsModule, CoreModule],
+      providers: [RestUrlEnv, RestDataSource, PaymentObjectRepository]
     })
     .compileComponents();
   }));
