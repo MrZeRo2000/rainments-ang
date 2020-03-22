@@ -22,14 +22,6 @@ export class SettingsComponent implements OnInit {
 
   selectedItem: SettingItemEnum = SettingItemEnum.PAYMENT_OBJECTS;
 
-  constructor() {
-    console.log('in constructor');
-  }
-
-  getItemKeys() {
-    return Object.keys(SettingItemEnum);
-  }
-
   ngOnInit() {
   }
 

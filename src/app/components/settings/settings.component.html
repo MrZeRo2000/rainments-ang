@@ -3,8 +3,8 @@
   <div class="col-2">
 
     <ul class="nav nav-pills flex-column">
-      <li class="nav-item" *ngFor="let itemKey of getItemKeys()">
-        <a class="nav-link" href="#" [ngClass]="{'active': SettingItemEnumType[itemKey] === selectedItem}" (click)="onItemClick($event, SettingItemEnumType[itemKey])">{{SettingItemEnumType[itemKey]}}</a>
+      <li class="nav-item" *ngFor="let item of SettingItemEnumType | enumStringValue">
+        <a class="nav-link" href="#" [ngClass]="{'active': item === selectedItem}" (click)="onItemClick($event, item)">{{item}}</a>
       </li>
     </ul>
 
