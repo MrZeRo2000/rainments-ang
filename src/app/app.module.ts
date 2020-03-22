@@ -21,6 +21,8 @@ import { PaymentsDateSelectionComponent } from './components/payments-date-selec
 import { PaymentsTableComponent } from './components/payments-table/payments-table.component';
 import {RepositoryModule} from './repository/repository.module';
 import { PaymentsSummaryComponent } from './components/payments-summary/payments-summary.component';
+import { ImportExportComponent } from './components/import-export/import-export.component';
+import { ImportPaymentObjectExcelComponent } from './components/import-payment-object-excel/import-payment-object-excel.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,9 @@ import { PaymentsSummaryComponent } from './components/payments-summary/payments
     PaymentsMasterComponent,
     PaymentsDateSelectionComponent,
     PaymentsTableComponent,
-    PaymentsSummaryComponent
+    PaymentsSummaryComponent,
+    ImportExportComponent,
+    ImportPaymentObjectExcelComponent
   ],
   // modal component not directly referenced in templates
   entryComponents: [

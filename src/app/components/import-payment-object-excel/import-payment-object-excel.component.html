@@ -1,0 +1,50 @@
+
+<form class="form-group" [formGroup]="editForm">
+
+  <label for="paymentObject" class="mt-2"><strong>Payment object</strong></label>
+  <select
+    class="browser-default custom-select"
+    [ngClass]="{'is-invalid': editForm.controls.paymentObject.errors && formSubmitted}"
+    formControlName="paymentObject"
+    id="paymentObject"
+  >
+    <option *ngFor="let item of getPaymentObjects()" value="{{item.id}}">{{item.name}}</option>
+  </select>
+
+  <div><input hidden type="file" id="importFile" (change)="uploadFile($event)"></div>
+
+  <div class="d-flex mt-2" [ngClass]="{'is-invalid': editForm.controls.fileName.errors && formSubmitted}">
+    <button class="btn btn-outline-primary text-nowrap" (click)="importFileButtonClick($event)">Select file</button>
+
+    <label for="fileName"></label>
+    <input
+      type="text"
+      placeholder="Please, select a file"
+      class="form-control ml-2 p-2 flex-grow-1"
+      [ngClass]="{'is-invalid': editForm.controls.fileName.errors && formSubmitted}"
+      readonly
+      formControlName="fileName"
+      id="fileName"
+    >
+
+  </div>
+
+  <div *ngIf="editForm.controls.paymentObject.errors && formSubmitted" class="invalid-feedback">
+    <div *ngIf="editForm.controls.paymentObject.errors.required">Payment object should not be empty</div>
+  </div>
+
+  <div *ngIf="editForm.controls.fileName.errors && formSubmitted" class="invalid-feedback">
+    <div *ngIf="editForm.controls.fileName.errors.required">File should not be empty</div>
+  </div>
+
+  <div class="input-group mt-2 justify-content-end">
+    <button type="button" class="btn btn-outline-primary mr-2" (click)="onImport()" [disabled]="this.repository.getLoading()">Import</button>
+    <button type="button" class="btn btn-outline-primary" (click)="onClear()" [disabled]="this.repository.getLoading()">Clear</button>
+  </div>
+
+</form>
+
+<app-core-loading-progress [loadable]="repository"></app-core-loading-progress>
+
+<app-message></app-message>
+
