@@ -4,21 +4,30 @@ export class SettingItem {
   constructor(public id: number, public name: string) {}
 }
 
+export enum SettingItemEnum {
+  PAYMENT_OBJECTS = 'Payment Objects',
+  PAYMENT_GROUPS = 'Payment Groups',
+  PRODUCTS = 'Products',
+  IMPORT_EXPORT = 'Import / Export'
+}
+
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent implements OnInit {
-  selectedItem: SettingItem;
-  settingItems: Array<SettingItem> = new Array<SettingItem>();
+
+  public SettingItemEnumType = SettingItemEnum;
+
+  selectedItem: SettingItemEnum = SettingItemEnum.PAYMENT_OBJECTS;
 
   constructor() {
-    this.settingItems.push(new SettingItem(100, 'Payment Objects'));
-    this.settingItems.push(new SettingItem(200, 'Payment Groups'));
-    this.settingItems.push(new SettingItem(300, 'Products'));
+    console.log('in constructor');
+  }
 
-    this.selectedItem = this.settingItems[0];
+  getItemKeys() {
+    return Object.keys(SettingItemEnum);
   }
 
   ngOnInit() {
