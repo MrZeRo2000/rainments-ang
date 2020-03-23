@@ -65,6 +65,7 @@ export class ImportPaymentObjectExcelComponent extends CommonSimpleTableComponen
 
   onClear(): void {
     this.editForm.reset();
+    (document.getElementById('importFile') as HTMLInputElement).value = '';
     this.editFormFile = null;
     this.formSubmitted = false;
   }
