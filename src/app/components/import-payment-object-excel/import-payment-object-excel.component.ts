@@ -24,6 +24,7 @@ export class ImportPaymentObjectExcelComponent extends CommonSimpleTableComponen
 
   ngOnInit(): void {
     this.editForm = this.buildForm();
+    this.importRepository.getPersistSuccessObservable().subscribe(value => {});
   }
 
   getPaymentObjects(): PaymentObject[] {
@@ -53,7 +54,7 @@ export class ImportPaymentObjectExcelComponent extends CommonSimpleTableComponen
 
     if (this.editForm.valid) {
       alert('uploading');
-      const paymentObject = this.getPaymentObjects().filter(value => value.id === this.editForm.value)[0];
+      const paymentObject = this.getPaymentObjects().filter(value => value.id === Number.parseInt(this.editForm.value.paymentObject,0))[0];
 
       const formData = new FormData();
       formData.append('payment_object', JSON.stringify(paymentObject));
