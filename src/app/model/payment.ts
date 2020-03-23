@@ -1,4 +1,4 @@
-import {CommonEntity} from '../core/common-entity';
+import {CommonEntity} from '../core/entity/common-entity';
 import {PaymentObject} from './payment-object';
 import {PaymentGroup} from './payment-group';
 import {Product} from './product';

@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Editable, Loadable} from '../edit-intf';
-import {EditMode} from '../edit-state';
+import {Editable, Loadable} from '../../edit/edit-intf';
+import {EditMode} from '../../edit/edit-state';
 
 @Component({
   selector: 'app-core-save-dialog-panel',

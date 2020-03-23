@@ -1,7 +1,7 @@
-import {CommonEntity} from '../common-entity';
+import {CommonEntity} from '../entity/common-entity';
 import {CommonEditableTableComponent} from './common-editable-table-component';
 import {BsModalService} from 'ngx-bootstrap';
-import {ReadWriteRepository} from '../read-write-repository';
+import {ReadWriteRepository} from '../repository/read-write-repository';
 
 export abstract class CommonSimpleEditableTableComponent<T extends CommonEntity>
   extends CommonEditableTableComponent<T, T> {

@@ -1,7 +1,7 @@
-import {ReadWriteRepository} from '../read-write-repository';
+import {ReadWriteRepository} from '../repository/read-write-repository';
 import {OnInit} from '@angular/core';
 import {HttpParams} from '@angular/common/http';
-import {ReadRepository} from '../read-repository';
+import {ReadRepository} from '../repository/read-repository';
 
 export class CommonTableComponent<R, W> implements OnInit {
   protected config: CommonTableConfig;

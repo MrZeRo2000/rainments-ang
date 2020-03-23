@@ -1,14 +1,14 @@
 import {OnInit} from '@angular/core';
-import {Editable} from '../edit-intf';
+import {Editable} from '../edit/edit-intf';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
-import {ReadWriteRepository} from '../read-write-repository';
-import {EditMode, EditState} from '../edit-state';
-import {CommonEntity} from '../common-entity';
+import {ReadWriteRepository} from '../repository/read-write-repository';
+import {EditMode, EditState} from '../edit/edit-state';
+import {CommonEntity} from '../entity/common-entity';
 import {FormGroup} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {DialogConfirmationComponent} from '../../components/dialog-confirmation/dialog-confirmation.component';
 import {CommonTableComponent} from './common-table-component';
-import {ReadRepository} from '../read-repository';
+import {ReadRepository} from '../repository/read-repository';
 import {Payment} from '../../model/payment';
 
 export abstract class CommonEditableTableComponent<R, W extends CommonEntity>

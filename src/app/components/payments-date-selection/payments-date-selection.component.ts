@@ -1,6 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {DateRangeGenerator} from '../../core/date-range-generator';
+import {DateRangeGenerator} from '../../core/utils/date-range-generator';
 
 @Component({
   selector: 'app-payments-date-selection',

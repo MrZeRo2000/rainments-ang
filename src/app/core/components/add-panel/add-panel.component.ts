@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Editable} from '../edit-intf';
+import {Editable} from '../../edit/edit-intf';
 
 @Component({
   selector: 'app-core-add-panel',

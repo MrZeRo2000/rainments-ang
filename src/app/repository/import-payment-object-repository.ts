@@ -4,7 +4,7 @@ import {MessagesService} from '../messages/messages.service';
 import {Observable, Subject} from 'rxjs';
 import {HttpResponse} from '@angular/common/http';
 import {ErrorMessage} from '../messages/message.model';
-import {RepositoryUtils} from '../core/repository-utils';
+import {RepositoryUtils} from '../core/repository/repository-utils';
 
 @Injectable()
 export class ImportPaymentObjectRepository {

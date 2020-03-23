@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 import {HttpResponse} from '@angular/common/http';
-import {ErrorMessage} from '../messages/message.model';
+import {ErrorMessage} from '../../messages/message.model';
 import {RepositoryUtils} from './repository-utils';
-import {MessagesService} from '../messages/messages.service';
+import {MessagesService} from '../../messages/messages.service';
 
 export class PersistRepository {
   private persistSuccess: Subject<boolean> = new Subject<boolean>();
@@ -26,7 +26,7 @@ export class PersistRepository {
     this.loadingState.next(true);
   }
 
-  private handlePersistHttpResponse( observable: Observable<HttpResponse<any>>): void {
+  private internalHandlePersistHttpResponse( observable: Observable<HttpResponse<any>>): void {
     observable.subscribe((data) => {
       if (data.ok) {
         // Object.assign(this.lastItem, data.body);
@@ -41,5 +41,10 @@ export class PersistRepository {
       this.loadingState.next( false);
       this.persistSuccess.next(false);
     });
+  }
+
+  public handlePersistHttpResponse( observable: Observable<HttpResponse<any>>): void {
+    this.beforePersist();
+    this.internalHandlePersistHttpResponse(observable);
   }
 }

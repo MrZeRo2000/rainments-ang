@@ -1,4 +1,4 @@
-import {ReadRepository} from '../core/read-repository';
+import {ReadRepository} from '../core/repository/read-repository';
 import {PaymentRefs} from '../model/payment-refs';
 import {RestDataSource} from '../data-source/rest-data-source';
 import {MessagesService} from '../messages/messages.service';

@@ -1,5 +1,5 @@
 import { Directive } from '@angular/core';
-import {AbstractControl, NG_VALIDATORS, ValidatorFn, Validators, Validator} from '@angular/forms';
+import {AbstractControl, NG_VALIDATORS, ValidatorFn, Validator} from '@angular/forms';
 
 export function urlValidator(): ValidatorFn {
   const urlPattern = new RegExp('^((http|https)?:\\/\\/)' + // protocol

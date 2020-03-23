@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Loadable} from '../edit-intf';
+import {Loadable} from '../../edit/edit-intf';
 
 @Component({
   selector: 'app-core-loading-progress',

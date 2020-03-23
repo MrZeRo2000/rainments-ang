@@ -21,9 +21,9 @@ import {HttpParams} from '@angular/common/http';
 import {PaymentGroup} from '../../model/payment-group';
 import {Product} from '../../model/product';
 import {PaymentObject} from '../../model/payment-object';
-import {InlineEditHandler, InlineEditSelection} from '../../core/inline-edit-handler';
+import {InlineEditHandler, InlineEditSelection} from '../../core/edit/inline-edit-handler';
 import {AmountPipe} from '../../core/pipes/amount.pipe';
-import {ColorScheme} from '../../core/colored-value-label/colored-value-label.component';
+import {ColorScheme} from '../../core/components/colored-value-label/colored-value-label.component';
 import {PatchRequest} from '../../model/patch-request';
 
 enum InlineControl {
