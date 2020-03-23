@@ -1,6 +1,6 @@
 import {Inject, Injectable} from '@angular/core';
 import {RestUrl} from '../config/configuration';
-import {HttpClient, HttpParams, HttpResponse} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
 import {Observable} from 'rxjs';
 
 
@@ -30,5 +30,13 @@ export class RestDataSource {
 
   patchResponse(resourceName: string, id: number, body: any): Observable<HttpResponse<any>> {
     return this.http.patch(this.restUrl + resourceName + '/' + id, body, { observe: 'response' });
+  }
+
+  postFormDataResponse(resourceName: string, formData: FormData): Observable<HttpResponse<any>> {
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'multipart/form-data');
+    headers.append('Accept', 'application/json');
+
+    return this.http.post(this.restUrl + resourceName, formData, {headers, observe: 'response'});
   }
 }

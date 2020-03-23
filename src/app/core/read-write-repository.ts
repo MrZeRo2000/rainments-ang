@@ -4,8 +4,19 @@ import {HttpResponse} from '@angular/common/http';
 import {CommonEntity} from './common-entity';
 import {ReadRepository} from './read-repository';
 import {PatchRequest} from '../model/patch-request';
+import {RepositoryUtils} from './repository-utils';
+import {RestDataSource} from '../data-source/rest-data-source';
+import {MessagesService} from '../messages/messages.service';
 
 export class ReadWriteRepository<T extends CommonEntity> extends ReadRepository<T> {
+
+  constructor(
+    protected dataSource: RestDataSource,
+    protected messagesService: MessagesService,
+    protected resourceName: string) {
+    super(dataSource, messagesService, resourceName);
+  }
+
   private persistSuccess: Subject<boolean> = new Subject<boolean>();
 
   private beforePersist(): void {
@@ -24,7 +35,7 @@ export class ReadWriteRepository<T extends CommonEntity> extends ReadRepository<
         this.persistSuccess.next(false);
       }
     }, error => {
-      this.messagesService.reportMessage(new ErrorMessage( 'Network error:' + this.getNetworkErrorMessage(error)));
+      this.messagesService.reportMessage(new ErrorMessage( 'Network error:' + RepositoryUtils.getNetworkErrorMessage(error)));
       this.loading = false;
       this.persistSuccess.next(false);
     });

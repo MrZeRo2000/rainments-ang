@@ -4,6 +4,7 @@ import {MessagesService} from '../messages/messages.service';
 import {HttpParams} from '@angular/common/http';
 import {ErrorMessage} from '../messages/message.model';
 import {Subject} from 'rxjs';
+import {RepositoryUtils} from './repository-utils';
 
 export class ReadRepository<T> implements Loadable {
   protected data: T[] = new Array<T>();
@@ -26,10 +27,6 @@ export class ReadRepository<T> implements Loadable {
 
   getDataAvailable(): boolean {
     return !this.loadingError && !this.getLoading();
-  }
-
-  protected getNetworkErrorMessage(error: any): string {
-    return (error.error && error.error.message) || error.message;
   }
 
   loadData(params?: HttpParams): void {
@@ -60,7 +57,7 @@ export class ReadRepository<T> implements Loadable {
       this.loading = false;
     }, error => {
       this.data.length = 0;
-      this.messagesService.reportMessage(new ErrorMessage( 'Network error:' + this.getNetworkErrorMessage(error)));
+      this.messagesService.reportMessage(new ErrorMessage( 'Network error:' + RepositoryUtils.getNetworkErrorMessage(error)));
       this.loading = false;
       this.loadingError = true;
       this.loadSuccess.next(false);

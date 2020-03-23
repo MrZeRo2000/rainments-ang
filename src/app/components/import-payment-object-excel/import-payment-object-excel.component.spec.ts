@@ -8,6 +8,7 @@ import {RestUrlEnv} from '../../config/configuration';
 import {RestDataSource} from '../../data-source/rest-data-source';
 import {PaymentRepository} from '../../repository/payment-repository';
 import {PaymentObjectRepository} from '../../repository/payment-object-repository';
+import {ImportPaymentObjectRepository} from '../../repository/import-payment-object-repository';
 
 describe('ImportPaymentObjectExcelComponent', () => {
   let component: ImportPaymentObjectExcelComponent;
@@ -17,7 +18,7 @@ describe('ImportPaymentObjectExcelComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ ImportPaymentObjectExcelComponent ],
       imports: [HttpClientTestingModule, ReactiveFormsModule, CoreModule],
-      providers: [RestUrlEnv, RestDataSource, PaymentObjectRepository]
+      providers: [RestUrlEnv, RestDataSource, PaymentObjectRepository, ImportPaymentObjectRepository]
     })
     .compileComponents();
   }));

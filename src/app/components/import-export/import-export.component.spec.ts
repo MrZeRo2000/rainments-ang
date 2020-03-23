@@ -9,6 +9,7 @@ import {CoreModule} from '../../core/core.module';
 import {RestUrlEnv} from '../../config/configuration';
 import {RestDataSource} from '../../data-source/rest-data-source';
 import {PaymentObjectRepository} from '../../repository/payment-object-repository';
+import {ImportPaymentObjectRepository} from '../../repository/import-payment-object-repository';
 
 describe('ImportExportComponent', () => {
   let component: ImportExportComponent;
@@ -18,7 +19,7 @@ describe('ImportExportComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ ImportExportComponent, ImportPaymentObjectExcelComponent ],
       imports: [HttpClientTestingModule, ReactiveFormsModule, CoreModule],
-      providers: [RestUrlEnv, RestDataSource, PaymentObjectRepository]
+      providers: [RestUrlEnv, RestDataSource, PaymentObjectRepository, ImportPaymentObjectRepository]
     })
     .compileComponents();
   }));

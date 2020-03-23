@@ -3,6 +3,7 @@ import {CommonSimpleTableComponent} from '../../core/table/common-simple-table-c
 import {PaymentObject} from '../../model/payment-object';
 import {PaymentObjectRepository} from '../../repository/payment-object-repository';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ImportPaymentObjectRepository} from '../../repository/import-payment-object-repository';
 
 @Component({
   selector: 'app-import-payment-object-excel',
@@ -14,8 +15,11 @@ export class ImportPaymentObjectExcelComponent extends CommonSimpleTableComponen
   formSubmitted = false;
   editFormFile: File;
 
-  constructor(private fb: FormBuilder, public repository: PaymentObjectRepository) {
-    super(repository);
+  constructor(
+    private fb: FormBuilder,
+    public repository: PaymentObjectRepository,
+    private importRepository: ImportPaymentObjectRepository) {
+      super(repository);
   }
 
   ngOnInit(): void {
@@ -49,6 +53,12 @@ export class ImportPaymentObjectExcelComponent extends CommonSimpleTableComponen
 
     if (this.editForm.valid) {
       alert('uploading');
+      const paymentObject = this.getPaymentObjects().filter(value => value.id === this.editForm.value)[0];
+
+      const formData = new FormData();
+      formData.append('payment_object', JSON.stringify(paymentObject));
+      formData.append('file', this.editFormFile);
+      this.importRepository.postFormData(formData);
     }
   }
 
