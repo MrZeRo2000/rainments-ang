@@ -74,6 +74,20 @@
                   "with": "src/environments/environment.int.ts"
                 }
               ]
+            },
+            "int-ide": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.int-ide.ts"
+                }
+              ]
             }
           }
         },
@@ -88,6 +102,9 @@
             },
             "int": {
               "browserTarget": "rainments-ang:build:int"
+            },
+            "int-ide": {
+              "browserTarget": "rainments-ang:build:int-ide"
             }
           }
         },

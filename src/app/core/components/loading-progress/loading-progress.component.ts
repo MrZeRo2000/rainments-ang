@@ -10,6 +10,8 @@ export class LoadingProgressComponent implements OnInit {
 
   @Input() loadable: Loadable;
 
+  @Input() message: string;
+
   constructor() { }
 
   ngOnInit() {

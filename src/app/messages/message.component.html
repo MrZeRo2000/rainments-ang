@@ -2,4 +2,13 @@
   <alert type="danger" *ngIf="displayMessage.messageType === MessageType.MT_ERROR" [dismissible]=true (onClose)="onClosed()">
     {{displayMessage.messageText}}
   </alert>
+  <alert type="info" *ngIf="displayMessage.messageType === MessageType.MT_INFO" [dismissible]=true (onClose)="onClosed()">
+    {{displayMessage.messageText}}
+  </alert>
+  <alert type="success" *ngIf="displayMessage.messageType === MessageType.MT_SUCCESS" [dismissible]=true (onClose)="onClosed()">
+    {{displayMessage.messageText}}
+  </alert>
+  <alert type="warning" *ngIf="displayMessage.messageType === MessageType.MT_WARNING" [dismissible]=true (onClose)="onClosed()">
+    {{displayMessage.messageText}}
+  </alert>
 </div>

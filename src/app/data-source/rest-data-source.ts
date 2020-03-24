@@ -34,7 +34,7 @@ export class RestDataSource {
 
   postFormDataResponse(resourceName: string, formData: FormData): Observable<HttpResponse<any>> {
     const headers = new HttpHeaders();
-    headers.append('Content-Type', 'multipart/form-data');
+    headers.append('Content-Type', undefined);
     headers.append('Accept', 'application/json');
 
     return this.http.post(this.restUrl + resourceName, formData, {headers, observe: 'response'});

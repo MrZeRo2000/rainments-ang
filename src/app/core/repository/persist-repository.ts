@@ -7,11 +7,16 @@ import {MessagesService} from '../../messages/messages.service';
 
 export class PersistRepository {
   private persistSuccess: Subject<boolean> = new Subject<boolean>();
+  private persistData: Subject<any> = new Subject<any>();
 
   private loadingState: Subject<boolean> = new Subject<boolean>();
 
   public getPersistSuccess(): Subject<boolean> {
     return this.persistSuccess;
+  }
+
+  public getPersistData(): Subject<any> {
+    return this.persistData;
   }
 
   public getLoadingState(): Subject<boolean> {
@@ -32,6 +37,7 @@ export class PersistRepository {
         // Object.assign(this.lastItem, data.body);
         this.loadingState.next(false);
         this.persistSuccess.next(true);
+        this.persistData.next(data);
       } else {
         this.messagesService.reportMessage(new ErrorMessage( 'Error posting data to server:' + data.body));
         this.persistSuccess.next(false);

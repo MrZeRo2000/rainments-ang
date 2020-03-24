@@ -5,7 +5,7 @@
 export const environment = {
   VERSION: require('../../package.json').version,
   production: false,
-  restUrl: 'http://localhost:3000/ide_rainments_wss_war/'
+  restUrl: 'http://localhost:3579/ide_rainments_wss_war/'
 };
 
 /*

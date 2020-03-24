@@ -19,7 +19,11 @@ export class ImportPaymentObjectRepository {
     this.persistRepository.handlePersistHttpResponse(this.dataSource.postFormDataResponse(this.resourceName, formData));
   }
 
-  getPersistSuccessObservable(): Subject<boolean> {
-    return this.persistRepository.getPersistSuccess();
+  getPersistData(): Subject<any> {
+    return this.persistRepository.getPersistData();
+  }
+
+  getLoadingState(): Subject<boolean> {
+    return this.persistRepository.getLoadingState();
   }
 }
