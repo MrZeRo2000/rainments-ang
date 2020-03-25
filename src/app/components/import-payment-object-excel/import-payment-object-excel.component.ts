@@ -84,4 +84,8 @@ export class ImportPaymentObjectExcelComponent extends CommonSimpleTableComponen
     this.editFormFile = null;
     this.formSubmitted = false;
   }
+
+  testButtonClick(): void {
+    alert('test button');
+  }
 }
