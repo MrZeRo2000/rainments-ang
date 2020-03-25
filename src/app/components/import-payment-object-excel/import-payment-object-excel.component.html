@@ -1,6 +1,5 @@
-<app-core-loading-progress [loadable]="this" message="Importing "></app-core-loading-progress>
 
-<form class="form-group" [formGroup]="editForm" *ngIf="!loading">
+<form class="form-group" [formGroup]="editForm">
 
   <label for="paymentObject" class="mt-2"><strong>Payment object</strong></label>
   <select
@@ -46,8 +45,5 @@
 </form>
 
 <app-core-loading-progress [loadable]="repository"></app-core-loading-progress>
-
-<button type="button" class="btn btn-outline-primary" (click)="testButtonClick()">Test button</button>
-
 
 

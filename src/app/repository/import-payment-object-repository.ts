@@ -23,6 +23,10 @@ export class ImportPaymentObjectRepository {
     return this.persistRepository.getPersistData();
   }
 
+  getPersistSuccess(): Subject<any> {
+    return this.persistRepository.getPersistSuccess();
+  }
+
   getLoadingState(): Subject<boolean> {
     return this.persistRepository.getLoadingState();
   }

@@ -4,7 +4,7 @@ import { ImportExportComponent } from './import-export.component';
 import {ImportPaymentObjectExcelComponent} from '../import-payment-object-excel/import-payment-object-excel.component';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {ReactiveFormsModule} from '@angular/forms';
-import {ModalModule} from 'ngx-bootstrap';
+import {BsModalService, ModalModule} from 'ngx-bootstrap';
 import {CoreModule} from '../../core/core.module';
 import {RestUrlEnv} from '../../config/configuration';
 import {RestDataSource} from '../../data-source/rest-data-source';
@@ -18,8 +18,8 @@ describe('ImportExportComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ImportExportComponent, ImportPaymentObjectExcelComponent ],
-      imports: [HttpClientTestingModule, ReactiveFormsModule, CoreModule],
-      providers: [RestUrlEnv, RestDataSource, PaymentObjectRepository, ImportPaymentObjectRepository]
+      imports: [HttpClientTestingModule, ReactiveFormsModule, CoreModule, ModalModule.forRoot()],
+      providers: [RestUrlEnv, RestDataSource, PaymentObjectRepository, ImportPaymentObjectRepository, BsModalService]
     })
     .compileComponents();
   }));

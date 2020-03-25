@@ -9,6 +9,7 @@ import {RestDataSource} from '../../data-source/rest-data-source';
 import {PaymentRepository} from '../../repository/payment-repository';
 import {PaymentObjectRepository} from '../../repository/payment-object-repository';
 import {ImportPaymentObjectRepository} from '../../repository/import-payment-object-repository';
+import {BsModalService, ModalModule} from 'ngx-bootstrap';
 
 describe('ImportPaymentObjectExcelComponent', () => {
   let component: ImportPaymentObjectExcelComponent;
@@ -17,8 +18,8 @@ describe('ImportPaymentObjectExcelComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ImportPaymentObjectExcelComponent ],
-      imports: [HttpClientTestingModule, ReactiveFormsModule, CoreModule],
-      providers: [RestUrlEnv, RestDataSource, PaymentObjectRepository, ImportPaymentObjectRepository]
+      imports: [HttpClientTestingModule, ReactiveFormsModule, CoreModule, ModalModule.forRoot()],
+      providers: [RestUrlEnv, RestDataSource, PaymentObjectRepository, ImportPaymentObjectRepository, BsModalService]
     })
     .compileComponents();
   }));

@@ -7,6 +7,8 @@ import {ImportPaymentObjectRepository} from '../../repository/import-payment-obj
 import {MessagesService} from '../../messages/messages.service';
 import {SuccessMessage} from '../../messages/message.model';
 import {Loadable} from '../../core/edit/edit-intf';
+import {LoadingModalPanelComponent} from '../../core/components/loading-modal-panel/loading-modal-panel.component';
+import {LoadingModalService} from '../../core/services/loading-modal.service';
 
 @Component({
   selector: 'app-import-payment-object-excel',
@@ -29,7 +31,8 @@ export class ImportPaymentObjectExcelComponent extends CommonSimpleTableComponen
     private fb: FormBuilder,
     public messagesService: MessagesService,
     public repository: PaymentObjectRepository,
-    private importRepository: ImportPaymentObjectRepository) {
+    private importRepository: ImportPaymentObjectRepository,
+    private loadingModalService: LoadingModalService) {
       super(repository);
   }
 
@@ -37,7 +40,12 @@ export class ImportPaymentObjectExcelComponent extends CommonSimpleTableComponen
     this.editForm = this.buildForm();
     this.importRepository.getPersistData().subscribe(data =>
       this.messagesService.reportMessage(new SuccessMessage(`Successfully imported ${data.body.rowsAffected} rows`)));
-    this.importRepository.getLoadingState().subscribe(value => this.loading = value);
+    this.importRepository.getLoadingState().subscribe(value => {
+      this.loading = value;
+      if (!this.loading) {
+        setTimeout(() => this.loadingModalService.hide(), 100);
+      }
+    });
   }
 
   getPaymentObjects(): PaymentObject[] {
@@ -73,7 +81,9 @@ export class ImportPaymentObjectExcelComponent extends CommonSimpleTableComponen
       formData.append('payment_object', new Blob([JSON.stringify(paymentObject)], {type: 'application/json'}));
       formData.append('file', this.editFormFile);
 
-      setTimeout(() => this.importRepository.postFormData(formData), 0);
+      this.loadingModalService.show();
+
+      setTimeout(() => this.importRepository.postFormData(formData), 100);
     }
   }
 
@@ -85,7 +95,4 @@ export class ImportPaymentObjectExcelComponent extends CommonSimpleTableComponen
     this.formSubmitted = false;
   }
 
-  testButtonClick(): void {
-    alert('test button');
-  }
 }
