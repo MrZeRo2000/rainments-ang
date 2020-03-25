@@ -9,6 +9,7 @@ import { UrlValidatorDirective } from './directives/url-validator.directive';
 import { AmountPipe } from './pipes/amount.pipe';
 import { ColoredValueLabelComponent } from './components/colored-value-label/colored-value-label.component';
 import { EnumStringValuePipe } from './pipes/enum-string-value.pipe';
+import {ConfirmationModalDialogComponent} from './components/confirmation-modal-dialog/confirmation-modal-dialog.component';
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import { EnumStringValuePipe } from './pipes/enum-string-value.pipe';
     SaveDialogPanelComponent,
     UrlValidatorDirective,
     ColoredValueLabelComponent,
+    ConfirmationModalDialogComponent,
     AmountPipe,
     EnumStringValuePipe,
   ],
@@ -26,12 +28,17 @@ import { EnumStringValuePipe } from './pipes/enum-string-value.pipe';
     CommonModule,
     DataSourceModule
   ],
+  // modal component not directly referenced in templates
+  entryComponents: [
+    ConfirmationModalDialogComponent
+  ],
     exports: [
         LoadingProgressComponent,
         AddPanelComponent,
         EditDeletePanelComponent,
         SaveDialogPanelComponent,
         ColoredValueLabelComponent,
+        ConfirmationModalDialogComponent,
         AmountPipe,
         EnumStringValuePipe
     ],

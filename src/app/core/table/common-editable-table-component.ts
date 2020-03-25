@@ -6,7 +6,7 @@ import {EditMode, EditState} from '../edit/edit-state';
 import {CommonEntity} from '../entity/common-entity';
 import {FormGroup} from '@angular/forms';
 import {Subject} from 'rxjs';
-import {DialogConfirmationComponent} from '../../components/dialog-confirmation/dialog-confirmation.component';
+import {ConfirmationModalDialogComponent} from '../components/confirmation-modal-dialog/confirmation-modal-dialog.component';
 import {CommonTableComponent} from './common-table-component';
 import {ReadRepository} from '../repository/read-repository';
 import {Payment} from '../../model/payment';
@@ -104,7 +104,7 @@ export abstract class CommonEditableTableComponent<R, W extends CommonEntity>
     });
     const message = '<strong>' + this.getDisplayItemName(item) + '</strong> will be deleted. <BR>Are you sure?';
     const initialState  = {message, item, result: resultSubject};
-    this.bsModalRef = this.modalService.show(DialogConfirmationComponent, {initialState});
+    this.bsModalRef = this.modalService.show(ConfirmationModalDialogComponent, {initialState});
   }
 
   onEditClick(item: W): void {

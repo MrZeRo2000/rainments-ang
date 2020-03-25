@@ -12,10 +12,10 @@
     <option *ngFor="let item of getPaymentObjects()" value="{{item.id}}">{{item.name}}</option>
   </select>
 
-  <div><input hidden type="file" id="importFile" (change)="uploadFile($event)"></div>
+  <div><input hidden type="file" id="importFile" #importFile (change)="uploadFile($event)"></div>
 
   <div class="d-flex mt-2" [ngClass]="{'is-invalid': editForm.controls.fileName.errors && formSubmitted}">
-    <button class="btn btn-outline-primary text-nowrap" (click)="importFileButtonClick($event)">Select file</button>
+    <button class="btn btn-outline-primary text-nowrap" (click)="selectFileButtonClick($event)">Select file</button>
 
     <label for="fileName"></label>
     <input

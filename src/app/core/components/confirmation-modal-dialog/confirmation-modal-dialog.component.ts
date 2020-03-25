@@ -3,11 +3,11 @@ import {BsModalRef} from 'ngx-bootstrap';
 import {Subject} from 'rxjs';
 
 @Component({
-  selector: 'app-dialog-confirmation',
-  templateUrl: './dialog-confirmation.component.html',
-  styleUrls: ['./dialog-confirmation.component.scss']
+  selector: 'app-core-dialog-confirmation',
+  templateUrl: './confirmation-modal-dialog.component.html',
+  styleUrls: ['./confirmation-modal-dialog.component.scss']
 })
-export class DialogConfirmationComponent implements OnInit {
+export class ConfirmationModalDialogComponent implements OnInit {
   message: string;
   item: any;
   result: Subject<any>;

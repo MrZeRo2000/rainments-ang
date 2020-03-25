@@ -11,7 +11,6 @@ import { ConfigModule} from './config/config.module';
 import { PaymentObjectsTableComponent } from './components/payment-objects-table/payment-objects-table.component';
 import { MessagesModule} from './messages/messages.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { DialogConfirmationComponent } from './components/dialog-confirmation/dialog-confirmation.component';
 import {ModalModule} from 'ngx-bootstrap';
 import {CoreModule} from './core/core.module';
 import { PaymentGroupsTableComponent } from './components/payment-groups-table/payment-groups-table.component';
@@ -31,7 +30,6 @@ import { ImportPaymentObjectExcelComponent } from './components/import-payment-o
     PaymentsDashboardComponent,
     NavTopComponent,
     PaymentObjectsTableComponent,
-    DialogConfirmationComponent,
     PaymentGroupsTableComponent,
     ProductsTableComponent,
     PaymentsMasterComponent,
@@ -40,10 +38,6 @@ import { ImportPaymentObjectExcelComponent } from './components/import-payment-o
     PaymentsSummaryComponent,
     ImportExportComponent,
     ImportPaymentObjectExcelComponent
-  ],
-  // modal component not directly referenced in templates
-  entryComponents: [
-    DialogConfirmationComponent
   ],
     imports: [
         BrowserModule,

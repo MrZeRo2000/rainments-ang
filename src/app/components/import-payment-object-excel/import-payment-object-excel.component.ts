@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {CommonSimpleTableComponent} from '../../core/table/common-simple-table-component';
 import {PaymentObject} from '../../model/payment-object';
 import {PaymentObjectRepository} from '../../repository/payment-object-repository';
@@ -18,6 +18,8 @@ export class ImportPaymentObjectExcelComponent extends CommonSimpleTableComponen
   formSubmitted = false;
   editFormFile: File;
   loading = false;
+
+  @ViewChild('importFile') importFileElement: ElementRef;
 
   getLoading(): boolean {
     return this.loading;
@@ -55,9 +57,9 @@ export class ImportPaymentObjectExcelComponent extends CommonSimpleTableComponen
     this.editForm.controls.fileName.setValue(this.editFormFile.name);
   }
 
-  importFileButtonClick(event: any): void {
+  selectFileButtonClick(event: any): void {
     event.preventDefault();
-    document.getElementById('importFile').click();
+    this.importFileElement.nativeElement.click();
   }
 
   onImport(): void {
@@ -76,8 +78,9 @@ export class ImportPaymentObjectExcelComponent extends CommonSimpleTableComponen
   }
 
   onClear(): void {
+    this.messagesService.resetMessage();
     this.editForm.reset();
-    (document.getElementById('importFile') as HTMLInputElement).value = '';
+    this.importFileElement.nativeElement.value = '';
     this.editFormFile = null;
     this.formSubmitted = false;
   }
