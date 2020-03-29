@@ -6,6 +6,10 @@ import {ErrorMessage} from '../../messages/message.model';
 import {Subject} from 'rxjs';
 import {RepositoryUtils} from './repository-utils';
 
+export class LoadParams {
+  constructor(public updateMessages?: boolean) { }
+}
+
 export class ReadRepository<T> implements Loadable {
   protected data: T[] = new Array<T>();
   protected loading = false;
@@ -29,9 +33,13 @@ export class ReadRepository<T> implements Loadable {
     return !this.loadingError && !this.getLoading();
   }
 
-  loadData(params?: HttpParams): void {
+  loadData(params?: HttpParams, loadParams?: LoadParams): void {
     console.log('load data from ' + this.resourceName);
-    this.messagesService.resetMessage();
+
+    if (loadParams && loadParams.updateMessages) {
+      this.messagesService.resetMessage();
+    }
+
     this.loading = true;
     this.dataSource.getResponse(this.resourceName, params).subscribe((data) => {
       if (data.ok) {
@@ -50,14 +58,22 @@ export class ReadRepository<T> implements Loadable {
         this.loadSuccess.next(true);
       } else {
         this.data.length = 0;
-        this.messagesService.reportMessage(new ErrorMessage( 'Error reading from server:' + data.body));
+
+        if (loadParams && loadParams.updateMessages) {
+          this.messagesService.reportMessage(new ErrorMessage( 'Error reading from server:' + data.body));
+        }
+
         this.loadingError = true;
         this.loadSuccess.next(false);
       }
       this.loading = false;
     }, error => {
       this.data.length = 0;
-      this.messagesService.reportMessage(new ErrorMessage( 'Network error:' + RepositoryUtils.getNetworkErrorMessage(error)));
+
+      if (loadParams && loadParams.updateMessages) {
+        this.messagesService.reportMessage(new ErrorMessage('Network error:' + RepositoryUtils.getNetworkErrorMessage(error)));
+      }
+
       this.loading = false;
       this.loadingError = true;
       this.loadSuccess.next(false);

@@ -15,7 +15,7 @@ export class BackupDatabaseRepository {
   }
 
   public postBackupRequest(): void {
-    this.dataSource.postResponse(this.resourceName, null);
+    this.persistRepository.handlePersistHttpResponse(this.dataSource.postResponse(this.resourceName, {}));
   }
 
   getPersistData(): Subject<any> {
