@@ -1,0 +1,5 @@
+<div *ngIf="!getLoading()">
+  <p>backup-database works! {{backupInfoRepository.getData()[0].backupFileCount}} {{backupInfoRepository.getData()[0].lastBackupDateTime}}</p>
+</div>
+
+<app-core-loading-progress [loadable]="this"></app-core-loading-progress>

@@ -22,6 +22,7 @@ import {RepositoryModule} from './repository/repository.module';
 import { PaymentsSummaryComponent } from './components/payments-summary/payments-summary.component';
 import { ImportExportComponent } from './components/import-export/import-export.component';
 import { ImportPaymentObjectExcelComponent } from './components/import-payment-object-excel/import-payment-object-excel.component';
+import { BackupDatabaseComponent } from './components/backup-database/backup-database.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { ImportPaymentObjectExcelComponent } from './components/import-payment-o
     PaymentsTableComponent,
     PaymentsSummaryComponent,
     ImportExportComponent,
-    ImportPaymentObjectExcelComponent
+    ImportPaymentObjectExcelComponent,
+    BackupDatabaseComponent
   ],
     imports: [
         BrowserModule,

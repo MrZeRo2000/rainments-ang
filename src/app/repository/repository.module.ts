@@ -8,6 +8,8 @@ import {ProductRepository} from './product-repository';
 import {PaymentRepository} from './payment-repository';
 import {PaymentRefsRepository} from './payment-refs-repository';
 import {ImportPaymentObjectRepository} from './import-payment-object-repository';
+import {BackupDatabaseRepository} from './backup-database-repository';
+import {BackupInfoRepository} from './backup-info-repository';
 
 
 
@@ -25,7 +27,9 @@ import {ImportPaymentObjectRepository} from './import-payment-object-repository'
     ProductRepository,
     PaymentRepository,
     PaymentRefsRepository,
-    ImportPaymentObjectRepository
+    ImportPaymentObjectRepository,
+    BackupDatabaseRepository,
+    BackupInfoRepository
   ]
 })
 export class RepositoryModule { }
