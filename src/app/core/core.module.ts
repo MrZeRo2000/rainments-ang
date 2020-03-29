@@ -44,7 +44,7 @@ import { LoadingSpinnerElementComponent } from './components/loading-spinner-ele
         ColoredValueLabelComponent,
         ConfirmationModalDialogComponent,
         LoadingSpinnerElementComponent,
-        LoadingProgressComponent,
+        LoadingModalPanelComponent,
         AmountPipe,
         EnumStringValuePipe
     ],

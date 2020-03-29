@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LoadingModalPanelComponent } from './loading-modal-panel.component';
+import {LoadingSpinnerElementComponent} from '../loading-spinner-element/loading-spinner-element.component';
+import {LoadingProgressComponent} from '../loading-progress/loading-progress.component';
 
 describe('LoadingModalPanelComponent', () => {
   let component: LoadingModalPanelComponent;
@@ -8,7 +10,7 @@ describe('LoadingModalPanelComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LoadingModalPanelComponent ]
+      declarations: [ LoadingModalPanelComponent, LoadingSpinnerElementComponent, LoadingProgressComponent ]
     })
     .compileComponents();
   }));
