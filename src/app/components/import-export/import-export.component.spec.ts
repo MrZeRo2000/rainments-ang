@@ -10,6 +10,8 @@ import {RestUrlEnv} from '../../config/configuration';
 import {RestDataSource} from '../../data-source/rest-data-source';
 import {PaymentObjectRepository} from '../../repository/payment-object-repository';
 import {ImportPaymentObjectRepository} from '../../repository/import-payment-object-repository';
+import {BackupDatabaseComponent} from '../backup-database/backup-database.component';
+import {RepositoryModule} from '../../repository/repository.module';
 
 describe('ImportExportComponent', () => {
   let component: ImportExportComponent;
@@ -17,9 +19,9 @@ describe('ImportExportComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ImportExportComponent, ImportPaymentObjectExcelComponent ],
-      imports: [HttpClientTestingModule, ReactiveFormsModule, CoreModule, ModalModule.forRoot()],
-      providers: [RestUrlEnv, RestDataSource, PaymentObjectRepository, ImportPaymentObjectRepository, BsModalService]
+      declarations: [ ImportExportComponent, ImportPaymentObjectExcelComponent, BackupDatabaseComponent ],
+      imports: [HttpClientTestingModule, ReactiveFormsModule, ModalModule.forRoot(), CoreModule, RepositoryModule],
+      providers: [RestUrlEnv, RestDataSource, BsModalService]
     })
     .compileComponents();
   }));

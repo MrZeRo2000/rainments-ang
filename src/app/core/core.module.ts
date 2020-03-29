@@ -43,6 +43,8 @@ import { LoadingSpinnerElementComponent } from './components/loading-spinner-ele
         SaveDialogPanelComponent,
         ColoredValueLabelComponent,
         ConfirmationModalDialogComponent,
+        LoadingSpinnerElementComponent,
+        LoadingProgressComponent,
         AmountPipe,
         EnumStringValuePipe
     ],
