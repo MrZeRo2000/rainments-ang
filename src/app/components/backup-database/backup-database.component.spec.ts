@@ -5,6 +5,7 @@ import {RepositoryModule} from '../../repository/repository.module';
 import {RestUrlEnv} from '../../config/configuration';
 import {RestDataSource} from '../../data-source/rest-data-source';
 import {CoreModule} from '../../core/core.module';
+import {MessagesModule} from '../../messages/messages.module';
 
 describe('BackupDatabaseComponent', () => {
   let component: BackupDatabaseComponent;
@@ -13,7 +14,7 @@ describe('BackupDatabaseComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ BackupDatabaseComponent ],
-      imports: [RepositoryModule, CoreModule],
+      imports: [RepositoryModule, CoreModule, MessagesModule],
       providers: [RestUrlEnv, RestDataSource]
     })
     .compileComponents();

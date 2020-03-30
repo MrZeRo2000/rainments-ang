@@ -7,7 +7,24 @@ import {Subject} from 'rxjs';
 import {RepositoryUtils} from './repository-utils';
 
 export class LoadParams {
-  constructor(public updateMessages?: boolean) { }
+  constructor(public updateMessages?: boolean, public messageSource?: string) { }
+}
+
+class MessageProcessor {
+  constructor(private messagesService: MessagesService, private loadParams: LoadParams) {
+  }
+
+  public resetMessage() {
+    if (this.loadParams && this.loadParams.updateMessages) {
+      this.messagesService.resetMessage();
+    }
+  }
+
+  public reportMessageError(message: string) {
+    if (this.loadParams && this.loadParams.updateMessages) {
+      this.messagesService.reportMessage(new ErrorMessage( message, this.loadParams.messageSource));
+    }
+  }
 }
 
 export class ReadRepository<T> implements Loadable {
@@ -15,6 +32,8 @@ export class ReadRepository<T> implements Loadable {
   protected loading = false;
   protected loadingError = false;
   private loadSuccess: Subject<boolean> = new Subject<boolean>();
+
+  private defaultLoadParams: LoadParams;
 
   constructor(
     protected dataSource: RestDataSource,
@@ -36,9 +55,11 @@ export class ReadRepository<T> implements Loadable {
   loadData(params?: HttpParams, loadParams?: LoadParams): void {
     console.log('load data from ' + this.resourceName);
 
-    if (loadParams && loadParams.updateMessages) {
-      this.messagesService.resetMessage();
-    }
+    const workLoadParams = loadParams || this.defaultLoadParams;
+
+    const messageProcessor = new MessageProcessor(this.messagesService, workLoadParams);
+
+    messageProcessor.resetMessage();
 
     this.loading = true;
     this.dataSource.getResponse(this.resourceName, params).subscribe((data) => {
@@ -59,9 +80,7 @@ export class ReadRepository<T> implements Loadable {
       } else {
         this.data.length = 0;
 
-        if (loadParams && loadParams.updateMessages) {
-          this.messagesService.reportMessage(new ErrorMessage( 'Error reading from server:' + data.body));
-        }
+        messageProcessor.reportMessageError('Error reading from server:' + data.body);
 
         this.loadingError = true;
         this.loadSuccess.next(false);
@@ -70,9 +89,7 @@ export class ReadRepository<T> implements Loadable {
     }, error => {
       this.data.length = 0;
 
-      if (loadParams && loadParams.updateMessages) {
-        this.messagesService.reportMessage(new ErrorMessage('Network error:' + RepositoryUtils.getNetworkErrorMessage(error)));
-      }
+      messageProcessor.reportMessageError('Network error:' + RepositoryUtils.getNetworkErrorMessage(error));
 
       this.loading = false;
       this.loadingError = true;
@@ -84,6 +101,10 @@ export class ReadRepository<T> implements Loadable {
 
   getData(): T[] {
     return this.data || [];
+  }
+
+  setDefaultLoadParams(defaultLoadParams: LoadParams) {
+    this.defaultLoadParams = defaultLoadParams;
   }
 
 }

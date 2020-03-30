@@ -17,7 +17,7 @@
       <app-products-table *ngIf="selectedItem === SettingItemEnumType.PRODUCTS"></app-products-table>
       <app-import-export *ngIf="selectedItem === SettingItemEnumType.IMPORT_EXPORT"></app-import-export>
 
-      <app-message></app-message>
+      <app-message *ngIf="selectedItem !== SettingItemEnumType.IMPORT_EXPORT"></app-message>
     </div>
   </div>
 

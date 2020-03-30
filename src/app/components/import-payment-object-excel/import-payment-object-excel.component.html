@@ -1,5 +1,5 @@
 
-<form class="form-group" [formGroup]="editForm" *ngIf="!loading">
+<form class="form-group" [formGroup]="editForm" *ngIf="!this.getLoading()">
 
   <label for="paymentObject" class="mt-2"><strong>Payment object</strong></label>
   <select
@@ -38,12 +38,10 @@
   </div>
 
   <div class="input-group mt-2 justify-content-end">
-    <button type="button" class="btn btn-outline-primary mr-2" (click)="onImport()" [disabled]="this.repository.getLoading()">Import</button>
-    <button type="button" class="btn btn-outline-primary" (click)="onClear()" [disabled]="this.repository.getLoading()">Clear</button>
+    <button type="button" class="btn btn-outline-primary mr-2" (click)="onImport()" [disabled]="this.getLoading()">Import</button>
+    <button type="button" class="btn btn-outline-primary" (click)="onClear()" [disabled]="this.getLoading()">Clear</button>
   </div>
 
 </form>
 
 <app-core-loading-progress [loadable]="repository"></app-core-loading-progress>
-
-

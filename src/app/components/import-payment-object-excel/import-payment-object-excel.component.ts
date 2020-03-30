@@ -16,15 +16,16 @@ import {LoadingModalService} from '../../core/services/loading-modal.service';
   styleUrls: ['./import-payment-object-excel.component.scss']
 })
 export class ImportPaymentObjectExcelComponent extends CommonSimpleTableComponent<PaymentObject> implements OnInit, Loadable {
+  private readonly messageSource = 'importPaymentObject';
+
   editForm: FormGroup;
   formSubmitted = false;
   editFormFile: File;
-  loading = false;
 
   @ViewChild('importFile') importFileElement: ElementRef;
 
   getLoading(): boolean {
-    return this.loading;
+    return this.repository.getLoading();
   }
 
   constructor(
@@ -38,11 +39,14 @@ export class ImportPaymentObjectExcelComponent extends CommonSimpleTableComponen
 
   ngOnInit(): void {
     this.editForm = this.buildForm();
+
+    this.repository.setDefaultLoadParams({messageSource: this.messageSource});
+    this.importRepository.setDefaultPersistParams({messageSource: this.messageSource});
+
     this.importRepository.getPersistData().subscribe(data =>
-      this.messagesService.reportMessage(new SuccessMessage(`Successfully imported ${data.body.rowsAffected} rows`)));
+      this.messagesService.reportMessage(new SuccessMessage(`Successfully imported ${data.body.rowsAffected} rows`, this.messageSource)));
     this.importRepository.getLoadingState().subscribe(value => {
-      this.loading = value;
-      if (!this.loading) {
+      if (!value) {
         setTimeout(() => this.loadingModalService.hide(), 100);
       }
     });

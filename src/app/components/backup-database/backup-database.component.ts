@@ -12,6 +12,7 @@ import {SuccessMessage} from '../../messages/message.model';
   styleUrls: ['./backup-database.component.scss']
 })
 export class BackupDatabaseComponent implements OnInit, Loadable {
+  private readonly messageSource = 'backupDatabase';
 
   backupLoading = false;
 
@@ -24,8 +25,8 @@ export class BackupDatabaseComponent implements OnInit, Loadable {
   ngOnInit(): void {
     this.backupInfoRepository.loadData();
     this.backupDatabaseRepository.getPersistData().subscribe(data => {
-      this.messagesService.reportMessage(new SuccessMessage(`Backup successful: ${data.body.message}`));
-      this.backupInfoRepository.loadData(null, {updateMessages: false});
+      this.messagesService.reportMessage(new SuccessMessage(`Backup successful: ${data.body.message}`, this.messageSource));
+      this.backupInfoRepository.loadData(null, {updateMessages: false, messageSource: this.messageSource});
     }
     );
     this.backupDatabaseRepository.getLoadingState().subscribe(value => {

@@ -14,6 +14,7 @@ import {PaymentGroupsTableComponent} from '../payment-groups-table/payment-group
 import {PaymentGroupRepository} from '../../repository/payment-group-repository';
 import {ProductRepository} from '../../repository/product-repository';
 import {ProductsTableComponent} from '../products-table/products-table.component';
+import {RepositoryModule} from '../../repository/repository.module';
 
 describe('SettingsComponent', () => {
   let component: SettingsComponent;
@@ -22,8 +23,9 @@ describe('SettingsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ SettingsComponent, PaymentObjectsTableComponent, PaymentGroupsTableComponent, ProductsTableComponent ],
-      providers: [RestUrlEnv, RestDataSource, PaymentObjectRepository, PaymentGroupRepository, ProductRepository, BsModalService],
-      imports: [HttpClientTestingModule, ReactiveFormsModule, AlertModule.forRoot(), ModalModule.forRoot(), MessagesModule, CoreModule]
+      providers: [RestUrlEnv, RestDataSource, BsModalService],
+      imports: [HttpClientTestingModule, ReactiveFormsModule, AlertModule.forRoot(), ModalModule.forRoot(),
+        MessagesModule, CoreModule, RepositoryModule, MessagesModule]
     })
     .compileComponents();
   }));

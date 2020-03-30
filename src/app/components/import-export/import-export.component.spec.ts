@@ -12,6 +12,7 @@ import {PaymentObjectRepository} from '../../repository/payment-object-repositor
 import {ImportPaymentObjectRepository} from '../../repository/import-payment-object-repository';
 import {BackupDatabaseComponent} from '../backup-database/backup-database.component';
 import {RepositoryModule} from '../../repository/repository.module';
+import {MessagesModule} from '../../messages/messages.module';
 
 describe('ImportExportComponent', () => {
   let component: ImportExportComponent;
@@ -20,7 +21,7 @@ describe('ImportExportComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ImportExportComponent, ImportPaymentObjectExcelComponent, BackupDatabaseComponent ],
-      imports: [HttpClientTestingModule, ReactiveFormsModule, ModalModule.forRoot(), CoreModule, RepositoryModule],
+      imports: [HttpClientTestingModule, ReactiveFormsModule, ModalModule.forRoot(), CoreModule, RepositoryModule, MessagesModule],
       providers: [RestUrlEnv, RestDataSource, BsModalService]
     })
     .compileComponents();

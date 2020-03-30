@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {RestDataSource} from '../data-source/rest-data-source';
 import {MessagesService} from '../messages/messages.service';
 import {Subject} from 'rxjs';
-import {PersistRepository} from '../core/repository/persist-repository';
+import {PersistParams, PersistRepository} from '../core/repository/persist-repository';
 
 @Injectable()
 export class ImportPaymentObjectRepository {
@@ -29,5 +29,9 @@ export class ImportPaymentObjectRepository {
 
   getLoadingState(): Subject<boolean> {
     return this.persistRepository.getLoadingState();
+  }
+
+  setDefaultPersistParams(persistParams: PersistParams): void {
+    this.persistRepository.setDefaultPersistParams(persistParams);
   }
 }

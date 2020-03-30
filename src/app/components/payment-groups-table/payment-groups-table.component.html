@@ -30,6 +30,7 @@
     <input #inputUrl type="text" class="form-control" [ngClass]="{'is-invalid': editForm.controls.url.errors && editState.submitted}" id="inputUrl" placeholder="Url" formControlName="url">
     <div *ngIf="editForm.controls.name.errors && editState.submitted" class="invalid-feedback">
       <div *ngIf="editForm.controls.name.errors.required">Name should not be empty</div>
+      <div *ngIf="editForm.controls.name.errors.existingName">Name should be unique</div>
     </div>
     <div *ngIf="editForm.controls.url.errors && editState.submitted" class="invalid-feedback">
       <div *ngIf="editForm.controls.url.errors.invalidUrl">Invalid Url</div>

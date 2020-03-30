@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {MessagesService} from './messages.service';
 import {Message} from './message.model';
 import {MessageType} from './message.model';
@@ -13,9 +13,18 @@ export class MessageComponent implements OnInit {
   displayMessage: Message;
   MessageType = MessageType;
 
+  @Input() messageSource: string;
+
   constructor(private messagesService: MessagesService) {
     messagesService.getLastMessage().subscribe((message) => {
-      this.displayMessage = message;
+      if (
+        (this.messageSource && message && message.messageSource && this.messageSource === message.messageSource) ||
+        (!this.messageSource && message && !message.messageSource)
+      ) {
+        this.displayMessage = message;
+      } else {
+        this.displayMessage = null;
+      }
       /*
       setTimeout(() => {
         this.displayMessage = undefined;

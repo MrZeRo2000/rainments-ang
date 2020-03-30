@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {MessagesService} from '../../messages/messages.service';
 
 export class SettingItem {
   constructor(public id: number, public name: string) {}
@@ -22,11 +23,15 @@ export class SettingsComponent implements OnInit {
 
   selectedItem: SettingItemEnum = SettingItemEnum.PAYMENT_OBJECTS;
 
+  constructor(private messagesService: MessagesService) {
+  }
+
   ngOnInit() {
   }
 
   onItemClick(event, item) {
     event.preventDefault();
+    this.messagesService.resetMessage();
     this.selectedItem = item;
   }
 
