@@ -9,6 +9,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {CoreModule} from '../../core/core.module';
 import {MessagesModule} from '../../messages/messages.module';
 import {RouterTestingModule} from '@angular/router/testing';
+import {RepositoryModule} from '../../repository/repository.module';
 
 describe('PaymentsDashboardComponent', () => {
   let component: PaymentsDashboardComponent;
@@ -17,8 +18,8 @@ describe('PaymentsDashboardComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ PaymentsDashboardComponent ],
-      providers: [RestUrlEnv, RestDataSource, PaymentObjectRepository],
-      imports: [HttpClientTestingModule, RouterTestingModule, ReactiveFormsModule, CoreModule, MessagesModule]
+      providers: [RestUrlEnv, RestDataSource],
+      imports: [HttpClientTestingModule, RouterTestingModule, ReactiveFormsModule, CoreModule, MessagesModule, RepositoryModule]
     })
     .compileComponents();
   }));

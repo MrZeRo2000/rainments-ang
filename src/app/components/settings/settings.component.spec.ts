@@ -23,7 +23,7 @@ describe('SettingsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ SettingsComponent, PaymentObjectsTableComponent, PaymentGroupsTableComponent, ProductsTableComponent ],
-      providers: [RestUrlEnv, RestDataSource, BsModalService],
+      providers: [RestUrlEnv, RestDataSource],
       imports: [HttpClientTestingModule, ReactiveFormsModule, AlertModule.forRoot(), ModalModule.forRoot(),
         MessagesModule, CoreModule, RepositoryModule, MessagesModule]
     })

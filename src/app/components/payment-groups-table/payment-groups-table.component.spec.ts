@@ -7,7 +7,7 @@ import {BsModalService, ModalModule} from 'ngx-bootstrap';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {ReactiveFormsModule} from '@angular/forms';
 import {CoreModule} from '../../core/core.module';
-import {PaymentGroupRepository} from '../../repository/payment-group-repository';
+import {RepositoryModule} from '../../repository/repository.module';
 
 describe('PaymentGroupsTableComponent', () => {
   let component: PaymentGroupsTableComponent;
@@ -16,8 +16,8 @@ describe('PaymentGroupsTableComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ PaymentGroupsTableComponent ],
-      providers: [RestUrlEnv, RestDataSource, PaymentGroupRepository, BsModalService ],
-      imports: [HttpClientTestingModule, ReactiveFormsModule, ModalModule.forRoot(), CoreModule]
+      providers: [RestUrlEnv, RestDataSource],
+      imports: [HttpClientTestingModule, ReactiveFormsModule, ModalModule.forRoot(), CoreModule, RepositoryModule]
     })
     .compileComponents();
   }));

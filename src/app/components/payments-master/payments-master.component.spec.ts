@@ -14,6 +14,7 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {MessagesModule} from '../../messages/messages.module';
 import {CoreModule} from '../../core/core.module';
 import {PaymentsSummaryComponent} from '../payments-summary/payments-summary.component';
+import {RepositoryModule} from '../../repository/repository.module';
 
 describe('PaymentsMasterComponent', () => {
   let component: PaymentsMasterComponent;
@@ -21,8 +22,9 @@ describe('PaymentsMasterComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, RouterTestingModule, ReactiveFormsModule, ModalModule.forRoot(), MessagesModule, CoreModule],
-      providers: [RestUrlEnv, RestDataSource, BsModalService, PaymentRepository, PaymentRefsRepository],
+      imports: [HttpClientTestingModule, RouterTestingModule, ReactiveFormsModule, ModalModule.forRoot(),
+        MessagesModule, CoreModule, RepositoryModule],
+      providers: [RestUrlEnv, RestDataSource],
       declarations: [ PaymentsMasterComponent, PaymentsDateSelectionComponent, PaymentsTableComponent, PaymentsSummaryComponent]
     })
     .compileComponents();
