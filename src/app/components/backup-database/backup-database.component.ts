@@ -4,7 +4,6 @@ import {BackupInfoRepository} from '../../repository/backup-info-repository';
 import {Loadable} from '../../core/edit/edit-intf';
 import {BackupDatabaseRepository} from '../../repository/backup-database-repository';
 import {BackupDatabaseInfo} from '../../model/backup-database-info';
-import {LoadingModalService} from '../../core/services/loading-modal.service';
 import {SuccessMessage} from '../../messages/message.model';
 
 @Component({
@@ -13,11 +12,13 @@ import {SuccessMessage} from '../../messages/message.model';
   styleUrls: ['./backup-database.component.scss']
 })
 export class BackupDatabaseComponent implements OnInit, Loadable {
+
+  backupLoading = false;
+
   constructor(
     public messagesService: MessagesService,
     public backupInfoRepository: BackupInfoRepository,
-    public backupDatabaseRepository: BackupDatabaseRepository,
-    private loadingModalService: LoadingModalService
+    public backupDatabaseRepository: BackupDatabaseRepository
   ) { }
 
   ngOnInit(): void {
@@ -28,9 +29,7 @@ export class BackupDatabaseComponent implements OnInit, Loadable {
     }
     );
     this.backupDatabaseRepository.getLoadingState().subscribe(value => {
-      if (!value) {
-        setTimeout(() => this.loadingModalService.hide(), 100);
-      }
+      this.backupLoading = value;
     });
   }
 
@@ -46,8 +45,7 @@ export class BackupDatabaseComponent implements OnInit, Loadable {
   }
 
   backupDatabaseClick(): void {
-    this.loadingModalService.show();
-
-    setTimeout(() => this.backupDatabaseRepository.postBackupRequest(), 100);
+    this.backupLoading = true;
+    setTimeout(() => this.backupDatabaseRepository.postBackupRequest(), 0);
   }
 }
