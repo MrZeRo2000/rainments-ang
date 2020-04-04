@@ -47,6 +47,8 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
 
   @ViewChildren('inlineControl') inlineControl: QueryList<ElementRef>;
 
+  private convertedPeriodDate: Date;
+
   prevPeriodPayment: Payment;
   productUsage: number;
   productUsageForm: FormGroup = this.fb.group({productUsageCounter: ['']});
@@ -62,10 +64,18 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     return Math.round(value * 100) / 100;
   }
 
-  private getPaymentPeriodDate(): Date {
-    return new Date(
-      this.paymentPeriodDate.setMinutes(this.paymentPeriodDate.getMinutes() - this.paymentPeriodDate.getTimezoneOffset())
+  private calcConvertedPeriodDate(): void {
+    const result = new Date(this.paymentPeriodDate);
+
+    result.setMinutes(
+      result.getMinutes() - result.getTimezoneOffset()
     );
+
+    this.convertedPeriodDate = new Date(result);
+  }
+
+  private getPaymentPeriodDate(): Date {
+    return this.convertedPeriodDate;
   }
 
   constructor(
@@ -89,6 +99,8 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.calcConvertedPeriodDate();
+
     for (const propName in changes) {
       if (changes.hasOwnProperty(propName) && changes[propName].isFirstChange()) {
         return;
@@ -358,6 +370,6 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
 
   duplicatePreviousPeriodOnClick(event: any) {
     event.preventDefault();
-    this.repository.duplicatePreviousPeriod(this.paymentObjectId, this.paymentPeriodDate);
+    this.repository.duplicatePreviousPeriod(this.paymentObjectId, this.getPaymentPeriodDate());
   }
 }
