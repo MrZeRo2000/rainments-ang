@@ -82,7 +82,7 @@ export class ImportPaymentObjectExcelComponent extends CommonSimpleTableComponen
         value.id === Number.parseInt(this.editForm.value.paymentObject, 0))[0];
 
       const formData = new FormData();
-      formData.append('payment_object', new Blob([JSON.stringify(paymentObject)], {type: 'application/json'}));
+      formData.append('paymentObject', new Blob([JSON.stringify(paymentObject)], {type: 'application/json'}));
       formData.append('file', this.editFormFile);
 
       this.loadingModalService.show();

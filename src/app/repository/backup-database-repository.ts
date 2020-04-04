@@ -3,31 +3,16 @@ import {PersistRepository} from '../core/repository/persist-repository';
 import {RestDataSource} from '../data-source/rest-data-source';
 import {MessagesService} from '../messages/messages.service';
 import {Subject} from 'rxjs';
+import {PersistRepositoryDecorator} from '../core/repository/persist-repository-decorator';
 
 @Injectable()
-export class BackupDatabaseRepository {
-  private readonly resourceName: string;
-  private readonly persistRepository: PersistRepository;
+export class BackupDatabaseRepository extends PersistRepositoryDecorator {
 
-  constructor(private dataSource: RestDataSource, private messagesService: MessagesService) {
-    this.resourceName = 'app:backup_database';
-    this.persistRepository = new PersistRepository(messagesService);
+  constructor(protected dataSource: RestDataSource, protected  messagesService: MessagesService) {
+    super(dataSource, messagesService, 'app:backup_database');
   }
 
   public postBackupRequest(): void {
     this.persistRepository.handlePersistHttpResponse(this.dataSource.postResponse(this.resourceName, {}));
   }
-
-  getPersistData(): Subject<any> {
-    return this.persistRepository.getPersistData();
-  }
-
-  getPersistSuccess(): Subject<any> {
-    return this.persistRepository.getPersistSuccess();
-  }
-
-  getLoadingState(): Subject<boolean> {
-    return this.persistRepository.getLoadingState();
-  }
-
 }
