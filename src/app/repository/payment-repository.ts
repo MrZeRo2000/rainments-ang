@@ -4,10 +4,22 @@ import {Injectable} from '@angular/core';
 import {RestDataSource} from '../data-source/rest-data-source';
 import {MessagesService} from '../messages/messages.service';
 import {ReadWriteRepository} from '../core/repository/read-write-repository';
+import {PaymentObject} from '../model/payment-object';
+import {HttpParams} from '@angular/common/http';
 
 @Injectable()
 export class PaymentRepository extends ReadWriteRepository<Payment> {
   constructor(protected dataSource: RestDataSource, protected messagesService: MessagesService) {
     super(dataSource, messagesService, 'payments');
+  }
+
+  duplicatePreviousPeriod(paymentObjectId: number, paymentPeriodDate: Date): void {
+    const httpParams = new HttpParams()
+      .append('paymentObjectId', paymentObjectId.toString(10))
+      .append('paymentPeriodDate', paymentPeriodDate.toJSON())
+    ;
+    this.persistRepository.handlePersistHttpResponse(
+      this.dataSource.postResponse('payments:duplicate_previous_period', {}, httpParams)
+    );
   }
 }

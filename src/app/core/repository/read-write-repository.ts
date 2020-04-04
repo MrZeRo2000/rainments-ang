@@ -10,7 +10,7 @@ import {MessagesService} from '../../messages/messages.service';
 import {PersistRepository} from './persist-repository';
 
 export class ReadWriteRepository<T extends CommonEntity> extends ReadRepository<T> {
-  private readonly persistRepository: PersistRepository;
+  protected readonly persistRepository: PersistRepository;
 
   constructor(
     protected dataSource: RestDataSource,

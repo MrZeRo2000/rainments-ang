@@ -352,12 +352,12 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     );
   }
 
-  uploadFile(event: any) {
-    alert('Uploading file:'+event.target.files[0].name);
+  isCloneAvailable(): boolean {
+    return this.getPrevPeriodPayments() && this.getPrevPeriodPayments().length > 0 && this.getPayments() && this.getPayments().length === 0;
   }
 
-  importExcelButtonClick(event: any) {
+  duplicatePreviousPeriodOnClick(event: any) {
     event.preventDefault();
-    document.getElementById('importFile').click();
+    this.repository.duplicatePreviousPeriod(this.paymentObjectId, this.paymentPeriodDate);
   }
 }
