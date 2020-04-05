@@ -9,6 +9,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {CoreModule} from '../../core/core.module';
 import {PaymentsSummaryComponent} from '../payments-summary/payments-summary.component';
 import {RepositoryModule} from '../../repository/repository.module';
+import {PaymentsTableDisplayOptionsComponent} from '../payments-table-display-options/payments-table-display-options.component';
 
 describe('PaymentsTableComponent', () => {
   let component: PaymentsTableComponent;
@@ -16,7 +17,7 @@ describe('PaymentsTableComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PaymentsTableComponent, PaymentsSummaryComponent],
+      declarations: [ PaymentsTableComponent, PaymentsSummaryComponent, PaymentsTableDisplayOptionsComponent],
       providers: [RestUrlEnv, RestDataSource],
       imports: [HttpClientTestingModule, ReactiveFormsModule, ModalModule.forRoot(), CoreModule, RepositoryModule]
     })

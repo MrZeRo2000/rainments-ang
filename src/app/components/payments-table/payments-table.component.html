@@ -8,7 +8,11 @@
       (click)="duplicatePreviousPeriodOnClick($event)"
     >
       <i class="fas fa-clone fa-lg"></i> Clone previous
-    </button></div>
+    </button>
+
+    <app-payments-table-display-options [paymentsTableDisplayOptions]="displayOptions" (change)="displayOptionsChanged()"></app-payments-table-display-options>
+
+  </div>
 </div>
 
 <div class="row" *ngIf="getEditingState()">
@@ -29,7 +33,17 @@
       <tr *ngFor="let item of getPayments()" (click)="tableRowClick(item)" [ngClass]="{'table-active': selectedItems.has(item)}">
         <td>{{item.id}}</td>
         <td>{{item.paymentGroup.name}}</td>
-        <td class="text-truncate" style="max-width: 200px" tooltip={{item.product.name}} placement="auto" delay="500">{{item.product.name}}</td>
+        <td
+          class="text-truncate"
+          style="max-width: 200px"
+          tooltip={{item.product.name}}
+          [isDisabled]="!displayOptions.showTooltips"
+          placement="auto"
+          delay="500"
+          [ngClass]="{'text-truncate': displayOptions.compactProducts}"
+        >
+          {{item.product.name}}
+        </td>
         <td class="text-right text-nowrap">
           <div>
             <app-core-colored-value-label [value]="getPrevPeriodProductCounter(item)"></app-core-colored-value-label>

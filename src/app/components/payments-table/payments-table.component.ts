@@ -25,6 +25,7 @@ import {InlineEditHandler, InlineEditSelection} from '../../core/edit/inline-edi
 import {AmountPipe} from '../../core/pipes/amount.pipe';
 import {ColorScheme} from '../../core/components/colored-value-label/colored-value-label.component';
 import {PatchRequest} from '../../model/patch-request';
+import {PaymentsTableDisplayOptions} from '../payments-table-display-options/payments-table-display-options.component';
 
 enum InlineControl {
   ProductCounter = 'productCounterControl',
@@ -59,6 +60,8 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   inlineEditHandler: InlineEditHandler<Payment>;
 
   colorSchemeType = ColorScheme;
+
+  displayOptions: PaymentsTableDisplayOptions;
 
   private static roundValue(value: any): number {
     return Math.round(value * 100) / 100;
@@ -96,6 +99,7 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   ngOnInit() {
     super.ngOnInit();
     this.checkInput();
+    this.displayOptions = PaymentsTableDisplayOptions.fromLocalStorage();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -371,5 +375,9 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   duplicatePreviousPeriodOnClick(event: any) {
     event.preventDefault();
     this.repository.duplicatePreviousPeriod(this.paymentObjectId, this.getPaymentPeriodDate());
+  }
+
+  displayOptionsChanged() {
+    this.displayOptions.saveToLocalStorage();
   }
 }

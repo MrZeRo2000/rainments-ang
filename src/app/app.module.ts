@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -11,7 +12,7 @@ import { ConfigModule} from './config/config.module';
 import { PaymentObjectsTableComponent } from './components/payment-objects-table/payment-objects-table.component';
 import { MessagesModule} from './messages/messages.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {ModalModule, TooltipModule} from 'ngx-bootstrap';
+import {BsDropdownModule, ModalModule, TooltipModule} from 'ngx-bootstrap';
 import {CoreModule} from './core/core.module';
 import { PaymentGroupsTableComponent } from './components/payment-groups-table/payment-groups-table.component';
 import { ProductsTableComponent } from './components/products-table/products-table.component';
@@ -23,6 +24,7 @@ import { PaymentsSummaryComponent } from './components/payments-summary/payments
 import { ImportExportComponent } from './components/import-export/import-export.component';
 import { ImportPaymentObjectExcelComponent } from './components/import-payment-object-excel/import-payment-object-excel.component';
 import { BackupDatabaseComponent } from './components/backup-database/backup-database.component';
+import { PaymentsTableDisplayOptionsComponent } from './components/payments-table-display-options/payments-table-display-options.component';
 
 @NgModule({
   declarations: [
@@ -39,14 +41,17 @@ import { BackupDatabaseComponent } from './components/backup-database/backup-dat
     PaymentsSummaryComponent,
     ImportExportComponent,
     ImportPaymentObjectExcelComponent,
-    BackupDatabaseComponent
+    BackupDatabaseComponent,
+    PaymentsTableDisplayOptionsComponent
   ],
     imports: [
         BrowserModule,
+        BrowserAnimationsModule,
         AppRoutingModule,
         ReactiveFormsModule,
         ModalModule.forRoot(),
         TooltipModule.forRoot(),
+        BsDropdownModule.forRoot(),
         CoreModule,
         ModelModule,
         ConfigModule,

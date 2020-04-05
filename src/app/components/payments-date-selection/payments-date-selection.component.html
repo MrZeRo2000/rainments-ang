@@ -3,14 +3,14 @@
   <button class="btn btn-outline-primary" (click)="addMonth(-1)"><i class="fas fa-angle-left fa-lg"></i></button>
 
   <label class="ml-2">
-    <select class="browser-default custom-select" formControlName="month">
-      <option *ngFor="let item of dr.getMonths()" value="{{item.id}}">{{item.name}}</option>
+    <select class="browser-default custom-select" formControlName="monthSelect" name="monthSelect">
+      <option *ngFor="let item of months" value="{{item.id}}">{{item.name}}</option>
     </select>
   </label>
 
   <label class="ml-2">
-    <select class="browser-default custom-select" formControlName="year">
-      <option *ngFor="let item of dr.getYears()" value="{{item}}">{{item}}</option>
+    <select class="browser-default custom-select" formControlName="yearSelect" name="yearSelect">
+      <option *ngFor="let item of years" value="{{item}}">{{item}}</option>
     </select>
   </label>
 

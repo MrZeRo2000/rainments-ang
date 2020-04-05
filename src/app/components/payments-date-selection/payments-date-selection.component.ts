@@ -1,6 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {DateRangeGenerator} from '../../core/utils/date-range-generator';
+import {DateRangeGenerator, MonthInfo} from '../../core/utils/date-range-generator';
 
 @Component({
   selector: 'app-payments-date-selection',
@@ -9,7 +9,8 @@ import {DateRangeGenerator} from '../../core/utils/date-range-generator';
 })
 export class PaymentsDateSelectionComponent implements OnInit {
   editForm: FormGroup;
-  dr: DateRangeGenerator;
+  months: Array<MonthInfo>;
+  years: Array<number>;
   lastSelectedDate: Date;
 
   @Output() selectedDate = new EventEmitter<Date>();
@@ -20,10 +21,13 @@ export class PaymentsDateSelectionComponent implements OnInit {
     this.lastSelectedDate = new Date(lastDate.setMonth(lastDate.getMonth() - 1));
     this.selectedDate.subscribe((v) => this.lastSelectedDate = v);
 
-    this.dr = new DateRangeGenerator(
+    const dr = new DateRangeGenerator(
       new Date(this.lastSelectedDate.getFullYear() - 3, 0, 1),
       new Date(this.lastSelectedDate.getFullYear() + 1, 11, 31)
     );
+
+    this.months = dr.getMonths();
+    this.years = dr.getYears();
 
     this.editForm = this.buildForm();
   }
@@ -34,12 +38,12 @@ export class PaymentsDateSelectionComponent implements OnInit {
 
   private buildForm(): FormGroup {
     const formGroup = this.fb.group({
-      month: [this.getSelectedMonth(), Validators.required],
-      year: [this.getSelectedYear(), Validators.required]
+      monthSelect: [this.getSelectedMonth(), Validators.required],
+      yearSelect: [this.getSelectedYear(), Validators.required]
     });
 
     formGroup.valueChanges.subscribe((v) => {
-      this.selectedDate.emit(new Date(v.year, v.month, 1));
+      this.selectedDate.emit(new Date(v.yearSelect, v.monthSelect, 1));
     });
 
     return formGroup;
@@ -55,6 +59,6 @@ export class PaymentsDateSelectionComponent implements OnInit {
 
   addMonth(value: number): void {
     this.selectedDate.emit(new Date(this.lastSelectedDate.setMonth(this.lastSelectedDate.getMonth() + value)));
-    this.editForm.patchValue({month: this.getSelectedMonth(), year: this.getSelectedYear()});
+    this.editForm.patchValue({monthSelect: this.getSelectedMonth(), yearSelect: this.getSelectedYear()});
   }
 }

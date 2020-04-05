@@ -15,6 +15,7 @@ import {MessagesModule} from '../../messages/messages.module';
 import {CoreModule} from '../../core/core.module';
 import {PaymentsSummaryComponent} from '../payments-summary/payments-summary.component';
 import {RepositoryModule} from '../../repository/repository.module';
+import {PaymentsTableDisplayOptionsComponent} from '../payments-table-display-options/payments-table-display-options.component';
 
 describe('PaymentsMasterComponent', () => {
   let component: PaymentsMasterComponent;
@@ -25,7 +26,7 @@ describe('PaymentsMasterComponent', () => {
       imports: [HttpClientTestingModule, RouterTestingModule, ReactiveFormsModule, ModalModule.forRoot(),
         MessagesModule, CoreModule, RepositoryModule],
       providers: [RestUrlEnv, RestDataSource],
-      declarations: [ PaymentsMasterComponent, PaymentsDateSelectionComponent, PaymentsTableComponent, PaymentsSummaryComponent]
+      declarations: [ PaymentsMasterComponent, PaymentsDateSelectionComponent, PaymentsTableComponent, PaymentsSummaryComponent, PaymentsTableDisplayOptionsComponent]
     })
     .compileComponents();
   }));
