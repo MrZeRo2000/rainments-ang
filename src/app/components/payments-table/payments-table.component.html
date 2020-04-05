@@ -12,15 +12,15 @@
 </div>
 
 <div class="row" *ngIf="getEditingState()">
-  <div class="col col-lg-8 col-xl-8">
-    <table class="table table-hover">
+  <div class="col-xl-8">
+    <table class="table table-hover table-responsive">
       <thead>
       <tr>
         <th scope="col" class="w-auto">ID</th>
-        <th scope="col" class="w-20">Group</th>
-        <th scope="col" class="w-20">Product</th>
-        <th scope="col" class="w-20 text-right">Counter</th>
-        <th scope="col" class="w-20 text-right">Payment</th>
+        <th scope="col" class="w-15">Group</th>
+        <th scope="col" class="w-15">Product</th>
+        <th scope="col" class="w-10 text-right">Counter</th>
+        <th scope="col" class="w-10 text-right">Payment</th>
         <th scope="col" class="w-10 text-right">Commission</th>
         <th scope="col" class="w-auto">Actions</th>
       </tr>
@@ -29,7 +29,7 @@
       <tr *ngFor="let item of getPayments()" (click)="tableRowClick(item)" [ngClass]="{'table-active': selectedItems.has(item)}">
         <td>{{item.id}}</td>
         <td>{{item.paymentGroup.name}}</td>
-        <td>{{item.product.name}}</td>
+        <td class="text-truncate" style="max-width: 200px" tooltip={{item.product.name}} placement="auto" delay="500">{{item.product.name}}</td>
         <td class="text-right text-nowrap">
           <div>
             <app-core-colored-value-label [value]="getPrevPeriodProductCounter(item)"></app-core-colored-value-label>
@@ -120,7 +120,7 @@
       </tbody>
     </table>
   </div>
-  <div class="col col-lg-4 col-xl-4"><app-payments-summary [selectedItems]="selectedItems"></app-payments-summary></div>
+  <div class="col-xl-4"><app-payments-summary [selectedItems]="selectedItems"></app-payments-summary></div>
 </div>
 
 <div *ngIf="getEditState()">

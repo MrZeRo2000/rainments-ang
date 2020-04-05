@@ -11,7 +11,7 @@ import { ConfigModule} from './config/config.module';
 import { PaymentObjectsTableComponent } from './components/payment-objects-table/payment-objects-table.component';
 import { MessagesModule} from './messages/messages.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {ModalModule} from 'ngx-bootstrap';
+import {ModalModule, TooltipModule} from 'ngx-bootstrap';
 import {CoreModule} from './core/core.module';
 import { PaymentGroupsTableComponent } from './components/payment-groups-table/payment-groups-table.component';
 import { ProductsTableComponent } from './components/products-table/products-table.component';
@@ -46,6 +46,7 @@ import { BackupDatabaseComponent } from './components/backup-database/backup-dat
         AppRoutingModule,
         ReactiveFormsModule,
         ModalModule.forRoot(),
+        TooltipModule.forRoot(),
         CoreModule,
         ModelModule,
         ConfigModule,
