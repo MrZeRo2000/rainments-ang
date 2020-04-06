@@ -3,9 +3,9 @@ import {RestDataSource} from '../../data-source/rest-data-source';
 import {MessagesService} from '../../messages/messages.service';
 import {Subject} from 'rxjs';
 
-export class PersistRepositoryDecorator {
+export abstract class PersistRepositoryDecorator {
 
-  constructor(
+  protected constructor(
     protected dataSource: RestDataSource,
     protected persistRepository: PersistRepository,
     protected messagesService: MessagesService,

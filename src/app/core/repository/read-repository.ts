@@ -27,7 +27,7 @@ class MessageProcessor {
   }
 }
 
-export class ReadRepository<T> implements Loadable {
+export abstract class ReadRepository<T> implements Loadable {
   protected data: T[] = new Array<T>();
   protected loading = false;
   protected loadingError = false;
@@ -35,7 +35,7 @@ export class ReadRepository<T> implements Loadable {
 
   private defaultLoadParams: LoadParams;
 
-  constructor(
+  protected constructor(
     protected dataSource: RestDataSource,
     protected messagesService: MessagesService,
     protected resourceName: string) { }

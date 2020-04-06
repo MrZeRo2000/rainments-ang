@@ -1,11 +1,11 @@
-import {OnInit} from '@angular/core';
+import {OnDestroy, OnInit} from '@angular/core';
 import {Editable} from '../edit/edit-intf';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {ReadWriteRepository} from '../repository/read-write-repository';
 import {EditMode, EditState} from '../edit/edit-state';
 import {CommonEntity} from '../entity/common-entity';
 import {FormGroup} from '@angular/forms';
-import {Subject} from 'rxjs';
+import {Subject, Subscription} from 'rxjs';
 import {ConfirmationModalDialogComponent} from '../components/confirmation-modal-dialog/confirmation-modal-dialog.component';
 import {CommonTableComponent} from './common-table-component';
 import {ReadRepository} from '../repository/read-repository';
@@ -13,10 +13,12 @@ import {Payment} from '../../model/payment';
 
 export abstract class CommonEditableTableComponent<R, W extends CommonEntity>
   extends CommonTableComponent<R, W>
-  implements OnInit, Editable {
+  implements OnInit, OnDestroy, Editable {
   bsModalRef: BsModalRef;
   editState: EditState<W>;
   editForm: FormGroup;
+
+  persistSubscription: Subscription;
 
   protected constructor(
     protected ctor: new() => W,
@@ -30,12 +32,17 @@ export abstract class CommonEditableTableComponent<R, W extends CommonEntity>
   // OnInit
   ngOnInit() {
     super.ngOnInit();
-    this.repository.getPersistSuccessObservable().subscribe((value) => {
+    this.persistSubscription = this.repository.getPersistSuccessObservable().subscribe((value) => {
       if (value) {
         this.editState = undefined;
         this.loadRepositoryData();
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    super.ngOnDestroy();
+    this.persistSubscription.unsubscribe();
   }
 
   // Editable interface

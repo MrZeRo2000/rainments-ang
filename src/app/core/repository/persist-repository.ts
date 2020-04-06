@@ -8,7 +8,7 @@ export class PersistParams {
   public messageSource?: string;
 }
 
-export class PersistRepository {
+export abstract class PersistRepository {
   private persistSuccess: Subject<boolean> = new Subject<boolean>();
   private persistData: Subject<any> = new Subject<any>();
 
@@ -27,7 +27,7 @@ export class PersistRepository {
     return this.loadingState;
   }
 
-  constructor(private messagesService: MessagesService) {
+  protected constructor(private messagesService: MessagesService) {
   }
 
   private beforePersist(): void {

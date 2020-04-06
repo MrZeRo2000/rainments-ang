@@ -7,9 +7,9 @@ import {RestDataSource} from '../../data-source/rest-data-source';
 import {MessagesService} from '../../messages/messages.service';
 import {PersistRepository} from './persist-repository';
 
-export class ReadWriteRepository<T extends CommonEntity> extends ReadRepository<T> {
+export abstract class ReadWriteRepository<T extends CommonEntity> extends ReadRepository<T> {
 
-  constructor(
+  protected constructor(
     protected dataSource: RestDataSource,
     protected persistRepository: PersistRepository,
     protected messagesService: MessagesService,

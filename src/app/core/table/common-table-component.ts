@@ -1,9 +1,9 @@
 import {ReadWriteRepository} from '../repository/read-write-repository';
-import {OnInit} from '@angular/core';
+import {OnDestroy, OnInit} from '@angular/core';
 import {HttpParams} from '@angular/common/http';
 import {ReadRepository} from '../repository/read-repository';
 
-export class CommonTableComponent<R, W> implements OnInit {
+export class CommonTableComponent<R, W> implements OnInit, OnDestroy {
   protected config: CommonTableConfig;
 
   constructor(protected readRepository: ReadRepository<R>, protected repository: ReadWriteRepository<W>)  {
@@ -27,6 +27,9 @@ export class CommonTableComponent<R, W> implements OnInit {
     if (this.config.loadOnInit) {
       this.loadRepositoryData();
     }
+  }
+
+  ngOnDestroy(): void {
   }
 
 }
