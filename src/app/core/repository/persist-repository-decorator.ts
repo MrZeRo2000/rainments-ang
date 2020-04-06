@@ -5,11 +5,12 @@ import {Subject} from 'rxjs';
 
 export class PersistRepositoryDecorator {
 
-  protected readonly persistRepository: PersistRepository;
-
-  constructor(protected dataSource: RestDataSource, protected messagesService: MessagesService, protected resourceName: string) {
-    this.persistRepository = new PersistRepository(messagesService);
-  }
+  constructor(
+    protected dataSource: RestDataSource,
+    protected persistRepository: PersistRepository,
+    protected messagesService: MessagesService,
+    protected resourceName: string
+  ) {  }
 
   getPersistData(): Subject<any> {
     return this.persistRepository.getPersistData();

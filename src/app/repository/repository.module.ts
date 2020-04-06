@@ -10,6 +10,7 @@ import {PaymentRefsRepository} from './payment-refs-repository';
 import {ImportPaymentObjectRepository} from './import-payment-object-repository';
 import {BackupDatabaseRepository} from './backup-database-repository';
 import {BackupInfoRepository} from './backup-info-repository';
+import {AppPersistRepository} from './app-persist-repository';
 
 
 
@@ -22,6 +23,7 @@ import {BackupInfoRepository} from './backup-info-repository';
   providers: [
     HttpClientModule,
     RestDataSource,
+    AppPersistRepository,
     PaymentObjectRepository,
     PaymentGroupRepository,
     ProductRepository,

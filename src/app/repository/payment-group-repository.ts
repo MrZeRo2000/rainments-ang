@@ -3,10 +3,15 @@ import {PaymentGroup} from '../model/payment-group';
 import {RestDataSource} from '../data-source/rest-data-source';
 import {MessagesService} from '../messages/messages.service';
 import {Injectable} from '@angular/core';
+import {AppPersistRepository} from './app-persist-repository';
 
 @Injectable()
 export class PaymentGroupRepository extends ReadWriteRepository<PaymentGroup> {
-  constructor(protected dataSource: RestDataSource, protected messagesService: MessagesService) {
-    super(dataSource, messagesService, 'payment-groups');
+  constructor(
+    protected dataSource: RestDataSource,
+    protected persistRepository: AppPersistRepository,
+    protected messagesService: MessagesService
+  ) {
+    super(dataSource, persistRepository, messagesService, 'payment-groups');
   }
 }

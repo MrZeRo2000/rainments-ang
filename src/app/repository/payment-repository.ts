@@ -6,11 +6,16 @@ import {MessagesService} from '../messages/messages.service';
 import {ReadWriteRepository} from '../core/repository/read-write-repository';
 import {PaymentObject} from '../model/payment-object';
 import {HttpParams} from '@angular/common/http';
+import {AppPersistRepository} from './app-persist-repository';
 
 @Injectable()
 export class PaymentRepository extends ReadWriteRepository<Payment> {
-  constructor(protected dataSource: RestDataSource, protected messagesService: MessagesService) {
-    super(dataSource, messagesService, 'payments');
+  constructor(
+    protected dataSource: RestDataSource,
+    protected persistRepository: AppPersistRepository,
+    protected messagesService: MessagesService
+  ) {
+    super(dataSource, persistRepository, messagesService, 'payments');
   }
 
   duplicatePreviousPeriod(paymentObjectId: number, paymentPeriodDate: Date): void {

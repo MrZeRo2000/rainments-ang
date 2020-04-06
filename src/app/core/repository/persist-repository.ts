@@ -1,10 +1,8 @@
-import {Injectable} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 import {HttpResponse} from '@angular/common/http';
 import {ErrorMessage} from '../../messages/message.model';
 import {RepositoryUtils} from './repository-utils';
 import {MessagesService} from '../../messages/messages.service';
-import {LoadParams} from './read-repository';
 
 export class PersistParams {
   public messageSource?: string;

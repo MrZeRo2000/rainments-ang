@@ -1,23 +1,20 @@
-import {ErrorMessage} from '../../messages/message.model';
-import {Observable, Subject} from 'rxjs';
-import {HttpResponse} from '@angular/common/http';
+
+import {Subject} from 'rxjs';
 import {CommonEntity} from '../entity/common-entity';
 import {ReadRepository} from './read-repository';
 import {PatchRequest} from '../../model/patch-request';
-import {RepositoryUtils} from './repository-utils';
 import {RestDataSource} from '../../data-source/rest-data-source';
 import {MessagesService} from '../../messages/messages.service';
 import {PersistRepository} from './persist-repository';
 
 export class ReadWriteRepository<T extends CommonEntity> extends ReadRepository<T> {
-  protected readonly persistRepository: PersistRepository;
 
   constructor(
     protected dataSource: RestDataSource,
+    protected persistRepository: PersistRepository,
     protected messagesService: MessagesService,
     protected resourceName: string) {
     super(dataSource, messagesService, resourceName);
-    this.persistRepository = new PersistRepository(messagesService);
     this.persistRepository.getLoadingState().subscribe(value => this.loading = value);
   }
 
