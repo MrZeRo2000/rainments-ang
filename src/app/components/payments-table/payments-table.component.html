@@ -37,8 +37,7 @@
           class="text-truncate"
           style="max-width: 200px"
           tooltip={{item.product.name}}
-          [isDisabled]="!displayOptions.showTooltips"
-          placement="auto"
+          [isDisabled]="!displayOptions.showTooltips || item.product.name.length < 18"
           delay="500"
           [ngClass]="{'text-truncate': displayOptions.compactProducts}"
         >
