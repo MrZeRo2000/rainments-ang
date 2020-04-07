@@ -17,7 +17,7 @@
 
 <div class="row" *ngIf="getEditingState()">
   <div class="col-xl-8">
-    <table class="table table-hover table-responsive">
+    <table class="table table-hover table-responsive" [ngClass]="{'table-sm': displayOptions.compactTable}">
       <thead>
       <tr>
         <th scope="col" class="w-auto">ID</th>

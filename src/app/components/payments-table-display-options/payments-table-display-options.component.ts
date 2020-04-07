@@ -3,15 +3,17 @@ import {Component, Input, OnInit} from '@angular/core';
 export class PaymentsTableDisplayOptions {
   private readonly keyPaymentsTableDisplayOptions = 'paymentsTableDisplayOptions';
 
+  public showTooltips: boolean;
+  public compactProducts: boolean;
+  public compactTable: boolean;
+
+
   public static fromLocalStorage(): PaymentsTableDisplayOptions {
     const instance = new PaymentsTableDisplayOptions();
     instance.loadFromLocalStorage();
 
     return instance;
   }
-
-  public showTooltips: boolean;
-  public compactProducts: boolean;
 
   public saveToLocalStorage(): void {
     localStorage.setItem(this.keyPaymentsTableDisplayOptions, JSON.stringify(this));
@@ -20,6 +22,7 @@ export class PaymentsTableDisplayOptions {
   public loadDefaults(): void {
     this.showTooltips = false;
     this.compactProducts = false;
+    this.compactTable = false;
   }
 
   public loadFromLocalStorage(): void {
