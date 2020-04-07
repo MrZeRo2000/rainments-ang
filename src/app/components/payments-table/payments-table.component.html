@@ -20,18 +20,18 @@
     <table class="table table-hover table-responsive" [ngClass]="{'table-sm': displayOptions.compactTable}">
       <thead>
       <tr>
-        <th scope="col" class="w-auto">ID</th>
+        <th scope="col" class="w-5">ID</th>
         <th scope="col" class="w-15">Group</th>
-        <th scope="col" class="w-15">Product</th>
+        <th scope="col" class="w-30">Product</th>
         <th scope="col" class="w-10 text-right">Counter</th>
         <th scope="col" class="w-10 text-right">Payment</th>
         <th scope="col" class="w-10 text-right">Commission</th>
-        <th scope="col" class="w-auto">Actions</th>
+        <th scope="col" class="w-10">Actions</th>
       </tr>
       </thead>
       <tbody>
       <tr *ngFor="let item of getPayments()" (click)="tableRowClick(item)" [ngClass]="{'table-active': selectedItems.has(item)}">
-        <td>{{item.id}}</td>
+        <td class="text-nowrap">{{item.id}}</td>
         <td>{{item.paymentGroup.name}}</td>
         <td
           class="text-truncate"
