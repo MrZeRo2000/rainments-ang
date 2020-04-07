@@ -17,12 +17,12 @@
 
 <div class="row" *ngIf="getEditingState()">
   <div class="col-xl-8">
-    <table class="table table-hover table-responsive" [ngClass]="{'table-sm': displayOptions.compactTable}">
+    <table class="table table-hover table-responsive w-100" [ngClass]="{'table-sm': displayOptions.compactTable}">
       <thead>
       <tr>
         <th scope="col" class="w-5">ID</th>
         <th scope="col" class="w-15">Group</th>
-        <th scope="col" class="w-30">Product</th>
+        <th scope="col" class="w-auto">Product</th>
         <th scope="col" class="w-10 text-right">Counter</th>
         <th scope="col" class="w-10 text-right">Payment</th>
         <th scope="col" class="w-10 text-right">Commission</th>
@@ -34,8 +34,6 @@
         <td class="text-nowrap">{{item.id}}</td>
         <td>{{item.paymentGroup.name}}</td>
         <td
-          class="text-truncate"
-          style="max-width: 200px"
           tooltip={{item.product.name}}
           [isDisabled]="!displayOptions.showTooltips || item.product.name.length < 18"
           delay="500"
