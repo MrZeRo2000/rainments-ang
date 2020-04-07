@@ -34,6 +34,7 @@ export class PaymentsTableDisplayOptions {
         const localObject = JSON.parse(localItem);
         this.showTooltips = localObject.showTooltips;
         this.compactProducts = localObject.compactProducts;
+        this.compactTable = localObject.compactTable;
       } catch (e) {
         this.loadDefaults();
       }
