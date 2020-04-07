@@ -9,7 +9,6 @@ import {Subject, Subscription} from 'rxjs';
 import {ConfirmationModalDialogComponent} from '../components/confirmation-modal-dialog/confirmation-modal-dialog.component';
 import {CommonTableComponent} from './common-table-component';
 import {ReadRepository} from '../repository/read-repository';
-import {Payment} from '../../model/payment';
 
 export abstract class CommonEditableTableComponent<R, W extends CommonEntity>
   extends CommonTableComponent<R, W>
@@ -87,10 +86,10 @@ export abstract class CommonEditableTableComponent<R, W extends CommonEntity>
     return Object.assign({}, this.editForm.value);
   }
 
-  protected getEditValue(item: Payment): any {
+  protected getEditValue(item: any): any {
     const value = {};
     Object.keys(item).forEach(v => {
-      if (item.hasOwnProperty(v) && item[v]) {
+      if (item.hasOwnProperty(v) && (item[v] || item[v] === 0)) {
         value[v] = item[v].id || item[v];
       }
     });

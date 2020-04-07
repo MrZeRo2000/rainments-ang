@@ -310,6 +310,10 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
       value => value.id === Number.parseInt(this.editForm.controls.paymentGroup.value, 0));
     const product: Product = this.getProducts().find(
       value => value.id === Number.parseInt(this.editForm.controls.product.value, 0));
+    const productCounter =
+      this.editForm.controls.productCounter.value !== null && this.editForm.controls.productCounter.value !== '' ?
+        PaymentsTableComponent.roundValue(this.editForm.controls.productCounter.value) :
+        null;
     const commissionAmount = this.editForm.controls.commissionAmount.value || 0;
 
     return new Payment(
@@ -319,7 +323,7 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
       paymentObject,
       paymentGroup,
       product,
-      PaymentsTableComponent.roundValue(this.editForm.controls.productCounter.value),
+      productCounter,
       PaymentsTableComponent.roundValue(this.editForm.controls.paymentAmount.value),
       PaymentsTableComponent.roundValue(commissionAmount)
     );
