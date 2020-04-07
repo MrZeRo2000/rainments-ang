@@ -52,7 +52,8 @@
           <div *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.ProductCounter) && getPrevPeriodProductCounterDiffByProduct(item)">
             <app-core-colored-value-label
               [value]="getPrevPeriodProductCounterDiffByProduct(item) | amount"
-              [colorScheme]="colorSchemeType.POS_GREEN_NEG_RED">
+              [colorScheme]="colorSchemeType.POS_GREEN_NEG_RED"
+            >
             </app-core-colored-value-label>{{item.product.unitName}}
           </div>
 
@@ -164,7 +165,9 @@
       <div class="ml-2">
         <div class="d-flex justify-content-between">
           <label for="productCounter" class="text-nowrap"><strong>Counter</strong></label>
-          <app-core-colored-value-label [value]="prevPeriodPayment && prevPeriodPayment.productCounter"></app-core-colored-value-label>
+          <a href="#" (click)="pervPeriodCounterLabelClick($event, prevPeriodPayment.productCounter)">
+            <app-core-colored-value-label [value]="prevPeriodPayment && prevPeriodPayment.productCounter"></app-core-colored-value-label>
+          </a>
         </div>
         <input
           type="number"

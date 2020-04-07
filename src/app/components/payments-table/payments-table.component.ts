@@ -384,4 +384,9 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   displayOptionsChanged() {
     this.displayOptions.saveToLocalStorage();
   }
+
+  pervPeriodCounterLabelClick(event: any, productCounter: number) {
+    event.preventDefault();
+    this.editForm.controls.productCounter.setValue(productCounter);
+  }
 }
