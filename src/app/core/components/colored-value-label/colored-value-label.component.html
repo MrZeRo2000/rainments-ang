@@ -1,9 +1,10 @@
 <span
   *ngIf="value"
-  class="badge badge-secondary mr-2"
+  class="badge badge-value mr-2"
   [ngClass]="{
                 'badge-success': colorScheme === colorSchemeType.POS_GREEN_NEG_RED && value >= 0,
-                'badge-danger': colorScheme === colorSchemeType.POS_GREEN_NEG_RED && value < 0
+                'badge-danger': colorScheme === colorSchemeType.POS_GREEN_NEG_RED && value < 0,
+                'badge-value-light': !colorScheme
               }"
 >
   {{value}}
