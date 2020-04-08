@@ -12,6 +12,7 @@ import { EnumStringValuePipe } from './pipes/enum-string-value.pipe';
 import {ConfirmationModalDialogComponent} from './components/confirmation-modal-dialog/confirmation-modal-dialog.component';
 import { LoadingModalPanelComponent } from './components/loading-modal-panel/loading-modal-panel.component';
 import { LoadingSpinnerElementComponent } from './components/loading-spinner-element/loading-spinner-element.component';
+import { ColoredTrendLabelComponent } from './components/colored-trend-label/colored-trend-label.component';
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import { LoadingSpinnerElementComponent } from './components/loading-spinner-ele
     EnumStringValuePipe,
     LoadingModalPanelComponent,
     LoadingSpinnerElementComponent,
+    ColoredTrendLabelComponent,
   ],
   imports: [
     CommonModule,
@@ -42,6 +44,7 @@ import { LoadingSpinnerElementComponent } from './components/loading-spinner-ele
         EditDeletePanelComponent,
         SaveDialogPanelComponent,
         ColoredValueLabelComponent,
+        ColoredTrendLabelComponent,
         ConfirmationModalDialogComponent,
         LoadingSpinnerElementComponent,
         LoadingModalPanelComponent,

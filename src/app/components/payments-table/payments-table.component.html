@@ -23,10 +23,10 @@
         <th scope="col" class="w-5">ID</th>
         <th scope="col" class="w-15">Group</th>
         <th scope="col" class="w-auto">Product</th>
-        <th scope="col" class="w-10 text-right">Counter</th>
-        <th scope="col" class="w-10 text-right">Payment</th>
+        <th scope="col" class="w-15 text-right">Counter</th>
+        <th scope="col" class="w-15 text-right">Payment</th>
         <th scope="col" class="w-10 text-right">Commission</th>
-        <th scope="col" class="w-10">Actions</th>
+        <th scope="col" class="w-5">Actions</th>
       </tr>
       </thead>
       <tbody>
@@ -83,8 +83,20 @@
               [value]="getPrevPeriodPaymentAmount(item) | amount"
             >
             </app-core-colored-value-label>
-            <a href="#" (click)="paymentAmountOnClick($event, item)" *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.PaymentAmount)">{{item.paymentAmount | amount}}</a>
+            <a
+              href="#"
+              (click)="paymentAmountOnClick($event, item)"
+              *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.PaymentAmount)">{{item.paymentAmount | amount}}
+            </a>
           </div>
+
+          <div *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.PaymentAmount)">
+            <app-core-colored-trend-label
+              [value]="getPrevPeriodPaymentDiff(item)"
+            >
+            </app-core-colored-trend-label>
+          </div>
+
           <label *ngIf="inlineEditHandler.isEditorVisible(item, inlineControlType.PaymentAmount)" class="mt-2 mb-2">
               <input
                 #inlineControl
@@ -107,6 +119,13 @@
             >
             </app-core-colored-value-label>
             <a href="#" (click)="commissionAmountOnClick($event, item)" *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.CommissionAmount)">{{item.commissionAmount | amount}}</a>
+          </div>
+
+          <div *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.CommissionAmount)">
+            <app-core-colored-trend-label
+              [value]="getPrevPeriodCommissionDiff(item)"
+            >
+            </app-core-colored-trend-label>
           </div>
 
           <label *ngIf="inlineEditHandler.isEditorVisible(item, inlineControlType.CommissionAmount)" class="mt-2 mb-2">

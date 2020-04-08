@@ -258,6 +258,26 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     return item.prevPeriodPayment && item.prevPeriodPayment.productCounter;
   }
 
+  getPrevPeriodPaymentDiff(item: Payment): number {
+    const prevPeriodValue = item.prevPeriodPayment && item.prevPeriodPayment.paymentAmount;
+    const currentValue = item.paymentAmount;
+    if (prevPeriodValue && currentValue) {
+      return currentValue - prevPeriodValue;
+    } else {
+      return null;
+    }
+  }
+
+  getPrevPeriodCommissionDiff(item: Payment): number {
+    const prevPeriodValue = item.prevPeriodPayment && item.prevPeriodPayment.commissionAmount;
+    const currentValue = item.commissionAmount;
+    if (prevPeriodValue && currentValue) {
+      return currentValue - prevPeriodValue;
+    } else {
+      return null;
+    }
+  }
+
   getPrevPeriodPaymentByProduct(productId: number): Payment {
     return this.readRepository.getData()[0] &&
       this.readRepository.getData()[0].prevProductPayments &&
