@@ -31,8 +31,11 @@
       </thead>
       <tbody>
       <tr *ngFor="let item of getPayments()" (click)="tableRowClick(item)" [ngClass]="{'table-active': selectedItems.has(item)}">
+        <!-- ID -->
         <td class="text-nowrap">{{item.id}}</td>
+        <!-- Group -->
         <td>{{item.paymentGroup.name}}</td>
+        <!-- Product -->
         <td
           tooltip={{item.product.name}}
           [isDisabled]="!displayOptions.showTooltips || item.product.name.length < 18"
@@ -41,12 +44,19 @@
         >
           {{item.product.name}}
         </td>
+        <!-- Counter -->
         <td class="text-right text-nowrap">
           <div>
             <app-core-colored-value-label [value]="getPrevPeriodProductCounter(item)"></app-core-colored-value-label>
-            <a href="#" (click)="productCounterOnClick($event, item)" *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.ProductCounter)">{{item.productCounter}}</a> {{item.product.unitName}}
+            <a
+              href="#"
+              (click)="productCounterOnClick($event, item)"
+              *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.ProductCounter)"
+            >
+              {{item.productCounter}}
+            </a> {{item.product.unitName}}
           </div>
-          <div *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.ProductCounter) && getPrevPeriodProductCounterDiffByProduct(item)">
+          <div *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.ProductCounter) && getPrevPeriodProductCounterDiffByProduct(item) && displayOptions.showTrend">
             <app-core-colored-value-label
               [value]="getPrevPeriodProductCounterDiffByProduct(item) | amount"
               [colorScheme]="colorSchemeType.POS_GREEN_NEG_RED"
@@ -77,6 +87,7 @@
             </app-core-colored-value-label>{{item.product.unitName}}
           </div>
         </td>
+        <!-- Payment -->
         <td class="text-right text-nowrap">
           <div>
             <app-core-colored-value-label
@@ -90,7 +101,7 @@
             </a>
           </div>
 
-          <div *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.PaymentAmount)">
+          <div *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.PaymentAmount) && displayOptions.showTrend">
             <app-core-colored-trend-label
               [value]="getPrevPeriodPaymentDiff(item)"
             >
@@ -112,6 +123,7 @@
               >
             </label>
         </td>
+        <!-- Commission -->
         <td class="text-right text-nowrap">
           <div>
             <app-core-colored-value-label
@@ -121,7 +133,7 @@
             <a href="#" (click)="commissionAmountOnClick($event, item)" *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.CommissionAmount)">{{item.commissionAmount | amount}}</a>
           </div>
 
-          <div *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.CommissionAmount)">
+          <div *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.CommissionAmount) && displayOptions.showTrend">
             <app-core-colored-trend-label
               [value]="getPrevPeriodCommissionDiff(item)"
             >
