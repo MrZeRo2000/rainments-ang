@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ImportExportComponent } from './import-export.component';
+import { DataManagementComponent } from './data-management.component';
 import {ImportPaymentObjectExcelComponent} from '../import-payment-object-excel/import-payment-object-excel.component';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {ReactiveFormsModule} from '@angular/forms';
@@ -15,12 +15,12 @@ import {RepositoryModule} from '../../repository/repository.module';
 import {MessagesModule} from '../../messages/messages.module';
 
 describe('ImportExportComponent', () => {
-  let component: ImportExportComponent;
-  let fixture: ComponentFixture<ImportExportComponent>;
+  let component: DataManagementComponent;
+  let fixture: ComponentFixture<DataManagementComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ImportExportComponent, ImportPaymentObjectExcelComponent, BackupDatabaseComponent ],
+      declarations: [ DataManagementComponent, ImportPaymentObjectExcelComponent, BackupDatabaseComponent ],
       imports: [HttpClientTestingModule, ReactiveFormsModule, ModalModule.forRoot(), CoreModule, RepositoryModule, MessagesModule],
       providers: [RestUrlEnv, RestDataSource, BsModalService]
     })
@@ -28,7 +28,7 @@ describe('ImportExportComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ImportExportComponent);
+    fixture = TestBed.createComponent(DataManagementComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

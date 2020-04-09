@@ -9,7 +9,7 @@ export enum SettingItemEnum {
   PAYMENT_OBJECTS = 'Payment Objects',
   PAYMENT_GROUPS = 'Payment Groups',
   PRODUCTS = 'Products',
-  IMPORT_EXPORT = 'Import / Export'
+  DATA_MANAGEMENT = 'Data management'
 }
 
 @Component({

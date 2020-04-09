@@ -21,7 +21,7 @@ import { PaymentsDateSelectionComponent } from './components/payments-date-selec
 import { PaymentsTableComponent } from './components/payments-table/payments-table.component';
 import {RepositoryModule} from './repository/repository.module';
 import { PaymentsSummaryComponent } from './components/payments-summary/payments-summary.component';
-import { ImportExportComponent } from './components/import-export/import-export.component';
+import { DataManagementComponent } from './components/data-managment/data-management.component';
 import { ImportPaymentObjectExcelComponent } from './components/import-payment-object-excel/import-payment-object-excel.component';
 import { BackupDatabaseComponent } from './components/backup-database/backup-database.component';
 import { PaymentsTableDisplayOptionsComponent } from './components/payments-table-display-options/payments-table-display-options.component';
@@ -39,7 +39,7 @@ import { PaymentsTableDisplayOptionsComponent } from './components/payments-tabl
     PaymentsDateSelectionComponent,
     PaymentsTableComponent,
     PaymentsSummaryComponent,
-    ImportExportComponent,
+    DataManagementComponent,
     ImportPaymentObjectExcelComponent,
     BackupDatabaseComponent,
     PaymentsTableDisplayOptionsComponent

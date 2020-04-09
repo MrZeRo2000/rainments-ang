@@ -15,9 +15,9 @@
       <app-payment-objects-table *ngIf="selectedItem === SettingItemEnumType.PAYMENT_OBJECTS"></app-payment-objects-table>
       <app-payment-groups-table *ngIf="selectedItem === SettingItemEnumType.PAYMENT_GROUPS"></app-payment-groups-table>
       <app-products-table *ngIf="selectedItem === SettingItemEnumType.PRODUCTS"></app-products-table>
-      <app-import-export *ngIf="selectedItem === SettingItemEnumType.IMPORT_EXPORT"></app-import-export>
+      <app-data-management *ngIf="selectedItem === SettingItemEnumType.DATA_MANAGEMENT"></app-data-management>
 
-      <app-message *ngIf="selectedItem !== SettingItemEnumType.IMPORT_EXPORT"></app-message>
+      <app-message *ngIf="selectedItem !== SettingItemEnumType.DATA_MANAGEMENT"></app-message>
     </div>
   </div>
 
