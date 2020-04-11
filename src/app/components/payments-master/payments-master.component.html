@@ -1,10 +1,6 @@
 
-<div class="container-fluid">
-
 <app-payments-date-selection (selectedDate)="onSelectDate($event)"></app-payments-date-selection>
 
 <app-payments-table [paymentObjectId]="paymentObjectId" [paymentPeriodDate]="selectedDate"></app-payments-table>
 
 <app-message></app-message>
-
-</div>
