@@ -11,8 +11,11 @@ import {ImportPaymentObjectRepository} from './import-payment-object-repository'
 import {BackupDatabaseRepository} from './backup-database-repository';
 import {BackupInfoRepository} from './backup-info-repository';
 import {AppPersistRepository} from './app-persist-repository';
-
-
+import {PaymentObjectGroupRefsRepository} from './payment-object-group-refs-repository';
+import {UpdatePaymentObjectGroupRepository} from './update-payment-object-group-repository';
+import {UpdatePaymentObjectGroupPersistRepository} from './update-payment-object-group-persist-repository';
+import {ImportPaymentObjectPersistRepository} from './import-payment-object-persist-repository';
+import {BackupDatabasePersistRepository} from './backup-database-persist-repository';
 
 @NgModule({
   declarations: [],
@@ -29,9 +32,14 @@ import {AppPersistRepository} from './app-persist-repository';
     ProductRepository,
     PaymentRepository,
     PaymentRefsRepository,
+    PaymentObjectGroupRefsRepository,
     ImportPaymentObjectRepository,
     BackupDatabaseRepository,
-    BackupInfoRepository
+    BackupInfoRepository,
+    UpdatePaymentObjectGroupRepository,
+    UpdatePaymentObjectGroupPersistRepository,
+    ImportPaymentObjectPersistRepository,
+    BackupDatabasePersistRepository
   ]
 })
 export class RepositoryModule { }

@@ -11,7 +11,7 @@ import {CommonTableComponent} from './common-table-component';
 import {ReadRepository} from '../repository/read-repository';
 
 export abstract class CommonEditableTableComponent<R, W extends CommonEntity>
-  extends CommonTableComponent<R, W>
+  extends CommonTableComponent<R>
   implements OnInit, OnDestroy, Editable {
   bsModalRef: BsModalRef;
   editState: EditState<W>;
@@ -25,7 +25,7 @@ export abstract class CommonEditableTableComponent<R, W extends CommonEntity>
     protected readRepository: ReadRepository<R>,
     protected repository: ReadWriteRepository<W>
   ) {
-    super(readRepository, repository);
+    super(readRepository);
   }
 
   // OnInit

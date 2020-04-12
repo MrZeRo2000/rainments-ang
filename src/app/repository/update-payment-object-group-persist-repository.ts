@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 import {MessagesService} from '../messages/messages.service';
 
 @Injectable()
-export class AppPersistRepository extends PersistRepository {
+export class UpdatePaymentObjectGroupPersistRepository extends PersistRepository {
   constructor(messagesService: MessagesService) {
     super(messagesService);
   }

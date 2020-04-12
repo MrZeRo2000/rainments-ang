@@ -1,5 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {CommonSimpleTableComponent} from '../../core/table/common-simple-table-component';
+import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {PaymentObject} from '../../model/payment-object';
 import {PaymentObjectRepository} from '../../repository/payment-object-repository';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -7,20 +6,27 @@ import {ImportPaymentObjectRepository} from '../../repository/import-payment-obj
 import {MessagesService} from '../../messages/messages.service';
 import {SuccessMessage} from '../../messages/message.model';
 import {Loadable} from '../../core/edit/edit-intf';
-import {LoadingModalPanelComponent} from '../../core/components/loading-modal-panel/loading-modal-panel.component';
 import {LoadingModalService} from '../../core/services/loading-modal.service';
+import {CommonTableComponent} from '../../core/table/common-table-component';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-import-payment-object-excel',
   templateUrl: './import-payment-object-excel.component.html',
   styleUrls: ['./import-payment-object-excel.component.scss']
 })
-export class ImportPaymentObjectExcelComponent extends CommonSimpleTableComponent<PaymentObject> implements OnInit, Loadable {
-  private readonly messageSource = 'importPaymentObject';
+export class ImportPaymentObjectExcelComponent extends CommonTableComponent<PaymentObject> implements OnInit, OnDestroy, Loadable {
+
+  @Input()
+  messageSource: string;
 
   editForm: FormGroup;
   formSubmitted = false;
   editFormFile: File;
+
+  private importSubscription: Subscription;
+  private loadingSubscription: Subscription;
+
 
   @ViewChild('importFile') importFileElement: ElementRef;
 
@@ -43,13 +49,19 @@ export class ImportPaymentObjectExcelComponent extends CommonSimpleTableComponen
     this.repository.setDefaultLoadParams({messageSource: this.messageSource});
     this.importRepository.setDefaultPersistParams({messageSource: this.messageSource});
 
-    this.importRepository.getPersistData().subscribe(data =>
+    this.importSubscription = this.importRepository.getPersistData().subscribe(data =>
       this.messagesService.reportMessage(new SuccessMessage(`Successfully imported ${data.body.rowsAffected} rows`, this.messageSource)));
-    this.importRepository.getLoadingState().subscribe(value => {
+    this.loadingSubscription = this.importRepository.getLoadingState().subscribe(value => {
       if (!value) {
         setTimeout(() => this.loadingModalService.hide(), 100);
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    super.ngOnDestroy();
+    this.importSubscription.unsubscribe();
+    this.loadingSubscription.unsubscribe();
   }
 
   getPaymentObjects(): PaymentObject[] {
