@@ -51,10 +51,14 @@
             <a
               href="#"
               (click)="productCounterOnClick($event, item)"
-              *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.ProductCounter)"
+              *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.ProductCounter) && item.productCounter"
             >
               {{item.productCounter}}
-            </a> {{item.product.unitName}}
+            </a>
+            <span
+              *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.ProductCounter) && (item.productCounter || getPrevPeriodProductCounter(item))"
+            > {{item.product.unitName}}
+            </span>
           </div>
           <div *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.ProductCounter) && getPrevPeriodProductCounterDiffByProduct(item) && displayOptions.showTrend">
             <app-core-colored-value-label
