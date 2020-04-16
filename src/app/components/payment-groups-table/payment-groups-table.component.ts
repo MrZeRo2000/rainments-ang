@@ -6,6 +6,7 @@ import {BsModalService} from 'ngx-bootstrap';
 import {PaymentGroupRepository} from '../../repository/payment-group-repository';
 import {urlValidator} from '../../core/directives/url-validator.directive';
 import {CommonSimpleEditableTableComponent} from '../../core/table/common-simple-editable-table-component';
+import {DragHandlerService} from '../../core/services/drag-handler.service';
 
 @Component({
   selector: 'app-payment-groups-table',
@@ -18,7 +19,8 @@ export class PaymentGroupsTableComponent extends CommonSimpleEditableTableCompon
   constructor(
     private fb: FormBuilder,
     protected modalService: BsModalService,
-    public repository: PaymentGroupRepository
+    public repository: PaymentGroupRepository,
+    public dragHandlerService: DragHandlerService
   ) {
     super(PaymentObject, modalService, repository);
   }
@@ -59,6 +61,16 @@ export class PaymentGroupsTableComponent extends CommonSimpleEditableTableCompon
     if (nameDuplicates.length > 0) {
       this.editForm.controls.name.setErrors({existingName: true});
     }
+  }
+
+  onDrop(event: any): void {
+    const previousPaymentGroup = this.getPaymentGroups()[event.previousIndex];
+    const currentPaymentGroup = this.getPaymentGroups()[event.currentIndex];
+
+    this.dragHandlerService.stopDrag();
+
+    // alert('dropped from ' + JSON.stringify(previousPaymentGroup) + ' to ' + JSON.stringify(currentPaymentGroup));
+    // this.dragging = false;
   }
 
 }

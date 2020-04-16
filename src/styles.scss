@@ -77,3 +77,23 @@ body {
   color: #fff;
   background-color: #6c757dad;
 }
+
+.cursor-grip {
+  cursor: move;
+}
+
+.fa-grip {
+  opacity: 0.5;
+  @extend .cursor-grip;
+}
+
+div.drag-preview {
+  border:dashed 1px #aaaaaa;
+  border-radius: $border-radius;
+  padding: $table-cell-padding;
+  vertical-align: middle;
+  position:relative;
+  top:-1.25rem;
+  background-color: #dddddd;
+  opacity: 0.9;
+}

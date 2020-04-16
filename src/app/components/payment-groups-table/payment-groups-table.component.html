@@ -2,7 +2,7 @@
 <app-core-add-panel [editable]="this" (addClick)="onAddClick()"></app-core-add-panel>
 </div>
 
-<table class="table" *ngIf="getEditingState()">
+<table class="table" *ngIf="getEditingState()" [ngClass]="this.dragHandlerService.getDragClass()">
   <thead>
   <tr>
     <th scope="col" class="w-auto">ID</th>
@@ -10,14 +10,15 @@
     <th scope="col" class="w-auto">Actions</th>
   </tr>
   </thead>
-  <tbody>
-  <tr *ngFor="let item of getPaymentGroups()">
-    <td>{{item.id}}</td>
-    <td *ngIf="item.url"><a href="{{item.url}}" target="_blank">{{item.name}}</a></td>
-    <td *ngIf="!item.url">{{item.name}}</td>
+  <tbody cdkDropList cdkDropListLockAxis="y" (cdkDropListDropped)="onDrop($event)">
+  <tr cdkDrag *ngFor="let item of getPaymentGroups()" (cdkDragStarted)="this.dragHandlerService.startDrag()">
+    <td class="text-nowrap align-middle"><div><app-core-drag-grip cdkDragHandle></app-core-drag-grip> {{item.id}}</div></td>
+    <td class="align-middle" *ngIf="item.url"><a href="{{item.url}}" target="_blank">{{item.name}}</a></td>
+    <td class="align-middle" *ngIf="!item.url">{{item.name}}</td>
     <td class="text-nowrap">
       <app-core-edit-delete-panel [item]="item" (deleteClick)="onDeleteClick(item)" (editClick)="onEditClick(item)"></app-core-edit-delete-panel>
     </td>
+    <td *cdkDragPreview><div class="drag-preview">{{item.name}}</div></td>
   </tr>
   </tbody>
 </table>

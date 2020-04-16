@@ -26,6 +26,7 @@ import { ImportPaymentObjectExcelComponent } from './components/import-payment-o
 import { BackupDatabaseComponent } from './components/backup-database/backup-database.component';
 import { PaymentsTableDisplayOptionsComponent } from './components/payments-table-display-options/payments-table-display-options.component';
 import { UpdatePaymentGroupComponent } from './components/update-payment-group/update-payment-group.component';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { UpdatePaymentGroupComponent } from './components/update-payment-group/u
   ],
     imports: [
         BrowserModule,
+        DragDropModule,
         BrowserAnimationsModule,
         AppRoutingModule,
         ReactiveFormsModule,

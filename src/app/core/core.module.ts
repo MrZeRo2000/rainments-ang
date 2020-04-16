@@ -13,6 +13,8 @@ import {ConfirmationModalDialogComponent} from './components/confirmation-modal-
 import { LoadingModalPanelComponent } from './components/loading-modal-panel/loading-modal-panel.component';
 import { LoadingSpinnerElementComponent } from './components/loading-spinner-element/loading-spinner-element.component';
 import { ColoredTrendLabelComponent } from './components/colored-trend-label/colored-trend-label.component';
+import { DragGripComponent } from './components/drag-grip/drag-grip.component';
+import {DragHandlerService} from './services/drag-handler.service';
 
 
 @NgModule({
@@ -29,6 +31,7 @@ import { ColoredTrendLabelComponent } from './components/colored-trend-label/col
     LoadingModalPanelComponent,
     LoadingSpinnerElementComponent,
     ColoredTrendLabelComponent,
+    DragGripComponent,
   ],
   imports: [
     CommonModule,
@@ -49,11 +52,13 @@ import { ColoredTrendLabelComponent } from './components/colored-trend-label/col
         LoadingSpinnerElementComponent,
         LoadingModalPanelComponent,
         AmountPipe,
-        EnumStringValuePipe
+        EnumStringValuePipe,
+        DragGripComponent
     ],
   providers: [
     AmountPipe,
-    EnumStringValuePipe
+    EnumStringValuePipe,
+    DragHandlerService
   ]
 })
 export class CoreModule { }
