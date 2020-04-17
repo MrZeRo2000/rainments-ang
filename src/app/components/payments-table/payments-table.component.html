@@ -56,7 +56,7 @@
               {{item.productCounter}}
             </a>
             <span
-              *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.ProductCounter) && (item.productCounter || getPrevPeriodProductCounter(item))"
+              *ngIf="(item.productCounter || getPrevPeriodProductCounter(item))"
             > {{item.product.unitName}}
             </span>
           </div>
