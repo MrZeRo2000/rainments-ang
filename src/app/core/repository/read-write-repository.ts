@@ -49,6 +49,15 @@ export abstract class ReadWriteRepository<T extends CommonEntity> extends ReadRe
     );
   }
 
+  setDefaultOrder(): void {
+    this.persistRepository.handlePersistHttpResponse(
+      this.dataSource.postResponse(
+        this.resourceName + '/operation:set_default_order',
+        {}
+      )
+    );
+  }
+
   getPersistSuccessObservable(): Subject<boolean> {
     return this.persistRepository.getPersistSuccess();
   }

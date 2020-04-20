@@ -15,6 +15,7 @@ import { LoadingSpinnerElementComponent } from './components/loading-spinner-ele
 import { ColoredTrendLabelComponent } from './components/colored-trend-label/colored-trend-label.component';
 import { DragGripComponent } from './components/drag-grip/drag-grip.component';
 import {DragHandlerService} from './services/drag-handler.service';
+import { DropDownMoreMenuComponent } from './components/drop-down-more-menu/drop-down-more-menu.component';
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import {DragHandlerService} from './services/drag-handler.service';
     LoadingSpinnerElementComponent,
     ColoredTrendLabelComponent,
     DragGripComponent,
+    DropDownMoreMenuComponent,
   ],
   imports: [
     CommonModule,
@@ -53,7 +55,8 @@ import {DragHandlerService} from './services/drag-handler.service';
         LoadingModalPanelComponent,
         AmountPipe,
         EnumStringValuePipe,
-        DragGripComponent
+        DragGripComponent,
+        DropDownMoreMenuComponent
     ],
   providers: [
     AmountPipe,

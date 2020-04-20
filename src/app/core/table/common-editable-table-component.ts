@@ -158,4 +158,9 @@ export abstract class CommonEditableTableComponent<R, W extends CommonEntity>
       this.repository.moveItem(fromEntity.id, toEntity.id);
     }
   }
+
+  onSetDefaultOrderClick(event: any): void {
+    event.preventDefault();
+    this.repository.setDefaultOrder();
+  }
 }

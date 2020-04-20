@@ -28,6 +28,7 @@ export abstract class PersistRepository {
   }
 
   protected constructor(private messagesService: MessagesService) {
+    console.log('constructing PersistRepository');
   }
 
   private beforePersist(): void {

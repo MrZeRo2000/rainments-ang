@@ -16,6 +16,8 @@ import {UpdatePaymentObjectGroupRepository} from './update-payment-object-group-
 import {UpdatePaymentObjectGroupPersistRepository} from './update-payment-object-group-persist-repository';
 import {ImportPaymentObjectPersistRepository} from './import-payment-object-persist-repository';
 import {BackupDatabasePersistRepository} from './backup-database-persist-repository';
+import {PaymentGroupPersistRepository} from './payment-group-persist-repository';
+import {PaymentObjectPersistRepository} from './payment-object-persist-repository';
 
 @NgModule({
   declarations: [],
@@ -28,7 +30,9 @@ import {BackupDatabasePersistRepository} from './backup-database-persist-reposit
     RestDataSource,
     AppPersistRepository,
     PaymentObjectRepository,
+    PaymentObjectPersistRepository,
     PaymentGroupRepository,
+    PaymentGroupPersistRepository,
     ProductRepository,
     PaymentRepository,
     PaymentRefsRepository,

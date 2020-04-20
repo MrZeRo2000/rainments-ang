@@ -1,5 +1,11 @@
-<div class="mt-2 mb-2">
-<app-core-add-panel [editable]="this" (addClick)="onAddClick()"></app-core-add-panel>
+<div class="d-flex mt-2 mb-2">
+  <app-core-add-panel [editable]="this" (addClick)="onAddClick()"></app-core-add-panel>
+  <a class="dropdown-item" href="#" (click)="onSetDefaultOrderClick($event)">Set default order</a>
+  <div class="ml-auto">
+    <app-core-drop-down-more-menu>
+      <a class="dropdown-item" href="#" (click)="onSetDefaultOrderClick()">Set default order</a>
+    </app-core-drop-down-more-menu>
+  </div>
 </div>
 
 <table class="table" *ngIf="getEditingState()" [ngClass]="this.dragHandlerService.getDragClass()">
