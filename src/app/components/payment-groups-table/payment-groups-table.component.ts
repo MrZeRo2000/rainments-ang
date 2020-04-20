@@ -69,7 +69,9 @@ export class PaymentGroupsTableComponent extends CommonSimpleEditableTableCompon
 
     this.dragHandlerService.stopDrag();
 
-    this.repository.moveItem(previousPaymentGroup.id, currentPaymentGroup.id);
+    if (previousPaymentGroup && currentPaymentGroup && previousPaymentGroup.id !== currentPaymentGroup.id) {
+      this.repository.moveItem(previousPaymentGroup.id, currentPaymentGroup.id);
+    }
 
     // alert('dropped from ' + JSON.stringify(previousPaymentGroup) + ' to ' + JSON.stringify(currentPaymentGroup));
     // this.dragging = false;
