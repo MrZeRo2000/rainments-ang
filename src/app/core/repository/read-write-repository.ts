@@ -6,6 +6,7 @@ import {PatchRequest} from '../../model/patch-request';
 import {RestDataSource} from '../../data-source/rest-data-source';
 import {MessagesService} from '../../messages/messages.service';
 import {PersistRepository} from './persist-repository';
+import {HttpParams} from '@angular/common/http';
 
 export abstract class ReadWriteRepository<T extends CommonEntity> extends ReadRepository<T> {
 
@@ -32,6 +33,20 @@ export abstract class ReadWriteRepository<T extends CommonEntity> extends ReadRe
 
   patchItem(id: number, patchRequest: PatchRequest): void {
     this.persistRepository.handlePersistHttpResponse(this.dataSource.patchResponse(this.resourceName, id, patchRequest));
+  }
+
+  moveItem(fromId: number, toId: number): void {
+    const httpParams = new HttpParams()
+      .append('fromId', fromId.toString(10))
+      .append('toId', toId.toString(10));
+
+    this.persistRepository.handlePersistHttpResponse(
+      this.dataSource.postResponse(
+        this.resourceName + '/operation:move_order',
+        {},
+        httpParams
+      )
+    );
   }
 
   getPersistSuccessObservable(): Subject<boolean> {

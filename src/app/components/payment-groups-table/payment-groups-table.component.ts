@@ -64,13 +64,7 @@ export class PaymentGroupsTableComponent extends CommonSimpleEditableTableCompon
   }
 
   onDrop(event: any): void {
-    const previousPaymentGroup = this.getPaymentGroups()[event.previousIndex];
-    const currentPaymentGroup = this.getPaymentGroups()[event.currentIndex];
-
     this.dragHandlerService.stopDrag();
-
-    if (previousPaymentGroup && currentPaymentGroup && previousPaymentGroup.id !== currentPaymentGroup.id) {
-      this.repository.moveItem(previousPaymentGroup.id, currentPaymentGroup.id);
-    }
+    super.onDrop(event);
   }
 }

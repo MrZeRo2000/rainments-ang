@@ -15,18 +15,4 @@ export class PaymentGroupRepository extends ReadWriteRepository<PaymentGroup> {
   ) {
     super(dataSource, persistRepository, messagesService, 'payment-groups');
   }
-
-  moveItem(fromId: number, toId: number): void {
-    const httpParams = new HttpParams()
-      .append('fromId', fromId.toString(10))
-      .append('toId', toId.toString(10));
-
-    this.persistRepository.handlePersistHttpResponse(
-      this.dataSource.postResponse(
-        'payment-groups/operation:move_order',
-        {},
-        httpParams
-      )
-    );
-  }
 }

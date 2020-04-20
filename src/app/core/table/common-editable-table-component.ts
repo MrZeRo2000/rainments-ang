@@ -149,4 +149,13 @@ export abstract class CommonEditableTableComponent<R, W extends CommonEntity>
   onCancel(): void {
     this.editState = undefined;
   }
+
+  onDrop(event: any): void {
+    const fromEntity = this.repository.getData()[event.previousIndex];
+    const toEntity = this.repository.getData()[event.currentIndex];
+
+    if (fromEntity && toEntity && fromEntity.id !== toEntity.id) {
+      this.repository.moveItem(fromEntity.id, toEntity.id);
+    }
+  }
 }
