@@ -83,7 +83,13 @@ export abstract class CommonEditableTableComponent<R, W extends CommonEntity>
   protected editFormChanged(data: any) {}
 
   protected getWritableData(): W {
-    return Object.assign({}, this.editForm.value);
+    // this version gives empty strings instead of no value
+    // return Object.assign({}, this.editForm.value);
+
+    const v = this.editForm.value;
+    const d: any = {};
+    Object.keys(v).forEach(c => {if (v[c] !== '') {d[c] = v[c]; }});
+    return d;
   }
 
   protected getEditValue(item: any): any {
