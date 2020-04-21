@@ -6,7 +6,8 @@ import {PaymentObjectRepository} from '../../repository/payment-object-repositor
 import {RestUrlEnv} from '../../config/configuration';
 import {RestDataSource} from '../../data-source/rest-data-source';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {AlertModule, BsModalService, ModalModule} from 'ngx-bootstrap';
+import {AlertModule} from 'ngx-bootstrap/alert';
+import {ModalModule} from 'ngx-bootstrap/modal';
 import {MessagesModule} from '../../messages/messages.module';
 import {ReactiveFormsModule} from '@angular/forms';
 import {CoreModule} from '../../core/core.module';

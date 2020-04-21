@@ -2,7 +2,7 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {PaymentObject} from '../../model/payment-object';
 import {PaymentGroup} from '../../model/payment-group';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {BsModalService} from 'ngx-bootstrap';
+import {BsModalService} from 'ngx-bootstrap/modal';
 import {PaymentGroupRepository} from '../../repository/payment-group-repository';
 import {urlValidator} from '../../core/directives/url-validator.directive';
 import {CommonSimpleEditableTableComponent} from '../../core/table/common-simple-editable-table-component';

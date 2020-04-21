@@ -13,7 +13,7 @@ import {CommonEditableTableComponent} from '../../core/table/common-editable-tab
 import {PaymentRefs} from '../../model/payment-refs';
 import {Payment} from '../../model/payment';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {BsModalService} from 'ngx-bootstrap';
+import {BsModalService} from 'ngx-bootstrap/modal';
 import {PaymentRefsRepository} from '../../repository/payment-refs-repository';
 import {PaymentRepository} from '../../repository/payment-repository';
 import {CommonTableConfig} from '../../core/table/common-table-component';

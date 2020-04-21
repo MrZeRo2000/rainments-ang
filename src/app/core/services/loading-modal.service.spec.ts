@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { LoadingModalService } from './loading-modal.service';
-import {BsModalService, ModalModule} from 'ngx-bootstrap';
+import {BsModalService, ModalModule} from 'ngx-bootstrap/modal';
 
 describe('LoadingModalService', () => {
   let service: LoadingModalService;

@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { UpdatePaymentGroupComponent } from './update-payment-group.component';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {ReactiveFormsModule} from '@angular/forms';
-import {ModalModule} from 'ngx-bootstrap';
+import {ModalModule} from 'ngx-bootstrap/modal';
 import {CoreModule} from '../../core/core.module';
 import {RepositoryModule} from '../../repository/repository.module';
 import {RestUrlEnv} from '../../config/configuration';

@@ -1,6 +1,6 @@
 import {OnDestroy, OnInit} from '@angular/core';
 import {Editable} from '../edit/edit-intf';
-import {BsModalRef, BsModalService} from 'ngx-bootstrap';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 import {ReadWriteRepository} from '../repository/read-write-repository';
 import {EditMode, EditState} from '../edit/edit-state';
 import {CommonEntity} from '../entity/common-entity';

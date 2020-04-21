@@ -8,7 +8,7 @@ import {Subject, Subscription} from 'rxjs';
 import {PaymentObject} from '../../model/payment-object';
 import {PaymentGroup} from '../../model/payment-group';
 import {ConfirmationModalDialogComponent} from '../../core/components/confirmation-modal-dialog/confirmation-modal-dialog.component';
-import {BsModalRef, BsModalService} from 'ngx-bootstrap';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 import {HttpParams} from '@angular/common/http';
 import {UpdatePaymentObjectGroupRepository} from '../../repository/update-payment-object-group-repository';
 import {Loadable} from '../../core/edit/edit-intf';

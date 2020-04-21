@@ -4,11 +4,11 @@ import {RestDataSource} from '../data-source/rest-data-source';
 import {RestUrlEnv} from '../config/configuration';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {MessagesService} from '../messages/messages.service';
-import {AppPersistRepository} from './app-persist-repository';
+import {PaymentPersistRepository} from './payment-persist-repository';
 
 describe('PaymentRepository', () => {
   beforeEach(() => TestBed.configureTestingModule({
-    providers: [RestDataSource, RestUrlEnv, AppPersistRepository],
+    providers: [RestDataSource, RestUrlEnv, PaymentPersistRepository],
     imports: [HttpClientTestingModule]
   }));
 
@@ -16,7 +16,7 @@ describe('PaymentRepository', () => {
   it('should create an instance', () => {
     expect(new PaymentRepository(
       TestBed.inject(RestDataSource),
-      TestBed.inject(AppPersistRepository),
+      TestBed.inject(PaymentPersistRepository),
       TestBed.inject(MessagesService))).toBeTruthy();
   });
 });

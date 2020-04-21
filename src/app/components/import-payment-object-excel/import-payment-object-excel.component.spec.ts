@@ -6,10 +6,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {CoreModule} from '../../core/core.module';
 import {RestUrlEnv} from '../../config/configuration';
 import {RestDataSource} from '../../data-source/rest-data-source';
-import {PaymentRepository} from '../../repository/payment-repository';
-import {PaymentObjectRepository} from '../../repository/payment-object-repository';
-import {ImportPaymentObjectRepository} from '../../repository/import-payment-object-repository';
-import {BsModalService, ModalModule} from 'ngx-bootstrap';
+import {ModalModule} from 'ngx-bootstrap/modal';
 import {RepositoryModule} from '../../repository/repository.module';
 
 describe('ImportPaymentObjectExcelComponent', () => {

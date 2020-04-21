@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ConfirmationModalDialogComponent } from './confirmation-modal-dialog.component';
-import {BsModalRef} from 'ngx-bootstrap';
+import {BsModalRef} from 'ngx-bootstrap/modal';
 
 describe('DialogConfirmationComponent', () => {
   let component: ConfirmationModalDialogComponent;

@@ -5,9 +5,7 @@ import {PaymentsDateSelectionComponent} from '../payments-date-selection/payment
 import {RouterTestingModule} from '@angular/router/testing';
 import {ReactiveFormsModule} from '@angular/forms';
 import {PaymentsTableComponent} from '../payments-table/payments-table.component';
-import {PaymentRefsRepository} from '../../repository/payment-refs-repository';
-import {BsModalService, ModalModule} from 'ngx-bootstrap';
-import {PaymentRepository} from '../../repository/payment-repository';
+import {ModalModule} from 'ngx-bootstrap/modal';
 import {RestUrlEnv} from '../../config/configuration';
 import {RestDataSource} from '../../data-source/rest-data-source';
 import {HttpClientTestingModule} from '@angular/common/http/testing';

@@ -3,13 +3,13 @@ import {Product} from '../model/product';
 import {MessagesService} from '../messages/messages.service';
 import {RestDataSource} from '../data-source/rest-data-source';
 import {Injectable} from '@angular/core';
-import {AppPersistRepository} from './app-persist-repository';
+import {ProductPersistRepository} from './product-persist-repository';
 
 @Injectable()
 export class ProductRepository extends ReadWriteRepository<Product> {
   constructor(
     protected dataSource: RestDataSource,
-    protected persistRepository: AppPersistRepository,
+    protected persistRepository: ProductPersistRepository,
     protected messagesService: MessagesService) {
     super(dataSource, persistRepository, messagesService, 'products');
   }

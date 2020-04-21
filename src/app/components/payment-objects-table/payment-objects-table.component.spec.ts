@@ -7,7 +7,7 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {RestUrlEnv} from '../../config/configuration';
 import {ReactiveFormsModule} from '@angular/forms';
 import {CoreModule} from '../../core/core.module';
-import {BsModalService, ModalModule} from 'ngx-bootstrap';
+import {ModalModule} from 'ngx-bootstrap/modal';
 import {RepositoryModule} from '../../repository/repository.module';
 
 describe('PaymentObjectsTableComponent', () => {
