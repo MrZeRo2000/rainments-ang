@@ -4,6 +4,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {ProductRepository} from '../../repository/product-repository';
 import {CommonSimpleEditableTableComponent} from '../../core/table/common-simple-editable-table-component';
+import {DragHandlerService} from '../../core/services/drag-handler.service';
 
 @Component({
   selector: 'app-products-table',
@@ -16,7 +17,8 @@ export class ProductsTableComponent extends CommonSimpleEditableTableComponent<P
   constructor(
     private fb: FormBuilder,
     protected modalService: BsModalService,
-    public repository: ProductRepository
+    public repository: ProductRepository,
+    public dragHandlerService: DragHandlerService
   ) {
     super(Product, modalService, repository);
   }
@@ -59,4 +61,8 @@ export class ProductsTableComponent extends CommonSimpleEditableTableComponent<P
     }
   }
 
+  onDrop(event: any): void {
+    this.dragHandlerService.stopDrag();
+    super.onDrop(event);
+  }
 }

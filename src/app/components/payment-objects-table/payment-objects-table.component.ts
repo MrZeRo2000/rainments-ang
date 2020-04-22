@@ -4,6 +4,7 @@ import {PaymentObject} from '../../model/payment-object';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {CommonSimpleEditableTableComponent} from '../../core/table/common-simple-editable-table-component';
+import {DragHandlerService} from '../../core/services/drag-handler.service';
 
 @Component({
   selector: 'app-payment-objects-table',
@@ -16,7 +17,8 @@ export class PaymentObjectsTableComponent extends CommonSimpleEditableTableCompo
   constructor(
     private fb: FormBuilder,
     protected modalService: BsModalService,
-    public repository: PaymentObjectRepository
+    public repository: PaymentObjectRepository,
+    public dragHandlerService: DragHandlerService
   ) {
     super(PaymentObject, modalService, repository);
   }
@@ -58,4 +60,8 @@ export class PaymentObjectsTableComponent extends CommonSimpleEditableTableCompo
     }
   }
 
+  onDrop(event: any): void {
+    this.dragHandlerService.stopDrag();
+    super.onDrop(event);
+  }
 }

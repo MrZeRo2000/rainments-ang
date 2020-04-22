@@ -1,9 +1,14 @@
 
-<div class="mt-2 mb-2">
+<div class="d-flex mt-2 mb-2">
   <app-core-add-panel [editable]="this" (addClick)="onAddClick()"></app-core-add-panel>
+  <div class="ml-auto">
+    <app-core-drop-down-more-menu>
+      <a class="dropdown-item" href="#" (click)="onSetDefaultOrderClick($event)">Set default order</a>
+    </app-core-drop-down-more-menu>
+  </div>
 </div>
 
-<table class="table" *ngIf="getEditingState()">
+<table class="table" *ngIf="getEditingState()" [ngClass]="this.dragHandlerService.getDragClass()">
   <thead>
     <tr>
       <th scope="col" class="w-auto">ID</th>
@@ -11,13 +16,14 @@
       <th scope="col" class="w-auto">Actions</th>
     </tr>
   </thead>
-  <tbody>
-    <tr *ngFor="let item of getPaymentObjects()">
-      <td>{{item.id}}</td>
-      <td>{{item.name}}</td>
-      <td class="text-nowrap">
+  <tbody cdkDropList cdkDropListLockAxis="y" (cdkDropListDropped)="onDrop($event)">
+    <tr cdkDrag *ngFor="let item of getPaymentObjects()" (cdkDragStarted)="this.dragHandlerService.startDrag()">
+      <td class="text-nowrap align-middle"><div><app-core-drag-grip cdkDragHandle></app-core-drag-grip> {{item.id}}</div></td>
+      <td class="align-middle">{{item.name}}</td>
+      <td class="text-nowrap align-middle">
         <app-core-edit-delete-panel [item]="item" (deleteClick)="onDeleteClick(item)" (editClick)="onEditClick(item)"></app-core-edit-delete-panel>
       </td>
+      <td *cdkDragPreview><div class="drag-preview">{{item.name}}</div></td>
     </tr>
   </tbody>
 </table>
