@@ -31,6 +31,18 @@
           Show trend
         </label>
       </div>
+      <div class="form-check custom-control custom-checkbox">
+        <input class="custom-control-input" type="checkbox" id="showIdCheckBox" [(ngModel)]="paymentsTableDisplayOptions.showId" name="showId">
+        <label class="custom-control-label text-nowrap" for="showIdCheckBox">
+          Show Id
+        </label>
+      </div>
+      <div class="form-check custom-control custom-checkbox">
+        <input class="custom-control-input" type="checkbox" id="showSummaryCheckBox" [(ngModel)]="paymentsTableDisplayOptions.showSummary" name="showSummary">
+        <label class="custom-control-label text-nowrap" for="showSummaryCheckBox">
+          Show Summary
+        </label>
+      </div>
     </form>
   </div>
 </div>

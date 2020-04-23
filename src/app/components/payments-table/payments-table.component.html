@@ -16,11 +16,11 @@
 </div>
 
 <div class="row" *ngIf="getEditingState()">
-  <div class="col-xl-8">
+  <div [ngClass]="{'col-xl-9 col-lg-8': displayOptions.showSummary, 'col-12': !displayOptions.showSummary}">
     <table class="table table-hover table-responsive w-100" [ngClass]="{'table-sm': displayOptions.compactTable}">
       <thead>
       <tr>
-        <th scope="col" class="w-5">ID</th>
+        <th scope="col" class="w-5" *ngIf="displayOptions.showId">ID</th>
         <th scope="col" class="w-15">Group</th>
         <th scope="col" class="w-auto">Product</th>
         <th scope="col" class="w-15 text-right">Counter</th>
@@ -32,7 +32,7 @@
       <tbody>
       <tr *ngFor="let item of getPayments()" (click)="tableRowClick(item)" [ngClass]="{'table-active': selectedItems.has(item)}">
         <!-- ID -->
-        <td class="text-nowrap">{{item.id}}</td>
+        <td class="text-nowrap" *ngIf="displayOptions.showId">{{item.id}}</td>
         <!-- Group -->
         <td>{{item.paymentGroup.name}}</td>
         <!-- Product -->
@@ -167,7 +167,9 @@
       </tbody>
     </table>
   </div>
-  <div class="col-xl-4"><app-payments-summary [selectedItems]="selectedItems"></app-payments-summary></div>
+  <div class="col-xl-3 col-lg-4" *ngIf="displayOptions.showSummary">
+    <app-payments-summary [selectedItems]="selectedItems"></app-payments-summary>
+  </div>
 </div>
 
 <div *ngIf="getEditState()">

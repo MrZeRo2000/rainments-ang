@@ -7,6 +7,8 @@ export class PaymentsTableDisplayOptions {
   public compactProducts: boolean;
   public compactTable: boolean;
   public showTrend: boolean;
+  public showId: boolean;
+  public showSummary: boolean;
 
   public static fromLocalStorage(): PaymentsTableDisplayOptions {
     const instance = new PaymentsTableDisplayOptions();
@@ -24,6 +26,8 @@ export class PaymentsTableDisplayOptions {
     this.compactProducts = false;
     this.compactTable = false;
     this.showTrend = true;
+    this.showId = true;
+    this.showSummary = true;
   }
 
   public loadFromLocalStorage(): void {
@@ -37,6 +41,8 @@ export class PaymentsTableDisplayOptions {
         this.compactProducts = localObject.compactProducts;
         this.compactTable = localObject.compactTable;
         this.showTrend = localObject.showTrend;
+        this.showId = localObject.showId;
+        this.showSummary = localObject.showSummary;
       } catch (e) {
         this.loadDefaults();
       }

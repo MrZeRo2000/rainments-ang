@@ -30,16 +30,17 @@
       <table class="table table-bordered">
         <thead>
         <tr>
-          <th scope="col" class="text-center">Group</th>
-          <th scope="col" class="text-center">Payment</th>
-          <th scope="col" class="text-center">Commission</th>
+          <th scope="col" class="text-center align-middle">Group</th>
+          <th scope="col" class="text-center">Payment / Commission</th>
         </tr>
         </thead>
         <tbody>
           <tr *ngFor="let item of getGroupSummary()">
             <td class="text-left">{{item.groupName}}</td>
-            <td class="text-right">{{item.paymentAmount | amount}}</td>
-            <td class="text-right">{{item.commissionAmount | amount}}</td>
+            <td>
+              <div class="text-left">{{item.paymentAmount | amount}}</div>
+              <div class="text-right" *ngIf="item.commissionAmount"><small>{{item.commissionAmount | amount}}</small></div>
+            </td>
           </tr>
         </tbody>
       </table>
