@@ -23,7 +23,8 @@ export class PaymentsDashboardComponent extends CommonTableComponent<PaymentObje
     return this.repository.getData();
   }
 
-  onSelectPaymentObject(id: number) {
-    this.router.navigateByUrl('/payments/' + id);
+  onSelectPaymentObject(event, id: number) {
+    event.preventDefault();
+    this.router.navigateByUrl('/payments/' + id).then();
   }
 }

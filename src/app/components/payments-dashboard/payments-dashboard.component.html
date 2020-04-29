@@ -1,10 +1,33 @@
 
-<div class="container">
+<div class="container-fluid">
 
   <app-message></app-message>
 
+  <!--
+
   <div *ngFor="let item of getPaymentObjects()">
-    <button type="button" class="btn btn-primary w-100 mt-4" (click)="onSelectPaymentObject(item.id)">{{item.name}}</button>
+    <button type="button" class="btn btn-primary w-100 mt-4" (click)="onSelectPaymentObject($event, item.id)">{{item.name}}</button>
+  </div>
+
+  -->
+
+  <div class="row justify-content-center">
+    <div class="col-xl-3 col-lg-4 col-md-6 mb-2" *ngFor="let item of getPaymentObjects()">
+      <div class="card">
+        <div class="card-body">
+          <a href="#" class="stretched-link" (click)="onSelectPaymentObject($event, item.id)"></a>
+          <div class="d-flex">
+            <div class="flex-grow-1">
+              <h5 class="card-title">{{item.name}}</h5>
+            </div>
+            <div *ngIf="false">
+              <i class="fas fa-exclamation text-danger"></i>
+            </div>
+          </div>
+          <p class="card-text text-right">Additional text</p>
+        </div>
+      </div>
+    </div>
   </div>
 
   <app-core-loading-progress [loadable]="repository"></app-core-loading-progress>
