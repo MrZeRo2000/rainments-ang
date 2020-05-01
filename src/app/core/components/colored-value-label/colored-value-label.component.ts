@@ -15,6 +15,9 @@ export class ColoredValueLabelComponent implements OnInit {
   value: any;
 
   @Input()
+  displayZero: boolean;
+
+  @Input()
   colorScheme: ColorScheme;
 
   colorSchemeType = ColorScheme;

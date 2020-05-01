@@ -12,19 +12,20 @@
   -->
 
   <div class="row justify-content-center">
-    <div class="col-xl-3 col-lg-4 col-md-6 mb-2" *ngFor="let item of getPaymentObjects()">
+    <div class="col-xl-3 col-lg-4 col-md-6 mb-2" *ngFor="let item of getPaymentObjectTotals()">
       <div class="card">
         <div class="card-body">
-          <a href="#" class="stretched-link" (click)="onSelectPaymentObject($event, item.id)"></a>
+          <a href="#" class="stretched-link" (click)="onSelectPaymentObject($event, item.paymentObject.id)"></a>
           <div class="d-flex">
             <div class="flex-grow-1">
-              <h5 class="card-title">{{item.name}}</h5>
+              <h5 class="card-title">{{item.paymentObject.name}}</h5>
             </div>
             <div *ngIf="false">
               <i class="fas fa-exclamation text-danger"></i>
             </div>
           </div>
-          <p class="card-text text-right">Additional text</p>
+          <p class="card-text text-right">
+            {{item.periodDate | shortMonthYear}} <app-core-colored-value-label [value]="item.totalAmount | amount" [displayZero]="true"></app-core-colored-value-label></p>
         </div>
       </div>
     </div>

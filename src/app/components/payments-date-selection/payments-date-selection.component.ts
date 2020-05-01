@@ -1,6 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {DateRangeGenerator, MonthInfo} from '../../core/utils/date-range-generator';
+import {DateGenerator} from '../../core/utils/date-generator';
 
 @Component({
   selector: 'app-payments-date-selection',
@@ -16,9 +17,7 @@ export class PaymentsDateSelectionComponent implements OnInit {
   @Output() selectedDate = new EventEmitter<Date>();
 
   constructor(private fb: FormBuilder) {
-    const currentDate = new Date();
-    const lastDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-    this.lastSelectedDate = new Date(lastDate.setMonth(lastDate.getMonth() - 1));
+    this.lastSelectedDate = DateGenerator.getPreviousMonthStartDate();
     this.selectedDate.subscribe((v) => this.lastSelectedDate = v);
 
     const dr = new DateRangeGenerator(

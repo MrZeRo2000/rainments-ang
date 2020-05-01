@@ -1,3 +1,5 @@
+import {DateFormatter} from './date-formatter';
+
 export class DateRangeGenerator {
   constructor(private minDate: Date, private maxDate: Date) {
   }
@@ -10,7 +12,7 @@ export class DateRangeGenerator {
 
   getMonths(): Array<MonthInfo> {
     return [...Array(12)].map((c, i, v) =>
-      new MonthInfo(i, (new Date(0, i)).toLocaleString('en-US', {month: 'short'})));
+      new MonthInfo(i, DateFormatter.formatDateShortMonth(new Date(0, i))));
   }
 }
 

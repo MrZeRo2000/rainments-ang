@@ -16,6 +16,7 @@ import { ColoredTrendLabelComponent } from './components/colored-trend-label/col
 import { DragGripComponent } from './components/drag-grip/drag-grip.component';
 import {DragHandlerService} from './services/drag-handler.service';
 import { DropDownMoreMenuComponent } from './components/drop-down-more-menu/drop-down-more-menu.component';
+import { ShortMonthYearPipe } from './pipes/short-month-year.pipe';
 
 
 @NgModule({
@@ -34,6 +35,7 @@ import { DropDownMoreMenuComponent } from './components/drop-down-more-menu/drop
     ColoredTrendLabelComponent,
     DragGripComponent,
     DropDownMoreMenuComponent,
+    ShortMonthYearPipe,
   ],
   imports: [
     CommonModule,
@@ -43,21 +45,22 @@ import { DropDownMoreMenuComponent } from './components/drop-down-more-menu/drop
   entryComponents: [
     ConfirmationModalDialogComponent
   ],
-    exports: [
-        LoadingProgressComponent,
-        AddPanelComponent,
-        EditDeletePanelComponent,
-        SaveDialogPanelComponent,
-        ColoredValueLabelComponent,
-        ColoredTrendLabelComponent,
-        ConfirmationModalDialogComponent,
-        LoadingSpinnerElementComponent,
-        LoadingModalPanelComponent,
-        AmountPipe,
-        EnumStringValuePipe,
-        DragGripComponent,
-        DropDownMoreMenuComponent
-    ],
+  exports: [
+    LoadingProgressComponent,
+    AddPanelComponent,
+    EditDeletePanelComponent,
+    SaveDialogPanelComponent,
+    ColoredValueLabelComponent,
+    ColoredTrendLabelComponent,
+    ConfirmationModalDialogComponent,
+    LoadingSpinnerElementComponent,
+    LoadingModalPanelComponent,
+    AmountPipe,
+    EnumStringValuePipe,
+    DragGripComponent,
+    DropDownMoreMenuComponent,
+    ShortMonthYearPipe
+  ],
   providers: [
     AmountPipe,
     EnumStringValuePipe,
