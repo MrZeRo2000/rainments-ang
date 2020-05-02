@@ -7,7 +7,7 @@ export class PaymentRefs {
   constructor(
     public paymentList?: Array<Payment>,
     public prevPeriodPaymentList?: Array<Payment>,
-    public paymentObjectList?: Array<PaymentObject>,
+    public paymentObject?: PaymentObject,
     public paymentGroupList?: Array<PaymentGroup>,
     public productList?: Array<Product>,
     public prevProductPayments?: Map<number, Payment>

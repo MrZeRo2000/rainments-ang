@@ -333,10 +333,6 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     return item.prevPeriodPayment && item.prevPeriodPayment.commissionAmount;
   }
 
-  getPaymentObjects(): PaymentObject[] {
-    return this.readRepository.getData()[0].paymentObjectList;
-  }
-
   getPaymentGroups(): PaymentGroup[] {
     return this.readRepository.getData()[0].paymentGroupList;
   }
@@ -346,7 +342,7 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   }
 
   getPaymentObject(): PaymentObject {
-    return this.getPaymentObjects().find(value => value.id === this.paymentObjectId);
+    return this.readRepository.getData()[0].paymentObject;
   }
 
   protected getWritableData(): Payment {
