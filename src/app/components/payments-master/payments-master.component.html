@@ -1,6 +1,19 @@
 
 <app-message></app-message>
 
-<app-payments-date-selection (selectedDate)="onSelectDate($event)"></app-payments-date-selection>
+<div class="d-inline-flex align-items-center">
+  <app-payments-date-selection (selectedDate)="onSelectDate($event)"></app-payments-date-selection>
+  <div class="ml-2">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-0 p-2">
+        <li aria-current="page"><h5 class="mb-0">{{this.paymentObject && this.paymentObject.name}}</h5></li>
+      </ol>
+    </nav>
+  </div>
+</div>
 
-<app-payments-table [paymentObjectId]="paymentObjectId" [paymentPeriodDate]="selectedDate"></app-payments-table>
+<app-payments-table
+  [paymentObjectId]="paymentObjectId"
+  [paymentPeriodDate]="selectedDate"
+  (paymentObject)="onPaymentObject($event)">
+</app-payments-table>

@@ -15,6 +15,9 @@ export class PaymentObjectTotalsRepository extends ReadRepository<PaymentObjectT
 
   protected afterLoadData(data: PaymentObjectTotals[]) {
     super.afterLoadData(data);
-    data.forEach(value => value.periodDate = new Date(value.periodDate));
+    data.forEach(value => {
+      value.periodDate = new Date(value.periodDate);
+      value.missedPayment = value.totalAmount === 0 && (new Date()).getDate() > 9;
+    });
   }
 }

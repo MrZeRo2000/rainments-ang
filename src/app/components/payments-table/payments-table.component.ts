@@ -2,9 +2,11 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  EventEmitter,
   Input,
-  OnChanges,
+  OnChanges, OnDestroy,
   OnInit,
+  Output,
   QueryList,
   SimpleChanges,
   ViewChildren
@@ -26,6 +28,7 @@ import {AmountPipe} from '../../core/pipes/amount.pipe';
 import {ColorScheme} from '../../core/components/colored-value-label/colored-value-label.component';
 import {PatchRequest} from '../../model/patch-request';
 import {PaymentsTableDisplayOptions} from '../payments-table-display-options/payments-table-display-options.component';
+import {Subscription} from 'rxjs';
 
 enum InlineControl {
   ProductCounter = 'productCounterControl',
@@ -38,13 +41,16 @@ enum InlineControl {
   templateUrl: './payments-table.component.html',
   styleUrls: ['./payments-table.component.scss']
 })
-export class PaymentsTableComponent extends CommonEditableTableComponent<PaymentRefs, Payment> implements OnInit, OnChanges, AfterViewInit {
+export class PaymentsTableComponent extends CommonEditableTableComponent<PaymentRefs, Payment> implements OnInit, OnChanges, OnDestroy, AfterViewInit {
 
   @Input()
   paymentObjectId: number;
 
   @Input()
   paymentPeriodDate: Date;
+
+  @Output()
+  paymentObject = new EventEmitter<PaymentObject>();
 
   @ViewChildren('inlineControl') inlineControl: QueryList<ElementRef>;
 
@@ -62,6 +68,8 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   colorSchemeType = ColorScheme;
 
   displayOptions: PaymentsTableDisplayOptions;
+
+  private loadSuccessSubscription: Subscription;
 
   private static roundValue(value: any): number {
     return Math.round(value * 100) / 100;
@@ -94,12 +102,25 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
       readRepository,
       repository
     );
+
+    this.loadSuccessSubscription = readRepository.getLoadSuccessObservable().subscribe(v => {
+      if (v) {
+        this.paymentObject.emit(this.getPaymentObject());
+      }
+    });
   }
 
   ngOnInit() {
     super.ngOnInit();
     this.checkInput();
     this.displayOptions = PaymentsTableDisplayOptions.fromLocalStorage();
+  }
+
+  ngOnDestroy(): void {
+    super.ngOnDestroy();
+    if (this.loadSuccessSubscription) {
+      this.loadSuccessSubscription.unsubscribe();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -324,8 +345,12 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     return this.readRepository.getData()[0].productList;
   }
 
+  getPaymentObject(): PaymentObject {
+    return this.getPaymentObjects().find(value => value.id === this.paymentObjectId);
+  }
+
   protected getWritableData(): Payment {
-    const paymentObject: PaymentObject = this.getPaymentObjects().find(value => value.id === this.paymentObjectId);
+    const paymentObject: PaymentObject = this.getPaymentObject();
     const paymentGroup: PaymentGroup = this.getPaymentGroups().find(
       value => value.id === Number.parseInt(this.editForm.controls.paymentGroup.value, 0));
     const product: Product = this.getProducts().find(
