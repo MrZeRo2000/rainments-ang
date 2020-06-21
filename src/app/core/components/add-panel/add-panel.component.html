@@ -1,4 +1,4 @@
-<span class="text-left" *ngIf="editable.getEditingState()">
+<span class="text-left" *ngIf="!editable || editable.getEditingState()">
   <a class="btn btn-outline-primary" (click)="onClick()">
     <i class="fas fa-plus fa-lg"></i>
   </a>

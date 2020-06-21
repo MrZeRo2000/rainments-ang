@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class AmountPipe implements PipeTransform {
 
   transform(value: number): string {
-    return (value || value === 0) && value.toFixed(2);
+    return ((value || value === 0) && value.toFixed(2)) || null;
   }
 
 }

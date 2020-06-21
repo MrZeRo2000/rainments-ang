@@ -1,5 +1,5 @@
-<div class="d-flex mt-2 mb-2">
-  <app-core-add-panel [editable]="this" (addClick)="onAddClick()"></app-core-add-panel>
+<div class="d-flex mt-2 mb-2" *ngIf="this.getEditingState()">
+  <app-core-add-panel (addClick)="onAddClick()"></app-core-add-panel>
   <div class="ml-auto">
     <app-core-drop-down-more-menu>
       <a class="dropdown-item" href="#" (click)="onSetDefaultOrderClick($event)">Set default order</a>
