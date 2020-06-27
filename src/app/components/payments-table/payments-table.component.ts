@@ -57,6 +57,9 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   private convertedPeriodDate: Date;
 
   prevPeriodPayment: Payment;
+
+  private prevProduct: number;
+
   productUsage: number;
   productUsageForm: FormGroup = this.fb.group({productUsageCounter: ['']});
 
@@ -200,7 +203,7 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   }
 
   protected buildForm(): FormGroup {
-    return this.fb.group({
+    const form = this.fb.group({
       paymentGroup: ['', Validators.required],
       product: ['', Validators.required],
       // paymentGroup: [this.getPaymentGroups()[0] && this.getPaymentGroups()[0].id, Validators.required],
@@ -210,6 +213,12 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
       commissionAmount: ['', Validators.compose([Validators.min(0)])]
       }
     );
+
+    form.controls.product.valueChanges.subscribe(value => {
+      form.controls.productCounter.setValue(null);
+    });
+
+    return form;
   }
 
   private updateProductUsage() {
