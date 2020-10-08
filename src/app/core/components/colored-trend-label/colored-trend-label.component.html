@@ -2,5 +2,5 @@
   *ngIf="value !== null"
   [ngClass]="{'text-success': value < 0, 'text-danger': value > 0}"
 >
-  <i class="fas" [ngClass]="{'fa-caret-up fa-lg': value > 0, 'fa-equals': value == 0, 'fa-caret-down fa-lg': value < 0}"></i>
+  <fa-icon [icon]="value > 0 ? ['fas', 'caret-up'] : value < 0 ? ['fas', 'caret-down'] : ['fas', 'equals']"></fa-icon>
 </span>

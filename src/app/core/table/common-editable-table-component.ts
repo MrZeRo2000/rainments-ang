@@ -1,4 +1,4 @@
-import {OnDestroy, OnInit} from '@angular/core';
+import {Directive, OnDestroy, OnInit} from '@angular/core';
 import {Editable} from '../edit/edit-intf';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 import {ReadWriteRepository} from '../repository/read-write-repository';
@@ -10,6 +10,8 @@ import {ConfirmationModalDialogComponent} from '../components/confirmation-modal
 import {CommonTableComponent} from './common-table-component';
 import {ReadRepository} from '../repository/read-repository';
 
+@Directive()
+// tslint:disable-next-line:directive-class-suffix
 export abstract class CommonEditableTableComponent<R, W extends CommonEntity>
   extends CommonTableComponent<R>
   implements OnInit, OnDestroy, Editable {

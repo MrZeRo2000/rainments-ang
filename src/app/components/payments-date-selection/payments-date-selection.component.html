@@ -5,7 +5,7 @@
     [ngClass]="{'disabled': this.selectedFirstDate()}"
     (click)="addMonth(-1)"
   >
-    <i class="fas fa-angle-left fa-lg"></i>
+    <fa-icon [icon]="['fas', 'angle-left']" transform="grow-8"></fa-icon>
   </button>
 
   <label class="ml-2">
@@ -25,7 +25,7 @@
     [ngClass]="{'disabled': this.selectedLastDate()}"
     (click)="addMonth(1)"
   >
-    <i class="fas fa-angle-right fa-lg"></i>
+    <fa-icon [icon]="['fas', 'angle-right']" transform="grow-8"></fa-icon>
   </button>
 
 </form>

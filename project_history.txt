@@ -35,3 +35,12 @@ ng test --include=src/app/core/date-range-generator*.ts
 
 Testing and debugging in IntelliJ:
 install Karma plugin
+
+Full update angular to latest version:
+ng update @angular/cli @angular/core @angular/animations @angular/cdk @angular/common  @angular/compiler @angular/forms @angular/platform-browser @angular/platform-browser-dynamic @angular/router
+
+Update dev software to latest version:
+npm install @types/jasmine@latest @types/node@latest codelyzer@latest karma@latest karma-chrome-launcher@latest karma-cli@latest karma-jasmine@latest karma-jasmine-html-reporter@latest jasmine-core@latest jasmine-spec-reporter@latest protractor@latest tslint@latest webpack@latest rxjs-tslint@latest
+
+Install FontAwesome:
+npm install @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/angular-fontawesome

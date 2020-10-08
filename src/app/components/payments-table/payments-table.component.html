@@ -7,7 +7,7 @@
       *ngIf="isCloneAvailable()"
       (click)="duplicatePreviousPeriodOnClick($event)"
     >
-      <i class="fas fa-clone fa-lg"></i> Clone previous
+      <fa-icon [icon]="['fas', 'clone']" transform="grow-4"></fa-icon> Clone previous
     </button>
 
     <app-payments-table-display-options

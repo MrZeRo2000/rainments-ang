@@ -1,8 +1,10 @@
 
-import {OnDestroy, OnInit} from '@angular/core';
+import {Directive, OnDestroy, OnInit} from '@angular/core';
 import {HttpParams} from '@angular/common/http';
 import {ReadRepository} from '../repository/read-repository';
 
+@Directive()
+// tslint:disable-next-line:directive-class-suffix
 export class CommonTableComponent<R> implements OnInit, OnDestroy {
   protected config: CommonTableConfig;
 

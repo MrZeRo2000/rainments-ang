@@ -16,6 +16,8 @@ import {ModalModule} from 'ngx-bootstrap/modal';
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {TooltipModule} from 'ngx-bootstrap/tooltip';
 import {CoreModule} from './core/core.module';
+// fontawesome
+import {FontAwesomeIconsModule} from './font-awesome-icons/font-awesome-icons.module';
 import { PaymentGroupsTableComponent } from './components/payment-groups-table/payment-groups-table.component';
 import { ProductsTableComponent } from './components/products-table/products-table.component';
 import { PaymentsMasterComponent } from './components/payments-master/payments-master.component';
@@ -63,7 +65,8 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
         ConfigModule,
         MessagesModule,
         RepositoryModule,
-        FormsModule
+        FormsModule,
+        FontAwesomeIconsModule
     ],
   providers: [],
   bootstrap: [AppComponent]

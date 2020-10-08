@@ -17,6 +17,7 @@ import { DragGripComponent } from './components/drag-grip/drag-grip.component';
 import {DragHandlerService} from './services/drag-handler.service';
 import { DropDownMoreMenuComponent } from './components/drop-down-more-menu/drop-down-more-menu.component';
 import { ShortMonthYearPipe } from './pipes/short-month-year.pipe';
+import {FontAwesomeIconsModule} from '../font-awesome-icons/font-awesome-icons.module';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { ShortMonthYearPipe } from './pipes/short-month-year.pipe';
   ],
   imports: [
     CommonModule,
-    DataSourceModule
+    DataSourceModule,
+    FontAwesomeIconsModule
   ],
   // modal component not directly referenced in templates
   entryComponents: [
