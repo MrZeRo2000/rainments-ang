@@ -14,20 +14,22 @@ import {CoreModule} from '../../core/core.module';
 import {PaymentsSummaryComponent} from '../payments-summary/payments-summary.component';
 import {RepositoryModule} from '../../repository/repository.module';
 import {PaymentsTableDisplayOptionsComponent} from '../payments-table-display-options/payments-table-display-options.component';
+import {FontAwesomeIconsModule} from '../../font-awesome-icons/font-awesome-icons.module';
 
 describe('PaymentsMasterComponent', () => {
   let component: PaymentsMasterComponent;
   let fixture: ComponentFixture<PaymentsMasterComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async() => {
+    await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule, ReactiveFormsModule, ModalModule.forRoot(),
-        MessagesModule, CoreModule, RepositoryModule],
+        MessagesModule, CoreModule, RepositoryModule, FontAwesomeIconsModule],
       providers: [RestUrlEnv, RestDataSource],
-      declarations: [ PaymentsMasterComponent, PaymentsDateSelectionComponent, PaymentsTableComponent, PaymentsSummaryComponent, PaymentsTableDisplayOptionsComponent]
+      declarations: [ PaymentsMasterComponent, PaymentsDateSelectionComponent, PaymentsTableComponent, PaymentsSummaryComponent,
+        PaymentsTableDisplayOptionsComponent]
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PaymentsMasterComponent);

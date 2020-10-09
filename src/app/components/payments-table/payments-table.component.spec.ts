@@ -10,19 +10,20 @@ import {CoreModule} from '../../core/core.module';
 import {PaymentsSummaryComponent} from '../payments-summary/payments-summary.component';
 import {RepositoryModule} from '../../repository/repository.module';
 import {PaymentsTableDisplayOptionsComponent} from '../payments-table-display-options/payments-table-display-options.component';
+import {FontAwesomeIconsModule} from '../../font-awesome-icons/font-awesome-icons.module';
 
 describe('PaymentsTableComponent', () => {
   let component: PaymentsTableComponent;
   let fixture: ComponentFixture<PaymentsTableComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async() => {
+    await TestBed.configureTestingModule({
       declarations: [ PaymentsTableComponent, PaymentsSummaryComponent, PaymentsTableDisplayOptionsComponent],
       providers: [RestUrlEnv, RestDataSource],
-      imports: [HttpClientTestingModule, ReactiveFormsModule, ModalModule.forRoot(), CoreModule, RepositoryModule]
+      imports: [HttpClientTestingModule, ReactiveFormsModule, ModalModule.forRoot(), CoreModule, RepositoryModule, FontAwesomeIconsModule]
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PaymentsTableComponent);

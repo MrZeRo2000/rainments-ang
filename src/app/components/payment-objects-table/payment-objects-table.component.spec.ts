@@ -9,19 +9,20 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {CoreModule} from '../../core/core.module';
 import {ModalModule} from 'ngx-bootstrap/modal';
 import {RepositoryModule} from '../../repository/repository.module';
+import {FontAwesomeIconsModule} from '../../font-awesome-icons/font-awesome-icons.module';
 
 describe('PaymentObjectsTableComponent', () => {
   let component: PaymentObjectsTableComponent;
   let fixture: ComponentFixture<PaymentObjectsTableComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async() => {
+    await TestBed.configureTestingModule({
       declarations: [ PaymentObjectsTableComponent],
       providers: [RestUrlEnv, RestDataSource],
-      imports: [HttpClientTestingModule, ReactiveFormsModule, ModalModule.forRoot(), CoreModule, RepositoryModule]
+      imports: [HttpClientTestingModule, ReactiveFormsModule, ModalModule.forRoot(), CoreModule, RepositoryModule, FontAwesomeIconsModule]
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PaymentObjectsTableComponent);
