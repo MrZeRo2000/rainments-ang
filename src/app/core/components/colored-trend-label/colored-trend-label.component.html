@@ -2,5 +2,6 @@
   *ngIf="value !== null"
   [ngClass]="{'text-success': value < 0, 'text-danger': value > 0}"
 >
-  <fa-icon [icon]="value > 0 ? ['fas', 'caret-up'] : value < 0 ? ['fas', 'caret-down'] : ['fas', 'equals']"></fa-icon>
+  <fa-icon [icon]="value > 0 ? ['fas', 'caret-up'] : ['fas', 'caret-down']" transform="grow-4" *ngIf="value !== 0"></fa-icon>
+  <fa-icon [icon]="['fas', 'equals']" *ngIf="value == 0"></fa-icon>
 </span>
