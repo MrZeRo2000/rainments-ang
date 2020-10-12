@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BackupDatabaseComponent } from './backup-database.component';
 import {RepositoryModule} from '../../repository/repository.module';

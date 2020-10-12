@@ -41,7 +41,8 @@ enum InlineControl {
   templateUrl: './payments-table.component.html',
   styleUrls: ['./payments-table.component.scss']
 })
-export class PaymentsTableComponent extends CommonEditableTableComponent<PaymentRefs, Payment> implements OnInit, OnChanges, OnDestroy, AfterViewInit {
+export class PaymentsTableComponent extends CommonEditableTableComponent<PaymentRefs, Payment>
+  implements OnInit, OnChanges, OnDestroy, AfterViewInit {
 
   @Input()
   paymentObjectId: number;

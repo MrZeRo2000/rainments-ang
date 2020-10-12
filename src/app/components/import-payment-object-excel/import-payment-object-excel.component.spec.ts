@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ImportPaymentObjectExcelComponent } from './import-payment-object-excel.component';
 import {HttpClientTestingModule} from '@angular/common/http/testing';

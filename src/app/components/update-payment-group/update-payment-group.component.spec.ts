@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UpdatePaymentGroupComponent } from './update-payment-group.component';
 import {HttpClientTestingModule} from '@angular/common/http/testing';

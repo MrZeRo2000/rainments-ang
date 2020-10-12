@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PaymentsDateSelectionComponent } from './payments-date-selection.component';
 import {ReactiveFormsModule} from '@angular/forms';
