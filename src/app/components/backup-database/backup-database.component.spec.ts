@@ -11,14 +11,14 @@ describe('BackupDatabaseComponent', () => {
   let component: BackupDatabaseComponent;
   let fixture: ComponentFixture<BackupDatabaseComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async() => {
+    await TestBed.configureTestingModule({
       declarations: [ BackupDatabaseComponent ],
       imports: [RepositoryModule, CoreModule, MessagesModule],
       providers: [RestUrlEnv, RestDataSource]
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BackupDatabaseComponent);

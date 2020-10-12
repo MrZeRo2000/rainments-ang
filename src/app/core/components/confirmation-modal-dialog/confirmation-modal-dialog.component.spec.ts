@@ -7,13 +7,13 @@ describe('DialogConfirmationComponent', () => {
   let component: ConfirmationModalDialogComponent;
   let fixture: ComponentFixture<ConfirmationModalDialogComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async() => {
+    await TestBed.configureTestingModule({
       declarations: [ ConfirmationModalDialogComponent ],
       providers: [BsModalRef]
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ConfirmationModalDialogComponent);

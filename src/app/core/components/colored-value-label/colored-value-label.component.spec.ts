@@ -6,12 +6,12 @@ describe('ColoredValueLabelComponent', () => {
   let component: ColoredValueLabelComponent;
   let fixture: ComponentFixture<ColoredValueLabelComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async() => {
+    await TestBed.configureTestingModule({
       declarations: [ ColoredValueLabelComponent ]
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ColoredValueLabelComponent);

@@ -17,14 +17,14 @@ describe('ImportExportComponent', () => {
   let component: DataManagementComponent;
   let fixture: ComponentFixture<DataManagementComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async() => {
+    await TestBed.configureTestingModule({
       declarations: [ DataManagementComponent, ImportPaymentObjectExcelComponent, UpdatePaymentGroupComponent, BackupDatabaseComponent ],
       imports: [HttpClientTestingModule, ReactiveFormsModule, ModalModule.forRoot(), CoreModule, RepositoryModule, MessagesModule],
       providers: [RestUrlEnv, RestDataSource, BsModalService]
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DataManagementComponent);

@@ -13,14 +13,14 @@ describe('ImportPaymentObjectExcelComponent', () => {
   let component: ImportPaymentObjectExcelComponent;
   let fixture: ComponentFixture<ImportPaymentObjectExcelComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async() => {
+    await TestBed.configureTestingModule({
       declarations: [ ImportPaymentObjectExcelComponent ],
       imports: [HttpClientTestingModule, ReactiveFormsModule, ModalModule.forRoot(), CoreModule, RepositoryModule],
       providers: [RestUrlEnv, RestDataSource]
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ImportPaymentObjectExcelComponent);

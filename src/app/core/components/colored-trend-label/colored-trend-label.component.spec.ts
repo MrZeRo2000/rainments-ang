@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ColoredTrendLabelComponent } from './colored-trend-label.component';
 import {FontAwesomeIconsModule} from '../../../font-awesome-icons/font-awesome-icons.module';

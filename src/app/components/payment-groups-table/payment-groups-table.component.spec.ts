@@ -13,14 +13,14 @@ describe('PaymentGroupsTableComponent', () => {
   let component: PaymentGroupsTableComponent;
   let fixture: ComponentFixture<PaymentGroupsTableComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async() => {
+    await TestBed.configureTestingModule({
       declarations: [ PaymentGroupsTableComponent ],
       providers: [RestUrlEnv, RestDataSource],
       imports: [HttpClientTestingModule, ReactiveFormsModule, ModalModule.forRoot(), CoreModule, RepositoryModule]
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PaymentGroupsTableComponent);

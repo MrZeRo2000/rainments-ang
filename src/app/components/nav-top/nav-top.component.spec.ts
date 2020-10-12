@@ -6,15 +6,15 @@ describe('NavTopComponent', () => {
   let component: NavTopComponent;
   let fixture: ComponentFixture<NavTopComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async() => {
+    await TestBed.configureTestingModule({
       imports: [
         RouterTestingModule
       ],
       declarations: [ NavTopComponent ]
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(NavTopComponent);

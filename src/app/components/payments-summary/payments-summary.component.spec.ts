@@ -12,14 +12,14 @@ describe('PaymentsSummaryComponent', () => {
   let component: PaymentsSummaryComponent;
   let fixture: ComponentFixture<PaymentsSummaryComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async() => {
+    await TestBed.configureTestingModule({
       declarations: [ PaymentsSummaryComponent ],
       providers: [RestUrlEnv, RestDataSource, IterableDiffers],
       imports: [HttpClientTestingModule, CoreModule, RepositoryModule]
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PaymentsSummaryComponent);

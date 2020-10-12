@@ -6,8 +6,8 @@ import {MessageComponent} from './messages/message.component';
 import {AlertModule} from 'ngx-bootstrap/alert';
 
 describe('AppComponent', () => {
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [
         RouterTestingModule, AlertModule.forRoot()
       ],
@@ -17,7 +17,7 @@ describe('AppComponent', () => {
         MessageComponent
       ],
     }).compileComponents();
-  }));
+  });
 
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);
