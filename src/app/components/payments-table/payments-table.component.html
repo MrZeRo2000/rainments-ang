@@ -51,13 +51,13 @@
         <!-- Counter -->
         <td class="text-right text-nowrap">
           <div>
-            <app-core-colored-value-label [value]="getPrevPeriodProductCounter(item)"></app-core-colored-value-label>
+            <app-core-colored-value-label [value]="getPrevPeriodProductCounter(item) | amount: item.product.counterPrecision"></app-core-colored-value-label>
             <a
               href="#"
               (click)="productCounterOnClick($event, item)"
               *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.ProductCounter) && item.productCounter"
             >
-              {{item.productCounter}}
+              {{item.productCounter | amount: item.product.counterPrecision}}
             </a>
             <span
               *ngIf="(item.productCounter || getPrevPeriodProductCounter(item))"
@@ -66,7 +66,7 @@
           </div>
           <div *ngIf="!inlineEditHandler.isEditorVisible(item, inlineControlType.ProductCounter) && getPrevPeriodProductCounterDiffByProduct(item) && displayOptions.showTrend">
             <app-core-colored-value-label
-              [value]="getPrevPeriodProductCounterDiffByProduct(item) | amount"
+              [value]="getPrevPeriodProductCounterDiffByProduct(item) | amount: item.product.counterPrecision"
               [colorScheme]="colorSchemeType.POS_GREEN_NEG_RED"
             >
             </app-core-colored-value-label>{{item.product.unitName}}
@@ -89,7 +89,7 @@
 
           <div *ngIf="inlineEditHandler.isEditorVisible(item, inlineControlType.ProductCounter) && getPrevPeriodProductCounterEditDiffByProduct(item)">
             <app-core-colored-value-label
-              [value]="getPrevPeriodProductCounterEditDiffByProduct(item) | amount"
+              [value]="getPrevPeriodProductCounterEditDiffByProduct(item) | amount: item.product.counterPrecision"
               [colorScheme]="colorSchemeType.POS_GREEN_NEG_RED"
             >
             </app-core-colored-value-label>{{item.product.unitName}}

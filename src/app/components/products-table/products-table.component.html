@@ -36,9 +36,22 @@
     <input #inputName type="text" class="form-control" [ngClass]="{'is-invalid': editForm.controls.name.errors && editState.submitted}" id="inputName" placeholder="Name" formControlName="name">
     <label for="inputUnitName" class="mt-2">Unit Name</label>
     <input #inputUnitName type="text" class="form-control" id="inputUnitName" placeholder="Unit Name" formControlName="unitName">
+    <label for="counterPrecision" class="mt-2">Counter precision</label>
+    <select
+      class="browser-default custom-select"
+      [ngClass]="{'is-invalid': editForm.controls.counterPrecision.errors && editState.submitted}"
+      formControlName="counterPrecision"
+      id="counterPrecision">
+      <option *ngFor="let item of counterPrecisionOptions" value="{{item}}">{{item}}</option>
+    </select>
+
     <div *ngIf="editForm.controls.name.errors && editState.submitted" class="invalid-feedback">
       <div *ngIf="editForm.controls.name.errors.required">Name should not be empty</div>
       <div *ngIf="editForm.controls.name.errors.existingName">Name should be unique</div>
+    </div>
+
+    <div *ngIf="editForm.controls.counterPrecision.errors && editState.submitted" class="invalid-feedback">
+      <div *ngIf="editForm.controls.counterPrecision.errors.precisionForEmptyUnitName">Precision for empty unit is not allowed</div>
     </div>
 
     <app-core-save-dialog-panel [editable]="this" [loadable]="repository" (createClick)="onCreate()" (saveClick)="onSave()" (cancelClick)="onCancel()"></app-core-save-dialog-panel>

@@ -14,6 +14,8 @@ import {DragHandlerService} from '../../core/services/drag-handler.service';
 export class ProductsTableComponent extends CommonSimpleEditableTableComponent<Product> {
   @ViewChild('inputName') inputNameElement: ElementRef;
 
+  counterPrecisionOptions = ['', '0', '1', '2'];
+
   constructor(
     private fb: FormBuilder,
     protected modalService: BsModalService,
@@ -26,7 +28,8 @@ export class ProductsTableComponent extends CommonSimpleEditableTableComponent<P
   protected buildForm(): FormGroup {
     return this.fb.group({
         name: ['', Validators.required],
-        unitName: ['']
+        unitName: [''],
+        counterPrecision: ['']
       }
     );
   }
@@ -43,6 +46,12 @@ export class ProductsTableComponent extends CommonSimpleEditableTableComponent<P
     this.inputNameElement.nativeElement.focus();
   }
 
+  private validatePrecision(): void {
+    if (this.editForm.controls.unitName.value.trim() === '' && this.editForm.controls.counterPrecision.value !== '') {
+      this.editForm.controls.counterPrecision.setErrors({precisionForEmptyUnitName: true});
+    }
+  }
+
   protected validateCreate(): void {
     const nameDuplicates = this.repository.getData().filter(
       (v) => v.name === this.editForm.controls.name.value
@@ -50,6 +59,7 @@ export class ProductsTableComponent extends CommonSimpleEditableTableComponent<P
     if (nameDuplicates.length > 0) {
       this.editForm.controls.name.setErrors({existingName: true});
     }
+    this.validatePrecision();
   }
 
   protected validateSave(): void {
@@ -59,6 +69,7 @@ export class ProductsTableComponent extends CommonSimpleEditableTableComponent<P
     if (nameDuplicates.length > 0) {
       this.editForm.controls.name.setErrors({existingName: true});
     }
+    this.validatePrecision();
   }
 
   onDrop(event: any): void {

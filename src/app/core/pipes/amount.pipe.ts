@@ -5,8 +5,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class AmountPipe implements PipeTransform {
 
-  transform(value: number): string {
-    return ((value || value === 0) && value.toFixed(2)) || null;
+  transform(value: number, precision?: number): string {
+    return ((value || value === 0) && value.toFixed(isNaN(precision) ? 2 : precision)) || null;
   }
 
 }
