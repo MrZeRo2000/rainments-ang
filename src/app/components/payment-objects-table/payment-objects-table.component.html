@@ -33,6 +33,47 @@
     <label for="inputName"><strong>Name</strong></label>
     <input #inputName type="text" class="form-control" [ngClass]="{'is-invalid': editForm.controls.name.errors && editState.submitted}" id="inputName" placeholder="Name" formControlName="name">
 
+    <div class="mt-2 row">
+      <div class="col-md-6 col-sm-12">
+        <label for="inputPeriod">Payment period</label>
+        <select
+          class="browser-default custom-select"
+          [ngClass]="{'is-invalid': editForm.controls.period.errors && editState.submitted}"
+          formControlName="period"
+          id="inputPeriod"
+        >
+          <option *ngFor="let item of periodTypes" value="{{item[0]}}">{{item[1]}}</option>
+        </select>
+      </div>
+
+    <div class="col-md-3 col-sm-12">
+      <label for="inputTermQuantity">Payment term</label>
+      <select
+        class="browser-default custom-select"
+        [ngClass]="{'is-invalid': editForm.controls.termQuantity.errors && editState.submitted}"
+        formControlName="termQuantity"
+        id="inputTermQuantity"
+      >
+        <option *ngFor="let item of termQuantities" value="{{item}}">{{item}}</option>
+      </select>
+    </div>
+
+    <div class="col-md-3 col-sm-12">
+      <label for="inputTermType">&nbsp;</label>
+      <select
+        class="browser-default custom-select"
+        [ngClass]="{'is-invalid': editForm.controls.termType.errors && editState.submitted}"
+        formControlName="termType"
+        id="inputTermType"
+      >
+        <option *ngFor="let item of termTypes" value="{{item[0]}}">{{item[1]}}</option>
+      </select>
+
+    </div>
+
+    </div>
+
+
     <div *ngIf="editForm.controls.name.errors && editState.submitted" class="invalid-feedback">
       <div *ngIf="editForm.controls.name.errors.required">Name should not be empty</div>
       <div *ngIf="editForm.controls.name.errors.existingName">Name should be unique</div>

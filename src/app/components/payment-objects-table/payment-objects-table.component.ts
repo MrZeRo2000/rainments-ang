@@ -5,6 +5,8 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {CommonSimpleEditableTableComponent} from '../../core/table/common-simple-editable-table-component';
 import {DragHandlerService} from '../../core/services/drag-handler.service';
+import {TimePeriod, TimePeriodType} from '../../core/utils/time-period';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-payment-objects-table',
@@ -13,6 +15,10 @@ import {DragHandlerService} from '../../core/services/drag-handler.service';
 })
 export class PaymentObjectsTableComponent extends CommonSimpleEditableTableComponent<PaymentObject> {
   @ViewChild('inputName') inputNameElement: ElementRef;
+
+  periodTypes = [[], [TimePeriodType.M, 'Month'], [TimePeriodType.Q, 'Quarter']];
+  termTypes = [[], [TimePeriodType.D, 'Day'], [TimePeriodType.M, 'Month']];
+  termQuantities = [...Array(31)].map((c, i) => i === 0 ? undefined : i.toString(10))
 
   constructor(
     private fb: FormBuilder,
@@ -25,9 +31,26 @@ export class PaymentObjectsTableComponent extends CommonSimpleEditableTableCompo
 
   protected buildForm(): FormGroup {
     return this.fb.group({
-        name: ['', Validators.required]
+        name: ['', Validators.required],
+        period: [''],
+        termQuantity: [''],
+        termType: ['']
       }
     );
+  }
+
+  protected getEditValue(item: any): any {
+    const value = super.getEditValue(item);
+
+    const termPeriod = TimePeriod.fromString(value.term);
+    delete value.term;
+
+    if (termPeriod) {
+      value.termType = termPeriod.periodType;
+      value.termQuantity = termPeriod.quantity;
+    }
+
+    return value;
   }
 
   protected  getDisplayItemName(item: PaymentObject): string {
@@ -58,6 +81,21 @@ export class PaymentObjectsTableComponent extends CommonSimpleEditableTableCompo
     if (nameDuplicates.length > 0) {
       this.editForm.controls.name.setErrors({existingName: true});
     }
+  }
+
+  protected getWritableData(): PaymentObject {
+    const o: any = super.getWritableData();
+
+    const termPeriod = (new TimePeriod(o.termType, o.termQuantity));
+
+    delete o.termQuantity;
+    delete o.termPeriod;
+
+    if (termPeriod && termPeriod.toString()) {
+      o.term = termPeriod.toString();
+    }
+
+    return o;
   }
 
   onDrop(event: any): void {

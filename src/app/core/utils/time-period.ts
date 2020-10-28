@@ -7,16 +7,20 @@ export enum TimePeriodType {
 
 export class TimePeriod {
   public static fromString(text: string): TimePeriod {
-    const parsedString = text.match(/(\d+)?(\w)/);
+    if (text) {
+      const parsedString = text.match(/(\d+)?(\w)/);
 
-    const periodType = TimePeriodType[parsedString[2]];
+      const periodType = TimePeriodType[parsedString[2]];
 
-    let quantity: number;
-    if (periodType) {
-      quantity = Number.parseInt(parsedString[1], 10) || 1;
+      let quantity: number;
+      if (periodType) {
+        quantity = Number.parseInt(parsedString[1], 10) || 1;
+      }
+
+      return new TimePeriod(periodType, quantity);
+    } else {
+      return null;
     }
-
-    return new TimePeriod(periodType, quantity);
   }
 
   constructor(readonly periodType: TimePeriodType, readonly quantity: number) {
@@ -25,7 +29,12 @@ export class TimePeriod {
   }
 
   public toString(): string {
-    return this.quantity.toString(10) + this.periodType.toString();
-  }
+    let result = this.quantity? this.quantity.toString(10): '1';
 
+    if (this.periodType) {
+      result = result + this.periodType.toString();
+    }
+
+    return result.length > 0 && this.periodType && result;
+  }
 }
