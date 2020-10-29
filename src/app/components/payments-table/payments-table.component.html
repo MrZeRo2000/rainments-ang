@@ -204,7 +204,7 @@
         <div class="d-flex justify-content-between">
           <label for="productCounter" class="text-nowrap"><strong>Counter</strong></label>
           <a href="#" (click)="pervPeriodCounterLabelClick($event, prevPeriodPayment.productCounter)">
-            <app-core-colored-value-label [value]="prevPeriodPayment && prevPeriodPayment.productCounter"></app-core-colored-value-label>
+            <app-core-colored-value-label [value]="prevPeriodPayment && prevPeriodPayment.productCounter | amount: getProduct() && getProduct().counterPrecision"></app-core-colored-value-label>
           </a>
         </div>
         <input

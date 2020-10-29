@@ -73,7 +73,12 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
 
   displayOptions: PaymentsTableDisplayOptions;
 
-  private loadSuccessSubscription: Subscription;
+  private readonly loadSuccessSubscription: Subscription;
+
+  private static roundValueTo(value: any, precision?: any): number {
+    const rate = Math.pow(10, precision || 0);
+    return rate === 0 ? value : Math.round(value * rate) / rate;
+  }
 
   private static roundValue(value: any): number {
     return Math.round(value * 100) / 100;
@@ -228,7 +233,8 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     } else {
       this.productUsage = undefined;
     }
-    this.productUsageForm.controls.productUsageCounter.setValue(this.amountPipe.transform(this.productUsage));
+    this.productUsageForm.controls.productUsageCounter.setValue(
+      this.amountPipe.transform(this.productUsage, this.getProduct() && this.getProduct().counterPrecision));
   }
 
   protected editFormInit() {
@@ -347,8 +353,18 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     return this.readRepository.getData()[0].paymentGroupList;
   }
 
+  getPaymentGroup(): PaymentGroup {
+    return this.getPaymentGroups().find(
+      value => value.id === Number.parseInt(this.editForm.controls.paymentGroup.value, 0));
+  }
+
   getProducts(): Product[] {
     return this.readRepository.getData()[0].productList;
+  }
+
+  getProduct(): Product {
+    return this.getProducts().find(
+      value => value.id === Number.parseInt(this.editForm.controls.product.value, 0));
   }
 
   getPaymentObject(): PaymentObject {
@@ -357,14 +373,12 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
 
   protected getWritableData(): Payment {
     const paymentObject: PaymentObject = this.getPaymentObject();
-    const paymentGroup: PaymentGroup = this.getPaymentGroups().find(
-      value => value.id === Number.parseInt(this.editForm.controls.paymentGroup.value, 0));
-    const product: Product = this.getProducts().find(
-      value => value.id === Number.parseInt(this.editForm.controls.product.value, 0));
+    const paymentGroup: PaymentGroup = this.getPaymentGroup();
+    const product: Product = this.getProduct();
     const productCounter =
       this.editForm.controls.productCounter.value !== null && this.editForm.controls.productCounter.value !== '' ?
-        PaymentsTableComponent.roundValue(this.editForm.controls.productCounter.value) :
-        null;
+        PaymentsTableComponent.roundValueTo(this.editForm.controls.productCounter.value,
+          this.getProduct() && this.getProduct().counterPrecision) : null;
     const commissionAmount = this.editForm.controls.commissionAmount.value || 0;
 
     return new Payment(
