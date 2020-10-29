@@ -6,7 +6,6 @@ import {BsModalService} from 'ngx-bootstrap/modal';
 import {CommonSimpleEditableTableComponent} from '../../core/table/common-simple-editable-table-component';
 import {DragHandlerService} from '../../core/services/drag-handler.service';
 import {TimePeriod, TimePeriodType} from '../../core/utils/time-period';
-import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-payment-objects-table',
@@ -39,6 +38,12 @@ export class PaymentObjectsTableComponent extends CommonSimpleEditableTableCompo
     );
   }
 
+  protected editFormChanged(data: any) {
+    super.editFormChanged(data);
+    this.editForm.controls.termType.setErrors(null);
+    this.editForm.controls.termQuantity.setErrors(null);
+  }
+
   protected getEditValue(item: any): any {
     const value = super.getEditValue(item);
 
@@ -65,6 +70,22 @@ export class PaymentObjectsTableComponent extends CommonSimpleEditableTableCompo
     this.inputNameElement.nativeElement.focus();
   }
 
+  private validateTerm(): void {
+    if (this.editForm.controls.period.value === '') {
+      if (this.editForm.controls.termType.value !== '') {
+        this.editForm.controls.termType.setErrors({termNoPeriod: true});
+      }
+
+      if (this.editForm.controls.termQuantity.value !== '') {
+        this.editForm.controls.termQuantity.setErrors({termQuantityNoPeriod: true});
+      }
+    } else {
+      if (this.editForm.controls.termQuantity.value !== '' && this.editForm.controls.termType.value === '') {
+        this.editForm.controls.termQuantity.setErrors({termQuantityNoType: true});
+      }
+    }
+  }
+
   protected validateCreate(): void {
     const nameDuplicates = this.repository.getData().filter(
       (v) => v.name === this.editForm.controls.name.value
@@ -72,6 +93,7 @@ export class PaymentObjectsTableComponent extends CommonSimpleEditableTableCompo
     if (nameDuplicates.length > 0) {
       this.editForm.controls.name.setErrors({existingName: true});
     }
+    this.validateTerm();
   }
 
   protected validateSave(): void {
@@ -81,12 +103,13 @@ export class PaymentObjectsTableComponent extends CommonSimpleEditableTableCompo
     if (nameDuplicates.length > 0) {
       this.editForm.controls.name.setErrors({existingName: true});
     }
+    this.validateTerm();
   }
 
   protected getWritableData(): PaymentObject {
     const o: any = super.getWritableData();
 
-    const termPeriod = (new TimePeriod(o.termType, o.termQuantity));
+    const termPeriod = new TimePeriod(o.termType, o.termQuantity);
 
     delete o.termQuantity;
     delete o.termPeriod;

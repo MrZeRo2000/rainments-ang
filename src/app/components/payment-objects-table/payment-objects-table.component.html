@@ -33,7 +33,7 @@
     <label for="inputName"><strong>Name</strong></label>
     <input #inputName type="text" class="form-control" [ngClass]="{'is-invalid': editForm.controls.name.errors && editState.submitted}" id="inputName" placeholder="Name" formControlName="name">
 
-    <div class="mt-2 row">
+    <div class="mt-2 row" [ngClass]="{'is-invalid': (editForm.controls.period.errors || editForm.controls.termQuantity.errors || editForm.controls.termType.errors) && editState.submitted}">
       <div class="col-md-6 col-sm-12">
         <label for="inputPeriod">Payment period</label>
         <select
@@ -73,10 +73,18 @@
 
     </div>
 
-
     <div *ngIf="editForm.controls.name.errors && editState.submitted" class="invalid-feedback">
       <div *ngIf="editForm.controls.name.errors.required">Name should not be empty</div>
       <div *ngIf="editForm.controls.name.errors.existingName">Name should be unique</div>
+    </div>
+
+    <div *ngIf="editForm.controls.termType.errors && editState.submitted" class="invalid-feedback">
+      <div *ngIf="editForm.controls.termType.errors.termNoPeriod">Term without period</div>
+    </div>
+
+    <div *ngIf="editForm.controls.termQuantity.errors && editState.submitted" class="invalid-feedback">
+      <div *ngIf="editForm.controls.termQuantity.errors.termQuantityNoPeriod">Term quantity without period</div>
+      <div *ngIf="editForm.controls.termQuantity.errors.termQuantityNoType">Term quantity without type</div>
     </div>
 
     <app-core-save-dialog-panel [editable]="this" [loadable]="repository" (createClick)="onCreate()" (saveClick)="onSave()" (cancelClick)="onCancel()"></app-core-save-dialog-panel>
