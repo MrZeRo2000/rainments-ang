@@ -10,9 +10,9 @@ export class TimePeriod {
     if (text) {
       const parsedString = text.match(/(\d+)?(\w)/);
 
-      const periodType = TimePeriodType[parsedString[2]];
+      const periodType = TimePeriodType[parsedString[2]] || null;
 
-      let quantity: number;
+      let quantity: number = null;
       if (periodType) {
         quantity = Number.parseInt(parsedString[1], 10) || 1;
       }

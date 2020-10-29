@@ -25,12 +25,12 @@ describe('TimePeriod', () => {
 
   it('parsing from null string', () => {
     const instance = TimePeriod.fromString(null);
-    expect(instance).toBeNull()
+    expect(instance).toBeNull();
   });
 
   it('parsing from undefined string', () => {
     const instance = TimePeriod.fromString(undefined);
-    expect(instance).toBeNull()
+    expect(instance).toBeNull();
   });
 
   it('instance to string', () => {
@@ -45,7 +45,7 @@ describe('TimePeriod', () => {
 
   it('instance to string with no period', () => {
     const instance = new TimePeriod(undefined, 1);
-    expect(instance.toString()).toBeNull();
+    expect(instance.toString()).toBeFalsy();
   })
 
 });
