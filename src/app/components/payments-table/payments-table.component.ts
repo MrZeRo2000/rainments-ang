@@ -84,6 +84,13 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     return Math.round(value * 100) / 100;
   }
 
+  private static validateNumericControl(control: any) {
+    const value = control.value;
+    if (value !== null && value !== '' && isNaN(value)) {
+      control.setErrors({isNaN: true});
+    }
+  }
+
   private calcConvertedPeriodDate(): void {
     const result = new Date(this.paymentPeriodDate);
 
@@ -165,7 +172,12 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     this.inlineEditHandler.inputProcessor = ((item, selection) => {
       const patchRequest = new PatchRequest('replace', '/' + selection.controlName.replace('Control', ''));
       if (selection.value) {
-        patchRequest.value = selection.value;
+        if (selection.controlName === 'productCounterControl') {
+          patchRequest.value = PaymentsTableComponent.roundValueTo(selection.value,
+            item.product && item.product.counterPrecision).toString(10);
+        } else {
+          patchRequest.value = selection.value;
+        }
       } else {
         if (['paymentAmountControl', 'commissionAmountControl'].includes(selection.controlName)) {
           patchRequest.value = '0';
@@ -371,15 +383,27 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     return this.readRepository.getData()[0].paymentObject;
   }
 
+  getProductCounter(): number {
+    return this.editForm.controls.productCounter.value !== null && this.editForm.controls.productCounter.value !== '' ?
+      PaymentsTableComponent.roundValueTo(this.editForm.controls.productCounter.value,
+        this.getProduct() && this.getProduct().counterPrecision) : null;
+  }
+
+  getPaymentAmount(): number {
+    return this.editForm.controls.paymentAmount.value;
+  }
+
+  getCommissionAmount(): number {
+    return this.editForm.controls.commissionAmount.value || 0;
+  }
+
   protected getWritableData(): Payment {
     const paymentObject: PaymentObject = this.getPaymentObject();
     const paymentGroup: PaymentGroup = this.getPaymentGroup();
     const product: Product = this.getProduct();
-    const productCounter =
-      this.editForm.controls.productCounter.value !== null && this.editForm.controls.productCounter.value !== '' ?
-        PaymentsTableComponent.roundValueTo(this.editForm.controls.productCounter.value,
-          this.getProduct() && this.getProduct().counterPrecision) : null;
-    const commissionAmount = this.editForm.controls.commissionAmount.value || 0;
+    const productCounter = this.getProductCounter();
+    const paymentAmount = this.getPaymentAmount();
+    const commissionAmount = this.getCommissionAmount();
 
     return new Payment(
       undefined,
@@ -389,7 +413,7 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
       paymentGroup,
       product,
       productCounter,
-      PaymentsTableComponent.roundValue(this.editForm.controls.paymentAmount.value),
+      PaymentsTableComponent.roundValue(paymentAmount),
       PaymentsTableComponent.roundValue(commissionAmount)
     );
   }
