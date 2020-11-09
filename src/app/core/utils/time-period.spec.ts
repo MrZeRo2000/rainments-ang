@@ -1,4 +1,4 @@
-import {TimePeriod, TimePeriodType} from './time-period';
+import {TimePeriod, TimePeriodType, TimePeriodUtils} from './time-period';
 
 describe('TimePeriod', () => {
   it('should create an instance', () => {
@@ -47,5 +47,38 @@ describe('TimePeriod', () => {
     const instance = new TimePeriod(undefined, 1);
     expect(instance.toString()).toBeFalsy();
   })
+
+});
+
+describe('TimePeriodUtils', () => {
+  it('truncate to period: date', () => {
+    expect(TimePeriodUtils.truncateToPeriod(new Date(2020, 2, 20), TimePeriodType.D)).toEqual(new Date(2020, 2, 1));
+  });
+
+  it('truncate to period: quarter: march', () => {
+    expect(TimePeriodUtils.truncateToPeriod(new Date(2020, 2, 20), TimePeriodType.Q)).toEqual(new Date(2020, 0, 1));
+  });
+
+  it('truncate to period: quarter: april', () => {
+    expect(TimePeriodUtils.truncateToPeriod(new Date(2020, 3, 10), TimePeriodType.Q)).toEqual(new Date(2020, 3, 1));
+  });
+
+  it('truncate to period: quarter: december', () => {
+    expect(TimePeriodUtils.truncateToPeriod(new Date(2020, 11, 7), TimePeriodType.Q)).toEqual(new Date(2020, 9, 1));
+  });
+
+  it('add period: date', () => {
+    expect(TimePeriodUtils.addPeriod(new Date(2020, 0, 31), TimePeriodType.D)).toEqual(new Date(2020, 1, 1));
+
+    expect(TimePeriodUtils.addPeriod(new Date(2020, 0, 31), TimePeriodType.D, 3)).toEqual(new Date(2020, 1, 3));
+  });
+
+  it('add period: month', () => {
+    expect(TimePeriodUtils.addPeriod(new Date(2020, 0, 2), TimePeriodType.M)).toEqual(new Date(2020, 1, 2));
+  });
+
+  it('add period: quarter', () => {
+    expect(TimePeriodUtils.addPeriod(new Date(2020, 11, 20), TimePeriodType.Q)).toEqual(new Date(2021, 2, 20));
+  });
 
 });
