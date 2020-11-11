@@ -68,17 +68,17 @@ describe('TimePeriodUtils', () => {
   });
 
   it('add period: date', () => {
-    expect(TimePeriodUtils.addPeriod(new Date(2020, 0, 31), TimePeriodType.D)).toEqual(new Date(2020, 1, 1));
+    expect(TimePeriodUtils.addPeriod(new Date(2020, 0, 31), new TimePeriod(TimePeriodType.D))).toEqual(new Date(2020, 1, 1));
 
-    expect(TimePeriodUtils.addPeriod(new Date(2020, 0, 31), TimePeriodType.D, 3)).toEqual(new Date(2020, 1, 3));
+    expect(TimePeriodUtils.addPeriod(new Date(2020, 0, 31), new TimePeriod(TimePeriodType.D, 3))).toEqual(new Date(2020, 1, 3));
   });
 
   it('add period: month', () => {
-    expect(TimePeriodUtils.addPeriod(new Date(2020, 0, 2), TimePeriodType.M)).toEqual(new Date(2020, 1, 2));
+    expect(TimePeriodUtils.addPeriod(new Date(2020, 0, 2), new TimePeriod(TimePeriodType.M))).toEqual(new Date(2020, 1, 2));
   });
 
   it('add period: quarter', () => {
-    expect(TimePeriodUtils.addPeriod(new Date(2020, 11, 20), TimePeriodType.Q)).toEqual(new Date(2021, 2, 20));
+    expect(TimePeriodUtils.addPeriod(new Date(2020, 11, 20), new TimePeriod(TimePeriodType.Q))).toEqual(new Date(2021, 2, 20));
   });
 
 });

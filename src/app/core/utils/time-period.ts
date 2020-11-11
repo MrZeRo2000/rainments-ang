@@ -23,7 +23,7 @@ export class TimePeriod {
     }
   }
 
-  constructor(readonly periodType: TimePeriodType, readonly quantity: number) {
+  constructor(readonly periodType: TimePeriodType, readonly quantity: number = 1) {
     this.periodType = periodType;
     this.quantity = quantity;
   }
@@ -51,14 +51,14 @@ export class TimePeriodUtils {
     }
   }
 
-  public static addPeriod(date: Date, periodType: TimePeriodType, periods: number = 1): Date {
-    switch (periodType) {
+  public static addPeriod(date: Date, timePeriod: TimePeriod): Date {
+    switch (timePeriod.periodType) {
       case TimePeriodType.D:
-        return new Date(date.getFullYear(), date.getMonth(), date.getDate() + periods);
+        return new Date(date.getFullYear(), date.getMonth(), date.getDate() + timePeriod.quantity);
       case TimePeriodType.M:
-        return new Date(date.getFullYear(), date.getMonth() + 1, date.getDate());
+        return new Date(date.getFullYear(), date.getMonth() + timePeriod.quantity, date.getDate());
       case TimePeriodType.Q:
-        return new Date(date.getFullYear(), date.getMonth() + 3, date.getDate());
+        return new Date(date.getFullYear(), date.getMonth() + 3 * timePeriod.quantity, date.getDate());
       default:
         return date;
     }
