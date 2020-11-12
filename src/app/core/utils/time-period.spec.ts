@@ -51,8 +51,8 @@ describe('TimePeriod', () => {
 });
 
 describe('TimePeriodUtils', () => {
-  it('truncate to period: date', () => {
-    expect(TimePeriodUtils.truncateToPeriod(new Date(2020, 2, 20), TimePeriodType.D)).toEqual(new Date(2020, 2, 1));
+  it('truncate to period: month', () => {
+    expect(TimePeriodUtils.truncateToPeriod(new Date(2020, 2, 20), TimePeriodType.M)).toEqual(new Date(2020, 2, 1));
   });
 
   it('truncate to period: quarter: march', () => {

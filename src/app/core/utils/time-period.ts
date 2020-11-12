@@ -42,12 +42,12 @@ export class TimePeriod {
 export class TimePeriodUtils {
   public static truncateToPeriod(date: Date, periodType: TimePeriodType): Date {
     switch (periodType) {
-      case TimePeriodType.D:
+      case TimePeriodType.M:
         return new Date(date.getFullYear(), date.getMonth(), 1);
       case TimePeriodType.Q:
         return new Date(date.getFullYear(), Math.trunc(date.getMonth() / 3) * 3, 1);
       default:
-        return date;
+        return null;
     }
   }
 
