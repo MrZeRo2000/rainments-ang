@@ -11,24 +11,14 @@ export class PaymentObjectTotalsRepository extends ReadRepository<PaymentObjectT
     protected dataSource: RestDataSource,
     protected messagesService: MessagesService
   ) {
-    super(dataSource, messagesService, 'payments:payment_object_totals_by_payment_period');
+    super(dataSource, messagesService, 'payments:payment_object_totals_by_date');
   }
 
   protected afterLoadData(data: PaymentObjectTotals[]) {
     super.afterLoadData(data);
     data.forEach(value => {
-      value.periodDate = new Date(value.periodDate);
-
-      // for month period
-      const period = TimePeriodType[value.paymentObject.period] || null;
-      const termPeriod = TimePeriod.fromString(value.paymentObject.term);
-
-      if (value.totalAmount === 0 && period && termPeriod) {
-        const currentDate = new Date();
-        const currentDateTruncated = TimePeriodUtils.truncateToPeriod(currentDate, period);
-        const dueDate = TimePeriodUtils.addPeriod(currentDateTruncated, termPeriod);
-
-        value.missedPayment = currentDate > dueDate;
+      if (value.paymentDate) {
+        value.paymentDate = new Date(value.paymentDate);
       }
     });
   }

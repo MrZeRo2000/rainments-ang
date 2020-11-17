@@ -1,4 +1,9 @@
 export class DateGenerator {
+  static getCurrentDate(): Date {
+    const currentDate = new Date();
+    return new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+  }
+
   static getCurrentMonthStartDate(): Date {
     const currentDate = new Date();
     return new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);

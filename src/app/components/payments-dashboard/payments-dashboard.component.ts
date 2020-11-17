@@ -25,7 +25,7 @@ export class PaymentsDashboardComponent extends CommonTableComponent<PaymentObje
 
   protected getHttpParams(): HttpParams {
     return new HttpParams()
-      .append('paymentPeriodDate', DateGenerator.getConvertedPeriodDate(DateGenerator.getPreviousMonthStartDate()).toJSON())
+      .append('currentDate', DateGenerator.getConvertedPeriodDate(DateGenerator.getCurrentDate()).toJSON())
       ;
   }
 

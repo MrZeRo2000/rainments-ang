@@ -20,12 +20,12 @@
             <div class="flex-grow-1">
               <h5 class="card-title">{{item.paymentObject.name}}</h5>
             </div>
-            <div *ngIf="item.missedPayment">
+            <div *ngIf="item.paymentOverdue">
               <fa-icon [icon]="['fas', 'exclamation']" class="text-danger"></fa-icon>
             </div>
           </div>
           <p class="card-text text-right">
-            {{item.periodDate | shortMonthYear}} <app-core-colored-value-label [value]="item.totalAmount | amount" [displayZero]="true"></app-core-colored-value-label></p>
+            {{item.paymentDate | shortMonthYear}} <app-core-colored-value-label [value]="item.paymentAmount | amount" [displayZero]="true"></app-core-colored-value-label></p>
         </div>
       </div>
     </div>

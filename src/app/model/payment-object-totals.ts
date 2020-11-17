@@ -2,9 +2,9 @@ import {PaymentObject} from './payment-object';
 
 export class PaymentObjectTotals {
   constructor(
-    public periodDate?: Date,
+    public paymentDate?: Date,
     public paymentObject?: PaymentObject,
-    public totalAmount?: number,
-    public missedPayment?: boolean
+    public paymentAmount?: number,
+    public paymentOverdue?: boolean
   ) { }
 }
