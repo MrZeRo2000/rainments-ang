@@ -34,7 +34,7 @@
     <input #inputName type="text" class="form-control" [ngClass]="{'is-invalid': editForm.controls.name.errors && editState.submitted}" id="inputName" placeholder="Name" formControlName="name">
 
     <div class="mt-2 row" [ngClass]="{'is-invalid': (editForm.controls.period.errors || editForm.controls.termQuantity.errors || editForm.controls.termType.errors) && editState.submitted}">
-      <div class="col-md-6 col-sm-12">
+      <div class="col-md-4 col-sm-12">
         <label for="inputPeriod">Payment period</label>
         <select
           class="browser-default custom-select"
@@ -46,7 +46,7 @@
         </select>
       </div>
 
-    <div class="col-md-3 col-sm-12">
+    <div class="col-md-2 col-sm-12">
       <label for="inputTermQuantity">Payment term</label>
       <select
         class="browser-default custom-select"
@@ -68,7 +68,18 @@
       >
         <option *ngFor="let item of termTypes" value="{{item[0]}}">{{item[1]}}</option>
       </select>
+    </div>
 
+    <div class="col-md-3 col-sm-12">
+      <label for="inputPayDelay">Payment due delay</label>
+      <select
+        class="browser-default custom-select"
+        [ngClass]="{'is-invalid': editForm.controls.payDelay.errors && editState.submitted}"
+        formControlName="payDelay"
+        id="inputPayDelay"
+      >
+        <option *ngFor="let item of payDelays" value="{{item[0]}}">{{item[1]}}</option>
+      </select>
     </div>
 
     </div>
@@ -80,6 +91,10 @@
 
     <div *ngIf="editForm.controls.termType.errors && editState.submitted" class="invalid-feedback">
       <div *ngIf="editForm.controls.termType.errors.termNoPeriod">Term without period</div>
+    </div>
+
+    <div *ngIf="editForm.controls.payDelay.errors && editState.submitted" class="invalid-feedback">
+      <div *ngIf="editForm.controls.payDelay.errors.delayNoPeriod">Payment due delay without period</div>
     </div>
 
     <div *ngIf="editForm.controls.termQuantity.errors && editState.submitted" class="invalid-feedback">

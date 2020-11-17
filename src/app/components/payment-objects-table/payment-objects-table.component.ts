@@ -18,6 +18,7 @@ export class PaymentObjectsTableComponent extends CommonSimpleEditableTableCompo
   periodTypes = [[], [TimePeriodType.M, 'Month'], [TimePeriodType.Q, 'Quarter']];
   termTypes = [[], [TimePeriodType.D, 'Day'], [TimePeriodType.M, 'Month']];
   termQuantities = [...Array(31)].map((c, i) => i === 0 ? undefined : i.toString(10))
+  payDelays = [[], [0, 'Current Period'], [1, 'Next Period']]
 
   constructor(
     private fb: FormBuilder,
@@ -33,7 +34,8 @@ export class PaymentObjectsTableComponent extends CommonSimpleEditableTableCompo
         name: ['', Validators.required],
         period: [''],
         termQuantity: [''],
-        termType: ['']
+        termType: [''],
+        payDelay: ['']
       }
     );
   }
@@ -42,6 +44,7 @@ export class PaymentObjectsTableComponent extends CommonSimpleEditableTableCompo
     super.editFormChanged(data);
     this.editForm.controls.termType.setErrors(null);
     this.editForm.controls.termQuantity.setErrors(null);
+    this.editForm.controls.payDelay.setErrors(null);
   }
 
   protected getEditValue(item: any): any {
@@ -79,6 +82,11 @@ export class PaymentObjectsTableComponent extends CommonSimpleEditableTableCompo
       if (this.editForm.controls.termQuantity.value !== '') {
         this.editForm.controls.termQuantity.setErrors({termQuantityNoPeriod: true});
       }
+
+      if (this.editForm.controls.payDelay.value !== '') {
+        this.editForm.controls.payDelay.setErrors({delayNoPeriod: true});
+      }
+
     } else {
       if (this.editForm.controls.termQuantity.value !== '' && this.editForm.controls.termType.value === '') {
         this.editForm.controls.termQuantity.setErrors({termQuantityNoType: true});
