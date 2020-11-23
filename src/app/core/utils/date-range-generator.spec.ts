@@ -13,6 +13,7 @@ describe('DateRangeGenerator', () => {
   });
 
   const months = instance.getMonths();
+  const quarters = instance.getQuarters();
   const years = instance.getYears();
 
   it('first year', () => {
@@ -36,5 +37,16 @@ describe('DateRangeGenerator', () => {
   it('month numbers', () => {
     expect(months.map(v => v.name)).toEqual(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
   });
+
+  it('quarters Q1', () => {
+    expect(quarters[0].id).toBe(0);
+    expect(quarters[0].name).toBe('Q1 (Jan - Mar)');
+  });
+
+  it('quarters Q4', () => {
+    expect(quarters[3].id).toBe(3);
+    expect(quarters[3].name).toBe('Q4 (Oct - Dec)');
+  });
+
 
 });

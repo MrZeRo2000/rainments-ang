@@ -1,22 +1,25 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {DateRangeGenerator, MonthInfo} from '../../core/utils/date-range-generator';
+import {DateRangeGenerator, PeriodInfo} from '../../core/utils/date-range-generator';
 import {DateGenerator} from '../../core/utils/date-generator';
+import {PaymentObject} from '../../model/payment-object';
 
 @Component({
   selector: 'app-payments-date-selection',
   templateUrl: './payments-date-selection.component.html',
   styleUrls: ['./payments-date-selection.component.scss']
 })
-export class PaymentsDateSelectionComponent implements OnInit {
+export class PaymentsDateSelectionComponent implements OnInit, OnChanges {
   editForm: FormGroup;
-  months: Array<MonthInfo>;
+  months: Array<PeriodInfo>;
   years: Array<number>;
 
   minSelectionDate: Date;
   maxSelectionDate: Date;
 
   lastSelectedDate: Date;
+
+  @Input() paymentObject: PaymentObject;
 
   @Output() selectedDate = new EventEmitter<Date>();
 
@@ -44,6 +47,16 @@ export class PaymentsDateSelectionComponent implements OnInit {
   ngOnInit() {
     this.selectedDate.emit(this.lastSelectedDate);
   }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    for (const propName in changes) {
+      if (changes.hasOwnProperty(propName)) {
+        const changedProp = changes[propName];
+        console.log(`Payments Date Selection propName=${propName}, propValue=${JSON.stringify(changedProp.currentValue)}`)
+      }
+    }
+  }
+
 
   private buildForm(): FormGroup {
     const formGroup = this.fb.group({
