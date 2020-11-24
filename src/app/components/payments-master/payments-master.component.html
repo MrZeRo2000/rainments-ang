@@ -1,7 +1,7 @@
 
 <app-message></app-message>
 
-<div class="d-inline-flex align-items-center">
+<div class="d-inline-flex align-items-center" *ngIf=paymentObject>
   <app-payments-date-selection (selectedDate)="onSelectDate($event)" [paymentObject]=paymentObject></app-payments-date-selection>
   <div class="ml-2">
     <nav aria-label="breadcrumb">
@@ -15,5 +15,8 @@
 <app-payments-table
   [paymentObjectId]="paymentObjectId"
   [paymentPeriodDate]="selectedDate"
-  (paymentObject)="onPaymentObject($event)">
+  (paymentObject)="onPaymentObject($event)"
+  *ngIf=paymentObject>
 </app-payments-table>
+
+<app-core-loading-progress [loadable]="repository"></app-core-loading-progress>

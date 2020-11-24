@@ -11,8 +11,9 @@ import {PaymentObject} from '../../model/payment-object';
 })
 export class PaymentsDateSelectionComponent implements OnInit, OnChanges {
   editForm: FormGroup;
-  months: Array<PeriodInfo>;
+  periods: Array<PeriodInfo>;
   years: Array<number>;
+  period: string;
 
   minSelectionDate: Date;
   maxSelectionDate: Date;
@@ -24,48 +25,67 @@ export class PaymentsDateSelectionComponent implements OnInit, OnChanges {
   @Output() selectedDate = new EventEmitter<Date>();
 
   constructor(private fb: FormBuilder) {
-    this.lastSelectedDate = DateGenerator.getPreviousMonthStartDate();
+    // this.lastSelectedDate = DateGenerator.getPreviousMonthStartDate();
     this.selectedDate.subscribe(v => {
       this.lastSelectedDate = v;
       console.log('Selected ' + JSON.stringify(v));
       }
     );
 
-    this.minSelectionDate = new Date(this.lastSelectedDate.getFullYear() - 3, 0, 1);
-    this.maxSelectionDate = new Date(this.lastSelectedDate.getFullYear() + 1, 11, 31);
-
-    const dr = new DateRangeGenerator(
-      this.minSelectionDate, this.maxSelectionDate
-    );
-
-    this.months = dr.getMonths();
-    this.years = dr.getYears();
+    const currentDate = new Date();
+    this.minSelectionDate = new Date(currentDate.getFullYear() - 3, 0, 1);
+    this.maxSelectionDate = new Date(currentDate.getFullYear() + 1, 11, 31);
 
     this.editForm = this.buildForm();
   }
 
   ngOnInit() {
-    this.selectedDate.emit(this.lastSelectedDate);
+    // this.selectedDate.emit(this.lastSelectedDate);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     for (const propName in changes) {
-      if (changes.hasOwnProperty(propName)) {
+      if (changes.hasOwnProperty(propName) && changes[propName].isFirstChange()) {
         const changedProp = changes[propName];
         console.log(`Payments Date Selection propName=${propName}, propValue=${JSON.stringify(changedProp.currentValue)}`)
+        if (propName === 'paymentObject' && changedProp.currentValue) {
+          if (changedProp.currentValue.hasOwnProperty('period')) {
+            this.setPeriod(changedProp.currentValue.period)
+          } else {
+            this.setPeriod('M');
+          }
+        }
       }
     }
   }
 
+  private setPeriod(period: string) {
+    if (period && this.period !== period) {
+      console.log(`Payments Date Selection setting period to ${period}`)
+      const dr = new DateRangeGenerator(
+        this.minSelectionDate, this.maxSelectionDate, period
+      );
+
+      this.periods = dr.getPeriods();
+      this.years = dr.getYears();
+
+      // this.editForm.patchValue({monthSelect: 0})
+      this.editForm.controls.monthSelect.setValue(1);
+      this.period = period;
+    }
+  }
 
   private buildForm(): FormGroup {
     const formGroup = this.fb.group({
-      monthSelect: [this.getSelectedMonth(), Validators.required],
-      yearSelect: [this.getSelectedYear(), Validators.required]
+      monthSelect: ['', Validators.required],
+      yearSelect: ['', Validators.required]
     });
 
     formGroup.valueChanges.subscribe((v) => {
-      this.selectedDate.emit(new Date(v.yearSelect, v.monthSelect, 1));
+      if (this.period) {
+        console.log(`Emitting date: ${JSON.stringify(new Date(v.yearSelect, v.monthSelect, 1))}`)
+        this.selectedDate.emit(new Date(v.yearSelect, v.monthSelect, 1));
+      }
     });
 
     return formGroup;
