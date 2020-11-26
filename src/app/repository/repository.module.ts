@@ -20,6 +20,7 @@ import {PaymentObjectPersistRepository} from './payment-object-persist-repositor
 import {ProductPersistRepository} from './product-persist-repository';
 import {PaymentPersistRepository} from './payment-persist-repository';
 import {PaymentObjectTotalsRepository} from './payment-object-totals-repository';
+import {PaymentObjectPeriodRepository} from './payment-object-period-repository';
 
 @NgModule({
   declarations: [],
@@ -48,7 +49,8 @@ import {PaymentObjectTotalsRepository} from './payment-object-totals-repository'
     UpdatePaymentObjectGroupPersistRepository,
     ImportPaymentObjectPersistRepository,
     BackupDatabasePersistRepository,
-    PaymentObjectTotalsRepository
+    PaymentObjectTotalsRepository,
+    PaymentObjectPeriodRepository
   ]
 })
 export class RepositoryModule { }

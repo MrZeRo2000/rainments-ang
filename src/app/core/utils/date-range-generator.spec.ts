@@ -8,12 +8,15 @@ describe('DateRangeGenerator', () => {
 
   const instance = new DateRangeGenerator(minDate, maxDate);
 
+  const instanceMonth = new DateRangeGenerator(minDate, maxDate, 'M');
+  const instanceQuarter = new DateRangeGenerator(minDate, maxDate, 'Q');
+
   it('should create an instance', () => {
     expect(instance).toBeTruthy();
   });
 
-  const months = instance.getMonths();
-  const quarters = instance.getQuarters();
+  const months = instanceMonth.getPeriods();
+  const quarters = instanceQuarter.getPeriods();
   const years = instance.getYears();
 
   it('first year', () => {

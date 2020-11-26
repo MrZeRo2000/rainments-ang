@@ -2,31 +2,41 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {PaymentObject} from '../../model/payment-object';
 import {CommonTableComponent} from '../../core/table/common-table-component';
-import {PaymentObjectRepository} from '../../repository/payment-object-repository';
+import {PaymentObjectTotals} from '../../model/payment-object-totals';
+import {PaymentObjectPeriodRepository} from '../../repository/payment-object-period-repository';
+import {HttpParams} from '@angular/common/http';
+import {DateGenerator} from '../../core/utils/date-generator';
 
 @Component({
   selector: 'app-payments-master',
   templateUrl: './payments-master.component.html',
   styleUrls: ['./payments-master.component.scss']
 })
-export class PaymentsMasterComponent extends CommonTableComponent<PaymentObject> implements OnInit {
+export class PaymentsMasterComponent extends CommonTableComponent<PaymentObjectTotals> implements OnInit {
   private KEY_ID = 'id';
 
   paymentObjectId: number;
-  paymentObject: PaymentObject;
+  paymentObjectTotals: PaymentObjectTotals;
 
   selectedDate: Date;
 
-  constructor(public repository: PaymentObjectRepository, private route: ActivatedRoute) {
+  constructor(public repository: PaymentObjectPeriodRepository, private route: ActivatedRoute) {
     super(repository);
     this.paymentObjectId = Number.parseInt(this.route.snapshot.params[this.KEY_ID], 0);
+  }
+
+  protected getHttpParams(): HttpParams {
+    return new HttpParams()
+      .append('paymentObjectId', this.paymentObjectId.toString())
+      .append('currentDate', DateGenerator.getConvertedPeriodDate(DateGenerator.getCurrentDate()).toJSON())
+      ;
   }
 
   ngOnInit() {
     super.ngOnInit();
     this.repository.getLoadSuccessObservable().subscribe(v => {
       if(v) {
-        this.paymentObject = this.repository.getData().filter(value => value.id === this.paymentObjectId)[0];
+        this.paymentObjectTotals = this.repository.getData()[0];
       }
     });
   }
