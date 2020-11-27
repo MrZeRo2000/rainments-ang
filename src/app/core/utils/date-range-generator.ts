@@ -25,19 +25,35 @@ export class DateRangeGenerator {
   }
 
   getPeriods(): Array<PeriodInfo> {
-    return (this.periodHandler && this.periodHandler.getPeriods()) || null;
+    if (this.periodHandler) {
+      return this.periodHandler.getPeriods();
+    } else  {
+      return null;
+    }
   }
 
   getPeriodValue(date: Date): number {
-    return (this.periodHandler && this.periodHandler.getPeriodValue(date)) || null;
+    if (this.periodHandler) {
+      return this.periodHandler.getPeriodValue(date);
+    } else {
+      return null;
+    }
   }
 
   getPeriodDate(year: number, periodValue: number): Date {
-    return (this.periodHandler && this.periodHandler.getPeriodDate(year, periodValue)) || null;
+    if (this.periodHandler) {
+      return this.periodHandler.getPeriodDate(year, periodValue);
+    } else {
+      return null;
+    }
   }
 
   addPeriod(date: Date, value: number): Date {
-    return (this.periodHandler && this.periodHandler.addPeriod(date, value)) || null;
+    if (this.periodHandler) {
+      return this.periodHandler.addPeriod(date, value);
+    } else {
+      return null;
+    }
   }
 }
 
