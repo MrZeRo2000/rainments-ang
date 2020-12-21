@@ -27,9 +27,7 @@
 
           <div class="d-flex">
             <div class="mr-auto" style="z-index: 1">
-              <a href="#" (click)="onReportPaymentObject($event, item)">
-                <fa-icon [icon]="['fas', 'chart-line']" class="text-muted h4"></fa-icon>
-              </a>
+              <app-report-nav [itemId]="item.paymentObject.id" navigatePath="reports"></app-report-nav>
             </div>
             <div>
               {{item.paymentDate | shortMonthYear}} <app-core-colored-value-label [value]="item.paymentAmount | amount" [displayZero]="true"></app-core-colored-value-label>

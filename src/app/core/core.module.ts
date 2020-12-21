@@ -18,6 +18,7 @@ import {DragHandlerService} from './services/drag-handler.service';
 import { DropDownMoreMenuComponent } from './components/drop-down-more-menu/drop-down-more-menu.component';
 import { ShortMonthYearPipe } from './pipes/short-month-year.pipe';
 import {FontAwesomeIconsModule} from '../font-awesome-icons/font-awesome-icons.module';
+import { ReportNavComponent } from './components/report-nav/report-nav.component';
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import {FontAwesomeIconsModule} from '../font-awesome-icons/font-awesome-icons.m
     DragGripComponent,
     DropDownMoreMenuComponent,
     ShortMonthYearPipe,
+    ReportNavComponent,
   ],
   imports: [
     CommonModule,
@@ -47,22 +49,23 @@ import {FontAwesomeIconsModule} from '../font-awesome-icons/font-awesome-icons.m
   entryComponents: [
     ConfirmationModalDialogComponent
   ],
-  exports: [
-    LoadingProgressComponent,
-    AddPanelComponent,
-    EditDeletePanelComponent,
-    SaveDialogPanelComponent,
-    ColoredValueLabelComponent,
-    ColoredTrendLabelComponent,
-    ConfirmationModalDialogComponent,
-    LoadingSpinnerElementComponent,
-    LoadingModalPanelComponent,
-    AmountPipe,
-    EnumStringValuePipe,
-    DragGripComponent,
-    DropDownMoreMenuComponent,
-    ShortMonthYearPipe
-  ],
+    exports: [
+        LoadingProgressComponent,
+        AddPanelComponent,
+        EditDeletePanelComponent,
+        SaveDialogPanelComponent,
+        ColoredValueLabelComponent,
+        ColoredTrendLabelComponent,
+        ConfirmationModalDialogComponent,
+        LoadingSpinnerElementComponent,
+        LoadingModalPanelComponent,
+        AmountPipe,
+        EnumStringValuePipe,
+        DragGripComponent,
+        DropDownMoreMenuComponent,
+        ShortMonthYearPipe,
+        ReportNavComponent
+    ],
   providers: [
     AmountPipe,
     EnumStringValuePipe,

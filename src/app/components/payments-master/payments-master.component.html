@@ -11,9 +11,7 @@
     </nav>
   </div>
   <div class="ml-2">
-    <a href="#" (click)="onReportPaymentObject($event)">
-      <fa-icon [icon]="['fas', 'chart-line']" class="text-muted h4"></fa-icon>
-    </a>
+    <app-report-nav [itemId]="this.paymentObjectId" navigatePath="reports"></app-report-nav>
   </div>
 </div>
 

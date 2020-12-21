@@ -48,10 +48,4 @@ export class PaymentsMasterComponent extends CommonTableComponent<PaymentObjectT
   onPaymentObject(paymentObject: PaymentObject) {
     // this.paymentObject = paymentObject;
   }
-
-  onReportPaymentObject(event) {
-    event.preventDefault();
-    this.router.navigateByUrl('/reports/' + this.paymentObjectId).then();
-  }
-
 }
