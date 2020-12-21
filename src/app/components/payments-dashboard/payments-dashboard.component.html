@@ -24,8 +24,17 @@
               <fa-icon [icon]="['fas', 'exclamation']" class="text-danger"></fa-icon>
             </div>
           </div>
-          <p class="card-text text-right">
-            {{item.paymentDate | shortMonthYear}} <app-core-colored-value-label [value]="item.paymentAmount | amount" [displayZero]="true"></app-core-colored-value-label></p>
+
+          <div class="d-flex">
+            <div class="mr-auto" style="z-index: 1">
+              <a href="#" (click)="onReportPaymentObject($event, item)">
+                <fa-icon [icon]="['fas', 'chart-line']" class="text-muted h4"></fa-icon>
+              </a>
+            </div>
+            <div>
+              {{item.paymentDate | shortMonthYear}} <app-core-colored-value-label [value]="item.paymentAmount | amount" [displayZero]="true"></app-core-colored-value-label>
+            </div>
+          </div>
         </div>
       </div>
     </div>

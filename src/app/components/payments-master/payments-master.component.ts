@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {PaymentObject} from '../../model/payment-object';
 import {CommonTableComponent} from '../../core/table/common-table-component';
 import {PaymentObjectTotals} from '../../model/payment-object-totals';
@@ -20,7 +20,7 @@ export class PaymentsMasterComponent extends CommonTableComponent<PaymentObjectT
 
   selectedDate: Date;
 
-  constructor(public repository: PaymentObjectPeriodRepository, private route: ActivatedRoute) {
+  constructor(public repository: PaymentObjectPeriodRepository, private route: ActivatedRoute, private router: Router) {
     super(repository);
     this.paymentObjectId = Number.parseInt(this.route.snapshot.params[this.KEY_ID], 0);
   }
@@ -47,6 +47,11 @@ export class PaymentsMasterComponent extends CommonTableComponent<PaymentObjectT
 
   onPaymentObject(paymentObject: PaymentObject) {
     // this.paymentObject = paymentObject;
+  }
+
+  onReportPaymentObject(event) {
+    event.preventDefault();
+    this.router.navigateByUrl('/reports/' + this.paymentObjectId).then();
   }
 
 }

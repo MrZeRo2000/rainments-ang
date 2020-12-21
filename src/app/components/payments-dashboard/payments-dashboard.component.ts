@@ -38,4 +38,10 @@ export class PaymentsDashboardComponent extends CommonTableComponent<PaymentObje
     this.router.navigateByUrl('/payments/' + item.paymentObject.id).then();
   }
 
+  onReportPaymentObject(event, item: PaymentObjectTotals) {
+    event.preventDefault();
+    this.router.navigateByUrl('/reports/' + item.paymentObject.id).then();
+  }
+
+
 }
