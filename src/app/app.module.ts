@@ -31,6 +31,7 @@ import { BackupDatabaseComponent } from './components/backup-database/backup-dat
 import { PaymentsTableDisplayOptionsComponent } from './components/payments-table-display-options/payments-table-display-options.component';
 import { UpdatePaymentGroupComponent } from './components/update-payment-group/update-payment-group.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import { ReportsMasterComponent } from './components/reports-master/reports-master.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     ImportPaymentObjectExcelComponent,
     BackupDatabaseComponent,
     PaymentsTableDisplayOptionsComponent,
-    UpdatePaymentGroupComponent
+    UpdatePaymentGroupComponent,
+    ReportsMasterComponent
   ],
     imports: [
         BrowserModule,
