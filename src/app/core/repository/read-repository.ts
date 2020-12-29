@@ -104,7 +104,8 @@ export abstract class ReadRepository<T> implements Loadable {
   }
 
   setDefaultLoadParams(defaultLoadParams: LoadParams) {
-    this.defaultLoadParams = defaultLoadParams;
+    if (defaultLoadParams) {
+      this.defaultLoadParams = defaultLoadParams;
+    }
   }
-
 }

@@ -10,7 +10,7 @@ import {MessageType} from './message.model';
 })
 
 export class MessageComponent implements OnInit {
-  displayMessage: Message;
+  displayMessage: Message = null;
   MessageType = MessageType;
 
   @Input() messageSource: string;

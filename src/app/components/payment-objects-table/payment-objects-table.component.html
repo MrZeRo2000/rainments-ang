@@ -1,5 +1,5 @@
 
-<div class="d-flex mt-2 mb-2" *ngIf="this.getEditingState()">
+<div class="d-flex mt-2 mb-2" *ngIf="getEditingState()">
   <app-core-add-panel (addClick)="onAddClick()"></app-core-add-panel>
   <div class="ml-auto">
     <app-core-drop-down-more-menu>

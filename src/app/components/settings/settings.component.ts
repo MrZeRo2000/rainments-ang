@@ -23,8 +23,7 @@ export class SettingsComponent implements OnInit {
 
   selectedItem: SettingItemEnum = SettingItemEnum.PAYMENT_OBJECTS;
 
-  constructor(private messagesService: MessagesService) {
-  }
+  constructor(private messagesService: MessagesService) { }
 
   ngOnInit() {
   }

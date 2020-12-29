@@ -16,6 +16,8 @@ import {PaymentGroupRepository} from '../../repository/payment-group-repository'
 import {ProductRepository} from '../../repository/product-repository';
 import {ProductsTableComponent} from '../products-table/products-table.component';
 import {RepositoryModule} from '../../repository/repository.module';
+import {DataManagementComponent} from '../data-managment/data-management.component';
+import {FontAwesomeIconsModule} from '../../font-awesome-icons/font-awesome-icons.module';
 
 describe('SettingsComponent', () => {
   let component: SettingsComponent;
@@ -23,10 +25,11 @@ describe('SettingsComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      declarations: [ SettingsComponent, PaymentObjectsTableComponent, PaymentGroupsTableComponent, ProductsTableComponent ],
+      declarations: [SettingsComponent,
+        PaymentObjectsTableComponent, PaymentGroupsTableComponent, ProductsTableComponent, DataManagementComponent],
       providers: [RestUrlEnv, RestDataSource],
       imports: [HttpClientTestingModule, ReactiveFormsModule, AlertModule.forRoot(), ModalModule.forRoot(),
-        MessagesModule, CoreModule, RepositoryModule, MessagesModule]
+        MessagesModule, CoreModule, RepositoryModule, FontAwesomeIconsModule]
     })
     .compileComponents();
   });
