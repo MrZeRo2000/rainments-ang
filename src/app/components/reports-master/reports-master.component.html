@@ -1,1 +1,8 @@
-<p>reports-master works!</p>
+
+<app-message></app-message>
+
+<div *ngIf="paymentRep">
+  reports-master works!
+</div>
+
+<app-core-loading-progress [loadable]="repository"></app-core-loading-progress>

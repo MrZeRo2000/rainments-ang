@@ -33,7 +33,7 @@ export abstract class ReadRepository<T> implements Loadable {
   protected loadingError = false;
   private loadSuccess: Subject<boolean> = new Subject<boolean>();
 
-  private defaultLoadParams: LoadParams;
+  private defaultLoadParams: LoadParams = new LoadParams(true);
 
   protected constructor(
     protected dataSource: RestDataSource,
