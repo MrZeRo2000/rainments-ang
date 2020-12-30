@@ -32,6 +32,7 @@ import { PaymentsTableDisplayOptionsComponent } from './components/payments-tabl
 import { UpdatePaymentGroupComponent } from './components/update-payment-group/update-payment-group.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { ReportsMasterComponent } from './components/reports-master/reports-master.component';
+import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { ReportsMasterComponent } from './components/reports-master/reports-mast
         ModalModule.forRoot(),
         TooltipModule.forRoot(),
         BsDropdownModule.forRoot(),
+        BsDatepickerModule.forRoot(),
         CoreModule,
         ModelModule,
         ConfigModule,
