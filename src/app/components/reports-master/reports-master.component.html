@@ -1,17 +1,29 @@
 
 <app-message></app-message>
-
-<div class="row">
-  <div class="col-xs-12 col-12 col-md-4 form-group">
-    <input type="text"
-           placeholder="Daterangepicker"
-           class="form-control"
-           bsDaterangepicker>
-  </div>
-</div>
-
 <div *ngIf="paymentRep">
-  reports-master works!
+  <div class="d-inline-flex">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb p-2">
+        <li aria-current="page"><h5 class="mb-0 text-nowrap">{{paymentRep.paymentObject.name}}</h5></li>
+      </ol>
+    </nav>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12 col-12 col-md-4 form-group">
+      <input type="text"
+             placeholder="Daterangepicker"
+             class="form-control"
+             bsDaterangepicker
+             [bsConfig]="{ adaptivePosition: true, rangeInputFormat: 'DD.MM.YYYY' }"
+             [minDate]="minSelectionDate"
+             [maxDate]="maxSelectionDate"
+             [bsValue] = "dateRange"
+             (bsValueChange)="onDateRangeValueChange($event)"
+             placement="right">
+    </div>
+  </div>
+
 </div>
 
 <app-core-loading-progress [loadable]="repository"></app-core-loading-progress>
