@@ -1,0 +1,21 @@
+
+<table class="table table-bordered" *ngIf="paymentRep">
+  <thead>
+    <tr>
+      <th scope="col">Date</th>
+      <th scope="col">Group</th>
+      <th scope="col">Product</th>
+      <th scope="col">Payment</th>
+      <th scope="col">Commission</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of paymentRep.paymentRepList">
+      <td>{{item.periodDate | localeDate}}</td>
+      <td>{{item.paymentGroup.name}}</td>
+      <td>{{item.product.name}}</td>
+      <td>{{item.paymentAmount | amount}}</td>
+      <td>{{item.commissionAmount | amount}}</td>
+    </tr>
+  </tbody>
+</table>

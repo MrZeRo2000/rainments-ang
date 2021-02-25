@@ -10,4 +10,11 @@ export class PaymentRepRepository extends ReadRepository<PaymentRep>{
   constructor(protected dataSource: RestDataSource, protected messagesService: MessagesService) {
     super(dataSource, messagesService, 'payments:payments_by_payment_object_and_payment_period_date_range');
   }
+
+  protected afterLoadData(data: PaymentRep[]) {
+    super.afterLoadData(data);
+    data[0].paymentRepList.forEach(value => {
+      value.periodDate = new Date(value.periodDate);
+    })
+  }
 }

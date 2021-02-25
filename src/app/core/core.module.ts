@@ -19,6 +19,7 @@ import { DropDownMoreMenuComponent } from './components/drop-down-more-menu/drop
 import { ShortMonthYearPipe } from './pipes/short-month-year.pipe';
 import {FontAwesomeIconsModule} from '../font-awesome-icons/font-awesome-icons.module';
 import { ReportNavComponent } from './components/report-nav/report-nav.component';
+import { LocaleDatePipe } from './pipes/locale-date.pipe';
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import { ReportNavComponent } from './components/report-nav/report-nav.component
     DropDownMoreMenuComponent,
     ShortMonthYearPipe,
     ReportNavComponent,
+    LocaleDatePipe,
   ],
   imports: [
     CommonModule,
@@ -64,7 +66,8 @@ import { ReportNavComponent } from './components/report-nav/report-nav.component
         DragGripComponent,
         DropDownMoreMenuComponent,
         ShortMonthYearPipe,
-        ReportNavComponent
+        ReportNavComponent,
+        LocaleDatePipe
     ],
   providers: [
     AmountPipe,
