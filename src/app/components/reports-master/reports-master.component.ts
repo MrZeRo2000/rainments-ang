@@ -6,6 +6,8 @@ import {ActivatedRoute} from '@angular/router';
 import {HttpParams} from '@angular/common/http';
 import {DateGenerator} from '../../core/utils/date-generator';
 import {Subscription} from 'rxjs';
+import {SelectableItem} from '../../core/components/drop-down-multi-select/drop-down-multi-select.component';
+import {Payment} from '../../model/payment';
 
 @Component({
   selector: 'app-reports-master',
@@ -21,6 +23,9 @@ export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> imp
   maxSelectionDate: Date;
 
   paymentRep: PaymentRep;
+  repositoryPaymentList: Array<Payment> = [];
+
+  selectedGroups: SelectableItem[];
 
   private readonly loadSuccessSubscription: Subscription;
 
@@ -39,7 +44,10 @@ export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> imp
     this.loadSuccessSubscription = this.repository.getLoadSuccessObservable().subscribe(value => {
       if (value) {
         this.paymentRep = this.repository.getData()[0];
+        Object.assign(this.repositoryPaymentList, this.repository.getData()[0].paymentRepList)
         console.log(JSON.stringify(this.paymentRep));
+        this.selectedGroups = [... new Set(this.paymentRep.paymentRepList.map(v => v.paymentGroup.name))]
+          .map(v => new SelectableItem(v, true));
       }
     })
   }
@@ -70,5 +78,16 @@ export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> imp
       this.dateRange = value;
       this.loadRepositoryData();
     }
+  }
+
+  public selectedGroupsChanged(items: Array<SelectableItem>): void {
+    this.applyFilters(items);
+  }
+
+  private applyFilters(groupItems: Array<SelectableItem>) {
+    const selectedGroupNames = groupItems.filter(value => value.isSelected).map(value => value.value);
+    const filteredPaymentList = [];
+    Object.assign(filteredPaymentList, this.repositoryPaymentList);
+    this.paymentRep.paymentRepList = filteredPaymentList.filter( v => selectedGroupNames.includes(v.paymentGroup.name));
   }
 }

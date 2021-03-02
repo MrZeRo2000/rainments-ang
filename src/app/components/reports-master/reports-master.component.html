@@ -23,7 +23,13 @@
              placement="right">
     </div>
     <div class="col-xs-12 col-md-4">
-      <app-drop-down-multi-select></app-drop-down-multi-select>
+      <app-drop-down-multi-select
+        [selectableItems]="selectedGroups"
+        (selectionChanged)="selectedGroupsChanged($event)"
+        *ngIf="selectedGroups && selectedGroups.length > 0"
+      >
+
+      </app-drop-down-multi-select>
     </div>
   </div>
 
