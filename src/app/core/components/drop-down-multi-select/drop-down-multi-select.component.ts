@@ -3,6 +3,10 @@ import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 export class SelectableItem {
   constructor(public value: string, public isSelected: boolean) {
   }
+
+  public static getSelectedItemValues(items: Array<SelectableItem>): Array<string> {
+    return items.filter(value => value.isSelected).map(value => value.value);
+  }
 }
 
 @Component({
@@ -11,6 +15,9 @@ export class SelectableItem {
   styleUrls: ['./drop-down-multi-select.component.scss']
 })
 export class DropDownMultiSelectComponent implements OnInit {
+
+  @Input()
+  title: string;
 
   @Input()
   selectableItems: Array<SelectableItem>;

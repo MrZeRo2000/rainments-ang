@@ -15,19 +15,6 @@ import {Payment} from '../../model/payment';
   styleUrls: ['./reports-master.component.scss']
 })
 export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> implements OnInit, OnDestroy {
-  private readonly KEY_ID = 'id';
-
-  readonly paymentObjectId: number;
-  dateRange: Date[];
-  minSelectionDate: Date;
-  maxSelectionDate: Date;
-
-  paymentRep: PaymentRep;
-  repositoryPaymentList: Array<Payment> = [];
-
-  selectedGroups: SelectableItem[];
-
-  private readonly loadSuccessSubscription: Subscription;
 
   constructor(public repository: PaymentRepRepository, private route: ActivatedRoute) {
     super(repository);
@@ -45,11 +32,30 @@ export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> imp
       if (value) {
         this.paymentRep = this.repository.getData()[0];
         Object.assign(this.repositoryPaymentList, this.repository.getData()[0].paymentRepList)
-        console.log(JSON.stringify(this.paymentRep));
-        this.selectedGroups = [... new Set(this.paymentRep.paymentRepList.map(v => v.paymentGroup.name))]
-          .map(v => new SelectableItem(v, true));
+
+        this.selectedGroups = this.getSelectableItems(v => v.paymentGroup.name);
+        this.selectedProducts = this.getSelectableItems(v => v.product.name);
       }
     })
+  }
+  private readonly KEY_ID = 'id';
+
+  readonly paymentObjectId: number;
+  dateRange: Date[];
+  minSelectionDate: Date;
+  maxSelectionDate: Date;
+
+  paymentRep: PaymentRep;
+  repositoryPaymentList: Array<Payment> = [];
+
+  selectedGroups: SelectableItem[];
+  selectedProducts: SelectableItem[];
+
+  private readonly loadSuccessSubscription: Subscription;
+
+  private getSelectableItems(callback: any) {
+    return [... new Set(this.paymentRep.paymentRepList.map(v => callback(v)))]
+      .map(v => new SelectableItem(v, true));
   }
 
   ngOnInit(): void {
@@ -81,13 +87,24 @@ export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> imp
   }
 
   public selectedGroupsChanged(items: Array<SelectableItem>): void {
-    this.applyFilters(items);
+    this.selectedGroups = items;
+    this.applyFilters();
   }
 
-  private applyFilters(groupItems: Array<SelectableItem>) {
-    const selectedGroupNames = groupItems.filter(value => value.isSelected).map(value => value.value);
+  public selectedProductsChanged(items: Array<SelectableItem>): void {
+    this.selectedProducts = items;
+    this.applyFilters();
+  }
+
+  private applyFilters() {
+    const selectedGroupNames = SelectableItem.getSelectedItemValues(this.selectedGroups);
+    const selectedProductNames = SelectableItem.getSelectedItemValues(this.selectedProducts);
+
     const filteredPaymentList = [];
     Object.assign(filteredPaymentList, this.repositoryPaymentList);
-    this.paymentRep.paymentRepList = filteredPaymentList.filter( v => selectedGroupNames.includes(v.paymentGroup.name));
+
+    this.paymentRep.paymentRepList = filteredPaymentList.filter(
+      v => selectedGroupNames.includes(v.paymentGroup.name) && selectedProductNames.includes(v.product.name)
+    );
   }
 }

@@ -24,11 +24,19 @@
     </div>
     <div class="col-xs-12 col-md-4">
       <app-drop-down-multi-select
+        title="Groups"
         [selectableItems]="selectedGroups"
         (selectionChanged)="selectedGroupsChanged($event)"
         *ngIf="selectedGroups && selectedGroups.length > 0"
       >
-
+      </app-drop-down-multi-select>
+      <app-drop-down-multi-select
+        class="ml-2"
+        title="Products"
+        [selectableItems]="selectedProducts"
+        (selectionChanged)="selectedProductsChanged($event)"
+        *ngIf="selectedProducts && selectedProducts.length > 0"
+      >
       </app-drop-down-multi-select>
     </div>
   </div>
