@@ -1,6 +1,7 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {Payment} from '../../model/payment';
 import {PaymentAmountSummary} from '../../model/payment-amount-summary';
+import {PaymentUtils} from '../../utils/payment-utils';
 
 @Component({
   selector: 'app-reports-table',
@@ -23,9 +24,7 @@ export class ReportsTableComponent implements OnInit, OnChanges {
     for (const propName of Object.keys(changes)) {
       if (propName === 'payments') {
         const changedProp = changes[propName];
-        this.paymentAmountSummary = changedProp.currentValue.reduce(
-          (a, v) => a.addAmounts(v.paymentAmount, v.commissionAmount), new PaymentAmountSummary(0, 0)
-        );
+        this.paymentAmountSummary = PaymentUtils.calcPaymentAmountSummary(changedProp.currentValue);
       }
     }
   }
