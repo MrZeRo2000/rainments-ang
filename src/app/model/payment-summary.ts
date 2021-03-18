@@ -1,8 +1,7 @@
-export class PaymentSummary {
-  constructor(public groupName: string, public paymentAmount: number, public commissionAmount: number) { }
+import {PaymentAmountSummary} from './payment-amount-summary';
 
-  public addAmounts(paymentAmount: number, commissionAmount: number) {
-    this.paymentAmount += paymentAmount;
-    this.commissionAmount += commissionAmount;
+export class PaymentSummary extends PaymentAmountSummary {
+  constructor(public groupName: string, public paymentAmount: number, public commissionAmount: number) {
+    super(paymentAmount, commissionAmount)
   }
 }

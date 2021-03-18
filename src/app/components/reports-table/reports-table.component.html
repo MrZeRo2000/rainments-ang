@@ -1,5 +1,5 @@
 
-<table class="table table-bordered" *ngIf="paymentRep">
+<table class="table table-bordered" *ngIf="payments">
   <thead>
     <tr>
       <th scope="col">Date</th>
@@ -10,12 +10,17 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let item of paymentRep.paymentRepList">
+    <tr *ngIf="paymentAmountSummary">
+      <td colspan="3">&nbsp;</td>
+      <td class="text-right font-weight-bold">{{paymentAmountSummary.paymentAmount | amount}}</td>
+      <td class="text-right font-weight-bold">{{paymentAmountSummary.commissionAmount | amount}}</td>
+    </tr>
+    <tr *ngFor="let item of payments">
       <td>{{item.periodDate | localeDate}}</td>
       <td>{{item.paymentGroup.name}}</td>
       <td>{{item.product.name}}</td>
-      <td>{{item.paymentAmount | amount}}</td>
-      <td>{{item.commissionAmount | amount}}</td>
+      <td class="text-right">{{item.paymentAmount | amount}}</td>
+      <td class="text-right">{{item.commissionAmount | amount}}</td>
     </tr>
   </tbody>
 </table>
