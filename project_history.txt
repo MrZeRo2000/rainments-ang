@@ -33,6 +33,9 @@ ng serve --configuration=int
 Run one selected test file only:
 ng test --include=src/app/core/date-range-generator*.ts
 
+Run one test with browser headless:
+ng test --include=src/app/utils/*.ts --browsers=ChromeHeadless
+
 Testing and debugging in IntelliJ:
 install Karma plugin
 

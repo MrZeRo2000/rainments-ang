@@ -29,6 +29,8 @@ describe('PaymentUtils', () => {
     const summary: PaymentAmountSummary = PaymentUtils.calcPaymentAmountSummary(testPayments);
     expect(summary.paymentAmount).toBeCloseTo(12.5+2.5+3.1+7.8);
     expect(summary.commissionAmount).toBeCloseTo(0.3+0.1+0.2+0.24);
-  })
+  });
+
+  const groups = ['periodDate', 'paymentObject', 'paymentGroup', 'product'];
 
 });
