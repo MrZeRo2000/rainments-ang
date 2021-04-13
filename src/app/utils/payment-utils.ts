@@ -31,8 +31,12 @@ export class PaymentUtils {
 
     return Object.keys(groupedItems).reduce((a, v) => {
       const payment: Payment = JSON.parse(v);
-      payment.date = new Date(payment.date);
-      payment.periodDate = new Date(payment.periodDate);
+      if (payment.date) {
+        payment.date = new Date(payment.date);
+      }
+      if (payment.periodDate) {
+        payment.periodDate = new Date(payment.periodDate);
+      }
       payment.paymentAmount = groupedItems[v][0];
       payment.commissionAmount = groupedItems[v][1];
       a.push(payment);

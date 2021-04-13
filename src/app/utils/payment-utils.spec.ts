@@ -46,6 +46,7 @@ describe('PaymentUtils', () => {
   const groupKeys1 = ['periodDate', 'paymentObject'];
   it ('groupBy ' + JSON.stringify(groupKeys1), () => {
     const result = PaymentUtils.groupBy(testPayments, groupKeys1);
+    console.log('test1:' + JSON.stringify(result));
     const totalPaymentAmount = result.reduce((a, v) => a + v.paymentAmount, 0);
     const totalCommissionAmount = result.reduce((a, v) => a + v.commissionAmount, 0);
     expect(totalPaymentAmount).toBeCloseTo(totals[0]);
@@ -57,6 +58,30 @@ describe('PaymentUtils', () => {
     expect(result[1].periodDate).toEqual(date2);
     expect(JSON.stringify(result[0].paymentObject)).toBe(JSON.stringify(paymentObject1));
     expect(JSON.stringify(result[1].paymentObject)).toBe(JSON.stringify(paymentObject1));
+  });
+
+  const groupKeys2 = ['paymentObject'];
+  it ('groupBy ' + JSON.stringify(groupKeys2), () => {
+    const result = PaymentUtils.groupBy(testPayments, groupKeys2);
+    console.log('test2:' + JSON.stringify(result));
+    expect(result.length).toBe(1);
+    expect(result[0].paymentGroup).toBeUndefined();
+    expect(result[0].product).toBeUndefined();
+    expect(result[0].periodDate).toBeUndefined();
+    expect(JSON.stringify(result[0].paymentObject)).toBe(JSON.stringify(paymentObject1));
+  });
+
+  const groupKeys3 = [];
+  it ('groupBy ' + JSON.stringify(groupKeys3), () => {
+    const result = PaymentUtils.groupBy(testPayments, groupKeys3);
+    console.log('test3:' + JSON.stringify(result));
+    expect(result.length).toBe(1);
+    expect(result[0].paymentObject).toBeUndefined();
+    expect(result[0].paymentGroup).toBeUndefined();
+    expect(result[0].product).toBeUndefined();
+    expect(result[0].periodDate).toBeUndefined();
+    expect(result[0].paymentAmount).toBeCloseTo(totals[0]);
+    expect(result[0].commissionAmount).toBeCloseTo(totals[1]);
   });
 
 });
