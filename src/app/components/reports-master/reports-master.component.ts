@@ -96,6 +96,10 @@ export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> imp
     this.applyFilters();
   }
 
+  public selectedColumnsChanged(items: Array<string>): void {
+    console.log('Selected columns changed:' + JSON.stringify(items));
+  }
+
   private applyFilters() {
     const selectedGroupNames = SelectableItem.getSelectedItemValues(this.selectedGroups);
     const selectedProductNames = SelectableItem.getSelectedItemValues(this.selectedProducts);

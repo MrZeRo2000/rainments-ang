@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PaymentsTableDisplayOptionsComponent } from './payments-table-display-options.component';
-import {FontAwesomeIconsModule} from '../../font-awesome-icons/font-awesome-icons.module';
+import {CoreModule} from '../../core/core.module';
 
 describe('PaymentsTableDisplayOptionsComponent', () => {
   let component: PaymentsTableDisplayOptionsComponent;
@@ -10,7 +10,7 @@ describe('PaymentsTableDisplayOptionsComponent', () => {
   beforeEach(async() => {
     await TestBed.configureTestingModule({
       declarations: [ PaymentsTableDisplayOptionsComponent ],
-      imports: [FontAwesomeIconsModule]
+      imports: [CoreModule]
     })
     .compileComponents();
   });

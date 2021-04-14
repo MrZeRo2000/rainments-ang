@@ -10,6 +10,8 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {CoreModule} from '../../core/core.module';
 import {MessagesModule} from '../../messages/messages.module';
 import {RepositoryModule} from '../../repository/repository.module';
+import {ReportsColumnDisplayComponent} from '../reports-column-display/reports-column-display.component';
+import {ReportsTableComponent} from '../reports-table/reports-table.component';
 
 describe('ReportsMasterComponent', () => {
   let component: ReportsMasterComponent;
@@ -17,7 +19,7 @@ describe('ReportsMasterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ReportsMasterComponent ],
+      declarations: [ ReportsMasterComponent, ReportsColumnDisplayComponent, ReportsTableComponent ],
       providers: [RestUrlEnv, RestDataSource],
       imports: [HttpClientTestingModule, RouterTestingModule, ReactiveFormsModule, CoreModule, MessagesModule, RepositoryModule]
     })

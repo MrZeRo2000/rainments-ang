@@ -31,8 +31,8 @@ export class PaymentUtils {
 
     return Object.keys(groupedItems).reduce((a, v) => {
       const payment: Payment = JSON.parse(v);
-      if (payment.date) {
-        payment.date = new Date(payment.date);
+      if (payment.periodDate) {
+        payment.date = new Date(payment.periodDate);
       }
       if (payment.periodDate) {
         payment.periodDate = new Date(payment.periodDate);

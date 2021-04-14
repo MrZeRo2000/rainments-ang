@@ -34,6 +34,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import { ReportsMasterComponent } from './components/reports-master/reports-master.component';
 import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
 import { ReportsTableComponent } from './components/reports-table/reports-table.component';
+import { ReportsColumnDisplayComponent } from './components/reports-column-display/reports-column-display.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { ReportsTableComponent } from './components/reports-table/reports-table.
     PaymentsTableDisplayOptionsComponent,
     UpdatePaymentGroupComponent,
     ReportsMasterComponent,
-    ReportsTableComponent
+    ReportsTableComponent,
+    ReportsColumnDisplayComponent
   ],
     imports: [
         BrowserModule,

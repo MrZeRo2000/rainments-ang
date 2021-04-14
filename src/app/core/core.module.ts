@@ -12,6 +12,7 @@ import { EnumStringValuePipe } from './pipes/enum-string-value.pipe';
 import {ConfirmationModalDialogComponent} from './components/confirmation-modal-dialog/confirmation-modal-dialog.component';
 import { LoadingModalPanelComponent } from './components/loading-modal-panel/loading-modal-panel.component';
 import { LoadingSpinnerElementComponent } from './components/loading-spinner-element/loading-spinner-element.component';
+import { DisplayIconElementComponent } from './components/display-icon-element/display-icon-element.component';
 import { ColoredTrendLabelComponent } from './components/colored-trend-label/colored-trend-label.component';
 import { DragGripComponent } from './components/drag-grip/drag-grip.component';
 import {DragHandlerService} from './services/drag-handler.service';
@@ -37,6 +38,7 @@ import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
     EnumStringValuePipe,
     LoadingModalPanelComponent,
     LoadingSpinnerElementComponent,
+    DisplayIconElementComponent,
     ColoredTrendLabelComponent,
     DragGripComponent,
     DropDownMoreMenuComponent,
@@ -64,6 +66,7 @@ import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
     ColoredTrendLabelComponent,
     ConfirmationModalDialogComponent,
     LoadingSpinnerElementComponent,
+    DisplayIconElementComponent,
     LoadingModalPanelComponent,
     AmountPipe,
     EnumStringValuePipe,

@@ -38,6 +38,7 @@
         *ngIf="selectedProducts && selectedProducts.length > 0"
       >
       </app-drop-down-multi-select>
+      <app-reports-column-display (selectionChanged)="selectedColumnsChanged($event)"></app-reports-column-display>
     </div>
   </div>
 
