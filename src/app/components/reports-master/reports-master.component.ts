@@ -34,6 +34,7 @@ export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> imp
         this.paymentRep = this.repository.getData()[0];
         Object.assign(this.repositoryPaymentList, this.repository.getData()[0].paymentRepList)
 
+        this.selectedColumns = ['periodDate','paymentGroup','product'];
         this.selectedGroups = this.getSelectableItems(v => v.paymentGroup.name);
         this.selectedProducts = this.getSelectableItems(v => v.product.name);
       }
@@ -51,7 +52,7 @@ export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> imp
 
   selectedGroups: SelectableItem[];
   selectedProducts: SelectableItem[];
-  selectedColumns: Array<string> = ['periodDate','paymentGroup','product'];
+  selectedColumns: Array<string>;
 
   private readonly loadSuccessSubscription: Subscription;
 
@@ -100,19 +101,20 @@ export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> imp
 
   public selectedColumnsChanged(items: Array<string>): void {
     this.selectedColumns = items;
-    this.paymentRep.paymentRepList = PaymentUtils.groupBy(this.repositoryPaymentList, items);
-    console.log('Selected columns :' + JSON.stringify(items) + ', data:' + JSON.stringify(this.paymentRep.paymentRepList));
+    this.applyFilters();
   }
 
   private applyFilters() {
     const selectedGroupNames = SelectableItem.getSelectedItemValues(this.selectedGroups);
     const selectedProductNames = SelectableItem.getSelectedItemValues(this.selectedProducts);
 
-    const filteredPaymentList = [];
-    Object.assign(filteredPaymentList, this.repositoryPaymentList);
+    const initialPaymentList = [];
+    Object.assign(initialPaymentList, this.repositoryPaymentList);
 
-    this.paymentRep.paymentRepList = filteredPaymentList.filter(
+    const filteredPaymentList = initialPaymentList.filter(
       v => selectedGroupNames.includes(v.paymentGroup.name) && selectedProductNames.includes(v.product.name)
     );
+
+    this.paymentRep.paymentRepList = PaymentUtils.groupBy(filteredPaymentList, this.selectedColumns);
   }
 }
