@@ -8,6 +8,7 @@ import {DateGenerator} from '../../core/utils/date-generator';
 import {Subscription} from 'rxjs';
 import {SelectableItem} from '../../core/components/drop-down-multi-select/drop-down-multi-select.component';
 import {Payment} from '../../model/payment';
+import {PaymentUtils} from '../../utils/payment-utils';
 
 @Component({
   selector: 'app-reports-master',
@@ -50,6 +51,7 @@ export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> imp
 
   selectedGroups: SelectableItem[];
   selectedProducts: SelectableItem[];
+  selectedColumns: Array<string> = ['periodDate','paymentGroup','product'];
 
   private readonly loadSuccessSubscription: Subscription;
 
@@ -97,7 +99,9 @@ export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> imp
   }
 
   public selectedColumnsChanged(items: Array<string>): void {
-    console.log('Selected columns changed:' + JSON.stringify(items));
+    this.selectedColumns = items;
+    this.paymentRep.paymentRepList = PaymentUtils.groupBy(this.repositoryPaymentList, items);
+    console.log('Selected columns :' + JSON.stringify(items) + ', data:' + JSON.stringify(this.paymentRep.paymentRepList));
   }
 
   private applyFilters() {

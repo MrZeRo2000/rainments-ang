@@ -2,23 +2,23 @@
 <table class="table table-bordered" *ngIf="payments">
   <thead>
     <tr>
-      <th scope="col">Date</th>
-      <th scope="col">Group</th>
-      <th scope="col">Product</th>
+      <th scope="col" *ngIf="columns.includes('periodDate')">Date</th>
+      <th scope="col" *ngIf="columns.includes('paymentGroup')">Group</th>
+      <th scope="col" *ngIf="columns.includes('product')">Product</th>
       <th scope="col">Payment</th>
       <th scope="col">Commission</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngIf="paymentAmountSummary">
-      <td colspan="3">&nbsp;</td>
+      <td [colSpan]="columns.length" *ngIf="columns.length > 0">&nbsp;</td>
       <td class="text-right font-weight-bold">{{paymentAmountSummary.paymentAmount | amount}}</td>
       <td class="text-right font-weight-bold">{{paymentAmountSummary.commissionAmount | amount}}</td>
     </tr>
     <tr *ngFor="let item of payments">
-      <td>{{item.periodDate | localeDate}}</td>
-      <td>{{item.paymentGroup.name}}</td>
-      <td>{{item.product.name}}</td>
+      <td *ngIf="columns.includes('periodDate')">{{item.periodDate | localeDate}}</td>
+      <td *ngIf="columns.includes('paymentGroup')">{{item.paymentGroup?.name}}</td>
+      <td *ngIf="columns.includes('product')">{{item.product?.name}}</td>
       <td class="text-right">{{item.paymentAmount | amount}}</td>
       <td class="text-right">{{item.commissionAmount | amount}}</td>
     </tr>

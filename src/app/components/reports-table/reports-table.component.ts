@@ -13,6 +13,9 @@ export class ReportsTableComponent implements OnInit, OnChanges {
   @Input()
   payments: Array<Payment>;
 
+  @Input()
+  columns: Array<string>;
+
   paymentAmountSummary: PaymentAmountSummary;
 
   constructor() { }
