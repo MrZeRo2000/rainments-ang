@@ -29,14 +29,17 @@ export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> imp
     this.minSelectionDate = new Date(currentDate.getFullYear() - 3, 0, 1);
     this.maxSelectionDate = new Date(currentDate.getFullYear() + 1, 11, 1);
 
+    this.selectedColumns = ['periodDate','paymentGroup','product'];
+
     this.loadSuccessSubscription = this.repository.getLoadSuccessObservable().subscribe(value => {
       if (value) {
         this.paymentRep = this.repository.getData()[0];
-        Object.assign(this.repositoryPaymentList, this.repository.getData()[0].paymentRepList)
+        Object.assign(this.repositoryPaymentList, this.repository.getData()[0].paymentRepList);
 
-        this.selectedColumns = ['periodDate','paymentGroup','product'];
-        this.selectedGroups = this.getSelectableItems(v => v.paymentGroup.name);
-        this.selectedProducts = this.getSelectableItems(v => v.product.name);
+        this.selectedGroups = this.getSelectableItems(this.selectedGroups, v => v.paymentGroup.name);
+        this.selectedProducts = this.getSelectableItems(this.selectedProducts, v => v.product.name);
+
+        this.applyFilters();
       }
     })
   }
@@ -49,6 +52,7 @@ export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> imp
 
   paymentRep: PaymentRep;
   repositoryPaymentList: Array<Payment> = [];
+  displayPaymentList: Array<Payment> = [];
 
   selectedGroups: SelectableItem[];
   selectedProducts: SelectableItem[];
@@ -56,9 +60,11 @@ export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> imp
 
   private readonly loadSuccessSubscription: Subscription;
 
-  private getSelectableItems(callback: any) {
+  private getSelectableItems(selectedItems: Array<SelectableItem>, callback: any) {
     return [... new Set(this.paymentRep.paymentRepList.map(v => callback(v)))]
-      .map(v => new SelectableItem(v, true));
+      .map(v =>
+        new SelectableItem(v, !selectedItems || selectedItems.filter(vi => vi.isSelected).map(vn => vn.value).includes(v))
+      );
   }
 
   ngOnInit(): void {
@@ -115,6 +121,6 @@ export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> imp
       v => selectedGroupNames.includes(v.paymentGroup.name) && selectedProductNames.includes(v.product.name)
     );
 
-    this.paymentRep.paymentRepList = PaymentUtils.groupBy(filteredPaymentList, this.selectedColumns);
+    this.displayPaymentList = PaymentUtils.groupBy(filteredPaymentList, this.selectedColumns);
   }
 }

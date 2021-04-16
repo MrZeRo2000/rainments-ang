@@ -9,8 +9,8 @@
     </nav>
   </div>
 
-  <div class="row mb-2">
-    <div class="col-xs-12 col-md-4 form-group">
+  <div class="d-flex flex-wrap">
+    <div class="form-inline mb-2">
       <input type="text"
              placeholder="Daterangepicker"
              class="form-control"
@@ -20,30 +20,33 @@
              [maxDate]="maxSelectionDate"
              [bsValue] = "dateRange"
              (bsValueChange)="onDateRangeValueChange($event)"
-             placement="right">
-    </div>
-    <div class="col-xs-12 col-md-4">
-      <app-drop-down-multi-select
-        title="Groups"
-        [selectableItems]="selectedGroups"
-        (selectionChanged)="selectedGroupsChanged($event)"
-        *ngIf="selectedGroups && selectedGroups.length > 0"
+             placement="right"
       >
-      </app-drop-down-multi-select>
-      <app-drop-down-multi-select
-        class="ml-2"
-        title="Products"
-        [selectableItems]="selectedProducts"
-        (selectionChanged)="selectedProductsChanged($event)"
-        *ngIf="selectedProducts && selectedProducts.length > 0"
-      >
-      </app-drop-down-multi-select>
-      <app-reports-column-display (selectionChanged)="selectedColumnsChanged($event)"></app-reports-column-display>
     </div>
+    <app-drop-down-multi-select
+      class="ml-2 mb-2"
+      title="Groups"
+      [selectableItems]="selectedGroups"
+      (selectionChanged)="selectedGroupsChanged($event)"
+      *ngIf="selectedGroups && selectedGroups.length > 0"
+    >
+    </app-drop-down-multi-select>
+    <app-drop-down-multi-select
+      class="ml-2 mr-2 mb-2"
+      title="Products"
+      [selectableItems]="selectedProducts"
+      (selectionChanged)="selectedProductsChanged($event)"
+      *ngIf="selectedProducts && selectedProducts.length > 0"
+    >
+    </app-drop-down-multi-select>
+    <app-reports-column-display
+      class="mb-2"
+      (selectionChanged)="selectedColumnsChanged($event)"
+    ></app-reports-column-display>
   </div>
 
 </div>
 
-<app-reports-table [payments]="paymentRep.paymentRepList" [columns]="selectedColumns" *ngIf="paymentRep"></app-reports-table>
+<app-reports-table [payments]="displayPaymentList" [columns]="selectedColumns" *ngIf="paymentRep"></app-reports-table>
 
 <app-core-loading-progress [loadable]="repository"></app-core-loading-progress>
