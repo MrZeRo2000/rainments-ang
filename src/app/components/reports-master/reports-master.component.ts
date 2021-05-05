@@ -114,10 +114,7 @@ export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> imp
     const selectedGroupNames = SelectableItem.getSelectedItemValues(this.selectedGroups);
     const selectedProductNames = SelectableItem.getSelectedItemValues(this.selectedProducts);
 
-    const initialPaymentList = [];
-    Object.assign(initialPaymentList, this.repositoryPaymentList);
-
-    const filteredPaymentList = initialPaymentList.filter(
+    const filteredPaymentList = [... this.repositoryPaymentList].filter(
       v => selectedGroupNames.includes(v.paymentGroup.name) && selectedProductNames.includes(v.product.name)
     );
 

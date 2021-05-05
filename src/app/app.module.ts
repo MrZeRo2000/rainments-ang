@@ -35,6 +35,7 @@ import { ReportsMasterComponent } from './components/reports-master/reports-mast
 import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
 import { ReportsTableComponent } from './components/reports-table/reports-table.component';
 import { ReportsColumnDisplayComponent } from './components/reports-column-display/reports-column-display.component';
+import { ReportsChartDateTotalsComponent } from './components/reports-chart-date-totals/reports-chart-date-totals.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { ReportsColumnDisplayComponent } from './components/reports-column-displ
     UpdatePaymentGroupComponent,
     ReportsMasterComponent,
     ReportsTableComponent,
-    ReportsColumnDisplayComponent
+    ReportsColumnDisplayComponent,
+    ReportsChartDateTotalsComponent
   ],
     imports: [
         BrowserModule,
