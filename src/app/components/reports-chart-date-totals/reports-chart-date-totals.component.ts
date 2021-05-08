@@ -4,6 +4,7 @@ import {PaymentUtils} from '../../utils/payment-utils';
 
 import * as d3 from 'd3';
 import {DateFormatter} from '../../core/utils/date-formatter';
+import {BaseType, Selection} from 'd3-selection';
 
 @Component({
   selector: 'app-reports-chart-date-totals',
@@ -155,9 +156,9 @@ export class ReportsChartDateTotalsComponent implements OnInit, OnChanges {
 
     svg.selectAll('rect')
       .transition().ease(d3.easePolyInOut).duration(500)
-      .attr('x', d => this.xScale(DateFormatter.formatDateShortMonthYear(d.periodDate)))
-      .attr('y', d => this.yScale(d.paymentAmount))
-      .attr('height', d => this.yScale(0) - this.yScale(d.paymentAmount))
+      .attr('x', d => this.xScale(DateFormatter.formatDateShortMonthYear((d as Payment).periodDate)))
+      .attr('y', d => this.yScale((d as Payment).paymentAmount))
+      .attr('height', d => this.yScale(0) - this.yScale((d as Payment).paymentAmount))
       .attr('width', this.xScale.bandwidth());
   }
 }
