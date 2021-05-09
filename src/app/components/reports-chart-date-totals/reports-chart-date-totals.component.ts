@@ -4,7 +4,6 @@ import {PaymentUtils} from '../../utils/payment-utils';
 
 import * as d3 from 'd3';
 import {DateFormatter} from '../../core/utils/date-formatter';
-import {BaseType, Selection} from 'd3-selection';
 
 @Component({
   selector: 'app-reports-chart-date-totals',
@@ -56,13 +55,21 @@ export class ReportsChartDateTotalsComponent implements OnInit, OnChanges {
   }
 
   private innerWidth(): number {
-    return this.chartContainer?.nativeElement.clientWidth
+    return Math.max(this.chartContainer?.nativeElement.clientWidth, this.dataWidth())
       - this.margin.left - this.margin.right;
   }
 
   private innerHeight(): number {
     return this.chartContainer?.nativeElement.clientHeight
       - this.margin.top - this.margin.bottom;
+  }
+
+  dataWidth(): number {
+    return this.paymentsDateTotals?.length * 100;
+  }
+
+  private removeExistingChartElement() {
+    d3.select(this.chartContainer?.nativeElement).selectAll('*').remove();
   }
 
   private createChartElement() {
@@ -115,7 +122,6 @@ export class ReportsChartDateTotalsComponent implements OnInit, OnChanges {
     this.createAxes();
 
     this.createBars();
-
   }
 
   private processData() {
@@ -127,20 +133,17 @@ export class ReportsChartDateTotalsComponent implements OnInit, OnChanges {
   }
 
   public updateChart() {
-    if (!this.svg) {
-      this.createChart();
-      return;
+    if (!!this.svg) {
+      this.removeExistingChartElement();
     }
-
-    this.processData();
-
-    this.updateAreaCharts();
-
+    this.createChart();
   }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     const svg = d3.select(this.chartContainer?.nativeElement);
+    // this.setMinWidth();
+    // this.chartContainer?.nativeElement.style.minWidth = 1000;
 
     this.xScale.rangeRound([0, this.innerWidth()]);
     this.yScale.rangeRound([this.innerHeight(), 0]);

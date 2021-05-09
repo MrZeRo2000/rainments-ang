@@ -34,7 +34,7 @@ export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> imp
     this.loadSuccessSubscription = this.repository.getLoadSuccessObservable().subscribe(value => {
       if (value) {
         this.paymentRep = this.repository.getData()[0];
-        Object.assign(this.repositoryPaymentList, this.repository.getData()[0].paymentRepList);
+        this.repositoryPaymentList = [...this.repository.getData()[0].paymentRepList];
 
         this.selectedGroups = this.getSelectableItems(this.selectedGroups, v => v.paymentGroup.name);
         this.selectedProducts = this.getSelectableItems(this.selectedProducts, v => v.product.name);
