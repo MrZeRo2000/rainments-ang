@@ -4,6 +4,7 @@ import {PaymentUtils} from '../../utils/payment-utils';
 
 import * as d3 from 'd3';
 import {DateFormatter} from '../../core/utils/date-formatter';
+import {AmountPipe} from '../../core/pipes/amount.pipe';
 
 @Component({
   selector: 'app-reports-chart-date-totals',
@@ -36,10 +37,15 @@ export class ReportsChartDateTotalsComponent implements OnInit, OnChanges {
   // SVG Group element
   g;
 
+  private readonly amountPipe: AmountPipe = new AmountPipe();
+
+  private containerWidth: number;
+
   constructor() { }
 
   ngOnInit(): void {
     // this.updateChart();
+    this.updateContainerWidth();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -48,14 +54,19 @@ export class ReportsChartDateTotalsComponent implements OnInit, OnChanges {
         const changedProp = changes[propName];
         if (changedProp.currentValue && changedProp.currentValue.length  > 0) {
           this.paymentsDateTotals = PaymentUtils.groupBy(changedProp.currentValue, ['periodDate'])
+          console.log(`Updating chart with (${this.innerWidth()}, ${this.innerHeight()}), clientWidth=${this.chartContainer?.nativeElement.clientWidth}, dataWidth=${this.dataWidth()}`);
           this.updateChart();
         }
       }
     }
   }
 
+  private updateContainerWidth(): void {
+    this.containerWidth = this.chartContainer?.nativeElement.clientWidth;
+  }
+
   private innerWidth(): number {
-    return Math.max(this.chartContainer?.nativeElement.clientWidth, this.dataWidth())
+    return Math.max(this.containerWidth, this.dataWidth())
       - this.margin.left - this.margin.right;
   }
 
@@ -114,6 +125,24 @@ export class ReportsChartDateTotalsComponent implements OnInit, OnChanges {
       .attr('width', this.xScale.bandwidth());
   }
 
+  private createLabels() {
+    this.contentGroup.append('g')
+      .attr('id', 'labels')
+      .selectAll('text')
+      .data(this.paymentsDateTotals)
+      .enter()
+      .append('text')
+      .text(d => this.amountPipe.transform(d.paymentAmount))
+      .attr('text-anchor', 'middle')
+      .attr('x', d => this.xScale(DateFormatter.formatDateShortMonthYear(d.periodDate)) + this.xScale.bandwidth() / 2)
+      .attr('y', d => this.yScale(d.paymentAmount) + 15)
+      .attr('font-family', 'sans-serif')
+      .attr('font-size', '11px')
+      .attr('fill', 'white')
+    ;
+
+  }
+
   private createChart() {
     this.createChartElement();
 
@@ -122,6 +151,8 @@ export class ReportsChartDateTotalsComponent implements OnInit, OnChanges {
     this.createAxes();
 
     this.createBars();
+
+    this.createLabels();
   }
 
   private processData() {
@@ -141,6 +172,8 @@ export class ReportsChartDateTotalsComponent implements OnInit, OnChanges {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
+    this.updateContainerWidth();
+
     const svg = d3.select(this.chartContainer?.nativeElement);
     // this.setMinWidth();
     // this.chartContainer?.nativeElement.style.minWidth = 1000;
@@ -163,5 +196,10 @@ export class ReportsChartDateTotalsComponent implements OnInit, OnChanges {
       .attr('y', d => this.yScale((d as Payment).paymentAmount))
       .attr('height', d => this.yScale(0) - this.yScale((d as Payment).paymentAmount))
       .attr('width', this.xScale.bandwidth());
+
+    svg.select<SVGGElement>('#labels').selectAll('text')
+      .transition().ease(d3.easePolyInOut).duration(500)
+      .attr('x', d => this.xScale(DateFormatter.formatDateShortMonthYear((d as Payment).periodDate)) + this.xScale.bandwidth() / 2)
+      .attr('y', d => this.yScale((d as Payment).paymentAmount) + 15);
   }
 }
