@@ -20,7 +20,7 @@ export class ReportsChartDateTotalsComponent implements OnInit, OnChanges {
   paymentsDateTotals: Array<Payment> = []
 
   private readonly margin: { top: number, bottom: number, left: number; right: number} =
-    {top: 20, bottom: 30, left: 30, right: 20};
+    {top: 20, bottom: 30, left: 60, right: 20};
 
   // private readonly xScale: d3.ScaleLinear<number, number, never> = d3.scaleLinear();
   private readonly xScale = d3.scaleBand();
@@ -132,7 +132,7 @@ export class ReportsChartDateTotalsComponent implements OnInit, OnChanges {
       .data(this.paymentsDateTotals)
       .enter()
       .append('text')
-      .text(d => this.amountPipe.transform(d.paymentAmount))
+      .text(d => d.paymentAmount > 0 ? this.amountPipe.transform(d.paymentAmount) : null)
       .attr('text-anchor', 'middle')
       .attr('x', d => this.xScale(DateFormatter.formatDateShortMonthYear(d.periodDate)) + this.xScale.bandwidth() / 2)
       .attr('y', d => this.yScale(d.paymentAmount) + 15)

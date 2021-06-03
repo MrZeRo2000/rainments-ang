@@ -7,8 +7,8 @@ export class DateFormatter {
     return date.toLocaleDateString('en-US', {month: 'short'});
   }
 
-  static formatLocaleDate(date: Date) {
-    return date.toLocaleDateString();
+  static formatLocaleDate(date: Date, locales?: string) {
+    return date.toLocaleDateString(locales);
   }
 
 }

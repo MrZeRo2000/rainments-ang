@@ -16,7 +16,7 @@
       <td class="text-right font-weight-bold">{{paymentAmountSummary.commissionAmount | amount}}</td>
     </tr>
     <tr *ngFor="let item of payments">
-      <td *ngIf="columns.includes('periodDate')">{{item.periodDate | localeDate}}</td>
+      <td *ngIf="columns.includes('periodDate')">{{item.periodDate | date: "dd.MM.yyyy"}}</td>
       <td *ngIf="columns.includes('paymentGroup')">{{item.paymentGroup?.name}}</td>
       <td *ngIf="columns.includes('product')">{{item.product?.name}}</td>
       <td class="text-right">{{item.paymentAmount | amount}}</td>

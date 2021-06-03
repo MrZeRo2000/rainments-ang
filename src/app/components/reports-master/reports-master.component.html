@@ -47,13 +47,11 @@
 
 </div>
 
-<div class="row">
-  <div class="col-sm-12 col-md-6">
-    <app-reports-chart-date-totals [payments]="displayPaymentList"></app-reports-chart-date-totals>
-  </div>
-  <div class="col-sm-12 col-md-6">
-    <app-reports-table [payments]="displayPaymentList" [columns]="selectedColumns" *ngIf="paymentRep"></app-reports-table>
-  </div>
+<div>
+  <app-reports-chart-date-totals [payments]="displayPaymentList"></app-reports-chart-date-totals>
+</div>
+<div class="table-responsive" style="height: 40vh">
+  <app-reports-table [payments]="displayPaymentList" [columns]="selectedColumns" *ngIf="paymentRep"></app-reports-table>
 </div>
 
 <app-core-loading-progress [loadable]="repository"></app-core-loading-progress>
