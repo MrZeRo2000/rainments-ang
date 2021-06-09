@@ -1,4 +1,16 @@
-import {Component, ElementRef, HostListener, Input, OnChanges, OnInit, SimpleChanges, ViewChild, ViewEncapsulation} from '@angular/core';
+import {
+  AfterViewChecked,
+  AfterViewInit,
+  Component,
+  ElementRef,
+  HostListener,
+  Input,
+  OnChanges, OnDestroy,
+  OnInit,
+  SimpleChanges,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import {Payment} from '../../model/payment';
 import {PaymentUtils} from '../../utils/payment-utils';
 
@@ -12,7 +24,7 @@ import {AmountPipe} from '../../core/pipes/amount.pipe';
   templateUrl: './reports-chart-date-totals.component.html',
   styleUrls: ['./reports-chart-date-totals.component.scss']
 })
-export class ReportsChartDateTotalsComponent implements OnInit, OnChanges {
+export class ReportsChartDateTotalsComponent implements OnChanges, AfterViewInit {
 
   @Input()
   payments: Array<Payment>;
@@ -43,9 +55,13 @@ export class ReportsChartDateTotalsComponent implements OnInit, OnChanges {
 
   constructor() { }
 
-  ngOnInit(): void {
-    // this.updateChart();
-    this.updateContainerWidth();
+  ngAfterViewInit() {
+    setTimeout(() => {
+      console.log('ngAfterViewInit chart container:' + JSON.stringify(this.chartContainer.nativeElement.clientWidth));
+      this.updateContainerWidth();
+      console.log(`Updating chart with (${this.innerWidth()}, ${this.innerHeight()}), clientWidth=${this.chartContainer?.nativeElement.clientWidth}, dataWidth=${this.dataWidth()}`);
+      this.updateChart();
+    }, 0);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -54,8 +70,10 @@ export class ReportsChartDateTotalsComponent implements OnInit, OnChanges {
         const changedProp = changes[propName];
         if (changedProp.currentValue && changedProp.currentValue.length  > 0) {
           this.paymentsDateTotals = PaymentUtils.groupBy(changedProp.currentValue, ['periodDate'])
-          console.log(`Updating chart with (${this.innerWidth()}, ${this.innerHeight()}), clientWidth=${this.chartContainer?.nativeElement.clientWidth}, dataWidth=${this.dataWidth()}`);
-          this.updateChart();
+          if (!isNaN(this.innerWidth())) {
+            console.log(`Updating chart with (${this.innerWidth()}, ${this.innerHeight()}), clientWidth=${this.chartContainer?.nativeElement.clientWidth}, dataWidth=${this.dataWidth()}`);
+            this.updateChart();
+          }
         }
       }
     }
@@ -172,6 +190,8 @@ export class ReportsChartDateTotalsComponent implements OnInit, OnChanges {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
+    console.log('onResize');
+
     this.updateContainerWidth();
 
     const svg = d3.select(this.chartContainer?.nativeElement);

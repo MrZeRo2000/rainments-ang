@@ -10,12 +10,37 @@ import {SelectableItem} from '../../core/components/drop-down-multi-select/drop-
 import {Payment} from '../../model/payment';
 import {PaymentUtils} from '../../utils/payment-utils';
 
+enum ControlTab {
+  Chart = 'Chart',
+  Table = 'Table'
+}
+
 @Component({
   selector: 'app-reports-master',
   templateUrl: './reports-master.component.html',
   styleUrls: ['./reports-master.component.scss']
 })
 export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> implements OnInit, OnDestroy {
+
+  ControlTab = ControlTab;
+
+  private readonly KEY_ID = 'id';
+
+  readonly paymentObjectId: number;
+  dateRange: Date[];
+  minSelectionDate: Date;
+  maxSelectionDate: Date;
+
+  paymentRep: PaymentRep;
+  repositoryPaymentList: Array<Payment> = [];
+  displayPaymentList: Array<Payment> = [];
+
+  selectedGroups: SelectableItem[];
+  selectedProducts: SelectableItem[];
+  selectedColumns: Array<string>;
+  selectedControlTab: ControlTab = ControlTab.Chart;
+
+  private readonly loadSuccessSubscription: Subscription;
 
   constructor(public repository: PaymentRepRepository, private route: ActivatedRoute) {
     super(repository);
@@ -43,22 +68,6 @@ export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> imp
       }
     })
   }
-  private readonly KEY_ID = 'id';
-
-  readonly paymentObjectId: number;
-  dateRange: Date[];
-  minSelectionDate: Date;
-  maxSelectionDate: Date;
-
-  paymentRep: PaymentRep;
-  repositoryPaymentList: Array<Payment> = [];
-  displayPaymentList: Array<Payment> = [];
-
-  selectedGroups: SelectableItem[];
-  selectedProducts: SelectableItem[];
-  selectedColumns: Array<string>;
-
-  private readonly loadSuccessSubscription: Subscription;
 
   private getSelectableItems(selectedItems: Array<SelectableItem>, callback: any) {
     return [... new Set(this.paymentRep.paymentRepList.map(v => callback(v)))]
@@ -119,5 +128,9 @@ export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> imp
     );
 
     this.displayPaymentList = PaymentUtils.groupBy(filteredPaymentList, this.selectedColumns);
+  }
+
+  selectControlTabClick(selectedControlTab: ControlTab): void {
+    this.selectedControlTab = selectedControlTab;
   }
 }

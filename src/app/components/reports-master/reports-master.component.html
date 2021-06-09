@@ -47,11 +47,49 @@
 
 </div>
 
+<div class="d-flex align-items-start">
+  <div class="btn-group-vertical">
+    <button
+      type="button"
+      class="btn" [ngClass]="{'btn-primary': this.selectedControlTab === ControlTab.Chart}"
+      (click)="this.selectControlTabClick(ControlTab.Chart)"
+    >
+      Chart
+    </button>
+    <button
+      type="button"
+      class="btn" [ngClass]="{'btn-primary': this.selectedControlTab === ControlTab.Table}"
+      (click)="this.selectControlTabClick(ControlTab.Table)"
+    >
+      Table
+    </button>
+  </div>
+  <div class="flex-grow-1 p-2">
+      <app-reports-chart-date-totals
+        [payments]="displayPaymentList"
+        *ngIf="displayPaymentList && (selectedControlTab === ControlTab.Chart)"
+      ></app-reports-chart-date-totals>
+      <div
+        class="table-responsive"
+        style="height: 50vh"
+        *ngIf="displayPaymentList && (selectedControlTab === ControlTab.Table)"
+      >
+        <app-reports-table
+          [payments]="displayPaymentList"
+          [columns]="selectedColumns"
+        >
+        </app-reports-table>
+      </div>
+    </div>
+</div>
+
+<!--
 <div>
   <app-reports-chart-date-totals [payments]="displayPaymentList"></app-reports-chart-date-totals>
 </div>
 <div class="table-responsive" style="height: 40vh">
   <app-reports-table [payments]="displayPaymentList" [columns]="selectedColumns" *ngIf="paymentRep"></app-reports-table>
 </div>
+-->
 
 <app-core-loading-progress [loadable]="repository"></app-core-loading-progress>
