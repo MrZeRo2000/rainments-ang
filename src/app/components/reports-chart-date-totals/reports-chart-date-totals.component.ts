@@ -42,6 +42,9 @@ export class ReportsChartDateTotalsComponent implements OnChanges, AfterViewInit
   @ViewChild('chart', { static: true})
   private chartContainer?: ElementRef;
 
+  @ViewChild('container', { static: true})
+  private container?: ElementRef;
+
   // Top level SVG element
   svg;
   // content group
@@ -95,6 +98,10 @@ export class ReportsChartDateTotalsComponent implements OnChanges, AfterViewInit
 
   dataWidth(): number {
     return this.paymentsDateTotals?.length * 100;
+  }
+
+  componentContainerWidth(): number {
+    return window.innerWidth - this.container?.nativeElement.offsetLeft - (window.outerWidth - window.innerWidth) - 10;
   }
 
   private removeExistingChartElement() {
@@ -190,7 +197,8 @@ export class ReportsChartDateTotalsComponent implements OnChanges, AfterViewInit
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
-    console.log('onResize');
+    console.log('Resize:' + window.innerWidth);
+    console.log(`Container:${this.container.nativeElement.offsetLeft}`)
 
     this.updateContainerWidth();
 
