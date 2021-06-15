@@ -12,6 +12,7 @@ import {MessagesModule} from '../../messages/messages.module';
 import {RepositoryModule} from '../../repository/repository.module';
 import {ReportsColumnDisplayComponent} from '../reports-column-display/reports-column-display.component';
 import {ReportsTableComponent} from '../reports-table/reports-table.component';
+import {ReportsChartDateTotalsComponent} from '../reports-chart-date-totals/reports-chart-date-totals.component';
 
 describe('ReportsMasterComponent', () => {
   let component: ReportsMasterComponent;
@@ -19,7 +20,7 @@ describe('ReportsMasterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ReportsMasterComponent, ReportsColumnDisplayComponent, ReportsTableComponent ],
+      declarations: [ ReportsMasterComponent, ReportsColumnDisplayComponent, ReportsTableComponent, ReportsChartDateTotalsComponent ],
       providers: [RestUrlEnv, RestDataSource],
       imports: [HttpClientTestingModule, RouterTestingModule, ReactiveFormsModule, CoreModule, MessagesModule, RepositoryModule]
     })
