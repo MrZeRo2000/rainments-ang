@@ -478,4 +478,12 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     event.preventDefault();
     this.editForm.controls.productCounter.setValue(productCounter);
   }
+
+  numberOnPaste(event: any) {
+    event.preventDefault();
+    const clipboardData = event.clipboardData;
+    const pastedText = clipboardData.getData('text');
+    const convertedText = pastedText.replace(',', '.');
+    this.editForm.controls.commissionAmount.setValue(convertedText);
+  }
 }

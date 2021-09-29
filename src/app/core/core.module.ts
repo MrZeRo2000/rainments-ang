@@ -23,6 +23,7 @@ import { ReportNavComponent } from './components/report-nav/report-nav.component
 import { LocaleDatePipe } from './pipes/locale-date.pipe';
 import { DropDownMultiSelectComponent } from './components/drop-down-multi-select/drop-down-multi-select.component';
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
+import { InputPasteFloatControlDirective } from './directives/input-paste-float-control.directive';
 
 
 @NgModule({
@@ -46,6 +47,7 @@ import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
     ReportNavComponent,
     LocaleDatePipe,
     DropDownMultiSelectComponent,
+    InputPasteFloatControlDirective,
   ],
   imports: [
     CommonModule,
@@ -57,26 +59,27 @@ import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
   entryComponents: [
     ConfirmationModalDialogComponent
   ],
-  exports: [
-    LoadingProgressComponent,
-    AddPanelComponent,
-    EditDeletePanelComponent,
-    SaveDialogPanelComponent,
-    ColoredValueLabelComponent,
-    ColoredTrendLabelComponent,
-    ConfirmationModalDialogComponent,
-    LoadingSpinnerElementComponent,
-    DisplayIconElementComponent,
-    LoadingModalPanelComponent,
-    AmountPipe,
-    EnumStringValuePipe,
-    DragGripComponent,
-    DropDownMoreMenuComponent,
-    ShortMonthYearPipe,
-    ReportNavComponent,
-    LocaleDatePipe,
-    DropDownMultiSelectComponent
-  ],
+    exports: [
+        LoadingProgressComponent,
+        AddPanelComponent,
+        EditDeletePanelComponent,
+        SaveDialogPanelComponent,
+        ColoredValueLabelComponent,
+        ColoredTrendLabelComponent,
+        ConfirmationModalDialogComponent,
+        LoadingSpinnerElementComponent,
+        DisplayIconElementComponent,
+        LoadingModalPanelComponent,
+        AmountPipe,
+        EnumStringValuePipe,
+        DragGripComponent,
+        DropDownMoreMenuComponent,
+        ShortMonthYearPipe,
+        ReportNavComponent,
+        LocaleDatePipe,
+        DropDownMultiSelectComponent,
+        InputPasteFloatControlDirective
+    ],
   providers: [
     AmountPipe,
     EnumStringValuePipe,
