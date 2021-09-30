@@ -25,3 +25,55 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+## Install
+npm install -g @angular/cli
+
+## Start server
+ng serve --open
+
+## Install bootstrap
+npm install bootstrap jquery --save
+
+## Generate component
+ng generate component password
+
+## Generate service
+ng generate service PassData
+
+## Deploy
+ng build --prod --base-href=/rainments-ang/
+copy from dist to webapps directory
+
+## Update angular to latest version
+ng update @angular/cli @angular/core
+
+## Update dependency to latest version
+ng update ngx-bootstrap
+
+## Run local json server
+npm run server
+
+## Run with int configuration
+ng serve --configuration=int
+
+## Run one selected test file only
+ng test --include=src/app/core/date-range-generator*.ts
+
+## Run one test with browser headless
+ng test --include=src/app/utils/*.ts --browsers=ChromeHeadless
+
+## Testing and debugging in IntelliJ
+install Karma plugin
+
+## Full update angular to latest version
+ng update @angular/cli @angular/core @angular/animations @angular/cdk @angular/common  @angular/compiler @angular/forms @angular/platform-browser @angular/platform-browser-dynamic @angular/router
+
+## Update dev software to latest version
+npm install @types/jasmine@latest @types/node@latest codelyzer@latest karma@latest karma-chrome-launcher@latest karma-cli@latest karma-jasmine@latest karma-jasmine-html-reporter@latest jasmine-core@latest jasmine-spec-reporter@latest protractor@latest tslint@latest webpack@latest rxjs-tslint@latest
+
+## Install FontAwesome
+npm install @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/angular-fontawesome
+
+## Powershell adjustment
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned

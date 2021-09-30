@@ -24,6 +24,7 @@ import { LocaleDatePipe } from './pipes/locale-date.pipe';
 import { DropDownMultiSelectComponent } from './components/drop-down-multi-select/drop-down-multi-select.component';
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import { InputPasteFloatControlDirective } from './directives/input-paste-float-control.directive';
+import { InputPasteFloatModelDirective } from './directives/input-paste-float-model.directive';
 
 
 @NgModule({
@@ -48,6 +49,7 @@ import { InputPasteFloatControlDirective } from './directives/input-paste-float-
     LocaleDatePipe,
     DropDownMultiSelectComponent,
     InputPasteFloatControlDirective,
+    InputPasteFloatModelDirective
   ],
   imports: [
     CommonModule,
@@ -78,7 +80,8 @@ import { InputPasteFloatControlDirective } from './directives/input-paste-float-
         ReportNavComponent,
         LocaleDatePipe,
         DropDownMultiSelectComponent,
-        InputPasteFloatControlDirective
+        InputPasteFloatControlDirective,
+        InputPasteFloatModelDirective
     ],
   providers: [
     AmountPipe,

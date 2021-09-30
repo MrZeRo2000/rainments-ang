@@ -160,6 +160,7 @@
               (keyup)="inlineEditHandler.inlineControlKeyUp($event, item)"
               [(ngModel)]="inlineEditHandler.inlineSelection.value"
               [ngClass]="{'is-invalid': !inlineEditHandler.inputValidator(item, inlineEditHandler.inlineSelection)}"
+              appInputPasteFloatModel
             >
           </label>
 
