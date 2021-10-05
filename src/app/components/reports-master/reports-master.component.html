@@ -9,7 +9,7 @@
     </nav>
   </div>
 
-  <div class="d-flex flex-wrap">
+  <div class="d-flex">
     <div class="form-inline mb-2">
       <input type="text"
              placeholder="Daterangepicker"
@@ -23,6 +23,7 @@
              placement="right"
       >
     </div>
+
     <app-drop-down-multi-select
       class="ml-2 mb-2"
       title="Groups"
@@ -39,9 +40,11 @@
       *ngIf="selectedProducts && selectedProducts.length > 0"
     >
     </app-drop-down-multi-select>
+
     <app-reports-column-display
-      class="mb-2"
+      class="mb-2 ml-auto"
       (selectionChanged)="selectedColumnsChanged($event)"
+      *ngIf="this.selectedControlTab === ControlTab.Table"
     ></app-reports-column-display>
   </div>
 

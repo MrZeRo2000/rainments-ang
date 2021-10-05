@@ -12,7 +12,7 @@ import {
   faSave, faSearch,
   faSignInAlt,
   faSignOutAlt, faSpinner, faTimes,
-  faTrash, faWindowClose, faChartLine
+  faTrash, faWindowClose, faChartLine, faCog
 } from '@fortawesome/free-solid-svg-icons';
 
 
@@ -30,6 +30,6 @@ export class FontAwesomeIconsModule {
   constructor(private library: FaIconLibrary) {
     library.addIcons(faLock, faSignInAlt, faSignOutAlt, faSave, faFileExport, faPlusCircle, faTrash, faPen, faClone, faSpinner, faSearch,
       faCheckCircle, faWindowClose, faEllipsisH, faTimes, faAngleLeft, faAngleRight, faPlus, faEye, faEdit, faGripVertical, faExclamation,
-      faCaretUp, faCaretDown, faEquals, faChartLine);
+      faCaretUp, faCaretDown, faEquals, faChartLine, faCog);
   }
 }
