@@ -128,6 +128,7 @@
                 (keyup)="inlineEditHandler.inlineControlKeyUp($event, item)"
                 [(ngModel)]="inlineEditHandler.inlineSelection.value"
                 [ngClass]="{'is-invalid': !inlineEditHandler.inputValidator(item, inlineEditHandler.inlineSelection)}"
+                appInputPasteFloatModel
               >
             </label>
         </td>
@@ -216,6 +217,7 @@
           class="form-control text-right"
           formControlName="productCounter"
           id="productCounter"
+          appInputPasteFloatControl
           [ngClass]="{'is-invalid': editForm.controls.productCounter.errors && editState.submitted}"
         >
       </div>
@@ -244,6 +246,7 @@
       [ngClass]="{'is-invalid': editForm.controls.paymentAmount.errors && editState.submitted}"
       formControlName="paymentAmount"
       id="paymentAmount"
+      appInputPasteFloatControl
     >
 
     <div class="d-flex justify-content-between mt-2">
