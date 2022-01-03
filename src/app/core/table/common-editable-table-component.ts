@@ -11,7 +11,7 @@ import {CommonTableComponent} from './common-table-component';
 import {ReadRepository} from '../repository/read-repository';
 
 @Directive()
-// tslint:disable-next-line:directive-class-suffix
+// eslint-disable-next-line @angular-eslint/directive-class-suffix
 export abstract class CommonEditableTableComponent<R, W extends CommonEntity>
   extends CommonTableComponent<R>
   implements OnInit, OnDestroy, Editable {

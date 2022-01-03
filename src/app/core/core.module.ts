@@ -28,39 +28,35 @@ import { InputPasteFloatModelDirective } from './directives/input-paste-float-mo
 
 
 @NgModule({
-  declarations: [
-    LoadingProgressComponent,
-    AddPanelComponent,
-    EditDeletePanelComponent,
-    SaveDialogPanelComponent,
-    UrlValidatorDirective,
-    ColoredValueLabelComponent,
-    ConfirmationModalDialogComponent,
-    AmountPipe,
-    EnumStringValuePipe,
-    LoadingModalPanelComponent,
-    LoadingSpinnerElementComponent,
-    DisplayIconElementComponent,
-    ColoredTrendLabelComponent,
-    DragGripComponent,
-    DropDownMoreMenuComponent,
-    ShortMonthYearPipe,
-    ReportNavComponent,
-    LocaleDatePipe,
-    DropDownMultiSelectComponent,
-    InputPasteFloatControlDirective,
-    InputPasteFloatModelDirective
-  ],
-  imports: [
-    CommonModule,
-    DataSourceModule,
-    FontAwesomeIconsModule,
-    BsDropdownModule
-  ],
-  // modal component not directly referenced in templates
-  entryComponents: [
-    ConfirmationModalDialogComponent
-  ],
+    declarations: [
+        LoadingProgressComponent,
+        AddPanelComponent,
+        EditDeletePanelComponent,
+        SaveDialogPanelComponent,
+        UrlValidatorDirective,
+        ColoredValueLabelComponent,
+        ConfirmationModalDialogComponent,
+        AmountPipe,
+        EnumStringValuePipe,
+        LoadingModalPanelComponent,
+        LoadingSpinnerElementComponent,
+        DisplayIconElementComponent,
+        ColoredTrendLabelComponent,
+        DragGripComponent,
+        DropDownMoreMenuComponent,
+        ShortMonthYearPipe,
+        ReportNavComponent,
+        LocaleDatePipe,
+        DropDownMultiSelectComponent,
+        InputPasteFloatControlDirective,
+        InputPasteFloatModelDirective
+    ],
+    imports: [
+        CommonModule,
+        DataSourceModule,
+        FontAwesomeIconsModule,
+        BsDropdownModule
+    ],
     exports: [
         LoadingProgressComponent,
         AddPanelComponent,
@@ -83,10 +79,10 @@ import { InputPasteFloatModelDirective } from './directives/input-paste-float-mo
         InputPasteFloatControlDirective,
         InputPasteFloatModelDirective
     ],
-  providers: [
-    AmountPipe,
-    EnumStringValuePipe,
-    DragHandlerService
-  ]
+    providers: [
+        AmountPipe,
+        EnumStringValuePipe,
+        DragHandlerService
+    ]
 })
 export class CoreModule { }

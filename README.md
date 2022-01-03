@@ -77,3 +77,11 @@ npm install @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons 
 
 ## Powershell adjustment
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned
+
+## Update from 12 to 13
+npx @angular/cli@13 update @angular/core@13 @angular/cli@13 --force
+
+## Install eslint instead of deprecated tspint
+ng add @angular-eslint/schematics
+ng g @angular-eslint/schematics:convert-tslint-to-eslint
+

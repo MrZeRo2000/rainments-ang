@@ -5,7 +5,7 @@ import {ReadWriteRepository} from '../repository/read-write-repository';
 import {Directive} from '@angular/core';
 
 @Directive()
-// tslint:disable-next-line:directive-class-suffix
+// eslint-disable-next-line @angular-eslint/directive-class-suffix
 export abstract class CommonSimpleEditableTableComponent<T extends CommonEntity>
   extends CommonEditableTableComponent<T, T> {
 
