@@ -30,9 +30,9 @@
 
 <div *ngIf="editState">
   <form class="form-group" [formGroup]="editForm">
-    <label for="inputName"><strong>Name</strong></label>
+    <label for="inputName" class="form-label"><strong>Name</strong></label>
     <input #inputName type="text" class="form-control" [ngClass]="{'is-invalid': editForm.controls.name.errors && editState.submitted}" id="inputName" placeholder="Name" formControlName="name">
-    <label for="inputUrl" class="mt-2">Url</label>
+    <label for="inputUrl" class="form-label mt-2">Url</label>
     <input #inputUrl type="text" class="form-control" [ngClass]="{'is-invalid': editForm.controls.url.errors && editState.submitted}" id="inputUrl" placeholder="Url" formControlName="url">
     <div *ngIf="editForm.controls.name.errors && editState.submitted" class="invalid-feedback">
       <div *ngIf="editForm.controls.name.errors.required">Name should not be empty</div>
@@ -41,6 +41,8 @@
     <div *ngIf="editForm.controls.url.errors && editState.submitted" class="invalid-feedback">
       <div *ngIf="editForm.controls.url.errors.invalidUrl">Invalid Url</div>
     </div>
+    <label for="inputColor" class="form-label mt-2">Color</label>
+    <input type="color" class="form-control form-control-color" id="inputColor" formControlName="color" title="Choose your color">
 
     <app-core-save-dialog-panel [editable]="this" [loadable]="repository" (createClick)="onCreate()" (saveClick)="onSave()" (cancelClick)="onCancel()"></app-core-save-dialog-panel>
 

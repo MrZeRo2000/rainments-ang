@@ -28,7 +28,8 @@ export class PaymentGroupsTableComponent extends CommonSimpleEditableTableCompon
   protected buildForm(): FormGroup {
     return this.fb.group({
         name: ['', Validators.required],
-        url: ['', urlValidator()]
+        url: ['', urlValidator()],
+        color: ['#FFFFFF']
       }
     );
   }
