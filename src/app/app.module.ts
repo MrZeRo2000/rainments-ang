@@ -36,6 +36,7 @@ import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
 import { ReportsTableComponent } from './components/reports-table/reports-table.component';
 import { ReportsColumnDisplayComponent } from './components/reports-column-display/reports-column-display.component';
 import { ReportsChartDateTotalsComponent } from './components/reports-chart-date-totals/reports-chart-date-totals.component';
+import { AppInfoComponent } from './components/app-info/app-info.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { ReportsChartDateTotalsComponent } from './components/reports-chart-date
     ReportsMasterComponent,
     ReportsTableComponent,
     ReportsColumnDisplayComponent,
-    ReportsChartDateTotalsComponent
+    ReportsChartDateTotalsComponent,
+    AppInfoComponent
   ],
     imports: [
         BrowserModule,

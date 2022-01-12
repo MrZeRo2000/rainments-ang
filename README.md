@@ -56,6 +56,7 @@ npm run server
 
 ## Run with int configuration
 ng serve --configuration=int
+npm run start-int
 
 ## Run one selected test file only
 ng test --include=src/app/core/date-range-generator*.ts
