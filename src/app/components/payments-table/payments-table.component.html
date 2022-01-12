@@ -34,7 +34,11 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let item of getPayments()" (click)="tableRowClick(item)" [ngClass]="{'table-active': selectedItems.has(item)}">
+      <tr *ngFor="let item of getPayments()"
+          (click)="tableRowClick(item)"
+          [ngClass]="{'table-active': selectedItems.has(item)}"
+          [ngStyle]="{'background-color': selectedItems.has(item) ? '' : item.paymentGroup.color}"
+      >
         <!-- ID -->
         <td class="text-nowrap" *ngIf="displayOptions.showId">{{item.id}}</td>
         <!-- Group -->

@@ -16,10 +16,10 @@
   </tr>
   </thead>
   <tbody cdkDropList cdkDropListLockAxis="y" (cdkDropListDropped)="onDrop($event)">
-  <tr cdkDrag *ngFor="let item of getPaymentGroups()" (cdkDragStarted)="this.dragHandlerService.startDrag()">
+  <tr cdkDrag *ngFor="let item of getPaymentGroups()" (cdkDragStarted)="this.dragHandlerService.startDrag()" [ngStyle]="{'background-color': item.color}">
     <td class="text-nowrap align-middle"><div><app-core-drag-grip cdkDragHandle></app-core-drag-grip> {{item.id}}</div></td>
-    <td class="align-middle" *ngIf="item.url"><a href="{{item.url}}" target="_blank">{{item.name}}</a></td>
-    <td class="align-middle" *ngIf="!item.url">{{item.name}}</td>
+    <td class="align-middle" *ngIf="item.url"><a href="{{item.url}}" target="_blank">{{item.name}}></a></td>
+    <td class="align-middle" *ngIf="!item.url" >{{item.name}}</td>
     <td class="text-nowrap align-middle">
       <app-core-edit-delete-panel [item]="item" (deleteClick)="onDeleteClick(item)" (editClick)="onEditClick(item)"></app-core-edit-delete-panel>
     </td>
@@ -31,7 +31,13 @@
 <div *ngIf="editState">
   <form class="form-group" [formGroup]="editForm">
     <label for="inputName" class="form-label"><strong>Name</strong></label>
-    <input #inputName type="text" class="form-control" [ngClass]="{'is-invalid': editForm.controls.name.errors && editState.submitted}" id="inputName" placeholder="Name" formControlName="name">
+    <input #inputName type="text" class="form-control"
+           [ngClass]="{'is-invalid': editForm.controls.name.errors && editState.submitted}"
+           [ngStyle]="{'background-color': getPreviewColor()}"
+           id="inputName"
+           placeholder="Name"
+           formControlName="name"
+    >
     <label for="inputUrl" class="form-label mt-2">Url</label>
     <input #inputUrl type="text" class="form-control" [ngClass]="{'is-invalid': editForm.controls.url.errors && editState.submitted}" id="inputUrl" placeholder="Url" formControlName="url">
     <div *ngIf="editForm.controls.name.errors && editState.submitted" class="invalid-feedback">
@@ -43,10 +49,15 @@
     </div>
     <label for="inputColor" class="form-label mt-2">Color</label>
     <input type="color" class="form-control form-control-color" id="inputColor" formControlName="color" title="Choose your color">
-
-    <app-core-save-dialog-panel [editable]="this" [loadable]="repository" (createClick)="onCreate()" (saveClick)="onSave()" (cancelClick)="onCancel()"></app-core-save-dialog-panel>
-
   </form>
+
+  <div class="custom-control custom-switch">
+    <input type="checkbox" class="custom-control-input" id="inputPreview" [(ngModel)]="preview">
+    <label class="custom-control-label" for="inputPreview">Preview</label>
+  </div>
+
+  <app-core-save-dialog-panel [editable]="this" [loadable]="repository" (createClick)="onCreate()" (saveClick)="onSave()" (cancelClick)="onCancel()"></app-core-save-dialog-panel>
+
 </div>
 
 <app-core-loading-progress [loadable]="repository"></app-core-loading-progress>

@@ -16,6 +16,12 @@ import {DragHandlerService} from '../../core/services/drag-handler.service';
 export class PaymentGroupsTableComponent extends CommonSimpleEditableTableComponent<PaymentGroup> {
   @ViewChild('inputName') inputNameElement: ElementRef;
 
+  preview: boolean = false;
+
+  getPreviewColor(): string {
+    return this.preview ? this.editForm.controls.color.value : '#FFFFFF';
+  }
+
   constructor(
     private fb: FormBuilder,
     protected modalService: BsModalService,
@@ -67,5 +73,13 @@ export class PaymentGroupsTableComponent extends CommonSimpleEditableTableCompon
   onDrop(event: any): void {
     this.dragHandlerService.stopDrag();
     super.onDrop(event);
+  }
+
+  protected getWritableData(): PaymentGroup {
+    const data = super.getWritableData();
+    if (data.color.toUpperCase() === "#FFFFFF") {
+      data.color = null;
+    }
+    return data;
   }
 }
