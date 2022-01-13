@@ -114,3 +114,8 @@ a:not([class*="btn"]):not([class*="nav-link"]):hover {
 label {
   margin-bottom: 0.5rem
 }
+
+.breadcrumb {
+  background-color: lightgray;
+  border-radius: $btn-border-radius;
+}
