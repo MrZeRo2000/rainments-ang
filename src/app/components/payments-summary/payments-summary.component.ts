@@ -1,7 +1,8 @@
 import {Component, DoCheck, Input, IterableDiffer, IterableDiffers, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {PaymentRefsRepository} from '../../repository/payment-refs-repository';
-import {PaymentSummary} from '../../model/payment-summary';
+import {PaymentGroupAmountSummary} from '../../model/payment-group-amount-summary';
 import {Payment} from '../../model/payment';
+import {PaymentGroup} from '../../model/payment-group';
 
 @Component({
   selector: 'app-payments-summary',
@@ -14,7 +15,7 @@ export class PaymentsSummaryComponent implements OnInit, DoCheck {
 
   private selectedItemsDiff: IterableDiffer<Payment>;
 
-  summaryData: Array<PaymentSummary> = new Array<PaymentSummary>();
+  summaryData: Array<PaymentGroupAmountSummary> = new Array<PaymentGroupAmountSummary>();
 
   constructor(protected readRepository: PaymentRefsRepository, private selectedItemsDiffers: IterableDiffers) {
     // Might not be needed
@@ -32,15 +33,15 @@ export class PaymentsSummaryComponent implements OnInit, DoCheck {
     this.summaryData.length = 0;
 
     const data = (this.readRepository.getData()[0] && this.readRepository.getData()[0].paymentList) || [];
-    const totalSummary: PaymentSummary = new PaymentSummary('Total', 0, 0);
-    const selectedSummary: PaymentSummary = new PaymentSummary('Selected', 0, 0);
+    const totalSummary: PaymentGroupAmountSummary = new PaymentGroupAmountSummary(new PaymentGroup(-1, 'Total'), 0, 0);
+    const selectedSummary: PaymentGroupAmountSummary = new PaymentGroupAmountSummary(new PaymentGroup(-2, 'Selected'), 0, 0);
 
     data.reduce((accumulator, currentValue) => {
 
       if (currentValue.paymentGroup) {
-        const v = accumulator.find(value => value.groupName === currentValue.paymentGroup.name);
+        const v = accumulator.find(value => value.paymentGroup.id === currentValue.paymentGroup.id);
         if (v === undefined) {
-          accumulator.push(new PaymentSummary(currentValue.paymentGroup.name, currentValue.paymentAmount, currentValue.commissionAmount));
+          accumulator.push(new PaymentGroupAmountSummary(currentValue.paymentGroup, currentValue.paymentAmount, currentValue.commissionAmount));
         } else {
           v.addAmounts(currentValue.paymentAmount, currentValue.commissionAmount);
         }
@@ -77,11 +78,11 @@ export class PaymentsSummaryComponent implements OnInit, DoCheck {
     }
   }
 
-  getTotalSummary(): PaymentSummary {
+  getTotalSummary(): PaymentGroupAmountSummary {
     return this.summaryData[0];
   }
 
-  getSelectedSummary(): PaymentSummary {
+  getSelectedSummary(): PaymentGroupAmountSummary {
     return this.summaryData[1];
   }
 
@@ -89,7 +90,7 @@ export class PaymentsSummaryComponent implements OnInit, DoCheck {
     return this.selectedItems && this.selectedItems.size > 0;
   }
 
-  getGroupSummary(): PaymentSummary[] {
+  getGroupSummary(): PaymentGroupAmountSummary[] {
     return this.summaryData.slice(2) || [];
   }
 }

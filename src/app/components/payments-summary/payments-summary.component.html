@@ -35,8 +35,8 @@
         </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of getGroupSummary()">
-            <td class="text-left">{{item.groupName}}</td>
+          <tr *ngFor="let item of getGroupSummary()" [ngStyle]="{'background-color': item.paymentGroup.color}">
+            <td class="text-left">{{item.paymentGroup.name}}</td>
             <td>
               <div class="text-left">{{item.paymentAmount | amount}}</div>
               <div class="text-right" *ngIf="item.commissionAmount"><small>{{item.commissionAmount | amount}}</small></div>
