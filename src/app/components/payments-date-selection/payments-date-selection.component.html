@@ -7,20 +7,20 @@
     <fa-icon [icon]="['fas', 'angle-left']" transform="grow-8"></fa-icon>
   </button>
 
-  <label class="ml-2 mb-0 mt-0">
-    <select class="browser-default custom-select" formControlName="periodSelect" name="periodSelect">
+  <label class="ms-2 mb-0 mt-0">
+    <select class="form-select" formControlName="periodSelect" name="periodSelect">
       <option *ngFor="let item of periods" value="{{item.id}}">{{item.name}}</option>
     </select>
   </label>
 
-  <label class="ml-2 mb-0 mt-0">
-    <select class="browser-default custom-select" formControlName="yearSelect" name="yearSelect">
+  <label class="ms-2 mb-0 mt-0">
+    <select class="form-select" formControlName="yearSelect" name="yearSelect">
       <option *ngFor="let item of years" value="{{item}}">{{item}}</option>
     </select>
   </label>
 
   <button
-    class="btn btn-outline-primary ml-2"
+    class="btn btn-outline-primary ms-2"
     [ngClass]="{'disabled': this.selectedLastDate()}"
     (click)="addPeriod(1)"
   >

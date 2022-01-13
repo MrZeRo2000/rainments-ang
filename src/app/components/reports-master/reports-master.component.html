@@ -25,7 +25,7 @@
     </div>
 
     <app-drop-down-multi-select
-      class="ml-2 mb-2"
+      class="ms-2 mb-2"
       title="Groups"
       [selectableItems]="selectedGroups"
       (selectionChanged)="selectedGroupsChanged($event)"
@@ -33,7 +33,7 @@
     >
     </app-drop-down-multi-select>
     <app-drop-down-multi-select
-      class="ml-2 mr-2 mb-2"
+      class="ms-2 mr-2 mb-2"
       title="Products"
       [selectableItems]="selectedProducts"
       (selectionChanged)="selectedProductsChanged($event)"
@@ -42,7 +42,7 @@
     </app-drop-down-multi-select>
 
     <app-reports-column-display
-      class="mb-2 ml-auto"
+      class="mb-2 ms-auto"
       (selectionChanged)="selectedColumnsChanged($event)"
       *ngIf="this.selectedControlTab === ControlTab.Table"
     ></app-reports-column-display>

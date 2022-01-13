@@ -3,7 +3,7 @@
 
   <label for="paymentObject" class="mt-2"><strong>Payment object</strong></label>
   <select
-    class="browser-default custom-select"
+    class="form-select"
     [ngClass]="{'is-invalid': editForm.controls.paymentObject.errors && formSubmitted}"
     formControlName="paymentObject"
     id="paymentObject"
@@ -20,7 +20,7 @@
     <input
       type="text"
       placeholder="Please, select a file"
-      class="form-control ml-2 p-2 flex-grow-1"
+      class="form-control ms-2 p-2 flex-grow-1"
       [ngClass]="{'is-invalid': editForm.controls.fileName.errors && formSubmitted}"
       readonly
       formControlName="fileName"

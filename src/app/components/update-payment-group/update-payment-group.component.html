@@ -2,7 +2,7 @@
 
   <label for="paymentObject" class="mt-2"><strong>Payment object</strong></label>
   <select
-    class="browser-default custom-select"
+    class="form-select"
     [ngClass]="{'is-invalid': editForm.controls.paymentObject.errors && formSubmitted}"
     formControlName="paymentObject"
     id="paymentObject"
@@ -12,7 +12,7 @@
 
   <label for="paymentGroupFrom" class="mt-2"><strong>Payment group from</strong></label>
   <select
-    class="browser-default custom-select"
+    class="form-select"
     [ngClass]="{'is-invalid': editForm.controls.paymentGroupFrom.errors && formSubmitted}"
     formControlName="paymentGroupFrom"
     id="paymentGroupFrom"
@@ -22,7 +22,7 @@
 
   <label for="paymentGroupTo" class="mt-2"><strong>Payment group to</strong></label>
   <select
-    class="browser-default custom-select"
+    class="form-select"
     [ngClass]="{'is-invalid': editForm.controls.paymentGroupTo.errors && formSubmitted}"
     formControlName="paymentGroupTo"
     id="paymentGroupTo"

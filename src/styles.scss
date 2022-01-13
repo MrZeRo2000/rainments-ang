@@ -1,4 +1,4 @@
-/* You can add global styles to this file, and also import other style files */
+  /* You can add global styles to this file, and also import other style files */
 @import 'variables';
 @import 'node_modules/bootstrap/scss/bootstrap';
 @import 'node_modules/ngx-bootstrap/datepicker/bs-datepicker.scss';
@@ -87,10 +87,30 @@ body {
 div.drag-preview {
   border:dashed 1px #aaaaaa;
   border-radius: $border-radius;
-  padding: $table-cell-padding;
+  padding: $table-cell-padding-y;
   vertical-align: middle;
   position:relative;
   top:-1.25rem;
   background-color: #dddddd;
   opacity: 0.9;
+}
+
+// fix table borders in bootstrap 5
+.table thead th {
+  border-top: 1px solid $table-border-color;
+  border-bottom: 2px solid $table-border-color;
+}
+
+// fix link underline in bootstrap 5
+a:not([class*="btn"]):not([class*="nav-link"]) {
+  text-decoration: none;
+}
+
+a:not([class*="btn"]):not([class*="nav-link"]):hover {
+  text-decoration: underline;
+}
+
+// fix label bottom margin changes in bootstrap 5
+label {
+  margin-bottom: 0.5rem
 }

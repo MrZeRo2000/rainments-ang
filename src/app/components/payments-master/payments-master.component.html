@@ -3,14 +3,14 @@
 
 <div class="d-inline-flex align-items-center" *ngIf=paymentObjectTotals>
   <app-payments-date-selection (selectedDate)="onSelectDate($event)" [paymentObjectTotals]=paymentObjectTotals></app-payments-date-selection>
-  <div class="ml-2">
+  <div class="ms-2">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb mb-0 p-2">
         <li aria-current="page"><h5 class="mb-0 text-nowrap">{{this.paymentObjectTotals && this.paymentObjectTotals.paymentObject && this.paymentObjectTotals.paymentObject.name}}</h5></li>
       </ol>
     </nav>
   </div>
-  <div class="ml-2">
+  <div class="ms-2">
     <app-report-nav [itemId]="this.paymentObjectId" navigatePath="reports"></app-report-nav>
   </div>
 </div>

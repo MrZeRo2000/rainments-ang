@@ -9,11 +9,11 @@
         <div class="text-right">Payment</div>
         <div class="text-right">Commission</div>
       </div>
-      <div class="ml-2 text-right" *ngIf="hasSelection()">
+      <div class="m2-2 text-end" *ngIf="hasSelection()">
         <div><strong>{{getSelectedSummary().paymentAmount | amount}} / </strong></div>
         <div><strong>{{getSelectedSummary().commissionAmount | amount}} / </strong></div>
       </div>
-      <div class="ml-2 text-right">
+      <div class="ms-2 text-end">
         <div><strong>{{getTotalSummary().paymentAmount | amount}}</strong></div>
         <div><strong>{{getTotalSummary().commissionAmount | amount}}</strong></div>
       </div>
@@ -36,10 +36,10 @@
         </thead>
         <tbody>
           <tr *ngFor="let item of getGroupSummary()" [ngStyle]="{'background-color': item.paymentGroup.color}">
-            <td class="text-left">{{item.paymentGroup.name}}</td>
+            <td class="text-start">{{item.paymentGroup.name}}</td>
             <td>
-              <div class="text-left">{{item.paymentAmount | amount}}</div>
-              <div class="text-right" *ngIf="item.commissionAmount"><small>{{item.commissionAmount | amount}}</small></div>
+              <div class="text-start">{{item.paymentAmount | amount}}</div>
+              <div class="text-end" *ngIf="item.commissionAmount"><small>{{item.commissionAmount | amount}}</small></div>
             </td>
           </tr>
         </tbody>

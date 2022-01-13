@@ -1,11 +1,11 @@
 <nav class="navbar navbar-expand navbar-dark bg-dark">
   <a class="navbar-brand" href="#">&nbsp; </a>
-  <ul class="navbar-nav mr-auto">
-    <li class="nav-item" [ngClass]="{'active': this.getActiveHome()}">
-      <a class="nav-link" routerLink="">Home</a>
+  <ul class="navbar-nav me-auto">
+    <li class="nav-item">
+      <a class="nav-link" [ngClass]="{'active': this.getActiveHome()}" routerLink="">Home</a>
     </li>
-    <li class="nav-item" [ngClass]="{'active': this.getActiveSettings()}">
-      <a class="nav-link" routerLink="/settings">Settings</a>
+    <li class="nav-item">
+      <a class="nav-link" [ngClass]="{'active': this.getActiveSettings()}" routerLink="/settings">Settings</a>
     </li>
   </ul>
 </nav>

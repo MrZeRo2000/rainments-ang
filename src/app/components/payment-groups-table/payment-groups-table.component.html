@@ -1,6 +1,6 @@
 <div class="d-flex mt-2 mb-2" *ngIf="this.getEditingState()">
   <app-core-add-panel (addClick)="onAddClick()"></app-core-add-panel>
-  <div class="ml-auto">
+  <div class="ms-auto">
     <app-core-drop-down-more-menu>
       <a class="dropdown-item" href="#" (click)="onSetDefaultOrderClick($event)">Set default order</a>
     </app-core-drop-down-more-menu>
@@ -48,12 +48,12 @@
       <div *ngIf="editForm.controls.url.errors.invalidUrl">Invalid Url</div>
     </div>
     <label for="inputColor" class="form-label mt-2">Color</label>
-    <input type="color" class="form-control form-control-color" id="inputColor" formControlName="color" title="Choose your color">
+    <input type="color" class="form-control form-control-color w-100" id="inputColor" formControlName="color" title="Choose your color">
   </form>
 
-  <div class="custom-control custom-switch">
-    <input type="checkbox" class="custom-control-input" id="inputPreview" [(ngModel)]="preview">
-    <label class="custom-control-label" for="inputPreview">Preview</label>
+  <div class="form-check form-switch mt-2">
+    <input type="checkbox" class="form-check-input" id="inputPreview" [(ngModel)]="preview">
+    <label class="form-label" for="inputPreview">Preview</label>
   </div>
 
   <app-core-save-dialog-panel [editable]="this" [loadable]="repository" (createClick)="onCreate()" (saveClick)="onSave()" (cancelClick)="onCancel()"></app-core-save-dialog-panel>

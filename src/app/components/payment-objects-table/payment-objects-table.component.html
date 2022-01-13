@@ -1,7 +1,7 @@
 
 <div class="d-flex mt-2 mb-2" *ngIf="getEditingState()">
   <app-core-add-panel (addClick)="onAddClick()"></app-core-add-panel>
-  <div class="ml-auto">
+  <div class="ms-auto">
     <app-core-drop-down-more-menu>
       <a class="dropdown-item" href="#" (click)="onSetDefaultOrderClick($event)">Set default order</a>
     </app-core-drop-down-more-menu>
@@ -37,7 +37,7 @@
       <div class="col-md-4 col-sm-12">
         <label for="inputPeriod">Payment period</label>
         <select
-          class="browser-default custom-select"
+          class="form-select"
           [ngClass]="{'is-invalid': editForm.controls.period.errors && editState.submitted}"
           formControlName="period"
           id="inputPeriod"
@@ -49,7 +49,7 @@
     <div class="col-md-2 col-sm-12">
       <label for="inputTermQuantity">Payment term</label>
       <select
-        class="browser-default custom-select"
+        class="form-select"
         [ngClass]="{'is-invalid': editForm.controls.termQuantity.errors && editState.submitted}"
         formControlName="termQuantity"
         id="inputTermQuantity"
@@ -61,7 +61,7 @@
     <div class="col-md-3 col-sm-12">
       <label for="inputTermType">&nbsp;</label>
       <select
-        class="browser-default custom-select"
+        class="form-select"
         [ngClass]="{'is-invalid': editForm.controls.termType.errors && editState.submitted}"
         formControlName="termType"
         id="inputTermType"
@@ -73,7 +73,7 @@
     <div class="col-md-3 col-sm-12">
       <label for="inputPayDelay">Payment due delay</label>
       <select
-        class="browser-default custom-select"
+        class="form-select"
         [ngClass]="{'is-invalid': editForm.controls.payDelay.errors && editState.submitted}"
         formControlName="payDelay"
         id="inputPayDelay"

@@ -86,3 +86,15 @@ npx @angular/cli@13 update @angular/core@13 @angular/cli@13 --force
 ng add @angular-eslint/schematics
 ng g @angular-eslint/schematics:convert-tslint-to-eslint
 
+## Upgrade to bootstrap 5 notes
+remove jquery, popper from styles.css, package.json
+add "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js" to styles.css
+add "bootstrap": "^5.0.2", "ngx-bootstrap": "^8.0.0-RC.8"
+classes: 
+  text-left -> text-start
+  text-right -> text-end
+  mr-* -> me-*
+  ml-* -> ms-*
+browser-default custom-select -> form-select
+custom-control-label -> form-label
+badge-success -> bg-success
