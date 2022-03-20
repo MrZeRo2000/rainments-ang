@@ -29,6 +29,7 @@ import {ColorScheme} from '../../core/components/colored-value-label/colored-val
 import {PatchRequest} from '../../model/patch-request';
 import {PaymentsTableDisplayOptions} from '../payments-table-display-options/payments-table-display-options.component';
 import {Subscription} from 'rxjs';
+import {SelectableItem} from '../../core/model/selectable-item';
 
 enum InlineControl {
   ProductCounter = 'productCounterControl',
@@ -64,7 +65,7 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   productUsage: number;
   productUsageForm: FormGroup = this.fb.group({productUsageCounter: ['']});
 
-  selectedItems: Set<Payment> = new Set<Payment>();
+  selectableItems: Array<SelectableItem<Payment>> = new Array<SelectableItem<Payment>>();
 
   inlineControlType = InlineControl;
   inlineEditHandler: InlineEditHandler<Payment>;
@@ -122,6 +123,7 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     this.loadSuccessSubscription = readRepository.getLoadSuccessObservable().subscribe(v => {
       if (v) {
         this.paymentObject.emit(this.getPaymentObject());
+        this.selectableItems = this.getPayments().map(p => new SelectableItem<Payment>(p, false));
       }
     });
   }
@@ -134,9 +136,7 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
 
   ngOnDestroy(): void {
     super.ngOnDestroy();
-    if (this.loadSuccessSubscription) {
-      this.loadSuccessSubscription.unsubscribe();
-    }
+    this.loadSuccessSubscription?.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -217,7 +217,6 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
 
   protected loadRepositoryData(): void {
     super.loadRepositoryData();
-    this.selectedItems.clear();
   }
 
   protected buildForm(): FormGroup {
@@ -293,6 +292,14 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     if (this.productUsage && this.productUsage < 0) {
       this.editForm.controls.productCounter.setErrors({lessThanPreviousPeriod: true});
     }
+  }
+
+  getSelectablePayments(): Array<SelectableItem<Payment>> {
+    return this.selectableItems;
+  }
+
+  getSelectedPayments(): Array<Payment> {
+    return this.selectableItems.filter(p => p.isSelected).map(p => p.value);
   }
 
   getPayments(): Payment[] {
@@ -418,12 +425,8 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     );
   }
 
-  tableRowClick(item: Payment): void {
-    if (this.selectedItems.has(item)) {
-      this.selectedItems.delete(item);
-    } else {
-      this.selectedItems.add(item);
-    }
+  tableRowClick(item: SelectableItem<Payment>): void {
+    item.isSelected = !item.isSelected;
   }
 
   productCounterOnClick(event: any, item: Payment): void {

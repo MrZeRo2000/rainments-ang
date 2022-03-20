@@ -11,7 +11,7 @@ import {PaymentGroup} from '../../model/payment-group';
 })
 export class PaymentsSummaryComponent implements OnInit, DoCheck {
   @Input()
-  selectedItems: Set<Payment>;
+  selectedItems: Array<Payment>;
 
   private selectedItemsDiff: IterableDiffer<Payment>;
 
@@ -49,7 +49,7 @@ export class PaymentsSummaryComponent implements OnInit, DoCheck {
 
       totalSummary.addAmounts(currentValue.paymentAmount, currentValue.commissionAmount);
 
-      if (this.selectedItems && this.selectedItems.has(currentValue)) {
+      if (this.selectedItems && this.selectedItems.indexOf(currentValue) > -1) {
         selectedSummary.addAmounts(currentValue.paymentAmount, currentValue.commissionAmount);
       }
 
@@ -87,7 +87,7 @@ export class PaymentsSummaryComponent implements OnInit, DoCheck {
   }
 
   hasSelection(): boolean {
-    return this.selectedItems && this.selectedItems.size > 0;
+    return this.selectedItems?.length > 0;
   }
 
   getGroupSummary(): PaymentGroupAmountSummary[] {
