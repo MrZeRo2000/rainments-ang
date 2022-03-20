@@ -1,13 +1,5 @@
 import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
-
-export class SelectableItem {
-  constructor(public value: string, public isSelected: boolean) {
-  }
-
-  public static getSelectedItemValues(items: Array<SelectableItem>): Array<string> {
-    return items.filter(value => value.isSelected).map(value => value.value);
-  }
-}
+import {SelectableItem} from '../../model/selectable-item';
 
 @Component({
   selector: 'app-drop-down-multi-select',
@@ -20,17 +12,17 @@ export class DropDownMultiSelectComponent implements OnInit {
   title: string;
 
   @Input()
-  selectableItems: Array<SelectableItem>;
+  selectableItems: Array<SelectableItem<string>>;
 
   @Output()
-  selectionChanged = new EventEmitter<Array<SelectableItem>>();
+  selectionChanged = new EventEmitter<Array<SelectableItem<string>>>();
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  public dropDownClick(event: any, item: SelectableItem) {
+  public dropDownClick(event: any, item: SelectableItem<string>) {
     event.preventDefault();
     if (event.ctrlKey) {
       this.selectableItems.forEach(v => v.isSelected = v.value === item.value);

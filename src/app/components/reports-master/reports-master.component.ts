@@ -6,9 +6,9 @@ import {ActivatedRoute} from '@angular/router';
 import {HttpParams} from '@angular/common/http';
 import {DateGenerator} from '../../core/utils/date-generator';
 import {Subscription} from 'rxjs';
-import {SelectableItem} from '../../core/components/drop-down-multi-select/drop-down-multi-select.component';
 import {Payment} from '../../model/payment';
 import {PaymentUtils} from '../../utils/payment-utils';
+import {SelectableItem} from '../../core/model/selectable-item';
 
 enum ControlTab {
   Chart = 'Chart',
@@ -35,8 +35,8 @@ export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> imp
   repositoryPaymentList: Array<Payment> = [];
   displayPaymentList: Array<Payment> = [];
 
-  selectedGroups: SelectableItem[];
-  selectedProducts: SelectableItem[];
+  selectedGroups: SelectableItem<string>[];
+  selectedProducts: SelectableItem<string>[];
   selectedColumns: Array<string>;
   selectedControlTab: ControlTab = ControlTab.Chart;
 
@@ -69,7 +69,7 @@ export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> imp
     })
   }
 
-  private getSelectableItems(selectedItems: Array<SelectableItem>, callback: any) {
+  private getSelectableItems(selectedItems: Array<SelectableItem<string>>, callback: any) {
     return [... new Set(this.paymentRep.paymentRepList.map(v => callback(v)))]
       .map(v =>
         new SelectableItem(v, !selectedItems || selectedItems.filter(vi => vi.isSelected).map(vn => vn.value).includes(v))
@@ -104,12 +104,12 @@ export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> imp
     }
   }
 
-  public selectedGroupsChanged(items: Array<SelectableItem>): void {
+  public selectedGroupsChanged(items: Array<SelectableItem<string>>): void {
     this.selectedGroups = items;
     this.applyFilters();
   }
 
-  public selectedProductsChanged(items: Array<SelectableItem>): void {
+  public selectedProductsChanged(items: Array<SelectableItem<string>>): void {
     this.selectedProducts = items;
     this.applyFilters();
   }
