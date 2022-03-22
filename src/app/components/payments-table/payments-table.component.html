@@ -1,6 +1,9 @@
 
 <div class="d-flex mt-2 mb-2" *ngIf="this.getEditingState()">
-  <div><app-core-add-panel (addClick)="onAddClick()"></app-core-add-panel></div>
+  <div>
+    <app-core-add-panel (addClick)="onAddClick()"></app-core-add-panel>
+    <app-payments-selectable-panel class="ms-2" [selectableItems]="this.getSelectablePayments()"></app-payments-selectable-panel>
+  </div>
   <div class="ms-auto">
     <button
       class="btn btn-outline-primary ms-2"

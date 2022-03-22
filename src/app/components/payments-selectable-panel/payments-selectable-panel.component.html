@@ -1,0 +1,16 @@
+<span class="text-left">
+  <a
+    *ngIf="!isAllSelected()"
+    class="btn btn-outline-primary me-2"
+    (click)="onCheckAllClick($event)"
+  >
+    <fa-icon [icon]="['fas', 'check-double']" transform="grow-4"></fa-icon>
+  </a>
+  <a
+    *ngIf="isAnySelected()"
+    class="btn btn-outline-primary me-2"
+    (click)="onClearAllClick($event)"
+  >
+    <fa-icon [icon]="['fas', 'times']" transform="grow-4"></fa-icon>
+  </a>
+</span>

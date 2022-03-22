@@ -25,6 +25,7 @@ import { DropDownMultiSelectComponent } from './components/drop-down-multi-selec
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import { InputPasteFloatControlDirective } from './directives/input-paste-float-control.directive';
 import { InputPasteFloatModelDirective } from './directives/input-paste-float-model.directive';
+import { CoreSelectablePanelComponent } from './components/core-selectable-panel/core-selectable-panel.component';
 
 
 @NgModule({
@@ -49,7 +50,8 @@ import { InputPasteFloatModelDirective } from './directives/input-paste-float-mo
         LocaleDatePipe,
         DropDownMultiSelectComponent,
         InputPasteFloatControlDirective,
-        InputPasteFloatModelDirective
+        InputPasteFloatModelDirective,
+        CoreSelectablePanelComponent
     ],
     imports: [
         CommonModule,

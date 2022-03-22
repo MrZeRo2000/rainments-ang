@@ -11,6 +11,7 @@ import {PaymentsSummaryComponent} from '../payments-summary/payments-summary.com
 import {RepositoryModule} from '../../repository/repository.module';
 import {PaymentsTableDisplayOptionsComponent} from '../payments-table-display-options/payments-table-display-options.component';
 import {FontAwesomeIconsModule} from '../../font-awesome-icons/font-awesome-icons.module';
+import {PaymentsSelectablePanelComponent} from '../payments-selectable-panel/payments-selectable-panel.component';
 
 describe('PaymentsTableComponent', () => {
   let component: PaymentsTableComponent;
@@ -18,7 +19,7 @@ describe('PaymentsTableComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      declarations: [ PaymentsTableComponent, PaymentsSummaryComponent, PaymentsTableDisplayOptionsComponent],
+      declarations: [ PaymentsTableComponent, PaymentsSummaryComponent, PaymentsTableDisplayOptionsComponent, PaymentsSelectablePanelComponent],
       providers: [RestUrlEnv, RestDataSource],
       imports: [HttpClientTestingModule, ReactiveFormsModule, ModalModule.forRoot(), CoreModule, RepositoryModule, FontAwesomeIconsModule]
     })

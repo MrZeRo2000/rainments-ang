@@ -219,6 +219,11 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     super.loadRepositoryData();
   }
 
+  protected buildEditForm() {
+    super.buildEditForm();
+    this.selectableItems.forEach(p => p.isSelected = false);
+  }
+
   protected buildForm(): FormGroup {
     const form = this.fb.group({
       paymentGroup: ['', Validators.required],

@@ -3,11 +3,11 @@ export class SelectableItem<T> {
   }
 
   public static getSelectedItemValues<T>(items: Array<SelectableItem<T>>): Array<T> {
-    return items.filter(value => value.isSelected).map(value => value.value);
+    return items?.filter(value => value.isSelected).map(value => value.value);
   }
 
   public static getSelectedCount<T>(items: Array<SelectableItem<T>>): number {
-    return items.filter(value => value.isSelected).length;
+    return items?.filter(value => value.isSelected)?.length;
   }
 }
 

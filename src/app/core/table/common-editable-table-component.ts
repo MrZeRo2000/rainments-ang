@@ -70,7 +70,7 @@ export abstract class CommonEditableTableComponent<R, W extends CommonEntity>
 
   protected validateSave(): void {}
 
-  private buildEditForm() {
+  protected buildEditForm() {
     this.editForm = this.buildForm();
     this.editForm.valueChanges.subscribe(value => this.editFormChanged(value));
     /*
