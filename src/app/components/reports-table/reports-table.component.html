@@ -15,7 +15,10 @@
       <td class="text-right font-weight-bold">{{paymentAmountSummary.paymentAmount | amount}}</td>
       <td class="text-right font-weight-bold">{{paymentAmountSummary.commissionAmount | amount}}</td>
     </tr>
-    <tr *ngFor="let item of payments">
+    <tr
+      *ngFor="let item of payments"
+      [ngStyle]="{'background-color': item.paymentGroup.color}"
+    >
       <td *ngIf="columns.includes('periodDate')">{{item.periodDate | date: "dd.MM.yyyy"}}</td>
       <td *ngIf="columns.includes('paymentGroup')">{{item.paymentGroup?.name}}</td>
       <td *ngIf="columns.includes('product')">{{item.product?.name}}</td>
