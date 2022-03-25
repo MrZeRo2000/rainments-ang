@@ -9,6 +9,7 @@ export class PaymentsTableDisplayOptions {
   public showTrend: boolean;
   public showId: boolean;
   public showSummary: boolean;
+  public displayColors: boolean;
 
   public static fromLocalStorage(): PaymentsTableDisplayOptions {
     const instance = new PaymentsTableDisplayOptions();
@@ -28,6 +29,7 @@ export class PaymentsTableDisplayOptions {
     this.showTrend = true;
     this.showId = true;
     this.showSummary = true;
+    this.displayColors = true;
   }
 
   public loadFromLocalStorage(): void {
@@ -43,6 +45,7 @@ export class PaymentsTableDisplayOptions {
         this.showTrend = localObject.showTrend;
         this.showId = localObject.showId;
         this.showSummary = localObject.showSummary;
+        this.displayColors = localObject.displayColors;
       } catch (e) {
         this.loadDefaults();
       }
