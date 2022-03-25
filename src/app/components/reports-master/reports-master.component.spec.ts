@@ -10,9 +10,9 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {CoreModule} from '../../core/core.module';
 import {MessagesModule} from '../../messages/messages.module';
 import {RepositoryModule} from '../../repository/repository.module';
-import {ReportsColumnDisplayComponent} from '../reports-column-display/reports-column-display.component';
 import {ReportsTableComponent} from '../reports-table/reports-table.component';
 import {ReportsChartDateTotalsComponent} from '../reports-chart-date-totals/reports-chart-date-totals.component';
+import {ReportsTableDisplayOptionsComponent} from '../reports-table-display-options/reports-table-display-options.component';
 
 describe('ReportsMasterComponent', () => {
   let component: ReportsMasterComponent;
@@ -20,7 +20,7 @@ describe('ReportsMasterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ReportsMasterComponent, ReportsColumnDisplayComponent, ReportsTableComponent, ReportsChartDateTotalsComponent ],
+      declarations: [ ReportsMasterComponent, ReportsTableComponent, ReportsChartDateTotalsComponent, ReportsTableDisplayOptionsComponent ],
       providers: [RestUrlEnv, RestDataSource],
       imports: [HttpClientTestingModule, RouterTestingModule, ReactiveFormsModule, CoreModule, MessagesModule, RepositoryModule]
     })

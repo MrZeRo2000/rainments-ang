@@ -2,26 +2,26 @@
 <table class="table table-bordered" *ngIf="payments">
   <thead>
     <tr>
-      <th scope="col" *ngIf="columns.includes('periodDate')">Date</th>
-      <th scope="col" *ngIf="columns.includes('paymentGroup')">Group</th>
-      <th scope="col" *ngIf="columns.includes('product')">Product</th>
+      <th scope="col" *ngIf="displayOptions.showDate">Date</th>
+      <th scope="col" *ngIf="displayOptions.showGroup">Group</th>
+      <th scope="col" *ngIf="displayOptions.showProduct">Product</th>
       <th scope="col">Payment</th>
       <th scope="col">Commission</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngIf="paymentAmountSummary">
-      <td [colSpan]="columns.length" *ngIf="columns.length > 0">&nbsp;</td>
+      <td [colSpan]="displayOptions.getColumnNumber()" *ngIf="displayOptions.getColumnNumber() > 0">&nbsp;</td>
       <td class="text-right font-weight-bold">{{paymentAmountSummary.paymentAmount | amount}}</td>
       <td class="text-right font-weight-bold">{{paymentAmountSummary.commissionAmount | amount}}</td>
     </tr>
     <tr
       *ngFor="let item of payments"
-      [ngStyle]="{'background-color': item.paymentGroup?.color}"
+      [ngStyle]="{'background-color': displayOptions.displayColors? item.paymentGroup?.color : ''}"
     >
-      <td *ngIf="columns.includes('periodDate')">{{item.periodDate | date: "dd.MM.yyyy"}}</td>
-      <td *ngIf="columns.includes('paymentGroup')">{{item.paymentGroup?.name}}</td>
-      <td *ngIf="columns.includes('product')">{{item.product?.name}}</td>
+      <td *ngIf="displayOptions.showDate">{{item.periodDate | date: "dd.MM.yyyy"}}</td>
+      <td *ngIf="displayOptions.showGroup">{{item.paymentGroup?.name}}</td>
+      <td *ngIf="displayOptions.showProduct">{{item.product?.name}}</td>
       <td class="text-right">{{item.paymentAmount | amount}}</td>
       <td class="text-right">{{item.commissionAmount | amount}}</td>
     </tr>

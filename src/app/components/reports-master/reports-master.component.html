@@ -41,11 +41,13 @@
     >
     </app-drop-down-multi-select>
 
-    <app-reports-column-display
+    <app-reports-table-display-options
       class="mb-2 ms-auto"
-      (selectionChanged)="selectedColumnsChanged($event)"
+      [reportsTableDisplayOptions]="displayOptions"
+      (selectionChanged)="displayOptionsChanged($event)"
       *ngIf="this.selectedControlTab === ControlTab.Table"
-    ></app-reports-column-display>
+    >
+    </app-reports-table-display-options>
   </div>
 
 </div>
@@ -79,7 +81,7 @@
       >
         <app-reports-table
           [payments]="displayPaymentList"
-          [columns]="selectedColumns"
+          [displayOptions]="displayOptions"
         >
         </app-reports-table>
       </div>

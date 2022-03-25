@@ -1,0 +1,38 @@
+
+<div class="btn-group" dropdown insideClick="false">
+  <button id="button-animated" dropdownToggle type="button" class="btn btn-outline-primary ml-2 pl-2 pr-2 rounded"
+          aria-controls="form-dropdown-animated">
+    <app-core-display-icon-element></app-core-display-icon-element>
+  </button>
+  <div id="form-dropdown-animated" *dropdownMenu class="dropdown-menu dropdown-menu-right"
+       role="menu" aria-labelledby="button-animated">
+    <form class="form-group px-2 py-1" [formGroup] = displayOptionsForm>
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="showDateCheckBox" formControlName="showDate" name="showDate">
+        <label class="form-label text-nowrap" for="showDateCheckBox">
+          Show date
+        </label>
+      </div>
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="showGroupCheckBox" formControlName="showGroup" name="showGroup">
+        <label class="form-label text-nowrap" for="showGroupCheckBox">
+          Show group
+        </label>
+      </div>
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="showProductCheckBox" formControlName="showProduct" name="showProduct">
+        <label class="form-label text-nowrap" for="showProductCheckBox">
+          Show product
+        </label>
+      </div>
+      <hr>
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="displayColorsCheckBox" formControlName="displayColors" name="displayColors">
+        <label class="form-label text-nowrap" for="displayColorsCheckBox">
+          Display colors
+        </label>
+      </div>
+    </form>
+  </div>
+</div>
+

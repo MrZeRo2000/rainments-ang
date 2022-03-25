@@ -2,6 +2,7 @@ import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core'
 import {Payment} from '../../model/payment';
 import {PaymentAmountSummary} from '../../model/payment-amount-summary';
 import {PaymentUtils} from '../../utils/payment-utils';
+import {ReportsTableDisplayOptions} from '../reports-table-display-options/reports-table-display-options.component';
 
 @Component({
   selector: 'app-reports-table',
@@ -14,7 +15,7 @@ export class ReportsTableComponent implements OnInit, OnChanges {
   payments: Array<Payment>;
 
   @Input()
-  columns: Array<string>;
+  displayOptions: ReportsTableDisplayOptions;
 
   paymentAmountSummary: PaymentAmountSummary;
 

@@ -9,6 +9,7 @@ import {Subscription} from 'rxjs';
 import {Payment} from '../../model/payment';
 import {PaymentUtils} from '../../utils/payment-utils';
 import {SelectableItem} from '../../core/model/selectable-item';
+import {ReportsTableDisplayOptions} from '../reports-table-display-options/reports-table-display-options.component';
 
 enum ControlTab {
   Chart = 'Chart',
@@ -26,6 +27,11 @@ export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> imp
 
   private readonly KEY_ID = 'id';
 
+  private static readonly PERIOD_DATE_COLUMN = 'periodDate';
+  private static readonly PAYMENT_GROUP_COLUMN = 'paymentGroup';
+  private static readonly PRODUCT_COLUMN = 'product';
+  private static readonly COLUMNS = [ReportsMasterComponent.PERIOD_DATE_COLUMN, ReportsMasterComponent.PAYMENT_GROUP_COLUMN, ReportsMasterComponent.PRODUCT_COLUMN];
+
   readonly paymentObjectId: number;
   dateRange: Date[];
   minSelectionDate: Date;
@@ -37,8 +43,10 @@ export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> imp
 
   selectedGroups: SelectableItem<string>[];
   selectedProducts: SelectableItem<string>[];
-  selectedColumns: Array<string>;
+  selectedColumns: Array<string> = ReportsMasterComponent.COLUMNS;
   selectedControlTab: ControlTab = ControlTab.Chart;
+
+  displayOptions: ReportsTableDisplayOptions = ReportsTableDisplayOptions.fromLocalStorage();
 
   private readonly loadSuccessSubscription: Subscription;
 
@@ -53,8 +61,6 @@ export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> imp
     const currentDate = new Date();
     this.minSelectionDate = new Date(currentDate.getFullYear() - 3, 0, 1);
     this.maxSelectionDate = new Date(currentDate.getFullYear() + 1, 11, 1);
-
-    this.selectedColumns = ['periodDate','paymentGroup','product'];
 
     this.loadSuccessSubscription = this.repository.getLoadSuccessObservable().subscribe(value => {
       if (value) {
@@ -114,8 +120,13 @@ export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> imp
     this.applyFilters();
   }
 
-  public selectedColumnsChanged(items: Array<string>): void {
-    this.selectedColumns = items;
+  public displayOptionsChanged(displayOptions: ReportsTableDisplayOptions) {
+    this.displayOptions.saveToLocalStorage();
+    this.selectedColumns = ReportsMasterComponent.COLUMNS.filter(
+      s => (s === ReportsMasterComponent.PERIOD_DATE_COLUMN && this.displayOptions.showDate) ||
+        (s === ReportsMasterComponent.PAYMENT_GROUP_COLUMN && this.displayOptions.showGroup) ||
+        (s === ReportsMasterComponent.PRODUCT_COLUMN && this.displayOptions.showProduct)
+    );
     this.applyFilters();
   }
 

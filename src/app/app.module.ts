@@ -34,10 +34,10 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import { ReportsMasterComponent } from './components/reports-master/reports-master.component';
 import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
 import { ReportsTableComponent } from './components/reports-table/reports-table.component';
-import { ReportsColumnDisplayComponent } from './components/reports-column-display/reports-column-display.component';
 import { ReportsChartDateTotalsComponent } from './components/reports-chart-date-totals/reports-chart-date-totals.component';
 import { AppInfoComponent } from './components/app-info/app-info.component';
 import { PaymentsSelectablePanelComponent } from './components/payments-selectable-panel/payments-selectable-panel.component';
+import { ReportsTableDisplayOptionsComponent } from './components/reports-table-display-options/reports-table-display-options.component';
 
 @NgModule({
   declarations: [
@@ -59,10 +59,10 @@ import { PaymentsSelectablePanelComponent } from './components/payments-selectab
     UpdatePaymentGroupComponent,
     ReportsMasterComponent,
     ReportsTableComponent,
-    ReportsColumnDisplayComponent,
     ReportsChartDateTotalsComponent,
     AppInfoComponent,
-    PaymentsSelectablePanelComponent
+    PaymentsSelectablePanelComponent,
+    ReportsTableDisplayOptionsComponent
   ],
     imports: [
         BrowserModule,
