@@ -21,9 +21,14 @@ interface GroupColorAmount {
   paymentAmount: number
 }
 
+export interface PaymentColorsResult {
+  periodDates: Array<Date>,
+  colors: Array<string>,
+  values: Array<Array<number>>
+}
 
 export class PaymentsColorUtils {
-  static calcPaymentColors(payments: Array<Payment>): void {
+  static calcPaymentColors(payments: Array<Payment>): PaymentColorsResult {
 
     const groupAmount: any = {} as GroupAmount;
     const periodDates = new Set<Date>();
@@ -85,6 +90,10 @@ export class PaymentsColorUtils {
       })
     })
 
-    const z: any = [];
+    return {
+      periodDates: periodDatesArray,
+      colors: sortedColors,
+      values: v
+    };
   }
 }

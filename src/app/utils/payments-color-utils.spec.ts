@@ -1,4 +1,4 @@
-import { PaymentsColorUtils } from './payments-color-utils';
+import {PaymentColorsResult, PaymentsColorUtils} from './payments-color-utils';
 import {PaymentObject} from '../model/payment-object';
 import {PaymentGroup} from '../model/payment-group';
 import {Product} from '../model/product';
@@ -36,7 +36,13 @@ describe('PaymentsColorUtils', () => {
   });
 
   it('working validation', () => {
-    PaymentsColorUtils.calcPaymentColors(testPayments);
+    const result: PaymentColorsResult = PaymentsColorUtils.calcPaymentColors(testPayments);
+    expect(result.colors).toEqual(['#ff0000', '#00ff00', ''])
+
+    expect(result.values.length).toBe(3);
+    expect(result.values[0].length).toBe(2);
+
+    expect(result.values[0][0]).toBe(12.5+0.3+3.2+0.1);
   });
 
 
