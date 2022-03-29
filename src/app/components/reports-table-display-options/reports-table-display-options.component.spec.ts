@@ -12,7 +12,7 @@ describe('ReportsTableDisplayOptionsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ ReportsTableDisplayOptionsComponent ],
-      imports: [ReactiveFormsModule]
+      imports: [ReactiveFormsModule, CoreModule]
     })
     .compileComponents();
   });

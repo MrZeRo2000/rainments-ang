@@ -17,6 +17,7 @@ import {PaymentUtils} from '../../utils/payment-utils';
 import * as d3 from 'd3';
 import {DateFormatter} from '../../core/utils/date-formatter';
 import {AmountPipe} from '../../core/pipes/amount.pipe';
+import {PaymentColorsResult, PaymentColorsTotal, PaymentsColorUtils} from '../../utils/payments-color-utils';
 
 @Component({
   selector: 'app-reports-chart-date-totals',
@@ -29,7 +30,7 @@ export class ReportsChartDateTotalsComponent implements OnChanges, AfterViewInit
   @Input()
   payments: Array<Payment>;
 
-  paymentsDateTotals: Array<Payment> = []
+  paymentColorsResult: PaymentColorsResult;
 
   private readonly margin: { top: number, bottom: number, left: number; right: number} =
     {top: 20, bottom: 30, left: 60, right: 20};
@@ -62,8 +63,6 @@ export class ReportsChartDateTotalsComponent implements OnChanges, AfterViewInit
     setTimeout(() => {
       console.log('ngAfterViewInit chart container:' + JSON.stringify(this.chartContainer.nativeElement.clientWidth));
       this.updateContainerWidth();
-      console.log(`Updating chart with (${this.innerWidth()}, ${this.innerHeight()}), clientWidth=${this.chartContainer?.nativeElement.clientWidth}, dataWidth=${this.dataWidth()}`);
-      this.updateChart();
     }, 0);
   }
 
@@ -72,7 +71,7 @@ export class ReportsChartDateTotalsComponent implements OnChanges, AfterViewInit
       if (propName === 'payments') {
         const changedProp = changes[propName];
         if (changedProp.currentValue && changedProp.currentValue.length  > 0) {
-          this.paymentsDateTotals = PaymentUtils.groupBy(changedProp.currentValue, ['periodDate'])
+          this.paymentColorsResult = PaymentsColorUtils.calcPaymentColorsTotals(changedProp.currentValue);
           if (!isNaN(this.innerWidth())) {
             console.log(`Updating chart with (${this.innerWidth()}, ${this.innerHeight()}), clientWidth=${this.chartContainer?.nativeElement.clientWidth}, dataWidth=${this.dataWidth()}`);
             this.updateChart();
@@ -97,7 +96,7 @@ export class ReportsChartDateTotalsComponent implements OnChanges, AfterViewInit
   }
 
   dataWidth(): number {
-    return this.paymentsDateTotals?.length * 100;
+    return this.paymentColorsResult?.paymentColorsTotals.length * 100;
   }
 
   componentContainerWidth(): number {
@@ -120,12 +119,12 @@ export class ReportsChartDateTotalsComponent implements OnChanges, AfterViewInit
   private createAxes() {
     this.xScale
       .rangeRound([0, this.innerWidth()])
-      .domain(this.paymentsDateTotals.map(value => DateFormatter.formatDateShortMonthYear(value.periodDate)))
+      .domain(this.paymentColorsResult?.paymentColorsTotals.map(value => DateFormatter.formatDateShortMonthYear(value.periodDate)))
       .padding(0.5);
 
     this
       .yScale.rangeRound([this.innerHeight(), 0])
-      .domain([0, d3.max(this.paymentsDateTotals, d => d.paymentAmount) as number]);
+      .domain([0, d3.max(this.paymentColorsResult?.paymentColorsTotals, d => d.amount) as number]);
 
     this.contentGroup.append('g')
       .attr('id', 'x-axis')
@@ -142,11 +141,11 @@ export class ReportsChartDateTotalsComponent implements OnChanges, AfterViewInit
       .attr('id', 'bar')
       .attr('fill', 'steelblue')
       .selectAll('rect')
-      .data(this.paymentsDateTotals)
+      .data(this.paymentColorsResult?.paymentColorsTotals)
       .join('rect')
       .attr('x', d => this.xScale(DateFormatter.formatDateShortMonthYear(d.periodDate)))
-      .attr('y', d => this.yScale(d.paymentAmount))
-      .attr('height', d => this.yScale(0) - this.yScale(d.paymentAmount))
+      .attr('y', d => this.yScale(d.amount))
+      .attr('height', d => this.yScale(0) - this.yScale(d.amount))
       .attr('width', this.xScale.bandwidth());
   }
 
@@ -154,13 +153,13 @@ export class ReportsChartDateTotalsComponent implements OnChanges, AfterViewInit
     this.contentGroup.append('g')
       .attr('id', 'labels')
       .selectAll('text')
-      .data(this.paymentsDateTotals)
+      .data(this.paymentColorsResult?.paymentColorsTotals)
       .enter()
       .append('text')
-      .text(d => d.paymentAmount > 0 ? this.amountPipe.transform(d.paymentAmount) : null)
+      .text(d => d.amount > 0 ? this.amountPipe.transform(d.amount) : null)
       .attr('text-anchor', 'middle')
       .attr('x', d => this.xScale(DateFormatter.formatDateShortMonthYear(d.periodDate)) + this.xScale.bandwidth() / 2)
-      .attr('y', d => this.yScale(d.paymentAmount) + 15)
+      .attr('y', d => this.yScale(d.amount) + 15)
       .attr('font-family', 'sans-serif')
       .attr('font-size', '11px')
       .attr('fill', 'white')
@@ -220,14 +219,14 @@ export class ReportsChartDateTotalsComponent implements OnChanges, AfterViewInit
 
     svg.selectAll('rect')
       .transition().ease(d3.easePolyInOut).duration(500)
-      .attr('x', d => this.xScale(DateFormatter.formatDateShortMonthYear((d as Payment).periodDate)))
-      .attr('y', d => this.yScale((d as Payment).paymentAmount))
-      .attr('height', d => this.yScale(0) - this.yScale((d as Payment).paymentAmount))
+      .attr('x', d => this.xScale(DateFormatter.formatDateShortMonthYear((d as PaymentColorsTotal).periodDate)))
+      .attr('y', d => this.yScale((d as PaymentColorsTotal).amount))
+      .attr('height', d => this.yScale(0) - this.yScale((d as PaymentColorsTotal).amount))
       .attr('width', this.xScale.bandwidth());
 
     svg.select<SVGGElement>('#labels').selectAll('text')
       .transition().ease(d3.easePolyInOut).duration(500)
-      .attr('x', d => this.xScale(DateFormatter.formatDateShortMonthYear((d as Payment).periodDate)) + this.xScale.bandwidth() / 2)
-      .attr('y', d => this.yScale((d as Payment).paymentAmount) + 15);
+      .attr('x', d => this.xScale(DateFormatter.formatDateShortMonthYear((d as PaymentColorsTotal).periodDate)) + this.xScale.bandwidth() / 2)
+      .attr('y', d => this.yScale((d as PaymentColorsTotal).amount) + 15);
   }
 }

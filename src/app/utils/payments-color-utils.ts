@@ -21,21 +21,32 @@ interface GroupColorAmount {
   paymentAmount: number
 }
 
+interface ColorAmount {
+  amount: number,
+  prevAmount: number,
+  nextAmount: number
+}
+
+export interface PaymentColorsTotal {
+  periodDate: Date,
+  amount: number;
+  colorAmounts: Array<ColorAmount>;
+}
+
 export interface PaymentColorsResult {
-  periodDates: Array<Date>,
-  colors: Array<string>,
-  values: Array<Array<number>>
+  paymentColorsTotals: Array<PaymentColorsTotal>;
+  colors: Array<string>;
 }
 
 export class PaymentsColorUtils {
-  static calcPaymentColors(payments: Array<Payment>): PaymentColorsResult {
+  static calcPaymentColorsTotals(payments: Array<Payment>): PaymentColorsResult {
 
     const groupAmount: any = {} as GroupAmount;
-    const periodDates = new Set<Date>();
+    const periodDates = new Set<number>();
 
     payments.forEach(p => {
-      if (!periodDates.has(p.periodDate)) {
-        periodDates.add(p.periodDate);
+      if (!periodDates.has(p.periodDate.getTime())) {
+        periodDates.add(p.periodDate.getTime());
       }
       const groupKey: GroupKey = {periodDate: p.periodDate, color: p.paymentGroup?.color || ''}
       const groupKeyStr = JSON.stringify(groupKey);
@@ -77,23 +88,47 @@ export class PaymentsColorUtils {
 
     const periodDatesArray = [...periodDates.values()].sort((a, b) => {if (a > b) {return 1;} else if (b > a) {return -1;} else {return 0;}});
 
-    const v: any = Array(sortedColors.length).fill(0).map(() => Array(periodDatesArray.length).fill(0));
+    const yz: Array<Array<number>> = Array(sortedColors.length).fill(0).map(() => Array(periodDatesArray.length).fill(0));
 
     periodDatesArray.forEach((d, di) => {
       sortedColors.forEach((c, ci) => {
-        const groupKey: GroupKey = {periodDate: d, color: c}
+        const groupKey: GroupKey = {periodDate: new Date(d), color: c}
         const groupKeyStr = JSON.stringify(groupKey);
         const ga = groupAmount[groupKeyStr];
         if (ga) {
-          v[ci][di] = ga;
+          yz[ci][di] = ga;
         }
       })
-    })
+    });
 
-    return {
-      periodDates: periodDatesArray,
-      colors: sortedColors,
-      values: v
-    };
+    const paymentColorsTotals: Array<PaymentColorsTotal> = new Array<PaymentColorsTotal>();
+
+    periodDatesArray.forEach((d, di) => {
+
+      const paymentColorsTotal: PaymentColorsTotal = {periodDate: new Date(d), amount: 0, colorAmounts: []} as PaymentColorsTotal;
+
+      let colorAmount: ColorAmount = {amount: 0, prevAmount: paymentColorsTotal.amount, nextAmount: paymentColorsTotal.amount};
+      sortedColors.forEach((c, ci) => {
+        if (ci !== 0) {
+          colorAmount = Object.assign({}, {amount: 0, prevAmount: paymentColorsTotal.amount, nextAmount: paymentColorsTotal.amount});
+        }
+
+        const groupKey: GroupKey = {periodDate: new Date(d), color: c}
+        const groupKeyStr = JSON.stringify(groupKey);
+        const ga = groupAmount[groupKeyStr];
+        if (ga) {
+          colorAmount.amount = ga;
+          colorAmount.nextAmount = colorAmount.prevAmount + colorAmount.amount;
+          paymentColorsTotal.amount += ga;
+        }
+
+        paymentColorsTotal.colorAmounts.push(Object.assign({}, colorAmount));
+      });
+
+      paymentColorsTotals.push(paymentColorsTotal);
+    });
+
+    return {colors: sortedColors, paymentColorsTotals: paymentColorsTotals};
+
   }
 }
