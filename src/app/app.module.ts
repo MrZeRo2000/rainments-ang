@@ -38,6 +38,7 @@ import { ReportsChartDateTotalsComponent } from './components/reports-chart-date
 import { AppInfoComponent } from './components/app-info/app-info.component';
 import { PaymentsSelectablePanelComponent } from './components/payments-selectable-panel/payments-selectable-panel.component';
 import { ReportsTableDisplayOptionsComponent } from './components/reports-table-display-options/reports-table-display-options.component';
+import { ReportsChartDateTotalsDisplayOptionsComponent } from './components/reports-chart-date-totals-display-options/reports-chart-date-totals-display-options.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { ReportsTableDisplayOptionsComponent } from './components/reports-table-
     ReportsChartDateTotalsComponent,
     AppInfoComponent,
     PaymentsSelectablePanelComponent,
-    ReportsTableDisplayOptionsComponent
+    ReportsTableDisplayOptionsComponent,
+    ReportsChartDateTotalsDisplayOptionsComponent
   ],
     imports: [
         BrowserModule,

@@ -1,23 +1,33 @@
 import {
-  AfterViewChecked,
   AfterViewInit,
   Component,
   ElementRef,
   HostListener,
   Input,
-  OnChanges, OnDestroy,
-  OnInit,
+  OnChanges,
   SimpleChanges,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 import {Payment} from '../../model/payment';
-import {PaymentUtils} from '../../utils/payment-utils';
 
 import * as d3 from 'd3';
 import {DateFormatter} from '../../core/utils/date-formatter';
 import {AmountPipe} from '../../core/pipes/amount.pipe';
 import {PaymentColorsResult, PaymentColorsTotal, PaymentsColorUtils} from '../../utils/payments-color-utils';
+import {
+  ChartStyle,
+  ReportsChartDateTotalsDisplayOptions
+} from '../reports-chart-date-totals-display-options/reports-chart-date-totals-display-options.component';
+
+interface LabelParams {
+  yOffset: number,
+  color: string
+}
+
+interface OptionsLabelParams {
+  [key: string]: LabelParams;
+}
 
 @Component({
   selector: 'app-reports-chart-date-totals',
@@ -26,9 +36,26 @@ import {PaymentColorsResult, PaymentColorsTotal, PaymentsColorUtils} from '../..
   styleUrls: ['./reports-chart-date-totals.component.scss']
 })
 export class ReportsChartDateTotalsComponent implements OnChanges, AfterViewInit {
+  static optionsLabelParams: OptionsLabelParams = new class implements OptionsLabelParams {
+    [key: string]: LabelParams;
+  }
+
+  static {
+    ReportsChartDateTotalsComponent.optionsLabelParams[ChartStyle.BarChart] = {
+      yOffset: 15,
+      color: 'white'
+    }
+    ReportsChartDateTotalsComponent.optionsLabelParams[ChartStyle.StackedBarChart] = {
+      yOffset: -5,
+      color: 'black'
+    }
+  }
 
   @Input()
   payments: Array<Payment>;
+
+  @Input()
+  displayOptions: ReportsChartDateTotalsDisplayOptions;
 
   paymentColorsResult: PaymentColorsResult;
 
@@ -63,6 +90,9 @@ export class ReportsChartDateTotalsComponent implements OnChanges, AfterViewInit
     setTimeout(() => {
       console.log('ngAfterViewInit chart container:' + JSON.stringify(this.chartContainer.nativeElement.clientWidth));
       this.updateContainerWidth();
+      setTimeout(() => {
+        this.updateChart();
+      })
     }, 0);
   }
 
@@ -76,6 +106,11 @@ export class ReportsChartDateTotalsComponent implements OnChanges, AfterViewInit
             console.log(`Updating chart with (${this.innerWidth()}, ${this.innerHeight()}), clientWidth=${this.chartContainer?.nativeElement.clientWidth}, dataWidth=${this.dataWidth()}`);
             this.updateChart();
           }
+        }
+      } else if (propName === 'displayOptions') {
+        const changedProp = changes[propName];
+        if (changedProp.currentValue && changedProp.previousValue) {
+          this.updateChart();
         }
       }
     }
@@ -124,7 +159,7 @@ export class ReportsChartDateTotalsComponent implements OnChanges, AfterViewInit
 
     this
       .yScale.rangeRound([this.innerHeight(), 0])
-      .domain([0, d3.max(this.paymentColorsResult?.paymentColorsTotals, d => d.amount) as number]);
+      .domain([0, d3.max(this.paymentColorsResult?.paymentColorsTotals, d => d.amount) * 1.05 as number]);
 
     this.contentGroup.append('g')
       .attr('id', 'x-axis')
@@ -137,16 +172,34 @@ export class ReportsChartDateTotalsComponent implements OnChanges, AfterViewInit
   }
 
   private createBars() {
-    this.contentGroup.append('g')
-      .attr('id', 'bar')
-      .attr('fill', 'steelblue')
-      .selectAll('rect')
-      .data(this.paymentColorsResult?.paymentColorsTotals)
-      .join('rect')
-      .attr('x', d => this.xScale(DateFormatter.formatDateShortMonthYear(d.periodDate)))
-      .attr('y', d => this.yScale(d.amount))
-      .attr('height', d => this.yScale(0) - this.yScale(d.amount))
-      .attr('width', this.xScale.bandwidth());
+    if (this.displayOptions.chartStyle === ChartStyle.StackedBarChart ) {
+      this.paymentColorsResult?.colors.forEach((color, color_index) => {
+        this.contentGroup.append('g')
+          .attr('id', `bar${color_index}`)
+          .attr('fill', color || 'white')
+          .attr('stroke', color || 'black')
+          .attr('stroke-width', '.1')
+          .attr('shape-rendering', 'crispEdges')
+          .selectAll('rect')
+          .data(this.paymentColorsResult?.paymentColorsTotals)
+          .join('rect')
+          .attr('x', d => this.xScale(DateFormatter.formatDateShortMonthYear(d.periodDate)))
+          .attr('y', d => this.yScale(d.colorAmounts[color_index].nextAmount))
+          .attr('height', d => this.yScale(color_index == 0 ? 0 : -2) - this.yScale(d.colorAmounts[color_index].amount))
+          .attr('width', this.xScale.bandwidth());
+      });
+    } else if (this.displayOptions.chartStyle === ChartStyle.BarChart) {
+      this.contentGroup.append('g')
+        .attr('id', 'bar')
+        .attr('fill', 'steelblue')
+        .selectAll('rect')
+        .data(this.paymentColorsResult?.paymentColorsTotals)
+        .join('rect')
+        .attr('x', d => this.xScale(DateFormatter.formatDateShortMonthYear(d.periodDate)))
+        .attr('y', d => this.yScale(d.amount))
+        .attr('height', d => this.yScale(0) - this.yScale(d.amount))
+        .attr('width', this.xScale.bandwidth());
+    }
   }
 
   private createLabels() {
@@ -159,12 +212,11 @@ export class ReportsChartDateTotalsComponent implements OnChanges, AfterViewInit
       .text(d => d.amount > 0 ? this.amountPipe.transform(d.amount) : null)
       .attr('text-anchor', 'middle')
       .attr('x', d => this.xScale(DateFormatter.formatDateShortMonthYear(d.periodDate)) + this.xScale.bandwidth() / 2)
-      .attr('y', d => this.yScale(d.amount) + 15)
+      .attr('y', d => this.yScale(d.amount) + ReportsChartDateTotalsComponent.optionsLabelParams[this.displayOptions.chartStyle].yOffset)
       .attr('font-family', 'sans-serif')
       .attr('font-size', '11px')
-      .attr('fill', 'white')
+      .attr('fill', ReportsChartDateTotalsComponent.optionsLabelParams[this.displayOptions.chartStyle].color)
     ;
-
   }
 
   private createChart() {
@@ -191,7 +243,9 @@ export class ReportsChartDateTotalsComponent implements OnChanges, AfterViewInit
     if (!!this.svg) {
       this.removeExistingChartElement();
     }
-    this.createChart();
+    if (!!this.paymentColorsResult) {
+      this.createChart();
+    }
   }
 
   @HostListener('window:resize', ['$event'])
@@ -217,16 +271,32 @@ export class ReportsChartDateTotalsComponent implements OnChanges, AfterViewInit
       .transition().ease(d3.easePolyInOut).duration(500)
       .call(d3.axisLeft(this.yScale));
 
-    svg.selectAll('rect')
-      .transition().ease(d3.easePolyInOut).duration(500)
-      .attr('x', d => this.xScale(DateFormatter.formatDateShortMonthYear((d as PaymentColorsTotal).periodDate)))
-      .attr('y', d => this.yScale((d as PaymentColorsTotal).amount))
-      .attr('height', d => this.yScale(0) - this.yScale((d as PaymentColorsTotal).amount))
-      .attr('width', this.xScale.bandwidth());
+    if (this.displayOptions.chartStyle === ChartStyle.StackedBarChart) {
+      this.paymentColorsResult?.colors.forEach((color, color_index) => {
+        svg.select(`#bar${color_index}`)
+          .selectAll('rect')
+          .transition().ease(d3.easePolyInOut).duration(500)
+          .attr('x', d => this.xScale(DateFormatter.formatDateShortMonthYear((d as PaymentColorsTotal).periodDate)))
+          .attr('width', this.xScale.bandwidth())
+          .attr('y', d => this.yScale((d as PaymentColorsTotal).colorAmounts[color_index].nextAmount))
+          .attr('height', d => this.yScale(color_index == 0 ? 0 : -2) - this.yScale((d as PaymentColorsTotal).colorAmounts[color_index].amount))
+        ;
+
+      });
+    } else if (this.displayOptions.chartStyle === ChartStyle.BarChart) {
+      svg.selectAll('rect')
+        .transition().ease(d3.easePolyInOut).duration(500)
+        .attr('x', d => this.xScale(DateFormatter.formatDateShortMonthYear((d as PaymentColorsTotal).periodDate)))
+        .attr('y', d => this.yScale((d as PaymentColorsTotal).amount))
+        .attr('height', d => this.yScale(0) - this.yScale((d as PaymentColorsTotal).amount))
+        .attr('width', this.xScale.bandwidth());
+    }
 
     svg.select<SVGGElement>('#labels').selectAll('text')
       .transition().ease(d3.easePolyInOut).duration(500)
       .attr('x', d => this.xScale(DateFormatter.formatDateShortMonthYear((d as PaymentColorsTotal).periodDate)) + this.xScale.bandwidth() / 2)
-      .attr('y', d => this.yScale((d as PaymentColorsTotal).amount) + 15);
+      .attr('y', d => this.yScale((d as PaymentColorsTotal).amount) +
+        ReportsChartDateTotalsComponent.optionsLabelParams[this.displayOptions.chartStyle].yOffset)
+      .attr('fill', ReportsChartDateTotalsComponent.optionsLabelParams[this.displayOptions.chartStyle].color);
   }
 }

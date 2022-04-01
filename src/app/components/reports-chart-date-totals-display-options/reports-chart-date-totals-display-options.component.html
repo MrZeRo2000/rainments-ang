@@ -1,0 +1,30 @@
+<div class="btn-group" dropdown insideClick="false">
+  <button id="button-animated" dropdownToggle type="button" class="btn btn-outline-primary ml-2 pl-2 pr-2 rounded"
+          aria-controls="form-dropdown-animated">
+    <app-core-display-icon-element></app-core-display-icon-element>
+  </button>
+  <div id="form-dropdown-animated" *dropdownMenu class="dropdown-menu dropdown-menu-right"
+       role="menu" aria-labelledby="button-animated">
+    <form class="form-group px-2 py-1" [formGroup] = displayOptionsForm>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="chartStyle" id="chartStyleBarChart"
+               [value]="ChartStyle.BarChart"
+               formControlName="chartStyle"
+        >
+        <label class="form-check-label text-nowrap" for="chartStyleBarChart">
+          {{ChartStyle.BarChart}}
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="chartStyle" id="chartStyleStackedBarChart"
+               [value]="ChartStyle.StackedBarChart"
+               formControlName="chartStyle"
+        >
+        <label class="form-check-label text-nowrap" for="chartStyleStackedBarChart">
+          {{ChartStyle.StackedBarChart}}
+        </label>
+      </div>
+    </form>
+  </div>
+</div>
+

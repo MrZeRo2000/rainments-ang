@@ -10,6 +10,10 @@ import {Payment} from '../../model/payment';
 import {PaymentUtils} from '../../utils/payment-utils';
 import {SelectableItem} from '../../core/model/selectable-item';
 import {ReportsTableDisplayOptions} from '../reports-table-display-options/reports-table-display-options.component';
+import {
+  ChartStyle,
+  ReportsChartDateTotalsDisplayOptions
+} from '../reports-chart-date-totals-display-options/reports-chart-date-totals-display-options.component';
 
 enum ControlTab {
   Chart = 'Chart',
@@ -46,7 +50,9 @@ export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> imp
   selectedColumns: Array<string> = ReportsMasterComponent.COLUMNS;
   selectedControlTab: ControlTab = ControlTab.Chart;
 
-  displayOptions: ReportsTableDisplayOptions = ReportsTableDisplayOptions.fromLocalStorage();
+  tableDisplayOptions: ReportsTableDisplayOptions = ReportsTableDisplayOptions.fromLocalStorage();
+
+  chartDisplayOptions: ReportsChartDateTotalsDisplayOptions = ReportsChartDateTotalsDisplayOptions.fromLocalStorage();
 
   private readonly loadSuccessSubscription: Subscription;
 
@@ -120,14 +126,18 @@ export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> imp
     this.applyFilters();
   }
 
-  public displayOptionsChanged(displayOptions: ReportsTableDisplayOptions) {
-    this.displayOptions.saveToLocalStorage();
+  public tableDisplayOptionsChanged(displayOptions: ReportsTableDisplayOptions) {
+    this.tableDisplayOptions.saveToLocalStorage();
     this.selectedColumns = ReportsMasterComponent.COLUMNS.filter(
-      s => (s === ReportsMasterComponent.PERIOD_DATE_COLUMN && this.displayOptions.showDate) ||
-        (s === ReportsMasterComponent.PAYMENT_GROUP_COLUMN && this.displayOptions.showGroup) ||
-        (s === ReportsMasterComponent.PRODUCT_COLUMN && this.displayOptions.showProduct)
+      s => (s === ReportsMasterComponent.PERIOD_DATE_COLUMN && this.tableDisplayOptions.showDate) ||
+        (s === ReportsMasterComponent.PAYMENT_GROUP_COLUMN && this.tableDisplayOptions.showGroup) ||
+        (s === ReportsMasterComponent.PRODUCT_COLUMN && this.tableDisplayOptions.showProduct)
     );
     this.applyFilters();
+  }
+
+  public chartDisplayOptionsChanged(displayOptions: ReportsChartDateTotalsDisplayOptions) {
+    this.chartDisplayOptions = {...displayOptions} as ReportsChartDateTotalsDisplayOptions;
   }
 
   private applyFilters() {

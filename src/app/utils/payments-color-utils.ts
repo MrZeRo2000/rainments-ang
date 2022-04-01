@@ -117,9 +117,10 @@ export class PaymentsColorUtils {
         const groupKeyStr = JSON.stringify(groupKey);
         const ga = groupAmount[groupKeyStr];
         if (ga) {
-          colorAmount.amount = ga;
+          const gar = Math.round(ga * 100)/100;
+          colorAmount.amount = gar;
           colorAmount.nextAmount = colorAmount.prevAmount + colorAmount.amount;
-          paymentColorsTotal.amount += ga;
+          paymentColorsTotal.amount += gar;
         }
 
         paymentColorsTotal.colorAmounts.push(Object.assign({}, colorAmount));

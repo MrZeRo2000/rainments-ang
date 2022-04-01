@@ -43,11 +43,17 @@
 
     <app-reports-table-display-options
       class="mb-2 ms-auto"
-      [reportsTableDisplayOptions]="displayOptions"
-      (selectionChanged)="displayOptionsChanged($event)"
+      [reportsTableDisplayOptions]="tableDisplayOptions"
+      (selectionChanged)="tableDisplayOptionsChanged($event)"
       *ngIf="this.selectedControlTab === ControlTab.Table"
     >
     </app-reports-table-display-options>
+    <app-reports-chart-date-totals-display-options
+      class="mb-2 ms-auto"
+      (selectionChanged)="chartDisplayOptionsChanged($event)"
+      *ngIf="this.selectedControlTab === ControlTab.Chart"
+    >
+    </app-reports-chart-date-totals-display-options>
   </div>
 
 </div>
@@ -72,6 +78,7 @@
   <div class="flex-grow-1 p-2">
       <app-reports-chart-date-totals
         [payments]="displayPaymentList"
+        [displayOptions]="chartDisplayOptions"
         *ngIf="displayPaymentList && (selectedControlTab === ControlTab.Chart)"
       ></app-reports-chart-date-totals>
       <div
@@ -81,7 +88,7 @@
       >
         <app-reports-table
           [payments]="displayPaymentList"
-          [displayOptions]="displayOptions"
+          [displayOptions]="tableDisplayOptions"
         >
         </app-reports-table>
       </div>
