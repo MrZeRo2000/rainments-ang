@@ -3,6 +3,7 @@ import {PaymentObject} from '../model/payment-object';
 import {PaymentGroup} from '../model/payment-group';
 import {Product} from '../model/product';
 import {Payment} from '../model/payment';
+import * as d3 from 'd3';
 
 describe('PaymentsColorUtils', () => {
   const paymentObject1 = new PaymentObject(1, 'Object 1');
@@ -62,6 +63,11 @@ describe('PaymentsColorUtils', () => {
     expect(result.paymentColorsTotals[0].colorAmounts[2].amount).toBe(0);
     expect(result.paymentColorsTotals[0].colorAmounts[2].prevAmount).toBe(12.5+0.3+3.2+0.1+2.5+0.1);
     expect(result.paymentColorsTotals[0].colorAmounts[2].nextAmount).toBe(12.5+0.3+3.2+0.1+2.5+0.1);
+
+    expect(Math.max(...[].concat(...result.paymentColorsTotals.map(v => v.colorAmounts.map(v => v.amount))))).toBe(12.5+0.3+3.2+0.1)
+
+    const d3 = require('d3');
+    expect(d3.max([].concat(...result.paymentColorsTotals.map(v => v.colorAmounts.map(v => v.amount))))).toBe(12.5+0.3+3.2+0.1);
 
   });
 

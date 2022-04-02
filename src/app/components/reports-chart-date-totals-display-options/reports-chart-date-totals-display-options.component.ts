@@ -4,6 +4,7 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 export enum ChartStyle {
   BarChart = "Bar Chart",
   StackedBarChart = "Stacked Bar Chart",
+  SideBySideBarChart = "Side by Side Bar Chart",
 }
 
 export class ReportsChartDateTotalsDisplayOptions {
