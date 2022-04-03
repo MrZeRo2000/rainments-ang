@@ -50,6 +50,9 @@ export class ReportsChartDateTotalsComponent implements OnChanges, AfterViewInit
   @ViewChild('chart', { static: true})
   private chartContainer?: ElementRef;
 
+  @ViewChild('tooltip', { static: true})
+  private tooltip?: ElementRef;
+
   @ViewChild('container', { static: true})
   private container?: ElementRef;
 
@@ -162,7 +165,7 @@ export class ReportsChartDateTotalsComponent implements OnChanges, AfterViewInit
   }
 
   private createBars() {
-    this.drawer?.drawBars(this.contentGroup, this.xScale, this.yScale);
+    this.drawer?.drawBars(this.contentGroup, this.xScale, this.yScale, this.tooltip.nativeElement);
   }
 
   private createLabels() {

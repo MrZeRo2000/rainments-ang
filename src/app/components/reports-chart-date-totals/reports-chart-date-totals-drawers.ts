@@ -10,7 +10,7 @@ interface LabelParams {
 }
 
 export interface IDrawer {
-  drawBars(content: any, xScale: ScaleBand<any>, yScale: d3.ScaleLinear<number, number>): void;
+  drawBars(content: any, xScale: ScaleBand<any>, yScale: d3.ScaleLinear<number, number>, tooltip: any): void;
 
   drawTransitionBars(svg: any, xScale: ScaleBand<any>, yScale: d3.ScaleLinear<number, number>): void;
 
@@ -31,7 +31,7 @@ abstract class AbstractBarChartDrawer implements IDrawer {
   public constructor(protected data: PaymentColorsResult) {
   }
 
-  abstract drawBars(content: any, xScale: ScaleBand<any>, yScale: d3.ScaleLinear<number, number>): void;
+  abstract drawBars(content: any, xScale: ScaleBand<any>, yScale: d3.ScaleLinear<number, number>, tooltip: any): void;
 
   abstract drawTransitionBars(svg: any, xScale: ScaleBand<any>, yScale: d3.ScaleLinear<number, number>): void;
 
@@ -75,7 +75,7 @@ abstract class AbstractBarChartDrawer implements IDrawer {
 }
 
 export class BarChartDrawer extends AbstractBarChartDrawer {
-  drawBars(content: any, xScale: ScaleBand<any>, yScale: d3.ScaleLinear<number, number>): void {
+  drawBars(content: any, xScale: ScaleBand<any>, yScale: d3.ScaleLinear<number, number>, tooltip: any): void {
     content.append('g')
       .attr('id', 'bar')
       .attr('fill', 'steelblue')
@@ -107,8 +107,16 @@ export class BarChartDrawer extends AbstractBarChartDrawer {
 }
 
 export class StackedBarChartDrawer extends AbstractBarChartDrawer {
-  drawBars(content: any, xScale: ScaleBand<any>, yScale: d3.ScaleLinear<number, number>): void {
+  drawBars(content: any, xScale: ScaleBand<any>, yScale: d3.ScaleLinear<number, number>, tooltip: any): void {
     this.data?.colors.forEach((color, color_index) => {
+      const chartData = this.data?.paymentColorsTotals
+        .map(v => ({
+          periodDate: v.periodDate,
+          amount: v.amount,
+          colorAmounts: [v.colorAmounts[color_index]],
+          colorName: this.data?.colorNames[color]
+        }));
+
       content.append('g')
         .attr('id', `bar${color_index}`)
         .attr('fill', color || 'white')
@@ -116,12 +124,25 @@ export class StackedBarChartDrawer extends AbstractBarChartDrawer {
         .attr('stroke-width', '.1')
         .attr('shape-rendering', 'crispEdges')
         .selectAll('rect')
-        .data(this.data?.paymentColorsTotals)
+        .data(chartData)
         .join('rect')
         .attr('x', d => xScale(DateFormatter.formatDateShortMonthYear(d.periodDate)))
-        .attr('y', d => yScale(d.colorAmounts[color_index].nextAmount))
-        .attr('height', d => yScale(color_index == 0 ? 0 : -2) - yScale(d.colorAmounts[color_index].amount))
-        .attr('width', xScale.bandwidth());
+        .attr('y', d => yScale(d.colorAmounts[0].nextAmount))
+        .attr('height', d => yScale(color_index == 0 ? 0 : -2) - yScale(d.colorAmounts[0].amount))
+        .attr('width', xScale.bandwidth())
+        .on('mouseover', function(d, o) {
+          tooltip.innerHTML = `${o.colorName}: ${AbstractBarChartDrawer.amountPipe.transform(o.colorAmounts[0].amount)}`;
+          tooltip.style.visibility = 'visible';
+        })
+        .on('mousemove', function(d, o) {
+          tooltip.style.left = d.screenX -5 + 'px';
+          tooltip.style.top = d.screenY - 100 + 'px';
+        })
+        .on('mouseleave', function() {
+          tooltip.style.visibility = 'hidden';
+        })
+      ;
+
     });
   }
 
@@ -147,10 +168,18 @@ export class StackedBarChartDrawer extends AbstractBarChartDrawer {
 }
 
 export class SideBySideBarChartDrawer extends AbstractBarChartDrawer {
-  drawBars(content: any, xScale: ScaleBand<any>, yScale: d3.ScaleLinear<number, number>): void {
+  drawBars(content: any, xScale: ScaleBand<any>, yScale: d3.ScaleLinear<number, number>, tooltip: any): void {
     const barWidth = xScale.bandwidth() / this.data.colors.length;
 
     this.data?.colors.forEach((color, color_index) => {
+      const chartData = this.data?.paymentColorsTotals
+        .map(v => ({
+          periodDate: v.periodDate,
+          amount: v.amount,
+          colorAmounts: [v.colorAmounts[color_index]],
+          colorName: this.data?.colorNames[color]
+        }));
+
       content.append('g')
         .attr('id', `bar${color_index}`)
         .attr('fill', color || 'white')
@@ -158,13 +187,24 @@ export class SideBySideBarChartDrawer extends AbstractBarChartDrawer {
         .attr('stroke-width', '.1')
         .attr('shape-rendering', 'crispEdges')
         .selectAll('rect')
-        .data(this.data?.paymentColorsTotals)
+        .data(chartData)
         .join('rect')
         .attr('x', d => xScale(DateFormatter.formatDateShortMonthYear(d.periodDate)) + color_index * barWidth)
-        .attr('y', d => yScale(d.colorAmounts[color_index].amount))
-        .attr('height', d => yScale(0) - yScale(d.colorAmounts[color_index].amount))
+        .attr('y', d => yScale(d.colorAmounts[0].amount))
+        .attr('height', d => yScale(0) - yScale(d.colorAmounts[0].amount))
         .attr('width', barWidth)
-      ;
+        .on('mouseover', function(d, o) {
+          tooltip.innerHTML = `${o.colorName}: ${AbstractBarChartDrawer.amountPipe.transform(o.colorAmounts[0].amount)}`;
+          tooltip.style.visibility = 'visible';
+        })
+        .on('mousemove', function(d, o) {
+          tooltip.style.left = d.screenX -5 + 'px';
+          tooltip.style.top = d.screenY - 100 + 'px';
+        })
+        .on('mouseleave', function() {
+          tooltip.style.visibility = 'hidden';
+        })
+        ;
     });
   }
 
@@ -177,8 +217,8 @@ export class SideBySideBarChartDrawer extends AbstractBarChartDrawer {
         .transition().ease(d3.easePolyInOut).duration(500)
         .attr('x', d => xScale(DateFormatter.formatDateShortMonthYear((d as PaymentColorsTotal).periodDate)) + color_index * barWidth)
         .attr('width', barWidth)
-        .attr('y', d => yScale((d as PaymentColorsTotal).colorAmounts[color_index].amount))
-        .attr('height', d => yScale(0) - yScale((d as PaymentColorsTotal).colorAmounts[color_index].amount))
+        .attr('y', d => yScale((d as PaymentColorsTotal).colorAmounts[0].amount))
+        .attr('height', d => yScale(0) - yScale((d as PaymentColorsTotal).colorAmounts[0].amount))
       ;
     });
   }

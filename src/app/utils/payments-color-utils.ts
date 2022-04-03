@@ -21,6 +21,10 @@ interface GroupColorAmount {
   paymentAmount: number
 }
 
+export interface ColorNames {
+  [color: string]: string
+}
+
 export interface ColorAmount {
   amount: number,
   prevAmount: number,
@@ -36,6 +40,7 @@ export interface PaymentColorsTotal {
 export interface PaymentColorsResult {
   paymentColorsTotals: Array<PaymentColorsTotal>;
   colors: Array<string>;
+  colorNames: ColorNames;
 }
 
 export class PaymentsColorUtils {
@@ -56,6 +61,14 @@ export class PaymentsColorUtils {
         groupAmount[groupKeyStr] = p.paymentAmount + p.commissionAmount;
       }
     });
+
+    const colorNames: ColorNames = [
+      ...new Set(payments.map(v => (JSON.stringify({color:v.paymentGroup.color || '', name: v.paymentGroup.name}))))
+    ]
+      .map(v => JSON.parse(v))
+      .reduce((a,v) => {if (!!a[v.color]) {a[v.color] = a[v.color] + ',' + v.name} else {a[v.color] = v.name;} return a;}, {})
+
+    //[...new Set(payments.map(v => ({color:v.paymentGroup.color || '', name: v.paymentGroup.name})))].reduce((a,v) => {if (!!a[v.color]) {a[v.color] = a[v.color] + ',' + v.name} else {a[v.color] = v.name;} return a;}, {})
 
     const groupColorAmount = Object.keys(groupAmount).reduce(
       (a, v) => {
@@ -129,7 +142,6 @@ export class PaymentsColorUtils {
       paymentColorsTotals.push(paymentColorsTotal);
     });
 
-    return {colors: sortedColors, paymentColorsTotals: paymentColorsTotals};
-
+    return {colors: sortedColors, paymentColorsTotals, colorNames};
   }
 }
