@@ -1,3 +1,3 @@
-<div #container style="overflow-x:auto" [ngStyle]="{'width': componentContainerWidth() + 'px'}">
-  <svg #chart class="chart" [ngStyle]="{minWidth: dataWidth()}"></svg>
+<div #container style="overflow-x:auto" [ngStyle]="{'width': componentContainerWidth() + 'px'}" id="chartContainer">
+  <svg #chart class="chart" [ngStyle]="{minWidth: dataWidth()}" id="chart"></svg>
 </div>

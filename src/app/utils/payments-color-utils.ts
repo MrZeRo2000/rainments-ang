@@ -21,7 +21,7 @@ interface GroupColorAmount {
   paymentAmount: number
 }
 
-interface ColorAmount {
+export interface ColorAmount {
   amount: number,
   prevAmount: number,
   nextAmount: number

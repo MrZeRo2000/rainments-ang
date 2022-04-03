@@ -18,7 +18,7 @@ import {
   ChartStyle,
   ReportsChartDateTotalsDisplayOptions
 } from '../reports-chart-date-totals-display-options/reports-chart-date-totals-display-options.component';
-import {BarChartDrawer, IDrawer, StackedBarChartDrawer} from './reports-chart-date-totals-drawers';
+import {BarChartDrawer, IDrawer, SideBySideBarChartDrawer, StackedBarChartDrawer} from './reports-chart-date-totals-drawers';
 
 
 @Component({
@@ -99,6 +99,8 @@ export class ReportsChartDateTotalsComponent implements OnChanges, AfterViewInit
       this.drawer = new BarChartDrawer(this.paymentColorsResult)
     } else if (this.displayOptions.chartStyle === ChartStyle.StackedBarChart) {
       this.drawer = new StackedBarChartDrawer(this.paymentColorsResult)
+    } else if (this.displayOptions.chartStyle === ChartStyle.SideBySideBarChart) {
+      this.drawer = new SideBySideBarChartDrawer(this.paymentColorsResult)
     } else {
       this.drawer = undefined;
     }
@@ -147,7 +149,7 @@ export class ReportsChartDateTotalsComponent implements OnChanges, AfterViewInit
 
     this
       .yScale.rangeRound([this.innerHeight(), 0])
-      .domain([0, d3.max(this.paymentColorsResult?.paymentColorsTotals, d => d.amount) * 1.05 as number]);
+      .domain([0, this.drawer?.getMaxY()]);
 
     this.contentGroup.append('g')
       .attr('id', 'x-axis')
@@ -160,7 +162,7 @@ export class ReportsChartDateTotalsComponent implements OnChanges, AfterViewInit
   }
 
   private createBars() {
-    this.drawer?.drawBar(this.contentGroup, this.xScale, this.yScale);
+    this.drawer?.drawBars(this.contentGroup, this.xScale, this.yScale);
   }
 
   private createLabels() {
@@ -218,7 +220,7 @@ export class ReportsChartDateTotalsComponent implements OnChanges, AfterViewInit
       .transition().ease(d3.easePolyInOut).duration(500)
       .call(d3.axisLeft(this.yScale));
 
-    this.drawer?.drawTransition(svg, this.xScale, this.yScale);
+    this.drawer?.drawTransitionBars(svg, this.xScale, this.yScale);
 
     this.drawer?.drawTransitionLabels(svg, this.xScale, this.yScale);
   }
