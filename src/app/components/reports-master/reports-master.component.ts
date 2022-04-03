@@ -52,13 +52,14 @@ export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> imp
 
   tableDisplayOptions: ReportsTableDisplayOptions = ReportsTableDisplayOptions.fromLocalStorage();
 
-  chartDisplayOptions: ReportsChartDateTotalsDisplayOptions = ReportsChartDateTotalsDisplayOptions.fromLocalStorage();
+  chartDisplayOptions: ReportsChartDateTotalsDisplayOptions;
 
   private readonly loadSuccessSubscription: Subscription;
 
   constructor(public repository: PaymentRepRepository, private route: ActivatedRoute) {
     super(repository);
     this.paymentObjectId = Number.parseInt(this.route.snapshot.params[this.KEY_ID], 0);
+    this.chartDisplayOptions = ReportsChartDateTotalsDisplayOptions.fromLocalStorage(this.paymentObjectId);
 
     const dateEnd = DateGenerator.getCurrentMonthStartDate();
     const dateStart = new Date(dateEnd.getFullYear() - 1, 0, 1);

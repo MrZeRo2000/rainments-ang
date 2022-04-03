@@ -12,23 +12,23 @@ export class ReportsChartDateTotalsDisplayOptions {
 
   public chartStyle: string;
 
-  public static fromLocalStorage(): ReportsChartDateTotalsDisplayOptions {
+  public static fromLocalStorage(paymentObjectId: number): ReportsChartDateTotalsDisplayOptions {
     const instance = new ReportsChartDateTotalsDisplayOptions();
-    instance.loadFromLocalStorage();
+    instance.loadFromLocalStorage(paymentObjectId);
 
     return instance;
   }
 
-  public saveToLocalStorage(): void {
-    localStorage.setItem(ReportsChartDateTotalsDisplayOptions.KEY, JSON.stringify(this));
+  public saveToLocalStorage(paymentObjectId: number): void {
+    localStorage.setItem(`${ReportsChartDateTotalsDisplayOptions.KEY}${paymentObjectId}`, JSON.stringify(this));
   }
 
   public loadDefaults(): void {
     this.chartStyle = ChartStyle.BarChart;
   }
 
-  public loadFromLocalStorage(): void {
-    const localItem = localStorage.getItem(ReportsChartDateTotalsDisplayOptions.KEY);
+  public loadFromLocalStorage(paymentObjectId: number): void {
+    const localItem = localStorage.getItem(`${ReportsChartDateTotalsDisplayOptions.KEY}${paymentObjectId}`);
     this.loadDefaults();
     if (localItem !== null) {
       try {
@@ -52,7 +52,10 @@ export class ReportsChartDateTotalsDisplayOptionsComponent implements OnInit {
 
   displayOptionsForm: FormGroup;
 
-  displayOptions: ReportsChartDateTotalsDisplayOptions = ReportsChartDateTotalsDisplayOptions.fromLocalStorage();
+  displayOptions: ReportsChartDateTotalsDisplayOptions;
+
+  @Input()
+  paymentObjectId: number;
 
   @Output()
   selectionChanged = new EventEmitter<ReportsChartDateTotalsDisplayOptions>();
@@ -67,7 +70,7 @@ export class ReportsChartDateTotalsDisplayOptionsComponent implements OnInit {
 
     formGroup.valueChanges.subscribe((value => {
       Object.assign(this.displayOptions, value);
-      this.displayOptions.saveToLocalStorage();
+      this.displayOptions.saveToLocalStorage(this.paymentObjectId);
       this.selectionChanged.emit(this.displayOptions);
     }))
 
@@ -75,6 +78,7 @@ export class ReportsChartDateTotalsDisplayOptionsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.displayOptions = ReportsChartDateTotalsDisplayOptions.fromLocalStorage(this.paymentObjectId);
     this.displayOptionsForm = this.buildForm();
   }
 

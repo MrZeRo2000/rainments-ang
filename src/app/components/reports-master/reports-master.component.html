@@ -50,6 +50,7 @@
     </app-reports-table-display-options>
     <app-reports-chart-date-totals-display-options
       class="mb-2 ms-auto"
+      [paymentObjectId]="paymentObjectId"
       (selectionChanged)="chartDisplayOptionsChanged($event)"
       *ngIf="this.selectedControlTab === ControlTab.Chart"
     >
