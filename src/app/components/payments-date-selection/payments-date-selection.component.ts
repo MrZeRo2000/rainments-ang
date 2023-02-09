@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {DateRangeGenerator, PeriodInfo} from '../../core/utils/date-range-generator';
 import {DateGenerator} from '../../core/utils/date-generator';
 import {PaymentObject} from '../../model/payment-object';
@@ -11,7 +11,7 @@ import {PaymentObjectTotals} from '../../model/payment-object-totals';
   styleUrls: ['./payments-date-selection.component.scss']
 })
 export class PaymentsDateSelectionComponent implements OnInit {
-  editForm: FormGroup;
+  editForm: UntypedFormGroup;
   periods: Array<PeriodInfo>;
   years: Array<number>;
   period: string;
@@ -27,7 +27,7 @@ export class PaymentsDateSelectionComponent implements OnInit {
 
   @Output() selectedDate = new EventEmitter<Date>();
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: UntypedFormBuilder) {
     // this.lastSelectedDate = DateGenerator.getPreviousMonthStartDate();
     this.selectedDate.subscribe(v => {
       this.lastSelectedDate = v;
@@ -83,7 +83,7 @@ export class PaymentsDateSelectionComponent implements OnInit {
     }
   }
 
-  private buildForm(): FormGroup {
+  private buildForm(): UntypedFormGroup {
     const formGroup = this.fb.group({
       periodSelect: ['', Validators.required],
       yearSelect: ['', Validators.required]

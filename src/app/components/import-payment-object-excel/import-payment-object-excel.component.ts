@@ -1,7 +1,7 @@
 import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {PaymentObject} from '../../model/payment-object';
 import {PaymentObjectRepository} from '../../repository/payment-object-repository';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {ImportPaymentObjectRepository} from '../../repository/import-payment-object-repository';
 import {MessagesService} from '../../messages/messages.service';
 import {SuccessMessage} from '../../messages/message.model';
@@ -20,7 +20,7 @@ export class ImportPaymentObjectExcelComponent extends CommonTableComponent<Paym
   @Input()
   messageSource: string;
 
-  editForm: FormGroup;
+  editForm: UntypedFormGroup;
   formSubmitted = false;
   editFormFile: File;
 
@@ -35,7 +35,7 @@ export class ImportPaymentObjectExcelComponent extends CommonTableComponent<Paym
   }
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     public messagesService: MessagesService,
     public repository: PaymentObjectRepository,
     private importRepository: ImportPaymentObjectRepository,
@@ -68,7 +68,7 @@ export class ImportPaymentObjectExcelComponent extends CommonTableComponent<Paym
     return this.repository.getData();
   }
 
-  private buildForm(): FormGroup {
+  private buildForm(): UntypedFormGroup {
     return this.fb.group({
         paymentObject: ['', Validators.required],
         fileName: ['', Validators.required]

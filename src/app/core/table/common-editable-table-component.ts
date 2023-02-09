@@ -4,7 +4,7 @@ import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 import {ReadWriteRepository} from '../repository/read-write-repository';
 import {EditMode, EditState} from '../edit/edit-state';
 import {CommonEntity} from '../entity/common-entity';
-import {FormGroup} from '@angular/forms';
+import {UntypedFormGroup} from '@angular/forms';
 import {Subject, Subscription} from 'rxjs';
 import {ConfirmationModalDialogComponent} from '../components/confirmation-modal-dialog/confirmation-modal-dialog.component';
 import {CommonTableComponent} from './common-table-component';
@@ -17,7 +17,7 @@ export abstract class CommonEditableTableComponent<R, W extends CommonEntity>
   implements OnInit, OnDestroy, Editable {
   bsModalRef: BsModalRef;
   editState: EditState<W>;
-  editForm: FormGroup;
+  editForm: UntypedFormGroup;
 
   persistSubscription: Subscription;
 
@@ -62,7 +62,7 @@ export abstract class CommonEditableTableComponent<R, W extends CommonEntity>
     setTimeout(() => this.setEditFocus());
   }
 
-  protected abstract buildForm(): FormGroup;
+  protected abstract buildForm(): UntypedFormGroup;
 
   protected abstract getDisplayItemName(item: W): string;
 

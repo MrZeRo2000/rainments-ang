@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup} from '@angular/forms';
 
 export class ReportsTableDisplayOptions {
   private readonly KEY = 'reportsTableDisplayOptions';
@@ -59,9 +59,9 @@ export class ReportsTableDisplayOptionsComponent implements OnInit {
   @Output()
   selectionChanged = new EventEmitter<ReportsTableDisplayOptions>();
 
-  displayOptionsForm: FormGroup;
+  displayOptionsForm: UntypedFormGroup;
 
-  private buildForm(): FormGroup {
+  private buildForm(): UntypedFormGroup {
     const formGroup = this.fb.group({
         showDate: [this.reportsTableDisplayOptions?.showDate],
         showGroup: [this.reportsTableDisplayOptions?.showGroup],
@@ -79,7 +79,7 @@ export class ReportsTableDisplayOptionsComponent implements OnInit {
   }
 
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: UntypedFormBuilder) { }
 
   ngOnInit(): void {
     this.displayOptionsForm = this.buildForm();

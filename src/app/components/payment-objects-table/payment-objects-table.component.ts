@@ -1,7 +1,7 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import {PaymentObjectRepository} from '../../repository/payment-object-repository';
 import {PaymentObject} from '../../model/payment-object';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {CommonSimpleEditableTableComponent} from '../../core/table/common-simple-editable-table-component';
 import {DragHandlerService} from '../../core/services/drag-handler.service';
@@ -21,7 +21,7 @@ export class PaymentObjectsTableComponent extends CommonSimpleEditableTableCompo
   payDelays = [[], [0, 'Current Period'], [1, 'Next Period']]
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     protected modalService: BsModalService,
     public repository: PaymentObjectRepository,
     public dragHandlerService: DragHandlerService
@@ -29,7 +29,7 @@ export class PaymentObjectsTableComponent extends CommonSimpleEditableTableCompo
     super(PaymentObject, modalService, repository);
   }
 
-  protected buildForm(): FormGroup {
+  protected buildForm(): UntypedFormGroup {
     return this.fb.group({
         name: ['', Validators.required],
         period: [''],

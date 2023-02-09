@@ -1,6 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {PaymentObjectGroupRefs} from '../../model/payment-object-group-refs';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {MessagesService} from '../../messages/messages.service';
 import {PaymentObjectGroupRefsRepository} from '../../repository/payment-object-group-refs-repository';
 import {CommonTableComponent} from '../../core/table/common-table-component';
@@ -26,7 +26,7 @@ export class UpdatePaymentGroupComponent extends CommonTableComponent<PaymentObj
 
   bsModalRef: BsModalRef;
 
-  editForm: FormGroup;
+  editForm: UntypedFormGroup;
   formSubmitted = false;
 
   private updateSubscription: Subscription;
@@ -39,7 +39,7 @@ export class UpdatePaymentGroupComponent extends CommonTableComponent<PaymentObj
   }
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     public messagesService: MessagesService,
     public repository: PaymentObjectGroupRefsRepository,
     private updateRepository: UpdatePaymentObjectGroupRepository,
@@ -70,7 +70,7 @@ export class UpdatePaymentGroupComponent extends CommonTableComponent<PaymentObj
     this.updateSubscription.unsubscribe();
   }
 
-  private buildForm(): FormGroup {
+  private buildForm(): UntypedFormGroup {
     return this.fb.group({
         paymentObject: ['', Validators.required],
         paymentGroupFrom: ['', Validators.required],

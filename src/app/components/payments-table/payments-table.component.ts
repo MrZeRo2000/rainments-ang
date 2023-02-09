@@ -14,7 +14,7 @@ import {
 import {CommonEditableTableComponent} from '../../core/table/common-editable-table-component';
 import {PaymentRefs} from '../../model/payment-refs';
 import {Payment} from '../../model/payment';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {PaymentRefsRepository} from '../../repository/payment-refs-repository';
 import {PaymentRepository} from '../../repository/payment-repository';
@@ -63,7 +63,7 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   private prevProduct: number;
 
   productUsage: number;
-  productUsageForm: FormGroup = this.fb.group({productUsageCounter: ['']});
+  productUsageForm: UntypedFormGroup = this.fb.group({productUsageCounter: ['']});
 
   selectableItems: Array<SelectableItem<Payment>> = new Array<SelectableItem<Payment>>();
 
@@ -107,7 +107,7 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   }
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     protected modalService: BsModalService,
     public readRepository: PaymentRefsRepository,
     protected repository: PaymentRepository,
@@ -224,7 +224,7 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     this.selectableItems.forEach(p => p.isSelected = false);
   }
 
-  protected buildForm(): FormGroup {
+  protected buildForm(): UntypedFormGroup {
     const form = this.fb.group({
       paymentGroup: ['', Validators.required],
       product: ['', Validators.required],

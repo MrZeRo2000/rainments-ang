@@ -1,6 +1,6 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Product} from '../../model/product';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {ProductRepository} from '../../repository/product-repository';
 import {CommonSimpleEditableTableComponent} from '../../core/table/common-simple-editable-table-component';
@@ -17,7 +17,7 @@ export class ProductsTableComponent extends CommonSimpleEditableTableComponent<P
   counterPrecisionOptions = ['', '0', '1', '2'];
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     protected modalService: BsModalService,
     public repository: ProductRepository,
     public dragHandlerService: DragHandlerService
@@ -25,7 +25,7 @@ export class ProductsTableComponent extends CommonSimpleEditableTableComponent<P
     super(Product, modalService, repository);
   }
 
-  protected buildForm(): FormGroup {
+  protected buildForm(): UntypedFormGroup {
     return this.fb.group({
         name: ['', Validators.required],
         unitName: [''],

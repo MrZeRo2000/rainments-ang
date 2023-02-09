@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup} from '@angular/forms';
 
 export enum ChartStyle {
   BarChart = "Bar Chart",
@@ -50,7 +50,7 @@ export class ReportsChartDateTotalsDisplayOptionsComponent implements OnInit {
 
   ChartStyle = ChartStyle;
 
-  displayOptionsForm: FormGroup;
+  displayOptionsForm: UntypedFormGroup;
 
   displayOptions: ReportsChartDateTotalsDisplayOptions;
 
@@ -60,9 +60,9 @@ export class ReportsChartDateTotalsDisplayOptionsComponent implements OnInit {
   @Output()
   selectionChanged = new EventEmitter<ReportsChartDateTotalsDisplayOptions>();
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: UntypedFormBuilder) { }
 
-  private buildForm(): FormGroup {
+  private buildForm(): UntypedFormGroup {
     const formGroup = this.fb.group({
         chartStyle: [this.displayOptions?.chartStyle]
       }
