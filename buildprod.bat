@@ -1,3 +1,1 @@
-CALL termsetup.bat
-RMDIR /S /Q dist\rainments-ang
-ng build --configuration production --base-href=/rainments-ang/
+CALL ../common/bat/buildprod.bat rainments-ang
