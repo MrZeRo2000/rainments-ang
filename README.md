@@ -98,3 +98,6 @@ classes:
 browser-default custom-select -> form-select
 custom-control-label -> form-label
 badge-success -> bg-success
+
+## Upgrade to Angular 16
+ng update @angular/core@16 @angular/cli@16 @angular/cdk@16 --allow-dirty --force
