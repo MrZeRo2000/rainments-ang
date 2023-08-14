@@ -16,7 +16,7 @@
   </tr>
   </thead>
   <tbody cdkDropList cdkDropListLockAxis="y" (cdkDropListDropped)="onDrop($event)">
-  <tr cdkDrag *ngFor="let item of getPaymentGroups()" (cdkDragStarted)="this.dragHandlerService.startDrag()" [ngStyle]="{'background-color': item.color}">
+  <tr cdkDrag *ngFor="let item of getPaymentGroups()" (cdkDragStarted)="this.dragHandlerService.startDrag()" [ngStyle]="{'--bs-table-bg': item.color}">
     <td class="text-nowrap align-middle"><div><app-core-drag-grip cdkDragHandle></app-core-drag-grip> {{item.id}}</div></td>
     <td class="align-middle" *ngIf="item.url"><a href="{{item.url}}" target="_blank">{{item.name}}</a></td>
     <td class="align-middle" *ngIf="!item.url" >{{item.name}}</td>

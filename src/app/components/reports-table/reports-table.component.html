@@ -17,7 +17,7 @@
     </tr>
     <tr
       *ngFor="let item of payments"
-      [ngStyle]="{'background-color': displayOptions.displayColors? item.paymentGroup?.color : ''}"
+      [ngStyle]="{'--bs-table-bg': displayOptions.displayColors? item.paymentGroup?.color : ''}"
     >
       <td *ngIf="displayOptions.showDate">{{item.periodDate | date: "dd.MM.yyyy"}}</td>
       <td *ngIf="displayOptions.showGroup">{{item.paymentGroup?.name}}</td>
