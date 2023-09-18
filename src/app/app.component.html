@@ -1,6 +1,10 @@
 <div class="jumbotron">
   <app-app-info></app-app-info>
-  <h1 class="display-4">{{ title }}</h1>
+  <div class="d-flex flex-row">
+    <h1 class="d-flex align-items-center flex-grow-1 display-4">{{ title }}</h1>
+    <app-backup-database-button class="d-flex align-items-center"></app-backup-database-button>
+  </div>
+
 </div>
 
 <app-nav-top></app-nav-top>

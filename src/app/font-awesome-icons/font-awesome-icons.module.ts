@@ -27,7 +27,7 @@ import {
   ]
 })
 export class FontAwesomeIconsModule {
-  constructor(private library: FaIconLibrary) {
+  constructor(library: FaIconLibrary) {
     library.addIcons(faLock, faSignInAlt, faSignOutAlt, faSave, faFileExport, faPlusCircle, faTrash, faPen, faClone, faSpinner, faSearch,
       faCheckCircle, faWindowClose, faEllipsisH, faTimes, faAngleLeft, faAngleRight, faPlus, faEye, faEdit, faGripVertical, faExclamation,
       faCaretUp, faCaretDown, faEquals, faChartLine, faCog,
