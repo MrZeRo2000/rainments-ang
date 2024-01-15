@@ -97,24 +97,24 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "rainments-ang:build"
+            "buildTarget": "rainments-ang:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "rainments-ang:build:production"
+              "buildTarget": "rainments-ang:build:production"
             },
             "int": {
-              "browserTarget": "rainments-ang:build:int"
+              "buildTarget": "rainments-ang:build:int"
             },
             "int-ide": {
-              "browserTarget": "rainments-ang:build:int-ide"
+              "buildTarget": "rainments-ang:build:int-ide"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "rainments-ang:build"
+            "buildTarget": "rainments-ang:build"
           }
         },
         "test": {
