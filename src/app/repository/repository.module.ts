@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {HttpClientModule} from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import {RestDataSource} from '../data-source/rest-data-source';
 import {PaymentObjectRepository} from './payment-object-repository';
 import {PaymentGroupRepository} from './payment-group-repository';
@@ -24,37 +24,30 @@ import {PaymentObjectPeriodRepository} from './payment-object-period-repository'
 import {PaymentRepRepository} from './payment-rep-repository';
 import {AppInfoRepository} from './app-info-repository';
 
-@NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    HttpClientModule
-  ],
-  providers: [
-    HttpClientModule,
-    RestDataSource,
-    PaymentObjectRepository,
-    PaymentObjectPersistRepository,
-    PaymentGroupRepository,
-    PaymentGroupPersistRepository,
-    ProductRepository,
-    ProductPersistRepository,
-    PaymentRepository,
-    PaymentPersistRepository,
-    PaymentRefsRepository,
-    PaymentObjectGroupRefsRepository,
-    ImportPaymentObjectRepository,
-    BackupDatabaseRepository,
-    BackupDatabasePersistRepository,
-    BackupInfoRepository,
-    UpdatePaymentObjectGroupRepository,
-    UpdatePaymentObjectGroupPersistRepository,
-    ImportPaymentObjectPersistRepository,
-    BackupDatabasePersistRepository,
-    PaymentObjectTotalsRepository,
-    PaymentObjectPeriodRepository,
-    PaymentRepRepository,
-    AppInfoRepository
-  ]
-})
+@NgModule({ declarations: [], imports: [CommonModule], providers: [
+        RestDataSource,
+        PaymentObjectRepository,
+        PaymentObjectPersistRepository,
+        PaymentGroupRepository,
+        PaymentGroupPersistRepository,
+        ProductRepository,
+        ProductPersistRepository,
+        PaymentRepository,
+        PaymentPersistRepository,
+        PaymentRefsRepository,
+        PaymentObjectGroupRefsRepository,
+        ImportPaymentObjectRepository,
+        BackupDatabaseRepository,
+        BackupDatabasePersistRepository,
+        BackupInfoRepository,
+        UpdatePaymentObjectGroupRepository,
+        UpdatePaymentObjectGroupPersistRepository,
+        ImportPaymentObjectPersistRepository,
+        BackupDatabasePersistRepository,
+        PaymentObjectTotalsRepository,
+        PaymentObjectPeriodRepository,
+        PaymentRepRepository,
+        AppInfoRepository,
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class RepositoryModule { }

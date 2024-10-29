@@ -3,7 +3,7 @@ import {CommonTableComponent} from '../../core/table/common-table-component';
 import {PaymentRep} from '../../model/payment-rep';
 import {PaymentRepRepository} from '../../repository/payment-rep-repository';
 import {ActivatedRoute} from '@angular/router';
-import {HttpParams} from '@angular/common/http';
+import { HttpParams } from '@angular/common/http';
 import {DateGenerator} from '../../core/utils/date-generator';
 import {Subscription} from 'rxjs';
 import {Payment} from '../../model/payment';

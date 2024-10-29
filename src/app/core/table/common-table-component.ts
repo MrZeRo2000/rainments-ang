@@ -1,6 +1,6 @@
 
 import {Directive, OnDestroy, OnInit} from '@angular/core';
-import {HttpParams} from '@angular/common/http';
+import { HttpParams } from '@angular/common/http';
 import {ReadRepository} from '../repository/read-repository';
 
 @Directive()

@@ -1,5 +1,5 @@
 import {Observable, Subject} from 'rxjs';
-import {HttpResponse} from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 import {ErrorMessage} from '../../messages/message.model';
 import {RepositoryUtils} from './repository-utils';
 import {MessagesService} from '../../messages/messages.service';

@@ -1,6 +1,6 @@
 import {Inject, Injectable} from '@angular/core';
 import {RestUrl} from '../config/configuration';
-import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import {Observable} from 'rxjs';
 
 

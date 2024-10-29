@@ -4,10 +4,11 @@ import { PaymentGroupsTableComponent } from './payment-groups-table.component';
 import {RestUrlEnv} from '../../config/configuration';
 import {RestDataSource} from '../../data-source/rest-data-source';
 import {ModalModule} from 'ngx-bootstrap/modal';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import {ReactiveFormsModule} from '@angular/forms';
 import {CoreModule} from '../../core/core.module';
 import {RepositoryModule} from '../../repository/repository.module';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('PaymentGroupsTableComponent', () => {
   let component: PaymentGroupsTableComponent;
@@ -15,10 +16,10 @@ describe('PaymentGroupsTableComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      declarations: [ PaymentGroupsTableComponent ],
-      providers: [RestUrlEnv, RestDataSource],
-      imports: [HttpClientTestingModule, ReactiveFormsModule, ModalModule.forRoot(), CoreModule, RepositoryModule]
-    })
+    declarations: [PaymentGroupsTableComponent],
+    imports: [ReactiveFormsModule, ModalModule.forRoot(), CoreModule, RepositoryModule],
+    providers: [RestUrlEnv, RestDataSource, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+})
     .compileComponents();
   });
 

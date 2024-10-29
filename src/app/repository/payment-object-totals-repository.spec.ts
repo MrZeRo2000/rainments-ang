@@ -4,13 +4,14 @@ import {RestDataSource} from '../data-source/rest-data-source';
 import {MessagesService} from '../messages/messages.service';
 import {RestUrlEnv} from '../config/configuration';
 import {PaymentObjectPersistRepository} from './payment-object-persist-repository';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('PaymentObjectTotalsRepository', () => {
   beforeEach(() => TestBed.configureTestingModule({
-    providers: [RestDataSource, RestUrlEnv],
-    imports: [HttpClientTestingModule]
-  }));
+    imports: [],
+    providers: [RestDataSource, RestUrlEnv, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+}));
 
   it('should create an instance', () => {
     expect(new PaymentObjectTotalsRepository(

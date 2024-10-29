@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReportNavComponent } from './report-nav.component';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {} from '@angular/common/http/testing';
 import {RouterTestingModule} from '@angular/router/testing';
 import {FontAwesomeIconsModule} from '../../../font-awesome-icons/font-awesome-icons.module';
 

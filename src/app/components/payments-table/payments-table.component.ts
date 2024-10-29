@@ -19,7 +19,7 @@ import {BsModalService} from 'ngx-bootstrap/modal';
 import {PaymentRefsRepository} from '../../repository/payment-refs-repository';
 import {PaymentRepository} from '../../repository/payment-repository';
 import {CommonTableConfig} from '../../core/table/common-table-component';
-import {HttpParams} from '@angular/common/http';
+import { HttpParams } from '@angular/common/http';
 import {PaymentGroup} from '../../model/payment-group';
 import {Product} from '../../model/product';
 import {PaymentObject} from '../../model/payment-object';

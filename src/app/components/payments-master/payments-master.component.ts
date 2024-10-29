@@ -4,7 +4,7 @@ import {PaymentObject} from '../../model/payment-object';
 import {CommonTableComponent} from '../../core/table/common-table-component';
 import {PaymentObjectTotals} from '../../model/payment-object-totals';
 import {PaymentObjectPeriodRepository} from '../../repository/payment-object-period-repository';
-import {HttpParams} from '@angular/common/http';
+import { HttpParams } from '@angular/common/http';
 import {DateGenerator} from '../../core/utils/date-generator';
 
 @Component({

@@ -6,7 +6,7 @@ import {PatchRequest} from '../../model/patch-request';
 import {RestDataSource} from '../../data-source/rest-data-source';
 import {MessagesService} from '../../messages/messages.service';
 import {PersistRepository} from './persist-repository';
-import {HttpParams} from '@angular/common/http';
+import { HttpParams } from '@angular/common/http';
 
 export abstract class ReadWriteRepository<T extends CommonEntity> extends ReadRepository<T> {
 

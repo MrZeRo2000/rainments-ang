@@ -1,7 +1,7 @@
 import {Loadable} from '../edit/edit-intf';
 import {RestDataSource} from '../../data-source/rest-data-source';
 import {MessagesService} from '../../messages/messages.service';
-import {HttpParams} from '@angular/common/http';
+import { HttpParams } from '@angular/common/http';
 import {ErrorMessage} from '../../messages/message.model';
 import {Subject} from 'rxjs';
 import {RepositoryUtils} from './repository-utils';

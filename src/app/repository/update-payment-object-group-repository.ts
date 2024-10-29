@@ -1,7 +1,7 @@
 import {PersistRepositoryDecorator} from '../core/repository/persist-repository-decorator';
 import {RestDataSource} from '../data-source/rest-data-source';
 import {MessagesService} from '../messages/messages.service';
-import {HttpHeaders, HttpParams} from '@angular/common/http';
+import { HttpHeaders, HttpParams } from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {UpdatePaymentObjectGroupPersistRepository} from './update-payment-object-group-persist-repository';
 

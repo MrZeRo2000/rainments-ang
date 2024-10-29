@@ -5,7 +5,7 @@ import {Router} from '@angular/router';
 import {CommonTableComponent} from '../../core/table/common-table-component';
 import {PaymentObjectTotals} from '../../model/payment-object-totals';
 import {PaymentObjectTotalsRepository} from '../../repository/payment-object-totals-repository';
-import {HttpParams} from '@angular/common/http';
+import { HttpParams } from '@angular/common/http';
 import {DateGenerator} from '../../core/utils/date-generator';
 
 @Component({

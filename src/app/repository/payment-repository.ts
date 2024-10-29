@@ -4,7 +4,7 @@ import {Injectable} from '@angular/core';
 import {RestDataSource} from '../data-source/rest-data-source';
 import {MessagesService} from '../messages/messages.service';
 import {ReadWriteRepository} from '../core/repository/read-write-repository';
-import {HttpParams} from '@angular/common/http';
+import { HttpParams } from '@angular/common/http';
 import {PaymentPersistRepository} from './payment-persist-repository';
 
 @Injectable()
