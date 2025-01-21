@@ -8,9 +8,10 @@ import {SuccessMessage} from '../../messages/message.model';
 import {Subscription} from 'rxjs';
 
 @Component({
-  selector: 'app-backup-database',
-  templateUrl: './backup-database.component.html',
-  styleUrls: ['./backup-database.component.scss']
+    selector: 'app-backup-database',
+    templateUrl: './backup-database.component.html',
+    styleUrls: ['./backup-database.component.scss'],
+    standalone: false
 })
 export class BackupDatabaseComponent implements OnInit, OnDestroy, Loadable {
   @Input()

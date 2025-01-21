@@ -8,9 +8,10 @@ import { HttpParams } from '@angular/common/http';
 import {DateGenerator} from '../../core/utils/date-generator';
 
 @Component({
-  selector: 'app-payments-master',
-  templateUrl: './payments-master.component.html',
-  styleUrls: ['./payments-master.component.scss']
+    selector: 'app-payments-master',
+    templateUrl: './payments-master.component.html',
+    styleUrls: ['./payments-master.component.scss'],
+    standalone: false
 })
 export class PaymentsMasterComponent extends CommonTableComponent<PaymentObjectTotals> implements OnInit {
   private KEY_ID = 'id';

@@ -42,9 +42,10 @@ export class ReportsChartDateTotalsDisplayOptions {
 }
 
 @Component({
-  selector: 'app-reports-chart-date-totals-display-options',
-  templateUrl: './reports-chart-date-totals-display-options.component.html',
-  styleUrls: ['./reports-chart-date-totals-display-options.component.scss']
+    selector: 'app-reports-chart-date-totals-display-options',
+    templateUrl: './reports-chart-date-totals-display-options.component.html',
+    styleUrls: ['./reports-chart-date-totals-display-options.component.scss'],
+    standalone: false
 })
 export class ReportsChartDateTotalsDisplayOptionsComponent implements OnInit {
 

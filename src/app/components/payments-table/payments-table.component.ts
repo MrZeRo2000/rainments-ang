@@ -38,9 +38,10 @@ enum InlineControl {
 }
 
 @Component({
-  selector: 'app-payments-table',
-  templateUrl: './payments-table.component.html',
-  styleUrls: ['./payments-table.component.scss']
+    selector: 'app-payments-table',
+    templateUrl: './payments-table.component.html',
+    styleUrls: ['./payments-table.component.scss'],
+    standalone: false
 })
 export class PaymentsTableComponent extends CommonEditableTableComponent<PaymentRefs, Payment>
   implements OnInit, OnChanges, OnDestroy, AfterViewInit {

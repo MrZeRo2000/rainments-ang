@@ -2,9 +2,10 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 
 @Component({
-  selector: 'app-report-nav',
-  templateUrl: './report-nav.component.html',
-  styleUrls: ['./report-nav.component.scss']
+    selector: 'app-report-nav',
+    templateUrl: './report-nav.component.html',
+    styleUrls: ['./report-nav.component.scss'],
+    standalone: false
 })
 export class ReportNavComponent implements OnInit {
 

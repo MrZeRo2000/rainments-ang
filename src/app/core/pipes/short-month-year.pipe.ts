@@ -2,7 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import {DateFormatter} from '../utils/date-formatter';
 
 @Pipe({
-  name: 'shortMonthYear'
+    name: 'shortMonthYear',
+    standalone: false
 })
 export class ShortMonthYearPipe implements PipeTransform {
 

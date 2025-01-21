@@ -9,9 +9,10 @@ import { HttpParams } from '@angular/common/http';
 import {DateGenerator} from '../../core/utils/date-generator';
 
 @Component({
-  selector: 'app-payments-dashboard',
-  templateUrl: './payments-dashboard.component.html',
-  styleUrls: ['./payments-dashboard.component.scss']
+    selector: 'app-payments-dashboard',
+    templateUrl: './payments-dashboard.component.html',
+    styleUrls: ['./payments-dashboard.component.scss'],
+    standalone: false
 })
 export class PaymentsDashboardComponent extends CommonTableComponent<PaymentObjectTotals> implements OnInit {
 

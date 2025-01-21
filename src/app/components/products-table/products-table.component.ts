@@ -7,9 +7,10 @@ import {CommonSimpleEditableTableComponent} from '../../core/table/common-simple
 import {DragHandlerService} from '../../core/services/drag-handler.service';
 
 @Component({
-  selector: 'app-products-table',
-  templateUrl: './products-table.component.html',
-  styleUrls: ['./products-table.component.scss']
+    selector: 'app-products-table',
+    templateUrl: './products-table.component.html',
+    styleUrls: ['./products-table.component.scss'],
+    standalone: false
 })
 export class ProductsTableComponent extends CommonSimpleEditableTableComponent<Product> {
   @ViewChild('inputName') inputNameElement: ElementRef;

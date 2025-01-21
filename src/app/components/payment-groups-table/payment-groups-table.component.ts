@@ -9,9 +9,10 @@ import {CommonSimpleEditableTableComponent} from '../../core/table/common-simple
 import {DragHandlerService} from '../../core/services/drag-handler.service';
 
 @Component({
-  selector: 'app-payment-groups-table',
-  templateUrl: './payment-groups-table.component.html',
-  styleUrls: ['./payment-groups-table.component.scss']
+    selector: 'app-payment-groups-table',
+    templateUrl: './payment-groups-table.component.html',
+    styleUrls: ['./payment-groups-table.component.scss'],
+    standalone: false
 })
 export class PaymentGroupsTableComponent extends CommonSimpleEditableTableComponent<PaymentGroup> {
   @ViewChild('inputName') inputNameElement: ElementRef;

@@ -54,9 +54,10 @@ export class PaymentsTableDisplayOptions {
 }
 
 @Component({
-  selector: 'app-payments-table-display-options',
-  templateUrl: './payments-table-display-options.component.html',
-  styleUrls: ['./payments-table-display-options.component.scss']
+    selector: 'app-payments-table-display-options',
+    templateUrl: './payments-table-display-options.component.html',
+    styleUrls: ['./payments-table-display-options.component.scss'],
+    standalone: false
 })
 export class PaymentsTableDisplayOptionsComponent implements OnInit {
 

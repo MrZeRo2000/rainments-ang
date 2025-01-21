@@ -11,9 +11,10 @@ import {CommonTableComponent} from '../../core/table/common-table-component';
 import {Subscription} from 'rxjs';
 
 @Component({
-  selector: 'app-import-payment-object-excel',
-  templateUrl: './import-payment-object-excel.component.html',
-  styleUrls: ['./import-payment-object-excel.component.scss']
+    selector: 'app-import-payment-object-excel',
+    templateUrl: './import-payment-object-excel.component.html',
+    styleUrls: ['./import-payment-object-excel.component.scss'],
+    standalone: false
 })
 export class ImportPaymentObjectExcelComponent extends CommonTableComponent<PaymentObject> implements OnInit, OnDestroy, Loadable {
 

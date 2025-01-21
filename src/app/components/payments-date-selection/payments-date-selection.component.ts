@@ -6,9 +6,10 @@ import {PaymentObject} from '../../model/payment-object';
 import {PaymentObjectTotals} from '../../model/payment-object-totals';
 
 @Component({
-  selector: 'app-payments-date-selection',
-  templateUrl: './payments-date-selection.component.html',
-  styleUrls: ['./payments-date-selection.component.scss']
+    selector: 'app-payments-date-selection',
+    templateUrl: './payments-date-selection.component.html',
+    styleUrls: ['./payments-date-selection.component.scss'],
+    standalone: false
 })
 export class PaymentsDateSelectionComponent implements OnInit {
   editForm: UntypedFormGroup;

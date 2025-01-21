@@ -22,10 +22,11 @@ import {BarChartDrawer, IDrawer, SideBySideBarChartDrawer, StackedBarChartDrawer
 
 
 @Component({
-  selector: 'app-reports-chart-date-totals',
-  encapsulation: ViewEncapsulation.None,
-  templateUrl: './reports-chart-date-totals.component.html',
-  styleUrls: ['./reports-chart-date-totals.component.scss']
+    selector: 'app-reports-chart-date-totals',
+    encapsulation: ViewEncapsulation.None,
+    templateUrl: './reports-chart-date-totals.component.html',
+    styleUrls: ['./reports-chart-date-totals.component.scss'],
+    standalone: false
 })
 export class ReportsChartDateTotalsComponent implements OnChanges, AfterViewInit {
 

@@ -8,9 +8,10 @@ import {DragHandlerService} from '../../core/services/drag-handler.service';
 import {TimePeriod, TimePeriodType} from '../../core/utils/time-period';
 
 @Component({
-  selector: 'app-payment-objects-table',
-  templateUrl: './payment-objects-table.component.html',
-  styleUrls: ['./payment-objects-table.component.scss']
+    selector: 'app-payment-objects-table',
+    templateUrl: './payment-objects-table.component.html',
+    styleUrls: ['./payment-objects-table.component.scss'],
+    standalone: false
 })
 export class PaymentObjectsTableComponent extends CommonSimpleEditableTableComponent<PaymentObject> {
   @ViewChild('inputName') inputNameElement: ElementRef;

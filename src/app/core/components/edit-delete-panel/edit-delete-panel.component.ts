@@ -1,9 +1,10 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
-  selector: 'app-core-edit-delete-panel',
-  templateUrl: './edit-delete-panel.component.html',
-  styleUrls: ['./edit-delete-panel.component.scss']
+    selector: 'app-core-edit-delete-panel',
+    templateUrl: './edit-delete-panel.component.html',
+    styleUrls: ['./edit-delete-panel.component.scss'],
+    standalone: false
 })
 export class EditDeletePanelComponent implements OnInit {
 

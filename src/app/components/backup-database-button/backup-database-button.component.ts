@@ -5,9 +5,10 @@ import {Subscription} from "rxjs";
 declare var bootstrap: any;
 
 @Component({
-  selector: 'app-backup-database-button',
-  templateUrl: './backup-database-button.component.html',
-  styleUrls: ['./backup-database-button.component.scss']
+    selector: 'app-backup-database-button',
+    templateUrl: './backup-database-button.component.html',
+    styleUrls: ['./backup-database-button.component.scss'],
+    standalone: false
 })
 export class BackupDatabaseButtonComponent implements OnDestroy {
   @ViewChild('liveToast', {static: false}) toast: ElementRef;

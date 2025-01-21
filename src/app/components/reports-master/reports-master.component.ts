@@ -21,9 +21,10 @@ enum ControlTab {
 }
 
 @Component({
-  selector: 'app-reports-master',
-  templateUrl: './reports-master.component.html',
-  styleUrls: ['./reports-master.component.scss']
+    selector: 'app-reports-master',
+    templateUrl: './reports-master.component.html',
+    styleUrls: ['./reports-master.component.scss'],
+    standalone: false
 })
 export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> implements OnInit, OnDestroy {
 

@@ -5,9 +5,10 @@ import {PaymentUtils} from '../../utils/payment-utils';
 import {ReportsTableDisplayOptions} from '../reports-table-display-options/reports-table-display-options.component';
 
 @Component({
-  selector: 'app-reports-table',
-  templateUrl: './reports-table.component.html',
-  styleUrls: ['./reports-table.component.scss']
+    selector: 'app-reports-table',
+    templateUrl: './reports-table.component.html',
+    styleUrls: ['./reports-table.component.scss'],
+    standalone: false
 })
 export class ReportsTableComponent implements OnInit, OnChanges {
 

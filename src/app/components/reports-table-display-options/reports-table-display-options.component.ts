@@ -47,9 +47,10 @@ export class ReportsTableDisplayOptions {
 
 
 @Component({
-  selector: 'app-reports-table-display-options',
-  templateUrl: './reports-table-display-options.component.html',
-  styleUrls: ['./reports-table-display-options.component.scss']
+    selector: 'app-reports-table-display-options',
+    templateUrl: './reports-table-display-options.component.html',
+    styleUrls: ['./reports-table-display-options.component.scss'],
+    standalone: false
 })
 export class ReportsTableDisplayOptionsComponent implements OnInit {
 

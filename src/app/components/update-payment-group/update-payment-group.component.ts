@@ -15,9 +15,10 @@ import {Loadable} from '../../core/edit/edit-intf';
 import {SuccessMessage} from '../../messages/message.model';
 
 @Component({
-  selector: 'app-update-payment-group',
-  templateUrl: './update-payment-group.component.html',
-  styleUrls: ['./update-payment-group.component.scss']
+    selector: 'app-update-payment-group',
+    templateUrl: './update-payment-group.component.html',
+    styleUrls: ['./update-payment-group.component.scss'],
+    standalone: false
 })
 export class UpdatePaymentGroupComponent extends CommonTableComponent<PaymentObjectGroupRefs> implements OnInit, OnDestroy, Loadable {
 

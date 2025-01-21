@@ -3,9 +3,10 @@ import {NavigationEnd, Router} from '@angular/router';
 import {filter} from 'rxjs/operators';
 
 @Component({
-  selector: 'app-nav-top',
-  templateUrl: './nav-top.component.html',
-  styleUrls: ['./nav-top.component.scss']
+    selector: 'app-nav-top',
+    templateUrl: './nav-top.component.html',
+    styleUrls: ['./nav-top.component.scss'],
+    standalone: false
 })
 export class NavTopComponent implements OnInit {
   routeUrl = '/';

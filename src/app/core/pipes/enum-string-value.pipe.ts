@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'enumStringValue'
+    name: 'enumStringValue',
+    standalone: false
 })
 export class EnumStringValuePipe implements PipeTransform {
 

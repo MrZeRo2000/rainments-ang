@@ -2,9 +2,10 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Editable} from '../../edit/edit-intf';
 
 @Component({
-  selector: 'app-core-add-panel',
-  templateUrl: './add-panel.component.html',
-  styleUrls: ['./add-panel.component.scss']
+    selector: 'app-core-add-panel',
+    templateUrl: './add-panel.component.html',
+    styleUrls: ['./add-panel.component.scss'],
+    standalone: false
 })
 export class AddPanelComponent implements OnInit {
 

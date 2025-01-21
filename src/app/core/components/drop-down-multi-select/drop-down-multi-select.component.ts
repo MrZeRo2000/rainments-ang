@@ -2,9 +2,10 @@ import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {SelectableItem} from '../../model/selectable-item';
 
 @Component({
-  selector: 'app-drop-down-multi-select',
-  templateUrl: './drop-down-multi-select.component.html',
-  styleUrls: ['./drop-down-multi-select.component.scss']
+    selector: 'app-drop-down-multi-select',
+    templateUrl: './drop-down-multi-select.component.html',
+    styleUrls: ['./drop-down-multi-select.component.scss'],
+    standalone: false
 })
 export class DropDownMultiSelectComponent implements OnInit {
 

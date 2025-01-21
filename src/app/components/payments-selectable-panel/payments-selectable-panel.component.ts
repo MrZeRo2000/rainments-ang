@@ -3,9 +3,10 @@ import {CoreSelectablePanelComponent} from '../../core/components/core-selectabl
 import {Payment} from '../../model/payment';
 
 @Component({
-  selector: 'app-payments-selectable-panel',
-  templateUrl: './payments-selectable-panel.component.html',
-  styleUrls: ['./payments-selectable-panel.component.scss']
+    selector: 'app-payments-selectable-panel',
+    templateUrl: './payments-selectable-panel.component.html',
+    styleUrls: ['./payments-selectable-panel.component.scss'],
+    standalone: false
 })
 export class PaymentsSelectablePanelComponent extends CoreSelectablePanelComponent<Payment> implements OnInit {
 

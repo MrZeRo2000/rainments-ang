@@ -4,9 +4,10 @@ import {AppInfoRepository} from '../../repository/app-info-repository';
 import {Subscription} from 'rxjs';
 
 @Component({
-  selector: 'app-app-info',
-  templateUrl: './app-info.component.html',
-  styleUrls: ['./app-info.component.scss']
+    selector: 'app-app-info',
+    templateUrl: './app-info.component.html',
+    styleUrls: ['./app-info.component.scss'],
+    standalone: false
 })
 export class AppInfoComponent implements OnInit, OnDestroy {
   version = environment.VERSION;

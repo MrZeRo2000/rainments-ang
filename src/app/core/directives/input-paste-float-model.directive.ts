@@ -3,7 +3,8 @@ import {NgModel} from '@angular/forms';
 import {ClipboardNumberConverter} from '../utils/clipboard-number-converter';
 
 @Directive({
-  selector: '[appInputPasteFloatModel]'
+    selector: '[appInputPasteFloatModel]',
+    standalone: false
 })
 export class InputPasteFloatModelDirective {
 

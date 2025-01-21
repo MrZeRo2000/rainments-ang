@@ -6,9 +6,10 @@ export enum ColorScheme {
 }
 
 @Component({
-  selector: 'app-core-colored-value-label',
-  templateUrl: './colored-value-label.component.html',
-  styleUrls: ['./colored-value-label.component.scss']
+    selector: 'app-core-colored-value-label',
+    templateUrl: './colored-value-label.component.html',
+    styleUrls: ['./colored-value-label.component.scss'],
+    standalone: false
 })
 export class ColoredValueLabelComponent implements OnInit {
   @Input()

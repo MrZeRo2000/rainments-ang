@@ -5,9 +5,10 @@ import {Payment} from '../../model/payment';
 import {PaymentGroup} from '../../model/payment-group';
 
 @Component({
-  selector: 'app-payments-summary',
-  templateUrl: './payments-summary.component.html',
-  styleUrls: ['./payments-summary.component.scss']
+    selector: 'app-payments-summary',
+    templateUrl: './payments-summary.component.html',
+    styleUrls: ['./payments-summary.component.scss'],
+    standalone: false
 })
 export class PaymentsSummaryComponent implements OnInit, DoCheck {
   @Input()

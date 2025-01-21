@@ -17,8 +17,9 @@ export function urlValidator(): ValidatorFn {
 }
 
 @Directive({
-  selector: '[appUrlValidator]',
-  providers: [{provide: NG_VALIDATORS, useExisting: UrlValidatorDirective, multi: true}]
+    selector: '[appUrlValidator]',
+    providers: [{ provide: NG_VALIDATORS, useExisting: UrlValidatorDirective, multi: true }],
+    standalone: false
 })
 export class UrlValidatorDirective implements Validator {
   private valFn = urlValidator();

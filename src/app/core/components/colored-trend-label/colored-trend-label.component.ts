@@ -1,9 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'app-core-colored-trend-label',
-  templateUrl: './colored-trend-label.component.html',
-  styleUrls: ['./colored-trend-label.component.scss']
+    selector: 'app-core-colored-trend-label',
+    templateUrl: './colored-trend-label.component.html',
+    styleUrls: ['./colored-trend-label.component.scss'],
+    standalone: false
 })
 export class ColoredTrendLabelComponent implements OnInit {
   @Input()

@@ -2,9 +2,10 @@ import {Component, Input, OnInit} from '@angular/core';
 import {SelectableItem} from '../../model/selectable-item';
 
 @Component({
-  selector: 'app-core-selectable-panel',
-  templateUrl: './core-selectable-panel.component.html',
-  styleUrls: ['./core-selectable-panel.component.scss']
+    selector: 'app-core-selectable-panel',
+    templateUrl: './core-selectable-panel.component.html',
+    styleUrls: ['./core-selectable-panel.component.scss'],
+    standalone: false
 })
 export class CoreSelectablePanelComponent <T> implements OnInit {
 
