@@ -1,7 +1,11 @@
 <div>
   <div class="alert alert-info mb-2">
-    <div *ngIf="getBackupInfo().backupFileCount === 0">Backup information not available</div>
-    <div *ngIf="getBackupInfo().backupFileCount > 0">Last backup time: <strong>{{getBackupInfo().lastBackupDateTime | date:'medium'}}</strong></div>
+    @if (getBackupInfo().backupFileCount === 0) {
+      <div>Backup information not available</div>
+    }
+    @if (getBackupInfo().backupFileCount > 0) {
+      <div>Last backup time: <strong>{{getBackupInfo().lastBackupDateTime | date:'medium'}}</strong></div>
+    }
   </div>
   <div class="input-group justify-content-end">
     <button type="button" class="btn btn-outline-primary" (click)="backupDatabaseClick()" [disabled]="backupLoading && !getLoading()">Backup database</button>

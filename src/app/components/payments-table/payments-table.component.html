@@ -1,300 +1,337 @@
 
-<div class="d-flex mt-2 mb-2" *ngIf="this.getEditingState()">
-  <div>
-    <app-core-add-panel (addClick)="onAddClick()"></app-core-add-panel>
-    <app-payments-selectable-panel class="ms-2" [selectableItems]="this.getSelectablePayments()"></app-payments-selectable-panel>
-  </div>
-  <div class="ms-auto">
-    <button
-      class="btn btn-outline-primary me-2"
-      *ngIf="isCloneAvailable()"
-      (click)="duplicatePreviousPeriodOnClick($event)"
-    >
-      <fa-icon [icon]="['fas', 'clone']" transform="grow-4"></fa-icon> Clone previous
-    </button>
-
-    <app-payments-table-display-options
-      [paymentsTableDisplayOptions]="displayOptions"
-      (change)="displayOptionsChanged()"
-    >
-    </app-payments-table-display-options>
-
-  </div>
-</div>
-
-<div class="row" *ngIf="getEditingState()">
-  <div [ngClass]="{'col-xl-9 col-lg-8': displayOptions.showSummary, 'col-12': !displayOptions.showSummary}">
-    <table class="table table-hover table-responsive w-100" [ngClass]="{'table-sm': displayOptions.compactTable}">
-      <thead>
-      <tr>
-        <th scope="col" class="w-5" *ngIf="displayOptions.showId">ID</th>
-        <th scope="col" class="w-15">Group</th>
-        <th scope="col" class="w-auto">Product</th>
-        <th scope="col" class="w-15 text-end">Counter</th>
-        <th scope="col" class="w-15 text-end">Payment</th>
-        <th scope="col" class="w-10 text-end">Commission</th>
-        <th scope="col" class="w-5">Actions</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let item of getSelectablePayments();"
-          (click)="tableRowClick(item)"
-          [ngClass]="{'table-active': item.isSelected}"
-          [ngStyle]="{'--bs-table-bg': item.isSelected || !displayOptions.displayColors ? '' : item.value.paymentGroup.color}"
-      >
-        <!-- ID -->
-        <td class="text-nowrap" *ngIf="displayOptions.showId">{{item.value.id}}</td>
-        <!-- Group -->
-        <td>{{item.value.paymentGroup.name}}</td>
-        <!-- Product -->
-        <td
-          tooltip={{item.value.product.name}}
-          [isDisabled]="!displayOptions.showTooltips || item.value.product.name.length < 18"
-          delay="500"
-          [ngClass]="{'text-truncate': displayOptions.compactProducts}"
-        >
-          {{item.value.product.name}}
-        </td>
-        <!-- Counter -->
-        <td class="text-end text-nowrap">
-          <div>
-            <app-core-colored-value-label [value]="getPrevPeriodProductCounter(item.value) | amount: item.value.product.counterPrecision" class="me-2"></app-core-colored-value-label>
-            <a
-              href="#"
-              (click)="productCounterOnClick($event, item.value)"
-              *ngIf="!inlineEditHandler.isEditorVisible(item.value, inlineControlType.ProductCounter) && item.value.productCounter"
-            >
-              {{item.value.productCounter | amount: item.value.product.counterPrecision}}
-            </a>
-            <span
-              *ngIf="(item.value.productCounter || getPrevPeriodProductCounter(item.value))"
-            > {{item.value.product.unitName}}
-            </span>
-          </div>
-          <div *ngIf="!inlineEditHandler.isEditorVisible(item.value, inlineControlType.ProductCounter) && getPrevPeriodProductCounterDiffByProduct(item.value) && displayOptions.showTrend">
-            <app-core-colored-value-label
-              [value]="getPrevPeriodProductCounterDiffByProduct(item.value) | amount: item.value.product.counterPrecision"
-              [colorScheme]="colorSchemeType.POS_GREEN_NEG_RED"
-              class="me-2"
-            >
-            </app-core-colored-value-label>{{item.value.product.unitName}}
-          </div>
-
-          <label *ngIf="inlineEditHandler.isEditorVisible(item.value, inlineControlType.ProductCounter)" class="mt-2 mb-2">
-            <input
-              #inlineControl
-              type="number"
-              min="0"
-              class="form-control text-end"
-              id="inlineProductCounter"
-              (focusout)="inlineEditHandler.inlineControlFocusOut()"
-              (click)="inlineEditHandler.inlineControlOnClick($event)"
-              (keyup)="inlineEditHandler.inlineControlKeyUp($event, item.value)"
-              [(ngModel)]="inlineEditHandler.inlineSelection.value"
-              [ngClass]="{'is-invalid': !inlineEditHandler.inputValidator(item.value, inlineEditHandler.inlineSelection)}"
-            >
-          </label>
-
-          <div *ngIf="inlineEditHandler.isEditorVisible(item.value, inlineControlType.ProductCounter) && getPrevPeriodProductCounterEditDiffByProduct(item.value)">
-            <app-core-colored-value-label
-              [value]="getPrevPeriodProductCounterEditDiffByProduct(item.value) | amount: item.value.product.counterPrecision"
-              [colorScheme]="colorSchemeType.POS_GREEN_NEG_RED"
-              class="me-2"
-            >
-            </app-core-colored-value-label>{{item.value.product.unitName}}
-          </div>
-        </td>
-        <!-- Payment -->
-        <td class="text-end text-nowrap">
-          <div>
-            <app-core-colored-value-label
-              [value]="getPrevPeriodPaymentAmount(item.value) | amount"
-              class="me-2"
-            >
-            </app-core-colored-value-label>
-            <a
-              href="#"
-              (click)="paymentAmountOnClick($event, item.value)"
-              *ngIf="!inlineEditHandler.isEditorVisible(item.value, inlineControlType.PaymentAmount)">{{item.value.paymentAmount | amount}}
-            </a>
-          </div>
-
-          <div *ngIf="!inlineEditHandler.isEditorVisible(item.value, inlineControlType.PaymentAmount) && displayOptions.showTrend">
-            <app-core-colored-trend-label
-              [value]="getPrevPeriodPaymentDiff(item.value)"
-            >
-            </app-core-colored-trend-label>
-          </div>
-
-          <label *ngIf="inlineEditHandler.isEditorVisible(item.value, inlineControlType.PaymentAmount)" class="mt-2 mb-2">
-              <input
-                #inlineControl
-                type="number"
-                min="0"
-                class="form-control text-end"
-                id="paymentAmountInline"
-                (focusout)="inlineEditHandler.inlineControlFocusOut()"
-                (click)="inlineEditHandler.inlineControlOnClick($event)"
-                (keyup)="inlineEditHandler.inlineControlKeyUp($event, item.value)"
-                [(ngModel)]="inlineEditHandler.inlineSelection.value"
-                [ngClass]="{'is-invalid': !inlineEditHandler.inputValidator(item.value, inlineEditHandler.inlineSelection)}"
-                appInputPasteFloatModel
-              >
-            </label>
-        </td>
-        <!-- Commission -->
-        <td class="text-end text-nowrap">
-          <div>
-            <app-core-colored-value-label
-              [value]="getPrevPeriodCommissionAmount(item.value) | amount"
-              class="me-2"
-            >
-            </app-core-colored-value-label>
-            <a href="#" (click)="commissionAmountOnClick($event, item.value)" *ngIf="!inlineEditHandler.isEditorVisible(item.value, inlineControlType.CommissionAmount)">{{item.value.commissionAmount | amount}}</a>
-          </div>
-
-          <div *ngIf="!inlineEditHandler.isEditorVisible(item.value, inlineControlType.CommissionAmount) && displayOptions.showTrend">
-            <app-core-colored-trend-label
-              [value]="getPrevPeriodCommissionDiff(item.value)"
-            >
-            </app-core-colored-trend-label>
-          </div>
-
-          <label *ngIf="inlineEditHandler.isEditorVisible(item.value, inlineControlType.CommissionAmount)" class="mt-2 mb-2">
-            <input
-              #inlineControl
-              type="number"
-              min="0"
-              class="form-control text-end"
-              id="commissionAmountInline"
-              (focusout)="inlineEditHandler.inlineControlFocusOut()"
-              (click)="inlineEditHandler.inlineControlOnClick($event)"
-              (keyup)="inlineEditHandler.inlineControlKeyUp($event, item.value)"
-              [(ngModel)]="inlineEditHandler.inlineSelection.value"
-              [ngClass]="{'is-invalid': !inlineEditHandler.inputValidator(item.value, inlineEditHandler.inlineSelection)}"
-              appInputPasteFloatModel
-            >
-          </label>
-
-        </td>
-        <td class="text-nowrap">
-          <app-core-edit-delete-panel [item]="item" (deleteClick)="onDeleteClick(item.value)" (editClick)="onEditClick(item.value)"></app-core-edit-delete-panel>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="col-xl-3 col-lg-4" *ngIf="displayOptions.showSummary">
-    <app-payments-summary [selectedItems]="getSelectedPayments()"></app-payments-summary>
-  </div>
-</div>
-
-<div *ngIf="getEditState()">
-  <form class="form-group" [formGroup]="editForm">
-
-    <label for="paymentGroup" class="mt-2"><strong>Payment group</strong></label>
-    <select
-      class="form-select"
-      [ngClass]="{'is-invalid': editForm.controls.paymentGroup.errors && editState.submitted}"
-      formControlName="paymentGroup"
-      id="paymentGroup"
-    >
-      <option *ngFor="let item of getPaymentGroups()" value="{{item.id}}">{{item.name}}</option>
-    </select>
-
-    <div class="d-flex mt-2" [ngClass]="{'is-invalid': (editForm.controls.product.errors || editForm.controls.productCounter.errors) && editState.submitted}">
-      <div class="flex-grow-1">
-        <label for="product"><strong>Product</strong></label>
-        <select
-          class="form-select"
-          [ngClass]="{'is-invalid': editForm.controls.product.errors && editState.submitted}"
-          formControlName="product"
-          id="product">
-          <option *ngFor="let item of getProducts()" value="{{item.id}}">{{item.name}}</option>
-        </select>
-      </div>
-      <div class="ms-2">
-        <div class="d-flex justify-content-between">
-          <label for="productCounter" class="text-nowrap"><strong>Counter</strong></label>
-          <a href="#" (click)="pervPeriodCounterLabelClick($event, prevPeriodPayment.productCounter)">
-            <app-core-colored-value-label [value]="prevPeriodPayment && prevPeriodPayment.productCounter | amount: getProduct() && getProduct().counterPrecision"></app-core-colored-value-label>
-          </a>
-        </div>
-        <input
-          type="number"
-          step="0.01"
-          min="0"
-          max="1000000"
-          class="form-control text-end"
-          formControlName="productCounter"
-          id="productCounter"
-          appInputPasteFloatControl
-          [ngClass]="{'is-invalid': editForm.controls.productCounter.errors && editState.submitted}"
-        >
-      </div>
-      <div class="ms-2">
-        <form class="form-group" [formGroup]="productUsageForm">
-          <label for="productUsageCounter" class="text-nowrap"><strong>Usage</strong></label>
-          <input
-            class="form-control text-end"
-            id="productUsageCounter"
-            formControlName="productUsageCounter"
-            [readonly]="true"
+@if (this.getEditingState()) {
+  <div class="d-flex mt-2 mb-2">
+    <div>
+      <app-core-add-panel (addClick)="onAddClick()"></app-core-add-panel>
+      <app-payments-selectable-panel class="ms-2" [selectableItems]="this.getSelectablePayments()"></app-payments-selectable-panel>
+    </div>
+    <div class="ms-auto">
+      @if (isCloneAvailable()) {
+        <button
+          class="btn btn-outline-primary me-2"
+          (click)="duplicatePreviousPeriodOnClick($event)"
           >
-        </form>
+          <fa-icon [icon]="['fas', 'clone']" transform="grow-4"></fa-icon> Clone previous
+        </button>
+      }
+      <app-payments-table-display-options
+        [paymentsTableDisplayOptions]="displayOptions"
+        (change)="displayOptionsChanged()"
+        >
+      </app-payments-table-display-options>
+    </div>
+  </div>
+}
+
+@if (getEditingState()) {
+  <div class="row">
+    <div [ngClass]="{'col-xl-9 col-lg-8': displayOptions.showSummary, 'col-12': !displayOptions.showSummary}">
+      <table class="table table-hover table-responsive w-100" [ngClass]="{'table-sm': displayOptions.compactTable}">
+        <thead>
+          <tr>
+            @if (displayOptions.showId) {
+              <th scope="col" class="w-5">ID</th>
+            }
+            <th scope="col" class="w-15">Group</th>
+            <th scope="col" class="w-auto">Product</th>
+            <th scope="col" class="w-15 text-end">Counter</th>
+            <th scope="col" class="w-15 text-end">Payment</th>
+            <th scope="col" class="w-10 text-end">Commission</th>
+            <th scope="col" class="w-5">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of getSelectablePayments(); track item) {
+            <tr
+              (click)="tableRowClick(item)"
+              [ngClass]="{'table-active': item.isSelected}"
+              [ngStyle]="{'--bs-table-bg': item.isSelected || !displayOptions.displayColors ? '' : item.value.paymentGroup.color}"
+              >
+              <!-- ID -->
+              @if (displayOptions.showId) {
+                <td class="text-nowrap">{{item.value.id}}</td>
+              }
+              <!-- Group -->
+              <td>{{item.value.paymentGroup.name}}</td>
+              <!-- Product -->
+              <td
+                tooltip={{item.value.product.name}}
+                [isDisabled]="!displayOptions.showTooltips || item.value.product.name.length < 18"
+                delay="500"
+                [ngClass]="{'text-truncate': displayOptions.compactProducts}"
+                >
+                {{item.value.product.name}}
+              </td>
+              <!-- Counter -->
+              <td class="text-end text-nowrap">
+                <div>
+                  <app-core-colored-value-label [value]="getPrevPeriodProductCounter(item.value) | amount: item.value.product.counterPrecision" class="me-2"></app-core-colored-value-label>
+                  @if (!inlineEditHandler.isEditorVisible(item.value, inlineControlType.ProductCounter) && item.value.productCounter) {
+                    <a
+                      href="#"
+                      (click)="productCounterOnClick($event, item.value)"
+                      >
+                      {{item.value.productCounter | amount: item.value.product.counterPrecision}}
+                    </a>
+                  }
+                  @if ((item.value.productCounter || getPrevPeriodProductCounter(item.value))) {
+                    <span
+                      > {{item.value.product.unitName}}
+                    </span>
+                  }
+                </div>
+                @if (!inlineEditHandler.isEditorVisible(item.value, inlineControlType.ProductCounter) && getPrevPeriodProductCounterDiffByProduct(item.value) && displayOptions.showTrend) {
+                  <div>
+                    <app-core-colored-value-label
+                      [value]="getPrevPeriodProductCounterDiffByProduct(item.value) | amount: item.value.product.counterPrecision"
+                      [colorScheme]="colorSchemeType.POS_GREEN_NEG_RED"
+                      class="me-2"
+                      >
+                    </app-core-colored-value-label>{{item.value.product.unitName}}
+                  </div>
+                }
+                @if (inlineEditHandler.isEditorVisible(item.value, inlineControlType.ProductCounter)) {
+                  <label class="mt-2 mb-2">
+                    <input
+                      #inlineControl
+                      type="number"
+                      min="0"
+                      class="form-control text-end"
+                      id="inlineProductCounter"
+                      (focusout)="inlineEditHandler.inlineControlFocusOut()"
+                      (click)="inlineEditHandler.inlineControlOnClick($event)"
+                      (keyup)="inlineEditHandler.inlineControlKeyUp($event, item.value)"
+                      [(ngModel)]="inlineEditHandler.inlineSelection.value"
+                      [ngClass]="{'is-invalid': !inlineEditHandler.inputValidator(item.value, inlineEditHandler.inlineSelection)}"
+                      >
+                  </label>
+                }
+                @if (inlineEditHandler.isEditorVisible(item.value, inlineControlType.ProductCounter) && getPrevPeriodProductCounterEditDiffByProduct(item.value)) {
+                  <div>
+                    <app-core-colored-value-label
+                      [value]="getPrevPeriodProductCounterEditDiffByProduct(item.value) | amount: item.value.product.counterPrecision"
+                      [colorScheme]="colorSchemeType.POS_GREEN_NEG_RED"
+                      class="me-2"
+                      >
+                    </app-core-colored-value-label>{{item.value.product.unitName}}
+                  </div>
+                }
+              </td>
+              <!-- Payment -->
+              <td class="text-end text-nowrap">
+                <div>
+                  <app-core-colored-value-label
+                    [value]="getPrevPeriodPaymentAmount(item.value) | amount"
+                    class="me-2"
+                    >
+                  </app-core-colored-value-label>
+                  @if (!inlineEditHandler.isEditorVisible(item.value, inlineControlType.PaymentAmount)) {
+                    <a
+                      href="#"
+                      (click)="paymentAmountOnClick($event, item.value)"
+                      >{{item.value.paymentAmount | amount}}
+                    </a>
+                  }
+                </div>
+                @if (!inlineEditHandler.isEditorVisible(item.value, inlineControlType.PaymentAmount) && displayOptions.showTrend) {
+                  <div>
+                    <app-core-colored-trend-label
+                      [value]="getPrevPeriodPaymentDiff(item.value)"
+                      >
+                    </app-core-colored-trend-label>
+                  </div>
+                }
+                @if (inlineEditHandler.isEditorVisible(item.value, inlineControlType.PaymentAmount)) {
+                  <label class="mt-2 mb-2">
+                    <input
+                      #inlineControl
+                      type="number"
+                      min="0"
+                      class="form-control text-end"
+                      id="paymentAmountInline"
+                      (focusout)="inlineEditHandler.inlineControlFocusOut()"
+                      (click)="inlineEditHandler.inlineControlOnClick($event)"
+                      (keyup)="inlineEditHandler.inlineControlKeyUp($event, item.value)"
+                      [(ngModel)]="inlineEditHandler.inlineSelection.value"
+                      [ngClass]="{'is-invalid': !inlineEditHandler.inputValidator(item.value, inlineEditHandler.inlineSelection)}"
+                      appInputPasteFloatModel
+                      >
+                  </label>
+                }
+              </td>
+              <!-- Commission -->
+              <td class="text-end text-nowrap">
+                <div>
+                  <app-core-colored-value-label
+                    [value]="getPrevPeriodCommissionAmount(item.value) | amount"
+                    class="me-2"
+                    >
+                  </app-core-colored-value-label>
+                  @if (!inlineEditHandler.isEditorVisible(item.value, inlineControlType.CommissionAmount)) {
+                    <a href="#" (click)="commissionAmountOnClick($event, item.value)">{{item.value.commissionAmount | amount}}</a>
+                  }
+                </div>
+                @if (!inlineEditHandler.isEditorVisible(item.value, inlineControlType.CommissionAmount) && displayOptions.showTrend) {
+                  <div>
+                    <app-core-colored-trend-label
+                      [value]="getPrevPeriodCommissionDiff(item.value)"
+                      >
+                    </app-core-colored-trend-label>
+                  </div>
+                }
+                @if (inlineEditHandler.isEditorVisible(item.value, inlineControlType.CommissionAmount)) {
+                  <label class="mt-2 mb-2">
+                    <input
+                      #inlineControl
+                      type="number"
+                      min="0"
+                      class="form-control text-end"
+                      id="commissionAmountInline"
+                      (focusout)="inlineEditHandler.inlineControlFocusOut()"
+                      (click)="inlineEditHandler.inlineControlOnClick($event)"
+                      (keyup)="inlineEditHandler.inlineControlKeyUp($event, item.value)"
+                      [(ngModel)]="inlineEditHandler.inlineSelection.value"
+                      [ngClass]="{'is-invalid': !inlineEditHandler.inputValidator(item.value, inlineEditHandler.inlineSelection)}"
+                      appInputPasteFloatModel
+                      >
+                  </label>
+                }
+              </td>
+              <td class="text-nowrap">
+                <app-core-edit-delete-panel [item]="item" (deleteClick)="onDeleteClick(item.value)" (editClick)="onEditClick(item.value)"></app-core-edit-delete-panel>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    @if (displayOptions.showSummary) {
+      <div class="col-xl-3 col-lg-4">
+        <app-payments-summary [selectedItems]="getSelectedPayments()"></app-payments-summary>
       </div>
-    </div>
+    }
+  </div>
+}
 
-    <div class="d-flex justify-content-between mt-2">
-      <label for="paymentAmount"><strong>Payment amount</strong></label>
-      <app-core-colored-value-label [value]="prevPeriodPayment && prevPeriodPayment.paymentAmount"></app-core-colored-value-label>
-    </div>
-    <input
-      type="number"
-      step="0.01"
-      min="0"
-      class="form-control text-end"
-      [ngClass]="{'is-invalid': editForm.controls.paymentAmount.errors && editState.submitted}"
-      formControlName="paymentAmount"
-      id="paymentAmount"
-      appInputPasteFloatControl
-    >
-
-    <div class="d-flex justify-content-between mt-2">
-      <label for="commissionAmount"><strong>Commission amount</strong></label>
-      <app-core-colored-value-label [value]="prevPeriodPayment && prevPeriodPayment.commissionAmount | amount"></app-core-colored-value-label>
-    </div>
-    <input
-      type="number"
-      step="0.01"
-      min="0"
-      class="form-control text-end"
-      formControlName="commissionAmount"
-      id="commissionAmount"
-      appInputPasteFloatControl
-    >
-
-    <div *ngIf="editForm.controls.paymentGroup.errors && editState.submitted" class="invalid-feedback">
-      <div *ngIf="editForm.controls.paymentGroup.errors.required">Payment group should not be empty</div>
-    </div>
-
-    <div *ngIf="editForm.controls.product.errors && editState.submitted" class="invalid-feedback">
-      <div *ngIf="editForm.controls.product.errors.required">Product should not be empty</div>
-      <div *ngIf="editForm.controls.product.errors.existingProduct">Product should not already exist</div>
-    </div>
-
-    <div *ngIf="editForm.controls.productCounter.errors && editState.submitted" class="invalid-feedback">
-      <div *ngIf="editForm.controls.productCounter.errors.lessThanPreviousPeriod">Counter should not be less than in the previous period</div>
-    </div>
-
-    <div *ngIf="editForm.controls.paymentAmount.errors && editState.submitted" class="invalid-feedback">
-      <div *ngIf="editForm.controls.paymentAmount.errors.required">Payment amount should not be empty</div>
-    </div>
-
-    <app-core-save-dialog-panel [editable]="this" [loadable]="readRepository" (createClick)="onCreate()" (saveClick)="onSave()" (cancelClick)="onCancel()"></app-core-save-dialog-panel>
-
-  </form>
-
-</div>
+@if (getEditState()) {
+  <div>
+    <form class="form-group" [formGroup]="editForm">
+      <label for="paymentGroup" class="mt-2"><strong>Payment group</strong></label>
+      <select
+        class="form-select"
+        [ngClass]="{'is-invalid': editForm.controls.paymentGroup.errors && editState.submitted}"
+        formControlName="paymentGroup"
+        id="paymentGroup"
+        >
+        @for (item of getPaymentGroups(); track item) {
+          <option value="{{item.id}}">{{item.name}}</option>
+        }
+      </select>
+      <div class="d-flex mt-2" [ngClass]="{'is-invalid': (editForm.controls.product.errors || editForm.controls.productCounter.errors) && editState.submitted}">
+        <div class="flex-grow-1">
+          <label for="product"><strong>Product</strong></label>
+          <select
+            class="form-select"
+            [ngClass]="{'is-invalid': editForm.controls.product.errors && editState.submitted}"
+            formControlName="product"
+            id="product">
+            @for (item of getProducts(); track item) {
+              <option value="{{item.id}}">{{item.name}}</option>
+            }
+          </select>
+        </div>
+        <div class="ms-2">
+          <div class="d-flex justify-content-between">
+            <label for="productCounter" class="text-nowrap"><strong>Counter</strong></label>
+            <a href="#" (click)="pervPeriodCounterLabelClick($event, prevPeriodPayment.productCounter)">
+              <app-core-colored-value-label [value]="prevPeriodPayment && prevPeriodPayment.productCounter | amount: getProduct() && getProduct().counterPrecision"></app-core-colored-value-label>
+            </a>
+          </div>
+          <input
+            type="number"
+            step="0.01"
+            min="0"
+            max="1000000"
+            class="form-control text-end"
+            formControlName="productCounter"
+            id="productCounter"
+            appInputPasteFloatControl
+            [ngClass]="{'is-invalid': editForm.controls.productCounter.errors && editState.submitted}"
+            >
+        </div>
+        <div class="ms-2">
+          <form class="form-group" [formGroup]="productUsageForm">
+            <label for="productUsageCounter" class="text-nowrap"><strong>Usage</strong></label>
+            <input
+              class="form-control text-end"
+              id="productUsageCounter"
+              formControlName="productUsageCounter"
+              [readonly]="true"
+              >
+          </form>
+        </div>
+      </div>
+      <div class="d-flex justify-content-between mt-2">
+        <label for="paymentAmount"><strong>Payment amount</strong></label>
+        <app-core-colored-value-label [value]="prevPeriodPayment && prevPeriodPayment.paymentAmount"></app-core-colored-value-label>
+      </div>
+      <input
+        type="number"
+        step="0.01"
+        min="0"
+        class="form-control text-end"
+        [ngClass]="{'is-invalid': editForm.controls.paymentAmount.errors && editState.submitted}"
+        formControlName="paymentAmount"
+        id="paymentAmount"
+        appInputPasteFloatControl
+        >
+      <div class="d-flex justify-content-between mt-2">
+        <label for="commissionAmount"><strong>Commission amount</strong></label>
+        <app-core-colored-value-label [value]="prevPeriodPayment && prevPeriodPayment.commissionAmount | amount"></app-core-colored-value-label>
+      </div>
+      <input
+        type="number"
+        step="0.01"
+        min="0"
+        class="form-control text-end"
+        formControlName="commissionAmount"
+        id="commissionAmount"
+        appInputPasteFloatControl
+        >
+      @if (editForm.controls.paymentGroup.errors && editState.submitted) {
+        <div class="invalid-feedback">
+          @if (editForm.controls.paymentGroup.errors.required) {
+            <div>Payment group should not be empty</div>
+          }
+        </div>
+      }
+      @if (editForm.controls.product.errors && editState.submitted) {
+        <div class="invalid-feedback">
+          @if (editForm.controls.product.errors.required) {
+            <div>Product should not be empty</div>
+          }
+          @if (editForm.controls.product.errors.existingProduct) {
+            <div>Product should not already exist</div>
+          }
+        </div>
+      }
+      @if (editForm.controls.productCounter.errors && editState.submitted) {
+        <div class="invalid-feedback">
+          @if (editForm.controls.productCounter.errors.lessThanPreviousPeriod) {
+            <div>Counter should not be less than in the previous period</div>
+          }
+        </div>
+      }
+      @if (editForm.controls.paymentAmount.errors && editState.submitted) {
+        <div class="invalid-feedback">
+          @if (editForm.controls.paymentAmount.errors.required) {
+            <div>Payment amount should not be empty</div>
+          }
+        </div>
+      }
+      <app-core-save-dialog-panel [editable]="this" [loadable]="readRepository" (createClick)="onCreate()" (saveClick)="onSave()" (cancelClick)="onCancel()"></app-core-save-dialog-panel>
+    </form>
+  </div>
+}
 
 <app-core-loading-progress [loadable]="readRepository"></app-core-loading-progress>

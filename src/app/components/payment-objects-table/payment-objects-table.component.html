@@ -1,110 +1,135 @@
 
-<div class="d-flex mt-2 mb-2" *ngIf="getEditingState()">
-  <app-core-add-panel (addClick)="onAddClick()"></app-core-add-panel>
-  <div class="ms-auto">
-    <app-core-drop-down-more-menu>
-      <a class="dropdown-item" href="#" (click)="onSetDefaultOrderClick($event)">Set default order</a>
-    </app-core-drop-down-more-menu>
+@if (getEditingState()) {
+  <div class="d-flex mt-2 mb-2">
+    <app-core-add-panel (addClick)="onAddClick()"></app-core-add-panel>
+    <div class="ms-auto">
+      <app-core-drop-down-more-menu>
+        <a class="dropdown-item" href="#" (click)="onSetDefaultOrderClick($event)">Set default order</a>
+      </app-core-drop-down-more-menu>
+    </div>
   </div>
-</div>
+}
 
-<table class="table" *ngIf="getEditingState()" [ngClass]="this.dragHandlerService.getDragClass()">
-  <thead>
-    <tr>
-      <th scope="col" class="w-auto">ID</th>
-      <th scope="col" class="w-100">Name</th>
-      <th scope="col" class="w-auto">Actions</th>
-    </tr>
-  </thead>
-  <tbody cdkDropList cdkDropListLockAxis="y" (cdkDropListDropped)="onDrop($event)">
-    <tr cdkDrag *ngFor="let item of getPaymentObjects()" (cdkDragStarted)="this.dragHandlerService.startDrag()">
-      <td class="text-nowrap align-middle"><div><app-core-drag-grip cdkDragHandle></app-core-drag-grip> {{item.id}}</div></td>
-      <td class="align-middle">{{item.name}}</td>
-      <td class="text-nowrap align-middle">
-        <app-core-edit-delete-panel [item]="item" (deleteClick)="onDeleteClick(item)" (editClick)="onEditClick(item)"></app-core-edit-delete-panel>
-      </td>
-      <td *cdkDragPreview><div class="drag-preview">{{item.name}}</div></td>
-    </tr>
-  </tbody>
-</table>
+@if (getEditingState()) {
+  <table class="table" [ngClass]="this.dragHandlerService.getDragClass()">
+    <thead>
+      <tr>
+        <th scope="col" class="w-auto">ID</th>
+        <th scope="col" class="w-100">Name</th>
+        <th scope="col" class="w-auto">Actions</th>
+      </tr>
+    </thead>
+    <tbody cdkDropList cdkDropListLockAxis="y" (cdkDropListDropped)="onDrop($event)">
+      @for (item of getPaymentObjects(); track item) {
+        <tr cdkDrag (cdkDragStarted)="this.dragHandlerService.startDrag()">
+          <td class="text-nowrap align-middle"><div><app-core-drag-grip cdkDragHandle></app-core-drag-grip> {{item.id}}</div></td>
+          <td class="align-middle">{{item.name}}</td>
+          <td class="text-nowrap align-middle">
+            <app-core-edit-delete-panel [item]="item" (deleteClick)="onDeleteClick(item)" (editClick)="onEditClick(item)"></app-core-edit-delete-panel>
+          </td>
+          <td *cdkDragPreview><div class="drag-preview">{{item.name}}</div></td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}
 
-<div *ngIf="editState">
-  <form class="form-group" [formGroup]="editForm">
-    <label for="inputName"><strong>Name</strong></label>
-    <input #inputName type="text" class="form-control" [ngClass]="{'is-invalid': editForm.controls.name.errors && editState.submitted}" id="inputName" placeholder="Name" formControlName="name">
-
-    <div class="mt-2 row" [ngClass]="{'is-invalid': (editForm.controls.period.errors || editForm.controls.termQuantity.errors || editForm.controls.termType.errors) && editState.submitted}">
-      <div class="col-md-4 col-sm-12">
-        <label for="inputPeriod">Payment period</label>
-        <select
-          class="form-select"
-          [ngClass]="{'is-invalid': editForm.controls.period.errors && editState.submitted}"
-          formControlName="period"
-          id="inputPeriod"
-        >
-          <option *ngFor="let item of periodTypes" value="{{item[0]}}">{{item[1]}}</option>
-        </select>
+@if (editState) {
+  <div>
+    <form class="form-group" [formGroup]="editForm">
+      <label for="inputName"><strong>Name</strong></label>
+      <input #inputName type="text" class="form-control" [ngClass]="{'is-invalid': editForm.controls.name.errors && editState.submitted}" id="inputName" placeholder="Name" formControlName="name">
+      <div class="mt-2 row" [ngClass]="{'is-invalid': (editForm.controls.period.errors || editForm.controls.termQuantity.errors || editForm.controls.termType.errors) && editState.submitted}">
+        <div class="col-md-4 col-sm-12">
+          <label for="inputPeriod">Payment period</label>
+          <select
+            class="form-select"
+            [ngClass]="{'is-invalid': editForm.controls.period.errors && editState.submitted}"
+            formControlName="period"
+            id="inputPeriod"
+            >
+            @for (item of periodTypes; track item) {
+              <option value="{{item[0]}}">{{item[1]}}</option>
+            }
+          </select>
+        </div>
+        <div class="col-md-2 col-sm-12">
+          <label for="inputTermQuantity">Payment term</label>
+          <select
+            class="form-select"
+            [ngClass]="{'is-invalid': editForm.controls.termQuantity.errors && editState.submitted}"
+            formControlName="termQuantity"
+            id="inputTermQuantity"
+            >
+            @for (item of termQuantities; track item) {
+              <option value="{{item}}">{{item}}</option>
+            }
+          </select>
+        </div>
+        <div class="col-md-3 col-sm-12">
+          <label for="inputTermType">&nbsp;</label>
+          <select
+            class="form-select"
+            [ngClass]="{'is-invalid': editForm.controls.termType.errors && editState.submitted}"
+            formControlName="termType"
+            id="inputTermType"
+            >
+            @for (item of termTypes; track item) {
+              <option value="{{item[0]}}">{{item[1]}}</option>
+            }
+          </select>
+        </div>
+        <div class="col-md-3 col-sm-12">
+          <label for="inputPayDelay">Payment due delay</label>
+          <select
+            class="form-select"
+            [ngClass]="{'is-invalid': editForm.controls.payDelay.errors && editState.submitted}"
+            formControlName="payDelay"
+            id="inputPayDelay"
+            >
+            @for (item of payDelays; track item) {
+              <option value="{{item[0]}}">{{item[1]}}</option>
+            }
+          </select>
+        </div>
       </div>
-
-    <div class="col-md-2 col-sm-12">
-      <label for="inputTermQuantity">Payment term</label>
-      <select
-        class="form-select"
-        [ngClass]="{'is-invalid': editForm.controls.termQuantity.errors && editState.submitted}"
-        formControlName="termQuantity"
-        id="inputTermQuantity"
-      >
-        <option *ngFor="let item of termQuantities" value="{{item}}">{{item}}</option>
-      </select>
-    </div>
-
-    <div class="col-md-3 col-sm-12">
-      <label for="inputTermType">&nbsp;</label>
-      <select
-        class="form-select"
-        [ngClass]="{'is-invalid': editForm.controls.termType.errors && editState.submitted}"
-        formControlName="termType"
-        id="inputTermType"
-      >
-        <option *ngFor="let item of termTypes" value="{{item[0]}}">{{item[1]}}</option>
-      </select>
-    </div>
-
-    <div class="col-md-3 col-sm-12">
-      <label for="inputPayDelay">Payment due delay</label>
-      <select
-        class="form-select"
-        [ngClass]="{'is-invalid': editForm.controls.payDelay.errors && editState.submitted}"
-        formControlName="payDelay"
-        id="inputPayDelay"
-      >
-        <option *ngFor="let item of payDelays" value="{{item[0]}}">{{item[1]}}</option>
-      </select>
-    </div>
-
-    </div>
-
-    <div *ngIf="editForm.controls.name.errors && editState.submitted" class="invalid-feedback">
-      <div *ngIf="editForm.controls.name.errors.required">Name should not be empty</div>
-      <div *ngIf="editForm.controls.name.errors.existingName">Name should be unique</div>
-    </div>
-
-    <div *ngIf="editForm.controls.termType.errors && editState.submitted" class="invalid-feedback">
-      <div *ngIf="editForm.controls.termType.errors.termNoPeriod">Term without period</div>
-    </div>
-
-    <div *ngIf="editForm.controls.payDelay.errors && editState.submitted" class="invalid-feedback">
-      <div *ngIf="editForm.controls.payDelay.errors.delayNoPeriod">Payment due delay without period</div>
-    </div>
-
-    <div *ngIf="editForm.controls.termQuantity.errors && editState.submitted" class="invalid-feedback">
-      <div *ngIf="editForm.controls.termQuantity.errors.termQuantityNoPeriod">Term quantity without period</div>
-      <div *ngIf="editForm.controls.termQuantity.errors.termQuantityNoType">Term quantity without type</div>
-    </div>
-
-    <app-core-save-dialog-panel [editable]="this" [loadable]="repository" (createClick)="onCreate()" (saveClick)="onSave()" (cancelClick)="onCancel()"></app-core-save-dialog-panel>
-
-  </form>
-</div>
+      @if (editForm.controls.name.errors && editState.submitted) {
+        <div class="invalid-feedback">
+          @if (editForm.controls.name.errors.required) {
+            <div>Name should not be empty</div>
+          }
+          @if (editForm.controls.name.errors.existingName) {
+            <div>Name should be unique</div>
+          }
+        </div>
+      }
+      @if (editForm.controls.termType.errors && editState.submitted) {
+        <div class="invalid-feedback">
+          @if (editForm.controls.termType.errors.termNoPeriod) {
+            <div>Term without period</div>
+          }
+        </div>
+      }
+      @if (editForm.controls.payDelay.errors && editState.submitted) {
+        <div class="invalid-feedback">
+          @if (editForm.controls.payDelay.errors.delayNoPeriod) {
+            <div>Payment due delay without period</div>
+          }
+        </div>
+      }
+      @if (editForm.controls.termQuantity.errors && editState.submitted) {
+        <div class="invalid-feedback">
+          @if (editForm.controls.termQuantity.errors.termQuantityNoPeriod) {
+            <div>Term quantity without period</div>
+          }
+          @if (editForm.controls.termQuantity.errors.termQuantityNoType) {
+            <div>Term quantity without type</div>
+          }
+        </div>
+      }
+      <app-core-save-dialog-panel [editable]="this" [loadable]="repository" (createClick)="onCreate()" (saveClick)="onSave()" (cancelClick)="onCancel()"></app-core-save-dialog-panel>
+    </form>
+  </div>
+}
 
 <app-core-loading-progress [loadable]="repository"></app-core-loading-progress>

@@ -3,22 +3,34 @@
   <div class="col-md-2 col-sm-12">
 
     <ul class="nav nav-pills flex-column">
-      <li class="nav-item" *ngFor="let item of SettingItemEnumType | enumStringValue">
-        <a class="nav-link" href="#" [ngClass]="{'active': item === selectedItem}" (click)="onItemClick($event, item)">{{item}}</a>
-      </li>
+      @for (item of SettingItemEnumType | enumStringValue; track item) {
+        <li class="nav-item">
+          <a class="nav-link" href="#" [ngClass]="{'active': item === selectedItem}" (click)="onItemClick($event, item)">{{item}}</a>
+        </li>
+      }
     </ul>
 
   </div>
 
   <div class="col-md-10 col-sm-12">
 
-    <app-message *ngIf="selectedItem !== SettingItemEnumType.DATA_MANAGEMENT"></app-message>
+    @if (selectedItem !== SettingItemEnumType.DATA_MANAGEMENT) {
+      <app-message></app-message>
+    }
 
     <div class="container-fluid">
-      <app-payment-objects-table *ngIf="selectedItem === SettingItemEnumType.PAYMENT_OBJECTS"></app-payment-objects-table>
-      <app-payment-groups-table *ngIf="selectedItem === SettingItemEnumType.PAYMENT_GROUPS"></app-payment-groups-table>
-      <app-products-table *ngIf="selectedItem === SettingItemEnumType.PRODUCTS"></app-products-table>
-      <app-data-management *ngIf="selectedItem === SettingItemEnumType.DATA_MANAGEMENT"></app-data-management>
+      @if (selectedItem === SettingItemEnumType.PAYMENT_OBJECTS) {
+        <app-payment-objects-table></app-payment-objects-table>
+      }
+      @if (selectedItem === SettingItemEnumType.PAYMENT_GROUPS) {
+        <app-payment-groups-table></app-payment-groups-table>
+      }
+      @if (selectedItem === SettingItemEnumType.PRODUCTS) {
+        <app-products-table></app-products-table>
+      }
+      @if (selectedItem === SettingItemEnumType.DATA_MANAGEMENT) {
+        <app-data-management></app-data-management>
+      }
     </div>
   </div>
 

@@ -1,64 +1,83 @@
-<div class="d-flex mt-2 mb-2" *ngIf="this.getEditingState()">
-  <app-core-add-panel (addClick)="onAddClick()"></app-core-add-panel>
-  <div class="ms-auto">
-    <app-core-drop-down-more-menu>
-      <a class="dropdown-item" href="#" (click)="onSetDefaultOrderClick($event)">Set default order</a>
-    </app-core-drop-down-more-menu>
-  </div>
-</div>
-
-<table class="table" *ngIf="getEditingState()" [ngClass]="this.dragHandlerService.getDragClass()">
-  <thead>
-  <tr>
-    <th scope="col" class="w-auto">ID</th>
-    <th scope="col" class="w-100">Name</th>
-    <th scope="col" class="w-auto">Actions</th>
-  </tr>
-  </thead>
-  <tbody cdkDropList cdkDropListLockAxis="y" (cdkDropListDropped)="onDrop($event)">
-  <tr cdkDrag *ngFor="let item of getPaymentGroups()" (cdkDragStarted)="this.dragHandlerService.startDrag()" [ngStyle]="{'--bs-table-bg': item.color}">
-    <td class="text-nowrap align-middle"><div><app-core-drag-grip cdkDragHandle></app-core-drag-grip> {{item.id}}</div></td>
-    <td class="align-middle" *ngIf="item.url"><a href="{{item.url}}" target="_blank">{{item.name}}</a></td>
-    <td class="align-middle" *ngIf="!item.url" >{{item.name}}</td>
-    <td class="text-nowrap align-middle">
-      <app-core-edit-delete-panel [item]="item" (deleteClick)="onDeleteClick(item)" (editClick)="onEditClick(item)"></app-core-edit-delete-panel>
-    </td>
-    <td *cdkDragPreview><div class="drag-preview">{{item.name}}</div></td>
-  </tr>
-  </tbody>
-</table>
-
-<div *ngIf="editState">
-  <form class="form-group" [formGroup]="editForm">
-    <label for="inputName" class="form-label"><strong>Name</strong></label>
-    <input #inputName type="text" class="form-control"
-           [ngClass]="{'is-invalid': editForm.controls.name.errors && editState.submitted}"
-           [ngStyle]="{'background-color': getPreviewColor()}"
-           id="inputName"
-           placeholder="Name"
-           formControlName="name"
-    >
-    <label for="inputUrl" class="form-label mt-2">Url</label>
-    <input #inputUrl type="text" class="form-control" [ngClass]="{'is-invalid': editForm.controls.url.errors && editState.submitted}" id="inputUrl" placeholder="Url" formControlName="url">
-    <div *ngIf="editForm.controls.name.errors && editState.submitted" class="invalid-feedback">
-      <div *ngIf="editForm.controls.name.errors.required">Name should not be empty</div>
-      <div *ngIf="editForm.controls.name.errors.existingName">Name should be unique</div>
+@if (this.getEditingState()) {
+  <div class="d-flex mt-2 mb-2">
+    <app-core-add-panel (addClick)="onAddClick()"></app-core-add-panel>
+    <div class="ms-auto">
+      <app-core-drop-down-more-menu>
+        <a class="dropdown-item" href="#" (click)="onSetDefaultOrderClick($event)">Set default order</a>
+      </app-core-drop-down-more-menu>
     </div>
-    <div *ngIf="editForm.controls.url.errors && editState.submitted" class="invalid-feedback">
-      <div *ngIf="editForm.controls.url.errors.invalidUrl">Invalid Url</div>
-    </div>
-    <label for="inputColor" class="form-label mt-2">Color</label>
-    <input type="color" class="form-control form-control-color w-100" id="inputColor" formControlName="color" title="Choose your color">
-  </form>
-
-  <div class="form-check form-switch mt-2">
-    <input type="checkbox" class="form-check-input" id="inputPreview" [(ngModel)]="preview">
-    <label class="form-label" for="inputPreview">Preview</label>
   </div>
+}
 
-  <app-core-save-dialog-panel [editable]="this" [loadable]="repository" (createClick)="onCreate()" (saveClick)="onSave()" (cancelClick)="onCancel()"></app-core-save-dialog-panel>
+@if (getEditingState()) {
+  <table class="table" [ngClass]="this.dragHandlerService.getDragClass()">
+    <thead>
+      <tr>
+        <th scope="col" class="w-auto">ID</th>
+        <th scope="col" class="w-100">Name</th>
+        <th scope="col" class="w-auto">Actions</th>
+      </tr>
+    </thead>
+    <tbody cdkDropList cdkDropListLockAxis="y" (cdkDropListDropped)="onDrop($event)">
+      @for (item of getPaymentGroups(); track item) {
+        <tr cdkDrag (cdkDragStarted)="this.dragHandlerService.startDrag()" [ngStyle]="{'--bs-table-bg': item.color}">
+          <td class="text-nowrap align-middle"><div><app-core-drag-grip cdkDragHandle></app-core-drag-grip> {{item.id}}</div></td>
+          @if (item.url) {
+            <td class="align-middle"><a href="{{item.url}}" target="_blank">{{item.name}}</a></td>
+          }
+          @if (!item.url) {
+            <td class="align-middle" >{{item.name}}</td>
+          }
+          <td class="text-nowrap align-middle">
+            <app-core-edit-delete-panel [item]="item" (deleteClick)="onDeleteClick(item)" (editClick)="onEditClick(item)"></app-core-edit-delete-panel>
+          </td>
+          <td *cdkDragPreview><div class="drag-preview">{{item.name}}</div></td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}
 
-</div>
+@if (editState) {
+  <div>
+    <form class="form-group" [formGroup]="editForm">
+      <label for="inputName" class="form-label"><strong>Name</strong></label>
+      <input #inputName type="text" class="form-control"
+        [ngClass]="{'is-invalid': editForm.controls.name.errors && editState.submitted}"
+        [ngStyle]="{'background-color': getPreviewColor()}"
+        id="inputName"
+        placeholder="Name"
+        formControlName="name"
+        >
+      <label for="inputUrl" class="form-label mt-2">Url</label>
+      <input #inputUrl type="text" class="form-control" [ngClass]="{'is-invalid': editForm.controls.url.errors && editState.submitted}" id="inputUrl" placeholder="Url" formControlName="url">
+      @if (editForm.controls.name.errors && editState.submitted) {
+        <div class="invalid-feedback">
+          @if (editForm.controls.name.errors.required) {
+            <div>Name should not be empty</div>
+          }
+          @if (editForm.controls.name.errors.existingName) {
+            <div>Name should be unique</div>
+          }
+        </div>
+      }
+      @if (editForm.controls.url.errors && editState.submitted) {
+        <div class="invalid-feedback">
+          @if (editForm.controls.url.errors.invalidUrl) {
+            <div>Invalid Url</div>
+          }
+        </div>
+      }
+      <label for="inputColor" class="form-label mt-2">Color</label>
+      <input type="color" class="form-control form-control-color w-100" id="inputColor" formControlName="color" title="Choose your color">
+    </form>
+    <div class="form-check form-switch mt-2">
+      <input type="checkbox" class="form-check-input" id="inputPreview" [(ngModel)]="preview">
+      <label class="form-label" for="inputPreview">Preview</label>
+    </div>
+    <app-core-save-dialog-panel [editable]="this" [loadable]="repository" (createClick)="onCreate()" (saveClick)="onSave()" (cancelClick)="onCancel()"></app-core-save-dialog-panel>
+  </div>
+}
 
 <app-core-loading-progress [loadable]="repository"></app-core-loading-progress>
 

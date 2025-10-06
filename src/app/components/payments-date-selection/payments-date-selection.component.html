@@ -3,19 +3,23 @@
     class="btn btn-outline-primary disabled"
     [ngClass]="{'disabled': this.selectedFirstDate()}"
     (click)="addPeriod(-1)"
-  >
+    >
     <fa-icon [icon]="['fas', 'angle-left']" transform="grow-8"></fa-icon>
   </button>
 
   <label class="ms-2 mb-0 mt-0">
     <select class="form-select" formControlName="periodSelect" name="periodSelect">
-      <option *ngFor="let item of periods" value="{{item.id}}">{{item.name}}</option>
+      @for (item of periods; track item) {
+        <option value="{{item.id}}">{{item.name}}</option>
+      }
     </select>
   </label>
 
   <label class="ms-2 mb-0 mt-0">
     <select class="form-select" formControlName="yearSelect" name="yearSelect">
-      <option *ngFor="let item of years" value="{{item}}">{{item}}</option>
+      @for (item of years; track item) {
+        <option value="{{item}}">{{item}}</option>
+      }
     </select>
   </label>
 
@@ -23,7 +27,7 @@
     class="btn btn-outline-primary ms-2"
     [ngClass]="{'disabled': this.selectedLastDate()}"
     (click)="addPeriod(1)"
-  >
+    >
     <fa-icon [icon]="['fas', 'angle-right']" transform="grow-8"></fa-icon>
   </button>
 

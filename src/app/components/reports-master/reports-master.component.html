@@ -1,63 +1,65 @@
 
 <app-message></app-message>
-<div *ngIf="paymentRep">
-  <div class="d-inline-flex">
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb p-2">
-        <li aria-current="page"><h5 class="mb-0 text-nowrap">{{paymentRep.paymentObject.name}}</h5></li>
-      </ol>
-    </nav>
-  </div>
-
-  <div class="d-flex">
-    <div class="form-inline mb-2">
-      <input type="text"
-             placeholder="Daterangepicker"
-             class="form-control"
-             bsDaterangepicker
-             [bsConfig]="{ adaptivePosition: true, rangeInputFormat: 'DD.MM.YYYY' }"
-             [minDate]="minSelectionDate"
-             [maxDate]="maxSelectionDate"
-             [bsValue] = "dateRange"
-             (bsValueChange)="onDateRangeValueChange($event)"
-             placement="right"
-      >
+@if (paymentRep) {
+  <div>
+    <div class="d-inline-flex">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb p-2">
+          <li aria-current="page"><h5 class="mb-0 text-nowrap">{{paymentRep.paymentObject.name}}</h5></li>
+        </ol>
+      </nav>
     </div>
-
-    <app-drop-down-multi-select
-      class="ms-2 mb-2"
-      title="Groups"
-      [selectableItems]="selectedGroups"
-      (selectionChanged)="selectedGroupsChanged($event)"
-      *ngIf="selectedGroups && selectedGroups.length > 0"
-    >
-    </app-drop-down-multi-select>
-    <app-drop-down-multi-select
-      class="ms-2 mr-2 mb-2"
-      title="Products"
-      [selectableItems]="selectedProducts"
-      (selectionChanged)="selectedProductsChanged($event)"
-      *ngIf="selectedProducts && selectedProducts.length > 0"
-    >
-    </app-drop-down-multi-select>
-
-    <app-reports-table-display-options
-      class="mb-2 ms-auto"
-      [reportsTableDisplayOptions]="tableDisplayOptions"
-      (selectionChanged)="tableDisplayOptionsChanged($event)"
-      *ngIf="this.selectedControlTab === ControlTab.Table"
-    >
-    </app-reports-table-display-options>
-    <app-reports-chart-date-totals-display-options
-      class="mb-2 ms-auto"
-      [paymentObjectId]="paymentObjectId"
-      (selectionChanged)="chartDisplayOptionsChanged($event)"
-      *ngIf="this.selectedControlTab === ControlTab.Chart"
-    >
-    </app-reports-chart-date-totals-display-options>
+    <div class="d-flex">
+      <div class="form-inline mb-2">
+        <input type="text"
+          placeholder="Daterangepicker"
+          class="form-control"
+          bsDaterangepicker
+          [bsConfig]="{ adaptivePosition: true, rangeInputFormat: 'DD.MM.YYYY' }"
+          [minDate]="minSelectionDate"
+          [maxDate]="maxSelectionDate"
+          [bsValue] = "dateRange"
+          (bsValueChange)="onDateRangeValueChange($event)"
+          placement="right"
+          >
+      </div>
+      @if (selectedGroups && selectedGroups.length > 0) {
+        <app-drop-down-multi-select
+          class="ms-2 mb-2"
+          title="Groups"
+          [selectableItems]="selectedGroups"
+          (selectionChanged)="selectedGroupsChanged($event)"
+          >
+        </app-drop-down-multi-select>
+      }
+      @if (selectedProducts && selectedProducts.length > 0) {
+        <app-drop-down-multi-select
+          class="ms-2 mr-2 mb-2"
+          title="Products"
+          [selectableItems]="selectedProducts"
+          (selectionChanged)="selectedProductsChanged($event)"
+          >
+        </app-drop-down-multi-select>
+      }
+      @if (this.selectedControlTab === ControlTab.Table) {
+        <app-reports-table-display-options
+          class="mb-2 ms-auto"
+          [reportsTableDisplayOptions]="tableDisplayOptions"
+          (selectionChanged)="tableDisplayOptionsChanged($event)"
+          >
+        </app-reports-table-display-options>
+      }
+      @if (this.selectedControlTab === ControlTab.Chart) {
+        <app-reports-chart-date-totals-display-options
+          class="mb-2 ms-auto"
+          [paymentObjectId]="paymentObjectId"
+          (selectionChanged)="chartDisplayOptionsChanged($event)"
+          >
+        </app-reports-chart-date-totals-display-options>
+      }
+    </div>
   </div>
-
-</div>
+}
 
 <div class="d-flex align-items-start">
   <div class="btn-group-vertical">
@@ -65,35 +67,37 @@
       type="button"
       class="btn" [ngClass]="{'btn-primary': this.selectedControlTab === ControlTab.Chart}"
       (click)="this.selectControlTabClick(ControlTab.Chart)"
-    >
+      >
       Chart
     </button>
     <button
       type="button"
       class="btn" [ngClass]="{'btn-primary': this.selectedControlTab === ControlTab.Table}"
       (click)="this.selectControlTabClick(ControlTab.Table)"
-    >
+      >
       Table
     </button>
   </div>
   <div class="flex-grow-1 p-2">
+    @if (displayPaymentList && (selectedControlTab === ControlTab.Chart)) {
       <app-reports-chart-date-totals
         [payments]="displayPaymentList"
         [displayOptions]="chartDisplayOptions"
-        *ngIf="displayPaymentList && (selectedControlTab === ControlTab.Chart)"
       ></app-reports-chart-date-totals>
+    }
+    @if (displayPaymentList && (selectedControlTab === ControlTab.Table)) {
       <div
         class="table-responsive"
         style="height: 50vh"
-        *ngIf="displayPaymentList && (selectedControlTab === ControlTab.Table)"
-      >
+        >
         <app-reports-table
           [payments]="displayPaymentList"
           [displayOptions]="tableDisplayOptions"
-        >
+          >
         </app-reports-table>
       </div>
-    </div>
+    }
+  </div>
 </div>
 
 <!--

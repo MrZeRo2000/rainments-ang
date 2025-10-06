@@ -6,8 +6,10 @@
     [ngClass]="{'is-invalid': editForm.controls.paymentObject.errors && formSubmitted}"
     formControlName="paymentObject"
     id="paymentObject"
-  >
-    <option *ngFor="let item of getPaymentObjects()" value="{{item.id}}">{{item.name}}</option>
+    >
+    @for (item of getPaymentObjects(); track item) {
+      <option value="{{item.id}}">{{item.name}}</option>
+    }
   </select>
 
   <label for="paymentGroupFrom" class="mt-2"><strong>Payment group from</strong></label>
@@ -16,8 +18,10 @@
     [ngClass]="{'is-invalid': editForm.controls.paymentGroupFrom.errors && formSubmitted}"
     formControlName="paymentGroupFrom"
     id="paymentGroupFrom"
-  >
-    <option *ngFor="let item of getPaymentGroups()" value="{{item.id}}">{{item.name}}</option>
+    >
+    @for (item of getPaymentGroups(); track item) {
+      <option value="{{item.id}}">{{item.name}}</option>
+    }
   </select>
 
   <label for="paymentGroupTo" class="mt-2"><strong>Payment group to</strong></label>
@@ -26,22 +30,38 @@
     [ngClass]="{'is-invalid': editForm.controls.paymentGroupTo.errors && formSubmitted}"
     formControlName="paymentGroupTo"
     id="paymentGroupTo"
-  >
-    <option *ngFor="let item of getPaymentGroups()" value="{{item.id}}">{{item.name}}</option>
+    >
+    @for (item of getPaymentGroups(); track item) {
+      <option value="{{item.id}}">{{item.name}}</option>
+    }
   </select>
 
-  <div *ngIf="editForm.controls.paymentObject.errors && formSubmitted" class="invalid-feedback">
-    <div *ngIf="editForm.controls.paymentObject.errors.required">Payment object should not be empty</div>
-  </div>
+  @if (editForm.controls.paymentObject.errors && formSubmitted) {
+    <div class="invalid-feedback">
+      @if (editForm.controls.paymentObject.errors.required) {
+        <div>Payment object should not be empty</div>
+      }
+    </div>
+  }
 
-  <div *ngIf="editForm.controls.paymentGroupFrom.errors && formSubmitted" class="invalid-feedback">
-    <div *ngIf="editForm.controls.paymentGroupFrom.errors.required">Payment group <strong>from</strong> should not be empty</div>
-  </div>
+  @if (editForm.controls.paymentGroupFrom.errors && formSubmitted) {
+    <div class="invalid-feedback">
+      @if (editForm.controls.paymentGroupFrom.errors.required) {
+        <div>Payment group <strong>from</strong> should not be empty</div>
+      }
+    </div>
+  }
 
-  <div *ngIf="editForm.controls.paymentGroupTo.errors && formSubmitted" class="invalid-feedback">
-    <div *ngIf="editForm.controls.paymentGroupTo.errors.required">Payment group <strong>to</strong> should not be empty</div>
-    <div *ngIf="editForm.controls.paymentGroupTo.errors.equalsFrom">Payment groups should be different</div>
-  </div>
+  @if (editForm.controls.paymentGroupTo.errors && formSubmitted) {
+    <div class="invalid-feedback">
+      @if (editForm.controls.paymentGroupTo.errors.required) {
+        <div>Payment group <strong>to</strong> should not be empty</div>
+      }
+      @if (editForm.controls.paymentGroupTo.errors.equalsFrom) {
+        <div>Payment groups should be different</div>
+      }
+    </div>
+  }
 
   <div class="input-group mt-2 justify-content-end">
     <button type="button" class="btn btn-outline-primary" (click)="importClick()" [disabled]="repository.getLoading()">Update</button>

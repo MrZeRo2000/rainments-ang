@@ -1,5 +1,7 @@
-<span class="text-left" *ngIf="!editable || editable.getEditingState()">
-  <a class="btn btn-outline-primary" (click)="onClick()">
-    <fa-icon [icon]="['fas', 'plus']" transform="grow-4"></fa-icon>
-  </a>
-</span>
+@if (!editable || editable.getEditingState()) {
+  <span class="text-left">
+    <a class="btn btn-outline-primary" (click)="onClick()">
+      <fa-icon [icon]="['fas', 'plus']" transform="grow-4"></fa-icon>
+    </a>
+  </span>
+}

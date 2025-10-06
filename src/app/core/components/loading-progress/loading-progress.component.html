@@ -1,3 +1,5 @@
-<div class="text-center" *ngIf="loadable.getLoading()">
-  {{message}}<app-core-loading-spinner-element></app-core-loading-spinner-element>
-</div>
+@if (loadable.getLoading()) {
+  <div class="text-center">
+    {{message}}<app-core-loading-spinner-element></app-core-loading-spinner-element>
+  </div>
+}
