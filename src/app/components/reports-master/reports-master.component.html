@@ -78,7 +78,7 @@
       Table
     </button>
   </div>
-  <div class="flex-grow-1 p-2">
+  <div class="flex-grow-1 p-2" style="min-width: 0">
     @if (displayPaymentList && (selectedControlTab === ControlTab.Chart)) {
       <app-reports-chart-date-totals
         [payments]="displayPaymentList"

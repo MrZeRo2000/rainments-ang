@@ -28,6 +28,8 @@ export interface IDrawer {
 abstract class AbstractBarChartDrawer implements IDrawer {
   protected static readonly amountPipe: AmountPipe = new AmountPipe();
 
+  private static readonly TOOLTIP_GAP = 8;
+
   public constructor(protected data: PaymentColorsResult) {
   }
 
@@ -36,6 +38,44 @@ abstract class AbstractBarChartDrawer implements IDrawer {
   abstract drawTransitionBars(svg: any, xScale: ScaleBand<any>, yScale: d3.ScaleLinear<number, number>): void;
 
   abstract getLabelParams(): LabelParams;
+
+  protected static attachTooltip(selection: any, tooltip: HTMLElement): void {
+    const gap = AbstractBarChartDrawer.TOOLTIP_GAP;
+
+    const positionAt = (event: MouseEvent): void => {
+      const { width: tw, height: th } = tooltip.getBoundingClientRect();
+      const vw = window.innerWidth;
+
+      // Default placement: above-right of the cursor.
+      let left = event.pageX + gap;
+      let top = event.pageY - th - gap;
+
+      // Flip horizontally if the tooltip would overflow the viewport's right edge.
+      if (event.clientX + gap + tw > vw) {
+        left = event.pageX - tw - gap;
+      }
+      // Flip vertically (place below cursor) if it would overflow the top.
+      if (event.clientY - th - gap < 0) {
+        top = event.pageY + gap;
+      }
+
+      tooltip.style.left = left + 'px';
+      tooltip.style.top = top + 'px';
+    };
+
+    selection
+      .on('mouseover', (event: MouseEvent, datum: any) => {
+        tooltip.innerHTML = `${datum.colorName}: ${AbstractBarChartDrawer.amountPipe.transform(datum.colorAmounts[0].amount)}`;
+        // Make the tooltip visible before measuring — getBoundingClientRect
+        // returns 0 for elements with display:none, but works with visibility.
+        tooltip.style.visibility = 'visible';
+        positionAt(event);
+      })
+      .on('mousemove', (event: MouseEvent) => positionAt(event))
+      .on('mouseleave', () => {
+        tooltip.style.visibility = 'hidden';
+      });
+  }
 
   drawLabels(content: any, xScale: ScaleBand<any>, yScale: d3.ScaleLinear<number, number>): void {
     content.append('g')
@@ -130,18 +170,7 @@ export class StackedBarChartDrawer extends AbstractBarChartDrawer {
         .attr('y', d => yScale(d.colorAmounts[0].nextAmount))
         .attr('height', d => yScale(color_index == 0 ? 0 : -2) - yScale(d.colorAmounts[0].amount))
         .attr('width', xScale.bandwidth())
-        .on('mouseover', function(d, o) {
-          tooltip.innerHTML = `${o.colorName}: ${AbstractBarChartDrawer.amountPipe.transform(o.colorAmounts[0].amount)}`;
-          tooltip.style.visibility = 'visible';
-        })
-        .on('mousemove', function(d, o) {
-          tooltip.style.left = d.screenX -5 + 'px';
-          tooltip.style.top = d.screenY - 100 + 'px';
-        })
-        .on('mouseleave', function() {
-          tooltip.style.visibility = 'hidden';
-        })
-      ;
+        .call(AbstractBarChartDrawer.attachTooltip, tooltip);
 
     });
   }
@@ -153,8 +182,8 @@ export class StackedBarChartDrawer extends AbstractBarChartDrawer {
         .transition().ease(d3.easePolyInOut).duration(500)
         .attr('x', d => xScale(DateFormatter.formatDateShortMonthYear((d as PaymentColorsTotal).periodDate)))
         .attr('width', xScale.bandwidth())
-        .attr('y', d => yScale((d as PaymentColorsTotal).colorAmounts[color_index].nextAmount))
-        .attr('height', d => yScale(color_index == 0 ? 0 : -2) - yScale((d as PaymentColorsTotal).colorAmounts[color_index].amount))
+        .attr('y', d => yScale((d as PaymentColorsTotal).colorAmounts[0].nextAmount))
+        .attr('height', d => yScale(color_index == 0 ? 0 : -2) - yScale((d as PaymentColorsTotal).colorAmounts[0].amount))
       ;
     });
   }
@@ -193,18 +222,7 @@ export class SideBySideBarChartDrawer extends AbstractBarChartDrawer {
         .attr('y', d => yScale(d.colorAmounts[0].amount))
         .attr('height', d => yScale(0) - yScale(d.colorAmounts[0].amount))
         .attr('width', barWidth)
-        .on('mouseover', function(d, o) {
-          tooltip.innerHTML = `${o.colorName}: ${AbstractBarChartDrawer.amountPipe.transform(o.colorAmounts[0].amount)}`;
-          tooltip.style.visibility = 'visible';
-        })
-        .on('mousemove', function(d, o) {
-          tooltip.style.left = d.screenX -5 + 'px';
-          tooltip.style.top = d.screenY - 100 + 'px';
-        })
-        .on('mouseleave', function() {
-          tooltip.style.visibility = 'hidden';
-        })
-        ;
+        .call(AbstractBarChartDrawer.attachTooltip, tooltip);
     });
   }
 

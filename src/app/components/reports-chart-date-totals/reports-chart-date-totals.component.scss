@@ -1,3 +1,15 @@
+app-reports-chart-date-totals {
+  display: block;
+  min-width: 0;
+  width: 100%;
+}
+
+.chart-scroll {
+  width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+}
+
 .chart {
   min-height: 350px;
   max-height: 700px;
@@ -9,6 +21,7 @@
   position: absolute;
   z-index: 10;
   visibility: hidden;
+  pointer-events: none;
   padding: 5px;
   background: #fffacd;
   border: 1px solid gray;

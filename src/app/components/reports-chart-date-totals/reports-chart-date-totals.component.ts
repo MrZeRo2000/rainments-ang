@@ -128,10 +128,6 @@ export class ReportsChartDateTotalsComponent implements OnChanges, AfterViewInit
     return this.paymentColorsResult?.paymentColorsTotals.length * 100;
   }
 
-  componentContainerWidth(): number {
-    return window.innerWidth - this.container?.nativeElement.offsetLeft - (window.outerWidth - window.innerWidth) - 10;
-  }
-
   private removeExistingChartElement() {
     d3.select(this.chartContainer?.nativeElement).selectAll('*').remove();
   }
