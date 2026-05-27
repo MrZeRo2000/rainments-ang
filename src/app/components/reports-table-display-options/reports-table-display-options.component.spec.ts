@@ -1,8 +1,8 @@
+﻿import '../../app.module';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReportsTableDisplayOptionsComponent } from './reports-table-display-options.component';
 import {CoreModule} from '../../core/core.module';
-import {BrowserModule} from '@angular/platform-browser';
 import {ReactiveFormsModule} from '@angular/forms';
 
 describe('ReportsTableDisplayOptionsComponent', () => {

@@ -1,1 +1,0 @@
-CALL ../common/bat/buildprod.bat rainments-ang

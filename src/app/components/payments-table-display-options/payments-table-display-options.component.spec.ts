@@ -1,3 +1,4 @@
+﻿import '../../app.module';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PaymentsTableDisplayOptionsComponent } from './payments-table-display-options.component';

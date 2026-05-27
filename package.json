@@ -3,12 +3,14 @@
   "version": "0.6.14",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "start-int": "ng serve --configuration=int",
+    "start": "ng serve --no-hmr",
     "build": "ng build",
     "test": "ng test",
+    "test:watch": "ng test --watch",
+    "test:coverage": "ng test --coverage",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "playwright test --config=e2e/playwright.config.ts",
+    "e2e:ui": "playwright test --config=e2e/playwright.config.ts --ui"
   },
   "private": true,
   "dependencies": {
@@ -26,7 +28,6 @@
     "@fortawesome/free-solid-svg-icons": "^7.1.0",
     "bootstrap": "^5.3.8",
     "d3": "^7.4.0",
-    "karma-cli": "^2.0.0",
     "ngx-bootstrap": "^21.0.1",
     "rxjs": "^7.8.2",
     "tslib": "^2.6.0",
@@ -43,22 +44,15 @@
     "@angular/cli": "^21.2.2",
     "@angular/compiler-cli": "^21.2.4",
     "@angular/language-service": "^21.2.4",
+    "@playwright/test": "^1.49.0",
     "@types/d3": "^7.4.0",
-    "@types/jasmine": "~5.1.9",
-    "@types/jasminewd2": "~2.0.3",
     "@types/node": "^22.8.4",
     "@typescript-eslint/eslint-plugin": "8.46.0",
     "@typescript-eslint/parser": "8.46.0",
     "eslint": "^9.37.0",
-    "jasmine-core": "~5.12.0",
-    "jasmine-spec-reporter": "~7.0.0",
-    "karma": "^6.4.4",
-    "karma-chrome-launcher": "~3.2.0",
-    "karma-coverage-istanbul-reporter": "~3.0.3",
-    "karma-jasmine": "~5.1.0",
-    "karma-jasmine-html-reporter": "^2.1.0",
-    "protractor": "^7.0.0",
+    "jsdom": "^25.0.1",
     "ts-node": "~10.9.2",
-    "typescript": "~5.9.3"
+    "typescript": "~5.9.3",
+    "vitest": "^4.0.8"
   }
 }

@@ -1,3 +1,4 @@
+﻿import '../../app.module';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BackupDatabaseButtonComponent } from './backup-database-button.component';

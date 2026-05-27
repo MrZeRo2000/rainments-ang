@@ -1,3 +1,4 @@
+﻿import '../../app.module';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PaymentsSummaryComponent } from './payments-summary.component';
@@ -15,7 +16,6 @@ describe('PaymentsSummaryComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-    declarations: [PaymentsSummaryComponent],
     imports: [CoreModule, RepositoryModule],
     providers: [RestUrlEnv, RestDataSource, IterableDiffers, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
 })

@@ -1,3 +1,4 @@
+﻿import '../../../app.module';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ConfirmationModalDialogComponent } from './confirmation-modal-dialog.component';
