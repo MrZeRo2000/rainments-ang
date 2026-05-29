@@ -21,7 +21,6 @@ import {PaymentPersistRepository} from './payment-persist-repository';
 import {PaymentObjectTotalsRepository} from './payment-object-totals-repository';
 import {PaymentObjectPeriodRepository} from './payment-object-period-repository';
 import {PaymentRepRepository} from './payment-rep-repository';
-import {AppInfoRepository} from './app-info-repository';
 
 @NgModule({ declarations: [], imports: [CommonModule], providers: [
         RestDataSource,
@@ -46,6 +45,5 @@ import {AppInfoRepository} from './app-info-repository';
         PaymentObjectTotalsRepository,
         PaymentObjectPeriodRepository,
         PaymentRepRepository,
-        AppInfoRepository
     ] })
 export class RepositoryModule { }
