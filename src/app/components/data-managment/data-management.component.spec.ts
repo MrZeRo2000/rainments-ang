@@ -1,15 +1,12 @@
-﻿import '../../app.module';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DataManagementComponent } from './data-management.component';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import {ReactiveFormsModule} from '@angular/forms';
 import {BsModalService, ModalModule} from 'ngx-bootstrap/modal';
-import {CoreModule} from '../../core/core.module';
 import {RestUrlEnv} from '../../config/configuration';
 import {RestDataSource} from '../../data-source/rest-data-source';
 import {RepositoryModule} from '../../repository/repository.module';
-import {MessagesModule} from '../../messages/messages.module';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ImportExportComponent', () => {
@@ -18,7 +15,7 @@ describe('ImportExportComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-    imports: [ReactiveFormsModule, ModalModule.forRoot(), CoreModule, RepositoryModule, MessagesModule],
+    imports: [DataManagementComponent, ReactiveFormsModule, ModalModule.forRoot(), RepositoryModule],
     providers: [RestUrlEnv, RestDataSource, BsModalService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
 })
     .compileComponents();

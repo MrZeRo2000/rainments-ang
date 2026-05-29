@@ -1,4 +1,3 @@
-﻿import '../../app.module';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AppInfoComponent } from './app-info.component';
@@ -12,8 +11,7 @@ describe('AppInfoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AppInfoComponent ],
-      imports: [RepositoryModule],
+      imports: [AppInfoComponent, RepositoryModule],
       providers: [RestUrlEnv, RestDataSource]
     })
     .compileComponents();

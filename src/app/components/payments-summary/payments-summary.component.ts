@@ -1,16 +1,32 @@
-import {Component, DoCheck, Input, IterableDiffer, IterableDiffers, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {
+  Component,
+  DoCheck,
+  inject,
+  Input,
+  IterableDiffer,
+  IterableDiffers,
+  OnInit
+} from '@angular/core';
 import {PaymentRefsRepository} from '../../repository/payment-refs-repository';
 import {PaymentGroupAmountSummary} from '../../model/payment-group-amount-summary';
 import {Payment} from '../../model/payment';
 import {PaymentGroup} from '../../model/payment-group';
+import {AmountPipe} from "../../core/pipes/amount.pipe";
+import {NgStyle} from "@angular/common";
 
 @Component({
-    selector: 'app-payments-summary',
-    templateUrl: './payments-summary.component.html',
-    styleUrls: ['./payments-summary.component.scss'],
-    standalone: false
+  selector: 'app-payments-summary',
+  templateUrl: './payments-summary.component.html',
+  imports: [
+    AmountPipe,
+    NgStyle
+  ],
+  styleUrls: ['./payments-summary.component.scss']
 })
 export class PaymentsSummaryComponent implements OnInit, DoCheck {
+  protected readRepository = inject(PaymentRefsRepository)
+  private selectedItemsDiffers = inject(IterableDiffers)
+
   @Input()
   selectedItems: Array<Payment>;
 
@@ -18,7 +34,7 @@ export class PaymentsSummaryComponent implements OnInit, DoCheck {
 
   summaryData: Array<PaymentGroupAmountSummary> = new Array<PaymentGroupAmountSummary>();
 
-  constructor(protected readRepository: PaymentRefsRepository, private selectedItemsDiffers: IterableDiffers) {
+  constructor() {
     // Might not be needed
     this.calcSummary();
     this.readRepository.getLoadSuccessObservable().subscribe(v => {

@@ -1,4 +1,3 @@
-﻿import '../../../app.module';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ColoredValueLabelComponent } from './colored-value-label.component';
@@ -9,7 +8,7 @@ describe('ColoredValueLabelComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      declarations: [ ColoredValueLabelComponent ]
+      imports: [ColoredValueLabelComponent]
     })
     .compileComponents();
   });

@@ -1,9 +1,7 @@
-﻿import '../../app.module';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReportsChartDateTotalsDisplayOptionsComponent } from './reports-chart-date-totals-display-options.component';
 import {ReactiveFormsModule} from '@angular/forms';
-import {CoreModule} from '../../core/core.module';
 
 describe('ReportsChartDateTotalsDisplayOptionsComponent', () => {
   let component: ReportsChartDateTotalsDisplayOptionsComponent;
@@ -11,8 +9,7 @@ describe('ReportsChartDateTotalsDisplayOptionsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ReportsChartDateTotalsDisplayOptionsComponent ],
-      imports: [ReactiveFormsModule, CoreModule]
+      imports: [ReportsChartDateTotalsDisplayOptionsComponent, ReactiveFormsModule]
     })
     .compileComponents();
   });

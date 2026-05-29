@@ -1,22 +1,37 @@
-import { Component, OnInit } from '@angular/core';
-import {PaymentObject} from '../../model/payment-object';
-import {PaymentObjectRepository} from '../../repository/payment-object-repository';
+import {Component, inject, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {CommonTableComponent} from '../../core/table/common-table-component';
 import {PaymentObjectTotals} from '../../model/payment-object-totals';
 import {PaymentObjectTotalsRepository} from '../../repository/payment-object-totals-repository';
 import { HttpParams } from '@angular/common/http';
 import {DateGenerator} from '../../core/utils/date-generator';
+import {MessageComponent} from "../../messages/message.component";
+import {FaIconComponent} from "@fortawesome/angular-fontawesome";
+import {ReportNavComponent} from "../../core/components/report-nav/report-nav.component";
+import {ShortMonthYearPipe} from "../../core/pipes/short-month-year.pipe";
+import {ColoredValueLabelComponent} from "../../core/components/colored-value-label/colored-value-label.component";
+import {AmountPipe} from "../../core/pipes/amount.pipe";
+import {LoadingProgressComponent} from "../../core/components/loading-progress/loading-progress.component";
 
 @Component({
-    selector: 'app-payments-dashboard',
-    templateUrl: './payments-dashboard.component.html',
-    styleUrls: ['./payments-dashboard.component.scss'],
-    standalone: false
+  selector: 'app-payments-dashboard',
+  templateUrl: './payments-dashboard.component.html',
+  imports: [
+    MessageComponent,
+    FaIconComponent,
+    ReportNavComponent,
+    ShortMonthYearPipe,
+    ColoredValueLabelComponent,
+    AmountPipe,
+    LoadingProgressComponent
+  ],
+  styleUrls: ['./payments-dashboard.component.scss']
 })
 export class PaymentsDashboardComponent extends CommonTableComponent<PaymentObjectTotals> implements OnInit {
+  private router = inject(Router)
 
-  constructor(public repository: PaymentObjectTotalsRepository, private router: Router) {
+  // eslint-disable-next-line @angular-eslint/prefer-inject
+  constructor(public repository: PaymentObjectTotalsRepository) {
     super(repository);
   }
 
@@ -43,6 +58,4 @@ export class PaymentsDashboardComponent extends CommonTableComponent<PaymentObje
     event.preventDefault();
     this.router.navigateByUrl('/reports/' + item.paymentObject.id).then();
   }
-
-
 }

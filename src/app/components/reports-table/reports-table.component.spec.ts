@@ -1,4 +1,3 @@
-﻿import '../../app.module';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReportsTableComponent } from './reports-table.component';
@@ -9,7 +8,7 @@ describe('ReportsTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ReportsTableComponent ]
+      imports: [ReportsTableComponent]
     })
     .compileComponents();
   });

@@ -1,4 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {NgClass} from "@angular/common";
 
 export enum ColorScheme {
   NONE,
@@ -6,12 +7,14 @@ export enum ColorScheme {
 }
 
 @Component({
-    selector: 'app-core-colored-value-label',
-    templateUrl: './colored-value-label.component.html',
-    styleUrls: ['./colored-value-label.component.scss'],
-    standalone: false
+  selector: 'app-core-colored-value-label',
+  templateUrl: './colored-value-label.component.html',
+  imports: [
+    NgClass
+  ],
+  styleUrls: ['./colored-value-label.component.scss']
 })
-export class ColoredValueLabelComponent implements OnInit {
+export class ColoredValueLabelComponent {
   @Input()
   value: any;
 
@@ -24,8 +27,4 @@ export class ColoredValueLabelComponent implements OnInit {
   colorSchemeType = ColorScheme;
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
-
 }

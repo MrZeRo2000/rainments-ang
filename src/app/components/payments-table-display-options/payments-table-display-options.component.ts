@@ -1,4 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {BsDropdownModule} from "ngx-bootstrap/dropdown";
+import {DisplayIconElementComponent} from "../../core/components/display-icon-element/display-icon-element.component";
+import {FormsModule} from "@angular/forms";
 
 export class PaymentsTableDisplayOptions {
   private readonly keyPaymentsTableDisplayOptions = 'paymentsTableDisplayOptions';
@@ -54,19 +57,17 @@ export class PaymentsTableDisplayOptions {
 }
 
 @Component({
-    selector: 'app-payments-table-display-options',
-    templateUrl: './payments-table-display-options.component.html',
-    styleUrls: ['./payments-table-display-options.component.scss'],
-    standalone: false
+  selector: 'app-payments-table-display-options',
+  templateUrl: './payments-table-display-options.component.html',
+  imports: [
+    BsDropdownModule,
+    DisplayIconElementComponent,
+    FormsModule
+  ],
+  styleUrls: ['./payments-table-display-options.component.scss']
 })
-export class PaymentsTableDisplayOptionsComponent implements OnInit {
-
+export class PaymentsTableDisplayOptionsComponent {
   @Input()
   public paymentsTableDisplayOptions: PaymentsTableDisplayOptions;
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }

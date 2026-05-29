@@ -1,21 +1,19 @@
-import {Directive, ElementRef, HostListener} from '@angular/core';
-import {NgControl, NgModel} from '@angular/forms';
+import {Directive, HostListener, inject} from '@angular/core';
+import {NgControl} from '@angular/forms';
 import {ClipboardNumberConverter} from '../utils/clipboard-number-converter';
 
 @Directive({
-    selector: '[appInputPasteFloatControl]',
-    standalone: false
+    selector: '[appInputPasteFloatControl]'
 })
 export class InputPasteFloatControlDirective {
-
-  constructor(private control: NgControl) { }
+  private control = inject(NgControl)
 
   @HostListener('paste', ['$event'])
   onPaste(event) {
-    const parsedText = ClipboardNumberConverter.getConverted(event);
-    if (!isNaN(parsedText)) {
+    const parsedValue = ClipboardNumberConverter.getConverted(event);
+    if (!isNaN(parsedValue)) {
       event.preventDefault();
-      this.control?.control.setValue(parsedText);
+      this.control?.control.setValue(parsedValue);
     }
   }
 }

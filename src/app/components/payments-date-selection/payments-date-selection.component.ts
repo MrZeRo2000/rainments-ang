@@ -1,17 +1,23 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
+import {Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/core';
+import {ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {DateRangeGenerator, PeriodInfo} from '../../core/utils/date-range-generator';
-import {DateGenerator} from '../../core/utils/date-generator';
-import {PaymentObject} from '../../model/payment-object';
 import {PaymentObjectTotals} from '../../model/payment-object-totals';
+import {NgClass} from "@angular/common";
+import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 
 @Component({
-    selector: 'app-payments-date-selection',
-    templateUrl: './payments-date-selection.component.html',
-    styleUrls: ['./payments-date-selection.component.scss'],
-    standalone: false
+  selector: 'app-payments-date-selection',
+  templateUrl: './payments-date-selection.component.html',
+  imports: [
+    ReactiveFormsModule,
+    NgClass,
+    FaIconComponent
+  ],
+  styleUrls: ['./payments-date-selection.component.scss']
 })
 export class PaymentsDateSelectionComponent implements OnInit {
+  private fb = inject(UntypedFormBuilder)
+
   editForm: UntypedFormGroup;
   periods: Array<PeriodInfo>;
   years: Array<number>;
@@ -28,7 +34,7 @@ export class PaymentsDateSelectionComponent implements OnInit {
 
   @Output() selectedDate = new EventEmitter<Date>();
 
-  constructor(private fb: UntypedFormBuilder) {
+  constructor() {
     // this.lastSelectedDate = DateGenerator.getPreviousMonthStartDate();
     this.selectedDate.subscribe(v => {
       this.lastSelectedDate = v;

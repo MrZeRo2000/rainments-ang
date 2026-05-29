@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import {RestDataSource} from '../data-source/rest-data-source';
 import {PaymentObjectRepository} from './payment-object-repository';
 import {PaymentGroupRepository} from './payment-group-repository';
@@ -47,7 +46,6 @@ import {AppInfoRepository} from './app-info-repository';
         PaymentObjectTotalsRepository,
         PaymentObjectPeriodRepository,
         PaymentRepRepository,
-        AppInfoRepository,
-        provideHttpClient(withInterceptorsFromDi())
+        AppInfoRepository
     ] })
 export class RepositoryModule { }

@@ -9,11 +9,22 @@ import {Subscription} from 'rxjs';
 import {Payment} from '../../model/payment';
 import {PaymentUtils} from '../../utils/payment-utils';
 import {SelectableItem} from '../../core/model/selectable-item';
-import {ReportsTableDisplayOptions} from '../reports-table-display-options/reports-table-display-options.component';
 import {
-  ChartStyle,
-  ReportsChartDateTotalsDisplayOptions
+  ReportsTableDisplayOptions,
+  ReportsTableDisplayOptionsComponent
+} from '../reports-table-display-options/reports-table-display-options.component';
+import {
+  ReportsChartDateTotalsDisplayOptions, ReportsChartDateTotalsDisplayOptionsComponent
 } from '../reports-chart-date-totals-display-options/reports-chart-date-totals-display-options.component';
+import {MessageComponent} from "../../messages/message.component";
+import {BsDatepickerModule} from "ngx-bootstrap/datepicker";
+import {
+  DropDownMultiSelectComponent
+} from "../../core/components/drop-down-multi-select/drop-down-multi-select.component";
+import {NgClass} from "@angular/common";
+import {ReportsChartDateTotalsComponent} from "../reports-chart-date-totals/reports-chart-date-totals.component";
+import {LoadingProgressComponent} from "../../core/components/loading-progress/loading-progress.component";
+import {ReportsTableComponent} from "../reports-table/reports-table.component";
 
 enum ControlTab {
   Chart = 'Chart',
@@ -21,10 +32,20 @@ enum ControlTab {
 }
 
 @Component({
-    selector: 'app-reports-master',
-    templateUrl: './reports-master.component.html',
-    styleUrls: ['./reports-master.component.scss'],
-    standalone: false
+  selector: 'app-reports-master',
+  templateUrl: './reports-master.component.html',
+  imports: [
+    MessageComponent,
+    BsDatepickerModule,
+    DropDownMultiSelectComponent,
+    ReportsChartDateTotalsDisplayOptionsComponent,
+    NgClass,
+    ReportsChartDateTotalsComponent,
+    LoadingProgressComponent,
+    ReportsTableComponent,
+    ReportsTableDisplayOptionsComponent
+  ],
+  styleUrls: ['./reports-master.component.scss']
 })
 export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> implements OnInit, OnDestroy {
 
@@ -57,6 +78,7 @@ export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> imp
 
   private readonly loadSuccessSubscription: Subscription;
 
+  /* eslint-disable @angular-eslint/prefer-inject */
   constructor(public repository: PaymentRepRepository, private route: ActivatedRoute) {
     super(repository);
     this.paymentObjectId = Number.parseInt(this.route.snapshot.params[this.KEY_ID], 0);

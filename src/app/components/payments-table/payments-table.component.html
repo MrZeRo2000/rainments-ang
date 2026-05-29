@@ -57,7 +57,7 @@
               <td
                 tooltip={{item.value.product.name}}
                 [isDisabled]="!displayOptions.showTooltips || item.value.product.name.length < 18"
-                delay="500"
+                [delay]="500"
                 [ngClass]="{'text-truncate': displayOptions.compactProducts}"
                 >
                 {{item.value.product.name}}

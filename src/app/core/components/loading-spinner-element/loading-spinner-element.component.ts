@@ -1,16 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 
 @Component({
-    selector: 'app-core-loading-spinner-element',
-    templateUrl: './loading-spinner-element.component.html',
-    styleUrls: ['./loading-spinner-element.component.scss'],
-    standalone: false
+  selector: 'app-core-loading-spinner-element',
+  templateUrl: './loading-spinner-element.component.html',
+  imports: [
+    FaIconComponent
+  ],
+  styleUrls: ['./loading-spinner-element.component.scss']
 })
-export class LoadingSpinnerElementComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+export class LoadingSpinnerElementComponent {
 
 }

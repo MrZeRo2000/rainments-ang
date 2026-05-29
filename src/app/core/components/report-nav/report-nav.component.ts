@@ -1,24 +1,23 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, inject, Input} from '@angular/core';
 import {Router} from '@angular/router';
+import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 
 @Component({
-    selector: 'app-report-nav',
-    templateUrl: './report-nav.component.html',
-    styleUrls: ['./report-nav.component.scss'],
-    standalone: false
+  selector: 'app-report-nav',
+  templateUrl: './report-nav.component.html',
+  imports: [
+    FaIconComponent
+  ],
+  styleUrls: ['./report-nav.component.scss']
 })
-export class ReportNavComponent implements OnInit {
+export class ReportNavComponent {
+  private router = inject(Router)
 
   @Input()
   itemId: number;
 
   @Input()
   navigatePath: string;
-
-  constructor(private router: Router) { }
-
-  ngOnInit(): void {
-  }
 
   onReportClick(event) {
     event.preventDefault();

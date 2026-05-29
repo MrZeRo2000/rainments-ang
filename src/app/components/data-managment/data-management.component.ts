@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import {MessageComponent} from "../../messages/message.component";
+import {BackupDatabaseComponent} from "../backup-database/backup-database.component";
+import {UpdatePaymentGroupComponent} from "../update-payment-group/update-payment-group.component";
 
 @Component({
-    selector: 'app-data-management',
-    templateUrl: './data-management.component.html',
-    styleUrls: ['./data-management.component.scss'],
-    standalone: false
+  selector: 'app-data-management',
+  templateUrl: './data-management.component.html',
+  imports: [
+    MessageComponent,
+    BackupDatabaseComponent,
+    UpdatePaymentGroupComponent
+  ],
+  styleUrls: ['./data-management.component.scss']
 })
-export class DataManagementComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+export class DataManagementComponent {
 
 }

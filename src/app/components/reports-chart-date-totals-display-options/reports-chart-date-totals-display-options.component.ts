@@ -1,5 +1,7 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {UntypedFormBuilder, UntypedFormGroup} from '@angular/forms';
+import {Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/core';
+import {ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup} from '@angular/forms';
+import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
+import {DisplayIconElementComponent} from '../../core/components/display-icon-element/display-icon-element.component';
 
 export enum ChartStyle {
   BarChart = "Bar Chart",
@@ -44,10 +46,15 @@ export class ReportsChartDateTotalsDisplayOptions {
 @Component({
     selector: 'app-reports-chart-date-totals-display-options',
     templateUrl: './reports-chart-date-totals-display-options.component.html',
-    styleUrls: ['./reports-chart-date-totals-display-options.component.scss'],
-    standalone: false
+    imports: [
+      BsDropdownModule,
+      DisplayIconElementComponent,
+      ReactiveFormsModule
+    ],
+    styleUrls: ['./reports-chart-date-totals-display-options.component.scss']
 })
 export class ReportsChartDateTotalsDisplayOptionsComponent implements OnInit {
+  private fb = inject(UntypedFormBuilder)
 
   ChartStyle = ChartStyle;
 
@@ -61,7 +68,7 @@ export class ReportsChartDateTotalsDisplayOptionsComponent implements OnInit {
   @Output()
   selectionChanged = new EventEmitter<ReportsChartDateTotalsDisplayOptions>();
 
-  constructor(private fb: UntypedFormBuilder) { }
+  constructor() { }
 
   private buildForm(): UntypedFormGroup {
     const formGroup = this.fb.group({

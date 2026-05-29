@@ -1,12 +1,15 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 
 @Component({
-    selector: 'app-core-edit-delete-panel',
-    templateUrl: './edit-delete-panel.component.html',
-    styleUrls: ['./edit-delete-panel.component.scss'],
-    standalone: false
+  selector: 'app-core-edit-delete-panel',
+  templateUrl: './edit-delete-panel.component.html',
+  imports: [
+    FaIconComponent
+  ],
+  styleUrls: ['./edit-delete-panel.component.scss']
 })
-export class EditDeletePanelComponent implements OnInit {
+export class EditDeletePanelComponent {
 
   @Input() item: any;
 
@@ -16,9 +19,6 @@ export class EditDeletePanelComponent implements OnInit {
   constructor() {
     this.deleteClick = new EventEmitter<any>();
     this.editClick = new EventEmitter<any>();
-  }
-
-  ngOnInit() {
   }
 
   onDeleteClick(item): void {

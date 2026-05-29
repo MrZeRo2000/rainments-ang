@@ -1,4 +1,3 @@
-﻿import '../../app.module';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BackupDatabaseButtonComponent } from './backup-database-button.component';
@@ -15,8 +14,7 @@ describe('BackupDatabaseButtonComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [BackupDatabaseButtonComponent],
-      imports: [RepositoryModule, FontAwesomeIconsModule],
+      imports: [BackupDatabaseButtonComponent, RepositoryModule, FontAwesomeIconsModule],
       providers: [RestUrlEnv, RestDataSource, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
     });
     fixture = TestBed.createComponent(BackupDatabaseButtonComponent);

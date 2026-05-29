@@ -1,4 +1,3 @@
-﻿import '../../../app.module';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DragGripComponent } from './drag-grip.component';
@@ -10,8 +9,7 @@ describe('DragGripComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      declarations: [ DragGripComponent ],
-      imports: [FontAwesomeIconsModule]
+      imports: [DragGripComponent, FontAwesomeIconsModule]
     })
     .compileComponents();
   });

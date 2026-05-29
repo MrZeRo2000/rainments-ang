@@ -1,4 +1,3 @@
-﻿import '../../../app.module';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DropDownMoreMenuComponent } from './drop-down-more-menu.component';
@@ -10,8 +9,7 @@ describe('DropDownMoreMenuComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      declarations: [ DropDownMoreMenuComponent ],
-      imports: [FontAwesomeIconsModule]
+      imports: [DropDownMoreMenuComponent, FontAwesomeIconsModule]
     })
     .compileComponents();
   });

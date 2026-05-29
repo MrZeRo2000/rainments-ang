@@ -1,4 +1,3 @@
-﻿import '../../../app.module';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ColoredTrendLabelComponent } from './colored-trend-label.component';
@@ -10,8 +9,7 @@ describe('ColoredTrendLabelComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ColoredTrendLabelComponent ],
-      imports: [FontAwesomeIconsModule]
+      imports: [ColoredTrendLabelComponent, FontAwesomeIconsModule]
     })
     .compileComponents();
   });

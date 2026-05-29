@@ -1,16 +1,22 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {Payment} from '../../model/payment';
 import {PaymentAmountSummary} from '../../model/payment-amount-summary';
 import {PaymentUtils} from '../../utils/payment-utils';
 import {ReportsTableDisplayOptions} from '../reports-table-display-options/reports-table-display-options.component';
+import {AmountPipe} from "../../core/pipes/amount.pipe";
+import {DatePipe, NgStyle} from "@angular/common";
 
 @Component({
-    selector: 'app-reports-table',
-    templateUrl: './reports-table.component.html',
-    styleUrls: ['./reports-table.component.scss'],
-    standalone: false
+  selector: 'app-reports-table',
+  templateUrl: './reports-table.component.html',
+  imports: [
+    AmountPipe,
+    NgStyle,
+    DatePipe
+  ],
+  styleUrls: ['./reports-table.component.scss']
 })
-export class ReportsTableComponent implements OnInit, OnChanges {
+export class ReportsTableComponent implements OnChanges {
 
   @Input()
   payments: Array<Payment>;
@@ -19,11 +25,6 @@ export class ReportsTableComponent implements OnInit, OnChanges {
   displayOptions: ReportsTableDisplayOptions;
 
   paymentAmountSummary: PaymentAmountSummary;
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
 
   ngOnChanges(changes: SimpleChanges): void {
     for (const propName of Object.keys(changes)) {

@@ -19,14 +19,17 @@ import {
   ReportsChartDateTotalsDisplayOptions
 } from '../reports-chart-date-totals-display-options/reports-chart-date-totals-display-options.component';
 import {BarChartDrawer, IDrawer, SideBySideBarChartDrawer, StackedBarChartDrawer} from './reports-chart-date-totals-drawers';
+import {NgStyle} from "@angular/common";
 
 
 @Component({
-    selector: 'app-reports-chart-date-totals',
-    encapsulation: ViewEncapsulation.None,
-    templateUrl: './reports-chart-date-totals.component.html',
-    styleUrls: ['./reports-chart-date-totals.component.scss'],
-    standalone: false
+  selector: 'app-reports-chart-date-totals',
+  encapsulation: ViewEncapsulation.None,
+  templateUrl: './reports-chart-date-totals.component.html',
+  imports: [
+    NgStyle
+  ],
+  styleUrls: ['./reports-chart-date-totals.component.scss']
 })
 export class ReportsChartDateTotalsComponent implements OnChanges, AfterViewInit {
 

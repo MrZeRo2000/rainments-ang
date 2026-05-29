@@ -1,20 +1,46 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, inject, ViewChild} from '@angular/core';
 import {PaymentObject} from '../../model/payment-object';
 import {PaymentGroup} from '../../model/payment-group';
-import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {PaymentGroupRepository} from '../../repository/payment-group-repository';
 import {urlValidator} from '../../core/directives/url-validator.directive';
 import {CommonSimpleEditableTableComponent} from '../../core/table/common-simple-editable-table-component';
 import {DragHandlerService} from '../../core/services/drag-handler.service';
+import {AddPanelComponent} from "../../core/components/add-panel/add-panel.component";
+import {DropDownMoreMenuComponent} from "../../core/components/drop-down-more-menu/drop-down-more-menu.component";
+import {NgClass, NgStyle} from "@angular/common";
+import {CdkDrag, CdkDragHandle, CdkDragPreview, CdkDropList} from "@angular/cdk/drag-drop";
+import {DragGripComponent} from "../../core/components/drag-grip/drag-grip.component";
+import {EditDeletePanelComponent} from "../../core/components/edit-delete-panel/edit-delete-panel.component";
+import {SaveDialogPanelComponent} from "../../core/components/save-dialog-panel/save-dialog-panel.component";
+import {LoadingProgressComponent} from "../../core/components/loading-progress/loading-progress.component";
 
 @Component({
-    selector: 'app-payment-groups-table',
-    templateUrl: './payment-groups-table.component.html',
-    styleUrls: ['./payment-groups-table.component.scss'],
-    standalone: false
+  selector: 'app-payment-groups-table',
+  templateUrl: './payment-groups-table.component.html',
+  imports: [
+    AddPanelComponent,
+    DropDownMoreMenuComponent,
+    NgClass,
+    CdkDropList,
+    CdkDrag,
+    CdkDragPreview,
+    NgStyle,
+    DragGripComponent,
+    CdkDragHandle,
+    EditDeletePanelComponent,
+    ReactiveFormsModule,
+    FormsModule,
+    SaveDialogPanelComponent,
+    LoadingProgressComponent
+  ],
+  styleUrls: ['./payment-groups-table.component.scss']
 })
 export class PaymentGroupsTableComponent extends CommonSimpleEditableTableComponent<PaymentGroup> {
+  private fb = inject(UntypedFormBuilder)
+  public dragHandlerService = inject(DragHandlerService)
+
   @ViewChild('inputName') inputNameElement: ElementRef;
 
   preview: boolean = false;
@@ -24,11 +50,10 @@ export class PaymentGroupsTableComponent extends CommonSimpleEditableTableCompon
   }
 
   constructor(
-    private fb: UntypedFormBuilder,
+    // eslint-disable-next-line @angular-eslint/prefer-inject
     protected modalService: BsModalService,
-    public repository: PaymentGroupRepository,
-    public dragHandlerService: DragHandlerService
-  ) {
+    // eslint-disable-next-line @angular-eslint/prefer-inject
+    public repository: PaymentGroupRepository) {
     super(PaymentObject, modalService, repository);
   }
 

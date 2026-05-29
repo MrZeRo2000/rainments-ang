@@ -1,23 +1,28 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, inject, Input} from '@angular/core';
 import {MessagesService} from './messages.service';
 import {Message} from './message.model';
 import {MessageType} from './message.model';
+import {AlertComponent} from "ngx-bootstrap/alert";
 
 @Component({
-    selector: 'app-message',
-    templateUrl: './message.component.html',
-    styleUrls: ['./message.component.scss'],
-    standalone: false
+  selector: 'app-message',
+  templateUrl: './message.component.html',
+  imports: [
+    AlertComponent
+  ],
+  styleUrls: ['./message.component.scss']
 })
 
-export class MessageComponent implements OnInit {
+export class MessageComponent {
+  private messagesService = inject(MessagesService)
+
   displayMessage: Message = null;
   MessageType = MessageType;
 
   @Input() messageSource: string;
 
-  constructor(private messagesService: MessagesService) {
-    messagesService.getLastMessage().subscribe((message) => {
+  constructor() {
+    this.messagesService.getLastMessage().subscribe((message) => {
       if (
         (this.messageSource && message && message.messageSource && this.messageSource === message.messageSource) ||
         (!this.messageSource && message && !message.messageSource)
@@ -32,9 +37,6 @@ export class MessageComponent implements OnInit {
       }, 5000);
        */
     });
-  }
-
-  ngOnInit() {
   }
 
   onClosed(): void {

@@ -1,4 +1,3 @@
-﻿import '../../app.module';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReportsMasterComponent } from './reports-master.component';
@@ -7,12 +6,7 @@ import {RestDataSource} from '../../data-source/rest-data-source';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import {RouterTestingModule} from '@angular/router/testing';
 import {ReactiveFormsModule} from '@angular/forms';
-import {CoreModule} from '../../core/core.module';
-import {MessagesModule} from '../../messages/messages.module';
 import {RepositoryModule} from '../../repository/repository.module';
-import {ReportsTableComponent} from '../reports-table/reports-table.component';
-import {ReportsChartDateTotalsComponent} from '../reports-chart-date-totals/reports-chart-date-totals.component';
-import {ReportsTableDisplayOptionsComponent} from '../reports-table-display-options/reports-table-display-options.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ReportsMasterComponent', () => {
@@ -21,8 +15,7 @@ describe('ReportsMasterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    declarations: [ReportsMasterComponent, ReportsTableComponent, ReportsChartDateTotalsComponent, ReportsTableDisplayOptionsComponent],
-    imports: [RouterTestingModule, ReactiveFormsModule, CoreModule, MessagesModule, RepositoryModule],
+    imports: [ReportsMasterComponent, RouterTestingModule, ReactiveFormsModule, RepositoryModule],
     providers: [RestUrlEnv, RestDataSource, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
 })
     .compileComponents();

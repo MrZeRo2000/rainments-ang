@@ -1,8 +1,6 @@
-﻿import '../../app.module';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PaymentsTableDisplayOptionsComponent } from './payments-table-display-options.component';
-import {CoreModule} from '../../core/core.module';
 
 describe('PaymentsTableDisplayOptionsComponent', () => {
   let component: PaymentsTableDisplayOptionsComponent;
@@ -10,8 +8,7 @@ describe('PaymentsTableDisplayOptionsComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      declarations: [ PaymentsTableDisplayOptionsComponent ],
-      imports: [CoreModule]
+      imports: [PaymentsTableDisplayOptionsComponent]
     })
     .compileComponents();
   });

@@ -1,12 +1,9 @@
-﻿import '../../app.module';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BackupDatabaseComponent } from './backup-database.component';
 import {RepositoryModule} from '../../repository/repository.module';
 import {RestUrlEnv} from '../../config/configuration';
 import {RestDataSource} from '../../data-source/rest-data-source';
-import {CoreModule} from '../../core/core.module';
-import {MessagesModule} from '../../messages/messages.module';
 
 describe('BackupDatabaseComponent', () => {
   let component: BackupDatabaseComponent;
@@ -14,8 +11,7 @@ describe('BackupDatabaseComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      declarations: [ BackupDatabaseComponent ],
-      imports: [RepositoryModule, CoreModule, MessagesModule],
+      imports: [BackupDatabaseComponent, RepositoryModule],
       providers: [RestUrlEnv, RestDataSource]
     })
     .compileComponents();

@@ -1,5 +1,7 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {UntypedFormBuilder, UntypedFormGroup} from '@angular/forms';
+import {Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/core';
+import {ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup} from '@angular/forms';
+import {BsDropdownModule} from "ngx-bootstrap/dropdown";
+import {DisplayIconElementComponent} from "../../core/components/display-icon-element/display-icon-element.component";
 
 export class ReportsTableDisplayOptions {
   private readonly KEY = 'reportsTableDisplayOptions';
@@ -47,12 +49,17 @@ export class ReportsTableDisplayOptions {
 
 
 @Component({
-    selector: 'app-reports-table-display-options',
-    templateUrl: './reports-table-display-options.component.html',
-    styleUrls: ['./reports-table-display-options.component.scss'],
-    standalone: false
+  selector: 'app-reports-table-display-options',
+  templateUrl: './reports-table-display-options.component.html',
+  imports: [
+    BsDropdownModule,
+    DisplayIconElementComponent,
+    ReactiveFormsModule
+  ],
+  styleUrls: ['./reports-table-display-options.component.scss']
 })
 export class ReportsTableDisplayOptionsComponent implements OnInit {
+  private fb = inject(UntypedFormBuilder)
 
   @Input()
   reportsTableDisplayOptions: ReportsTableDisplayOptions;
@@ -78,9 +85,6 @@ export class ReportsTableDisplayOptionsComponent implements OnInit {
 
     return formGroup;
   }
-
-
-  constructor(private fb: UntypedFormBuilder) { }
 
   ngOnInit(): void {
     this.displayOptionsForm = this.buildForm();

@@ -5,7 +5,7 @@
     @if (value !== 0) {
       <fa-icon [icon]="value > 0 ? ['fas', 'caret-up'] : ['fas', 'caret-down']" transform="grow-4"></fa-icon>
     }
-    @if (value == 0) {
+    @if (value === 0) {
       <fa-icon [icon]="['fas', 'equals']"></fa-icon>
     }
   </span>

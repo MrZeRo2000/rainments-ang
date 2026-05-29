@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, inject, Input, OnDestroy, OnInit} from '@angular/core';
 import {MessagesService} from '../../messages/messages.service';
 import {BackupInfoRepository} from '../../repository/backup-info-repository';
 import {Loadable} from '../../core/edit/edit-intf';
@@ -6,14 +6,23 @@ import {BackupDatabaseRepository} from '../../repository/backup-database-reposit
 import {BackupDatabaseInfo} from '../../model/backup-database-info';
 import {SuccessMessage} from '../../messages/message.model';
 import {Subscription} from 'rxjs';
+import {DatePipe} from "@angular/common";
+import {LoadingProgressComponent} from "../../core/components/loading-progress/loading-progress.component";
 
 @Component({
-    selector: 'app-backup-database',
-    templateUrl: './backup-database.component.html',
-    styleUrls: ['./backup-database.component.scss'],
-    standalone: false
+  selector: 'app-backup-database',
+  templateUrl: './backup-database.component.html',
+  imports: [
+    DatePipe,
+    LoadingProgressComponent
+  ],
+  styleUrls: ['./backup-database.component.scss']
 })
 export class BackupDatabaseComponent implements OnInit, OnDestroy, Loadable {
+  public messagesService = inject(MessagesService)
+  public backupInfoRepository = inject(BackupInfoRepository)
+  public backupDatabaseRepository = inject(BackupDatabaseRepository)
+
   @Input()
   messageSource: string;
 
@@ -21,12 +30,6 @@ export class BackupDatabaseComponent implements OnInit, OnDestroy, Loadable {
 
   private backupSubscription: Subscription;
   private loadingSubscription: Subscription;
-
-  constructor(
-    public messagesService: MessagesService,
-    public backupInfoRepository: BackupInfoRepository,
-    public backupDatabaseRepository: BackupDatabaseRepository
-  ) { }
 
   ngOnInit(): void {
     this.backupInfoRepository.loadData();

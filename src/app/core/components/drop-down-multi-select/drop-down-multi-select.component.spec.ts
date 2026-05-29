@@ -1,4 +1,3 @@
-﻿import '../../../app.module';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DropDownMultiSelectComponent } from './drop-down-multi-select.component';
@@ -9,7 +8,7 @@ describe('DropDownMultiSelectComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DropDownMultiSelectComponent ]
+      imports: [DropDownMultiSelectComponent]
     })
     .compileComponents();
   });

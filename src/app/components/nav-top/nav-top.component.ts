@@ -1,14 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import {NavigationEnd, Router} from '@angular/router';
+import {Component, inject} from '@angular/core';
+import {NavigationEnd, Router, RouterLink} from '@angular/router';
 import {filter} from 'rxjs/operators';
+import {NgClass} from '@angular/common';
 
 @Component({
     selector: 'app-nav-top',
     templateUrl: './nav-top.component.html',
-    styleUrls: ['./nav-top.component.scss'],
-    standalone: false
+    imports: [
+      NgClass,
+      RouterLink
+    ],
+    styleUrls: ['./nav-top.component.scss']
 })
-export class NavTopComponent implements OnInit {
+export class NavTopComponent {
+  private router = inject(Router)
+
   routeUrl = '/';
 
   getActiveHome(): boolean {
@@ -19,15 +25,12 @@ export class NavTopComponent implements OnInit {
     return this.routeUrl === '/settings';
   }
 
-  constructor(private router: Router) {
+  constructor() {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(
       event => {this.routeUrl = (event as NavigationEnd).url; }
     );
-  }
-
-  ngOnInit() {
   }
 
 }

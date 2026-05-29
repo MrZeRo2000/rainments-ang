@@ -1,4 +1,3 @@
-﻿import './app.module';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
@@ -16,9 +15,7 @@ describe('AppComponent', () => {
       imports: [
         RouterTestingModule,
         AlertModule.forRoot(),
-        RepositoryModule
-      ],
-      declarations: [
+        RepositoryModule,
         AppComponent,
         AppInfoComponent,
         NavTopComponent,

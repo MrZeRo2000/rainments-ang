@@ -1,5 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {MessagesService} from '../../messages/messages.service';
+import {EnumStringValuePipe} from "../../core/pipes/enum-string-value.pipe";
+import {NgClass} from "@angular/common";
+import {MessageComponent} from "../../messages/message.component";
+import {PaymentObjectsTableComponent} from "../payment-objects-table/payment-objects-table.component";
+import {PaymentGroupsTableComponent} from "../payment-groups-table/payment-groups-table.component";
+import {ProductsTableComponent} from "../products-table/products-table.component";
+import {DataManagementComponent} from "../data-managment/data-management.component";
 
 export class SettingItem {
   constructor(public id: number, public name: string) {}
@@ -13,21 +20,25 @@ export enum SettingItemEnum {
 }
 
 @Component({
-    selector: 'app-settings',
-    templateUrl: './settings.component.html',
-    styleUrls: ['./settings.component.scss'],
-    standalone: false
+  selector: 'app-settings',
+  templateUrl: './settings.component.html',
+  styleUrls: ['./settings.component.scss'],
+  imports: [
+    EnumStringValuePipe,
+    NgClass,
+    MessageComponent,
+    PaymentObjectsTableComponent,
+    PaymentGroupsTableComponent,
+    ProductsTableComponent,
+    DataManagementComponent
+  ]
 })
-export class SettingsComponent implements OnInit {
+export class SettingsComponent {
+  private messagesService: MessagesService = inject(MessagesService);
 
   public SettingItemEnumType = SettingItemEnum;
 
   selectedItem: SettingItemEnum = SettingItemEnum.PAYMENT_OBJECTS;
-
-  constructor(private messagesService: MessagesService) { }
-
-  ngOnInit() {
-  }
 
   onItemClick(event, item) {
     event.preventDefault();

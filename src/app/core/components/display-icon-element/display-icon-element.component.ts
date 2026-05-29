@@ -1,16 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 
 @Component({
-    selector: 'app-core-display-icon-element',
-    templateUrl: './display-icon-element.component.html',
-    styleUrls: ['./display-icon-element.component.scss'],
-    standalone: false
+  selector: 'app-core-display-icon-element',
+  templateUrl: './display-icon-element.component.html',
+  imports: [
+    FaIconComponent
+  ],
+  styleUrls: ['./display-icon-element.component.scss']
 })
-export class DisplayIconElementComponent implements OnInit {
+export class DisplayIconElementComponent {
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }

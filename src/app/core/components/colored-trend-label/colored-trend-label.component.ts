@@ -1,18 +1,17 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {NgClass} from "@angular/common";
+import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 
 @Component({
-    selector: 'app-core-colored-trend-label',
-    templateUrl: './colored-trend-label.component.html',
-    styleUrls: ['./colored-trend-label.component.scss'],
-    standalone: false
+  selector: 'app-core-colored-trend-label',
+  templateUrl: './colored-trend-label.component.html',
+  imports: [
+    NgClass,
+    FaIconComponent
+  ],
+  styleUrls: ['./colored-trend-label.component.scss']
 })
-export class ColoredTrendLabelComponent implements OnInit {
+export class ColoredTrendLabelComponent {
   @Input()
   value: any;
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
 }

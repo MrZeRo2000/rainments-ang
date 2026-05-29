@@ -2,7 +2,7 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
-  EventEmitter,
+  EventEmitter, inject,
   Input,
   OnChanges, OnDestroy,
   OnInit,
@@ -14,7 +14,7 @@ import {
 import {CommonEditableTableComponent} from '../../core/table/common-editable-table-component';
 import {PaymentRefs} from '../../model/payment-refs';
 import {Payment} from '../../model/payment';
-import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {PaymentRefsRepository} from '../../repository/payment-refs-repository';
 import {PaymentRepository} from '../../repository/payment-repository';
@@ -25,11 +25,29 @@ import {Product} from '../../model/product';
 import {PaymentObject} from '../../model/payment-object';
 import {InlineEditHandler, InlineEditSelection} from '../../core/edit/inline-edit-handler';
 import {AmountPipe} from '../../core/pipes/amount.pipe';
-import {ColorScheme} from '../../core/components/colored-value-label/colored-value-label.component';
+import {
+  ColoredValueLabelComponent,
+  ColorScheme
+} from '../../core/components/colored-value-label/colored-value-label.component';
 import {PatchRequest} from '../../model/patch-request';
-import {PaymentsTableDisplayOptions} from '../payments-table-display-options/payments-table-display-options.component';
+import {
+  PaymentsTableDisplayOptions,
+  PaymentsTableDisplayOptionsComponent
+} from '../payments-table-display-options/payments-table-display-options.component';
 import {Subscription} from 'rxjs';
 import {SelectableItem} from '../../core/model/selectable-item';
+import {AddPanelComponent} from "../../core/components/add-panel/add-panel.component";
+import {PaymentsSelectablePanelComponent} from "../payments-selectable-panel/payments-selectable-panel.component";
+import {FaIconComponent} from "@fortawesome/angular-fontawesome";
+import {NgClass, NgStyle} from "@angular/common";
+import {TooltipModule} from "ngx-bootstrap/tooltip";
+import {ColoredTrendLabelComponent} from "../../core/components/colored-trend-label/colored-trend-label.component";
+import {InputPasteFloatModelDirective} from "../../core/directives/input-paste-float-model.directive";
+import {EditDeletePanelComponent} from "../../core/components/edit-delete-panel/edit-delete-panel.component";
+import {PaymentsSummaryComponent} from "../payments-summary/payments-summary.component";
+import {InputPasteFloatControlDirective} from "../../core/directives/input-paste-float-control.directive";
+import {SaveDialogPanelComponent} from "../../core/components/save-dialog-panel/save-dialog-panel.component";
+import {LoadingProgressComponent} from "../../core/components/loading-progress/loading-progress.component";
 
 enum InlineControl {
   ProductCounter = 'productCounterControl',
@@ -38,13 +56,36 @@ enum InlineControl {
 }
 
 @Component({
-    selector: 'app-payments-table',
-    templateUrl: './payments-table.component.html',
-    styleUrls: ['./payments-table.component.scss'],
-    standalone: false
+  selector: 'app-payments-table',
+  templateUrl: './payments-table.component.html',
+  imports: [
+    AddPanelComponent,
+    PaymentsSelectablePanelComponent,
+    FaIconComponent,
+    NgClass,
+    PaymentsTableDisplayOptionsComponent,
+    NgStyle,
+    TooltipModule,
+    ColoredValueLabelComponent,
+    AmountPipe,
+    FormsModule,
+    ColoredTrendLabelComponent,
+    InputPasteFloatModelDirective,
+    EditDeletePanelComponent,
+    PaymentsSummaryComponent,
+    ReactiveFormsModule,
+    InputPasteFloatControlDirective,
+    SaveDialogPanelComponent,
+    LoadingProgressComponent
+  ],
+  providers: [AmountPipe],
+  styleUrls: ['./payments-table.component.scss']
 })
 export class PaymentsTableComponent extends CommonEditableTableComponent<PaymentRefs, Payment>
   implements OnInit, OnChanges, OnDestroy, AfterViewInit {
+
+  private fb = inject(UntypedFormBuilder)
+  private amountPipe = inject(AmountPipe)
 
   @Input()
   paymentObjectId: number;
@@ -107,13 +148,11 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     return this.convertedPeriodDate;
   }
 
+  /* eslint-disable @angular-eslint/prefer-inject */
   constructor(
-    private fb: UntypedFormBuilder,
     protected modalService: BsModalService,
     public readRepository: PaymentRefsRepository,
-    protected repository: PaymentRepository,
-    private amountPipe: AmountPipe
-  ) {
+    protected repository: PaymentRepository) {
     super(
       Payment,
       modalService,

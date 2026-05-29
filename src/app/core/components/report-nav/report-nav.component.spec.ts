@@ -1,4 +1,3 @@
-﻿import '../../../app.module';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReportNavComponent } from './report-nav.component';
@@ -11,8 +10,7 @@ describe('ReportNavComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, FontAwesomeIconsModule],
-      declarations: [ ReportNavComponent ]
+      imports: [ReportNavComponent, RouterTestingModule, FontAwesomeIconsModule]
     })
     .compileComponents();
   });

@@ -1,28 +1,50 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, inject, ViewChild} from '@angular/core';
 import {Product} from '../../model/product';
-import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
+import {ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {ProductRepository} from '../../repository/product-repository';
 import {CommonSimpleEditableTableComponent} from '../../core/table/common-simple-editable-table-component';
 import {DragHandlerService} from '../../core/services/drag-handler.service';
+import {NgClass} from '@angular/common';
+import {CdkDrag, CdkDragHandle, CdkDragPreview, CdkDropList} from '@angular/cdk/drag-drop';
+import {AddPanelComponent} from '../../core/components/add-panel/add-panel.component';
+import {DropDownMoreMenuComponent} from '../../core/components/drop-down-more-menu/drop-down-more-menu.component';
+import {DragGripComponent} from '../../core/components/drag-grip/drag-grip.component';
+import {EditDeletePanelComponent} from '../../core/components/edit-delete-panel/edit-delete-panel.component';
+import {SaveDialogPanelComponent} from '../../core/components/save-dialog-panel/save-dialog-panel.component';
+import {LoadingProgressComponent} from '../../core/components/loading-progress/loading-progress.component';
 
 @Component({
     selector: 'app-products-table',
     templateUrl: './products-table.component.html',
-    styleUrls: ['./products-table.component.scss'],
-    standalone: false
+    imports: [
+      AddPanelComponent,
+      DropDownMoreMenuComponent,
+      NgClass,
+      CdkDropList,
+      CdkDrag,
+      CdkDragPreview,
+      CdkDragHandle,
+      DragGripComponent,
+      EditDeletePanelComponent,
+      ReactiveFormsModule,
+      SaveDialogPanelComponent,
+      LoadingProgressComponent
+    ],
+    styleUrls: ['./products-table.component.scss']
 })
 export class ProductsTableComponent extends CommonSimpleEditableTableComponent<Product> {
+  private fb = inject(UntypedFormBuilder)
+  public dragHandlerService = inject(DragHandlerService)
+
   @ViewChild('inputName') inputNameElement: ElementRef;
 
   counterPrecisionOptions = ['', '0', '1', '2'];
 
+  /* eslint-disable @angular-eslint/prefer-inject */
   constructor(
-    private fb: UntypedFormBuilder,
     protected modalService: BsModalService,
-    public repository: ProductRepository,
-    public dragHandlerService: DragHandlerService
-  ) {
+    public repository: ProductRepository) {
     super(Product, modalService, repository);
   }
 

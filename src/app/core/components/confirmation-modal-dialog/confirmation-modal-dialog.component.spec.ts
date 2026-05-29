@@ -1,4 +1,3 @@
-﻿import '../../../app.module';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ConfirmationModalDialogComponent } from './confirmation-modal-dialog.component';
@@ -10,7 +9,7 @@ describe('DialogConfirmationComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      declarations: [ ConfirmationModalDialogComponent ],
+      imports: [ConfirmationModalDialogComponent],
       providers: [BsModalRef]
     })
     .compileComponents();

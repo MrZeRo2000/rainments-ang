@@ -1,7 +1,7 @@
-import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, inject, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {PaymentObject} from '../../model/payment-object';
 import {PaymentObjectRepository} from '../../repository/payment-object-repository';
-import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
+import {ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {ImportPaymentObjectRepository} from '../../repository/import-payment-object-repository';
 import {MessagesService} from '../../messages/messages.service';
 import {SuccessMessage} from '../../messages/message.model';
@@ -9,14 +9,24 @@ import {Loadable} from '../../core/edit/edit-intf';
 import {LoadingModalService} from '../../core/services/loading-modal.service';
 import {CommonTableComponent} from '../../core/table/common-table-component';
 import {Subscription} from 'rxjs';
+import {LoadingProgressComponent} from "../../core/components/loading-progress/loading-progress.component";
+import {NgClass} from "@angular/common";
 
 @Component({
-    selector: 'app-import-payment-object-excel',
-    templateUrl: './import-payment-object-excel.component.html',
-    styleUrls: ['./import-payment-object-excel.component.scss'],
-    standalone: false
+  selector: 'app-import-payment-object-excel',
+  templateUrl: './import-payment-object-excel.component.html',
+  imports: [
+    LoadingProgressComponent,
+    NgClass,
+    ReactiveFormsModule
+  ],
+  styleUrls: ['./import-payment-object-excel.component.scss']
 })
 export class ImportPaymentObjectExcelComponent extends CommonTableComponent<PaymentObject> implements OnInit, OnDestroy, Loadable {
+  private fb = inject(UntypedFormBuilder)
+  public messagesService = inject(MessagesService)
+  private importRepository = inject(ImportPaymentObjectRepository)
+  private loadingModalService = inject(LoadingModalService)
 
   @Input()
   messageSource: string;
@@ -35,12 +45,8 @@ export class ImportPaymentObjectExcelComponent extends CommonTableComponent<Paym
     return this.repository.getLoading();
   }
 
-  constructor(
-    private fb: UntypedFormBuilder,
-    public messagesService: MessagesService,
-    public repository: PaymentObjectRepository,
-    private importRepository: ImportPaymentObjectRepository,
-    private loadingModalService: LoadingModalService) {
+  // eslint-disable-next-line @angular-eslint/prefer-inject
+  constructor(public repository: PaymentObjectRepository) {
       super(repository);
   }
 

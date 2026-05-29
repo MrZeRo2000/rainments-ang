@@ -1,16 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 
 @Component({
-    selector: 'app-core-drag-grip',
-    templateUrl: './drag-grip.component.html',
-    styleUrls: ['./drag-grip.component.scss'],
-    standalone: false
+  selector: 'app-core-drag-grip',
+  templateUrl: './drag-grip.component.html',
+  imports: [
+    FaIconComponent
+  ],
+  styleUrls: ['./drag-grip.component.scss']
 })
-export class DragGripComponent implements OnInit {
+export class DragGripComponent {
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
-
 }

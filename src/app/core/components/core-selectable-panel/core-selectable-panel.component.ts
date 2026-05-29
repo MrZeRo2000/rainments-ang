@@ -1,21 +1,17 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {SelectableItem} from '../../model/selectable-item';
 
 @Component({
     selector: 'app-core-selectable-panel',
     templateUrl: './core-selectable-panel.component.html',
-    styleUrls: ['./core-selectable-panel.component.scss'],
-    standalone: false
+    styleUrls: ['./core-selectable-panel.component.scss']
 })
-export class CoreSelectablePanelComponent <T> implements OnInit {
+export class CoreSelectablePanelComponent <T> {
 
   @Input()
   public selectableItems: Array<SelectableItem<T>>;
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
 
   onCheckAllClick(event): void {
     this.selectableItems?.forEach(p => p.isSelected = true);

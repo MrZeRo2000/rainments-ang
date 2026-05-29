@@ -1,4 +1,3 @@
-﻿import '../../app.module';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PaymentsSelectablePanelComponent } from './payments-selectable-panel.component';
@@ -9,7 +8,7 @@ describe('PaymentsSelectablePanelComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PaymentsSelectablePanelComponent ]
+      imports: [PaymentsSelectablePanelComponent]
     })
     .compileComponents();
   });

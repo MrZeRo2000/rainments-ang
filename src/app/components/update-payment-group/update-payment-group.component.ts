@@ -1,6 +1,6 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, inject, Input, OnDestroy, OnInit} from '@angular/core';
 import {PaymentObjectGroupRefs} from '../../model/payment-object-group-refs';
-import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
+import {ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {MessagesService} from '../../messages/messages.service';
 import {PaymentObjectGroupRefsRepository} from '../../repository/payment-object-group-refs-repository';
 import {CommonTableComponent} from '../../core/table/common-table-component';
@@ -13,14 +13,24 @@ import { HttpParams } from '@angular/common/http';
 import {UpdatePaymentObjectGroupRepository} from '../../repository/update-payment-object-group-repository';
 import {Loadable} from '../../core/edit/edit-intf';
 import {SuccessMessage} from '../../messages/message.model';
+import {NgClass} from "@angular/common";
+import {LoadingProgressComponent} from "../../core/components/loading-progress/loading-progress.component";
 
 @Component({
-    selector: 'app-update-payment-group',
-    templateUrl: './update-payment-group.component.html',
-    styleUrls: ['./update-payment-group.component.scss'],
-    standalone: false
+  selector: 'app-update-payment-group',
+  templateUrl: './update-payment-group.component.html',
+  imports: [
+    ReactiveFormsModule,
+    NgClass,
+    LoadingProgressComponent
+  ],
+  styleUrls: ['./update-payment-group.component.scss']
 })
 export class UpdatePaymentGroupComponent extends CommonTableComponent<PaymentObjectGroupRefs> implements OnInit, OnDestroy, Loadable {
+  private fb = inject(UntypedFormBuilder)
+  private modalService = inject(BsModalService)
+  public messagesService = inject(MessagesService)
+  private updateRepository = inject(UpdatePaymentObjectGroupRepository)
 
   @Input()
   messageSource: string;
@@ -39,13 +49,8 @@ export class UpdatePaymentGroupComponent extends CommonTableComponent<PaymentObj
     return this.repository.getLoading() || this.updateLoading;
   }
 
-  constructor(
-    private fb: UntypedFormBuilder,
-    public messagesService: MessagesService,
-    public repository: PaymentObjectGroupRefsRepository,
-    private updateRepository: UpdatePaymentObjectGroupRepository,
-    private modalService: BsModalService,
-    ) {
+  // eslint-disable-next-line @angular-eslint/prefer-inject
+  constructor(public repository : PaymentObjectGroupRefsRepository) {
     super(repository);
   }
 

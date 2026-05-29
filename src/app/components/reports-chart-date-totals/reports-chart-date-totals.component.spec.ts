@@ -1,4 +1,3 @@
-﻿import '../../app.module';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReportsChartDateTotalsComponent } from './reports-chart-date-totals.component';
@@ -9,7 +8,7 @@ describe('ReportsChartDateTotalsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ReportsChartDateTotalsComponent ]
+      imports: [ReportsChartDateTotalsComponent]
     })
     .compileComponents();
   });

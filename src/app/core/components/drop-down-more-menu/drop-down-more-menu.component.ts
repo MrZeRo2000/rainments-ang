@@ -1,16 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 
 @Component({
-    selector: 'app-core-drop-down-more-menu',
-    templateUrl: './drop-down-more-menu.component.html',
-    styleUrls: ['./drop-down-more-menu.component.scss'],
-    standalone: false
+  selector: 'app-core-drop-down-more-menu',
+  templateUrl: './drop-down-more-menu.component.html',
+  imports: [
+    FaIconComponent
+  ],
+  styleUrls: ['./drop-down-more-menu.component.scss']
 })
-export class DropDownMoreMenuComponent implements OnInit {
+export class DropDownMoreMenuComponent {
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
-
 }

@@ -1,4 +1,3 @@
-﻿import '../../../app.module';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LoadingModalPanelComponent } from './loading-modal-panel.component';
@@ -12,8 +11,7 @@ describe('LoadingModalPanelComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      declarations: [ LoadingModalPanelComponent, LoadingSpinnerElementComponent, LoadingProgressComponent ],
-      imports: [FontAwesomeIconsModule]
+      imports: [LoadingModalPanelComponent, LoadingSpinnerElementComponent, LoadingProgressComponent, FontAwesomeIconsModule]
     })
     .compileComponents();
   });

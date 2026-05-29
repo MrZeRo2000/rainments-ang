@@ -1,4 +1,3 @@
-﻿import '../../app.module';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PaymentsDateSelectionComponent } from './payments-date-selection.component';
@@ -11,8 +10,7 @@ describe('PaymentsDateSelectionComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, FontAwesomeIconsModule],
-      declarations: [ PaymentsDateSelectionComponent ]
+      imports: [PaymentsDateSelectionComponent, ReactiveFormsModule, FontAwesomeIconsModule]
     })
     .compileComponents();
   });

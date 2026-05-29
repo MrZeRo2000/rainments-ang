@@ -1,4 +1,3 @@
-﻿import '../../app.module';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PaymentsTableComponent } from './payments-table.component';
@@ -7,7 +6,6 @@ import {RestDataSource} from '../../data-source/rest-data-source';
 import {ModalModule} from 'ngx-bootstrap/modal';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import {ReactiveFormsModule} from '@angular/forms';
-import {CoreModule} from '../../core/core.module';
 import {RepositoryModule} from '../../repository/repository.module';
 import {FontAwesomeIconsModule} from '../../font-awesome-icons/font-awesome-icons.module';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
@@ -18,7 +16,7 @@ describe('PaymentsTableComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-    imports: [ReactiveFormsModule, ModalModule.forRoot(), CoreModule, RepositoryModule, FontAwesomeIconsModule],
+    imports: [PaymentsTableComponent, ReactiveFormsModule, ModalModule.forRoot(), RepositoryModule, FontAwesomeIconsModule],
     providers: [RestUrlEnv, RestDataSource, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
 })
     .compileComponents();

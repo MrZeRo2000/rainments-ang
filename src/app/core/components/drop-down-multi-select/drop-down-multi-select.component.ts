@@ -1,13 +1,18 @@
-import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
+import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {SelectableItem} from '../../model/selectable-item';
+import {BsDropdownModule} from "ngx-bootstrap/dropdown";
+import {NgClass} from "@angular/common";
 
 @Component({
-    selector: 'app-drop-down-multi-select',
-    templateUrl: './drop-down-multi-select.component.html',
-    styleUrls: ['./drop-down-multi-select.component.scss'],
-    standalone: false
+  selector: 'app-drop-down-multi-select',
+  templateUrl: './drop-down-multi-select.component.html',
+  imports: [
+    BsDropdownModule,
+    NgClass
+  ],
+  styleUrls: ['./drop-down-multi-select.component.scss']
 })
-export class DropDownMultiSelectComponent implements OnInit {
+export class DropDownMultiSelectComponent {
 
   @Input()
   title: string;
@@ -17,11 +22,6 @@ export class DropDownMultiSelectComponent implements OnInit {
 
   @Output()
   selectionChanged = new EventEmitter<Array<SelectableItem<string>>>();
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
 
   public dropDownClick(event: any, item: SelectableItem<string>) {
     event.preventDefault();

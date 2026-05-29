@@ -2,8 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import {DateFormatter} from '../utils/date-formatter';
 
 @Pipe({
-    name: 'localeDate',
-    standalone: false
+    name: 'localeDate'
 })
 export class LocaleDatePipe implements PipeTransform {
 
