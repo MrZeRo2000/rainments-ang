@@ -1,4 +1,4 @@
-import {ReadRepository} from '../core/repository/read-repository';
+import {BaseReadRepository} from '../core/repository/read-repository';
 import {Payment} from '../model/payment';
 import {Injectable} from '@angular/core';
 import {RestDataSource} from '../data-source/rest-data-source';

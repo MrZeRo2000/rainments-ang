@@ -1,4 +1,4 @@
-import {ReadRepository} from '../core/repository/read-repository';
+import {BaseReadRepository} from '../core/repository/read-repository';
 import {PaymentRefs} from '../model/payment-refs';
 import {RestDataSource} from '../data-source/rest-data-source';
 import {MessagesService} from '../messages/messages.service';
@@ -6,7 +6,7 @@ import {Inject, Injectable} from '@angular/core';
 import {Payment} from '../model/payment';
 
 @Injectable()
-export class PaymentRefsRepository extends ReadRepository<PaymentRefs> {
+export class PaymentRefsRepository extends BaseReadRepository<PaymentRefs> {
   constructor(protected dataSource: RestDataSource, protected messagesService: MessagesService) {
     super(dataSource, messagesService, 'payments:refs');
   }

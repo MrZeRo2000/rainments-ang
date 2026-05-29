@@ -12,8 +12,8 @@ export class RestDataSource {
     this.restUrl = restUrl;
   }
 
-  getResponse(resourceName: string, params?: HttpParams): Observable<HttpResponse<any>> {
-    return this.http.get(this.restUrl + resourceName, { observe: 'response', params });
+  getResponse<T>(resourceName: string, params?: HttpParams): Observable<HttpResponse<T>> {
+    return this.http.get<T>(this.restUrl + resourceName, { observe: 'response', params });
   }
 
   postResponse(resourceName: string, body: any, httpParams?: HttpParams, headers?: HttpHeaders): Observable<HttpResponse<any>> {

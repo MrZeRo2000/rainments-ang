@@ -1,14 +1,14 @@
 
 import {Subject} from 'rxjs';
 import {CommonEntity} from '../entity/common-entity';
-import {ReadRepository} from './read-repository';
+import {BaseReadRepository} from './read-repository';
 import {PatchRequest} from '../../model/patch-request';
 import {RestDataSource} from '../../data-source/rest-data-source';
 import {MessagesService} from '../../messages/messages.service';
 import {PersistRepository} from './persist-repository';
 import { HttpParams } from '@angular/common/http';
 
-export abstract class ReadWriteRepository<T extends CommonEntity> extends ReadRepository<T> {
+export abstract class ReadWriteRepository<T extends CommonEntity> extends BaseReadRepository<T> {
 
   protected constructor(
     protected dataSource: RestDataSource,

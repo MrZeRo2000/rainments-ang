@@ -1,14 +1,14 @@
 
 import {Directive, OnDestroy, OnInit} from '@angular/core';
 import { HttpParams } from '@angular/common/http';
-import {ReadRepository} from '../repository/read-repository';
+import {BaseReadRepository} from '../repository/read-repository';
 
 @Directive()
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
 export class CommonTableComponent<R> implements OnInit, OnDestroy {
   protected config: CommonTableConfig;
 
-  constructor(protected readRepository: ReadRepository<R>)  {
+  constructor(protected readRepository: BaseReadRepository<R>)  {
     this.config = this.getConfig();
   }
 

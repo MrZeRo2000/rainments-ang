@@ -3,11 +3,12 @@ import {RestDataSource} from '../../data-source/rest-data-source';
 import {MessagesService} from '../../messages/messages.service';
 import { HttpParams } from '@angular/common/http';
 import {ErrorMessage} from '../../messages/message.model';
-import {Subject} from 'rxjs';
+import {Subject, tap, map, switchMap, catchError, Observable, iif, of, ReplaySubject} from 'rxjs';
 import {RepositoryUtils} from './repository-utils';
+import {signal} from "@angular/core";
 
 export class LoadParams {
-  constructor(public updateMessages?: boolean, public messageSource?: string) { }
+  constructor(public params?: HttpParams, public updateMessages?: boolean, public messageSource?: string) { }
 }
 
 class MessageProcessor {
@@ -27,13 +28,13 @@ class MessageProcessor {
   }
 }
 
-export abstract class ReadRepository<T> implements Loadable {
+export abstract class BaseReadRepository<T> implements Loadable {
   protected data: T[] = new Array<T>();
   protected loading = false;
   protected loadingError = false;
   private loadSuccess: Subject<boolean> = new Subject<boolean>();
 
-  private defaultLoadParams: LoadParams = new LoadParams(true);
+  private defaultLoadParams: LoadParams = new LoadParams(null, true);
 
   protected constructor(
     protected dataSource: RestDataSource,
@@ -62,7 +63,7 @@ export abstract class ReadRepository<T> implements Loadable {
     messageProcessor.resetMessage();
 
     this.loading = true;
-    this.dataSource.getResponse(this.resourceName, params).subscribe((data) => {
+    this.dataSource.getResponse<T>(this.resourceName, params).subscribe((data) => {
       if (data.ok) {
         // this.data.length = 0;
         // Object.assign(this.data, data.body);
@@ -107,5 +108,57 @@ export abstract class ReadRepository<T> implements Loadable {
     if (defaultLoadParams) {
       this.defaultLoadParams = defaultLoadParams;
     }
+  }
+}
+
+export class ReadRepository<T> {
+  constructor(
+    protected dataSource: RestDataSource,
+    protected messagesService: MessagesService,
+    protected resourceName: string) { }
+
+  private defaultLoadParams: LoadParams = new LoadParams(null, true);
+
+  loadingSignal = signal(false)
+
+  loadDataSubject = new ReplaySubject<LoadParams>(1);
+
+  loadDataAction$: Observable<T[]> = this.loadDataSubject.pipe(
+    map(v => ({
+        ...v,
+        messageProcessor: new MessageProcessor(this.messagesService, v || this.defaultLoadParams)
+      }
+    )),
+    tap(v => {
+      v.messageProcessor.resetMessage();
+      this.loadingSignal.set(true)
+    }),
+    switchMap((v) =>
+      this.dataSource.getResponse<T>(this.resourceName, v.params).pipe(
+        switchMap(data =>
+          iif(
+            () => data.ok,
+            of(Array.isArray(data.body) ? data.body : [data.body]),
+            of([]).pipe(
+              tap(() => {
+                v.messageProcessor.reportMessageError('Error reading from server:' + data.body);
+              })
+            )
+          )
+        ),
+        catchError(err => {
+          v.messageProcessor.reportMessageError('Network error:' + RepositoryUtils.getNetworkErrorMessage(err));
+          return []
+        })
+      )
+    ),
+    tap(() => {
+      console.log('Loading signal set to false')
+      this.loadingSignal.set(false)
+    })
+  )
+
+  loadData(): void {
+    this.loadDataSubject.next(null);
   }
 }

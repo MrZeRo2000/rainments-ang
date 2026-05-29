@@ -8,7 +8,7 @@ import {UntypedFormGroup} from '@angular/forms';
 import {Subject, Subscription} from 'rxjs';
 import {ConfirmationModalDialogComponent} from '../components/confirmation-modal-dialog/confirmation-modal-dialog.component';
 import {CommonTableComponent} from './common-table-component';
-import {ReadRepository} from '../repository/read-repository';
+import {BaseReadRepository} from '../repository/read-repository';
 
 @Directive()
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
@@ -24,7 +24,7 @@ export abstract class CommonEditableTableComponent<R, W extends CommonEntity>
   protected constructor(
     protected ctor: new() => W,
     protected modalService: BsModalService,
-    protected readRepository: ReadRepository<R>,
+    protected readRepository: BaseReadRepository<R>,
     protected repository: ReadWriteRepository<W>
   ) {
     super(readRepository);
