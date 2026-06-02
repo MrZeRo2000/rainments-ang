@@ -3,7 +3,7 @@ import {Product} from '../../model/product';
 import {ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {ProductRepository} from '../../repository/product-repository';
-import {CommonSimpleEditableTableComponent} from '../../core/table/common-simple-editable-table-component';
+import {BaseCommonSimpleEditableTableComponent} from '../../core/table/common-simple-editable-table-component';
 import {DragHandlerService} from '../../core/services/drag-handler.service';
 import {NgClass} from '@angular/common';
 import {CdkDrag, CdkDragHandle, CdkDragPreview, CdkDropList} from '@angular/cdk/drag-drop';
@@ -33,7 +33,7 @@ import {LoadingProgressComponent} from '../../core/components/loading-progress/l
     ],
     styleUrls: ['./products-table.component.scss']
 })
-export class ProductsTableComponent extends CommonSimpleEditableTableComponent<Product> {
+export class ProductsTableComponent extends BaseCommonSimpleEditableTableComponent<Product> {
   private fb = inject(UntypedFormBuilder)
   public dragHandlerService = inject(DragHandlerService)
 

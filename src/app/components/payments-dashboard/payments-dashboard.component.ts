@@ -1,6 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {CommonTableComponent} from '../../core/table/common-table-component';
+import {BaseCommonTableComponent} from '../../core/table/common-table-component';
 import {PaymentObjectTotals} from '../../model/payment-object-totals';
 import {PaymentObjectTotalsRepository} from '../../repository/payment-object-totals-repository';
 import { HttpParams } from '@angular/common/http';
@@ -27,7 +27,7 @@ import {LoadingProgressComponent} from "../../core/components/loading-progress/l
   ],
   styleUrls: ['./payments-dashboard.component.scss']
 })
-export class PaymentsDashboardComponent extends CommonTableComponent<PaymentObjectTotals> implements OnInit {
+export class PaymentsDashboardComponent extends BaseCommonTableComponent<PaymentObjectTotals> implements OnInit {
   private router = inject(Router)
 
   // eslint-disable-next-line @angular-eslint/prefer-inject

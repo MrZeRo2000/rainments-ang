@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {CommonTableComponent} from '../../core/table/common-table-component';
+import {BaseCommonTableComponent} from '../../core/table/common-table-component';
 import {PaymentRep} from '../../model/payment-rep';
 import {PaymentRepRepository} from '../../repository/payment-rep-repository';
 import {ActivatedRoute} from '@angular/router';
@@ -47,7 +47,7 @@ enum ControlTab {
   ],
   styleUrls: ['./reports-master.component.scss']
 })
-export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> implements OnInit, OnDestroy {
+export class ReportsMasterComponent extends BaseCommonTableComponent<PaymentRep> implements OnInit, OnDestroy {
 
   ControlTab = ControlTab;
 

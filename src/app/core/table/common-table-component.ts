@@ -5,7 +5,7 @@ import {BaseReadRepository} from '../repository/read-repository';
 
 @Directive()
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
-export class CommonTableComponent<R> implements OnInit, OnDestroy {
+export class BaseCommonTableComponent<R> implements OnInit, OnDestroy {
   protected config: CommonTableConfig;
 
   constructor(protected readRepository: BaseReadRepository<R>)  {

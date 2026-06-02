@@ -5,14 +5,14 @@ import {BaseReadRepository} from './read-repository';
 import {PatchRequest} from '../../model/patch-request';
 import {RestDataSource} from '../../data-source/rest-data-source';
 import {MessagesService} from '../../messages/messages.service';
-import {PersistRepository} from './persist-repository';
+import {BasePersistRepository} from './persist-repository';
 import { HttpParams } from '@angular/common/http';
 
-export abstract class ReadWriteRepository<T extends CommonEntity> extends BaseReadRepository<T> {
+export abstract class BaseReadWriteRepository<T extends CommonEntity> extends BaseReadRepository<T> {
 
   protected constructor(
     protected dataSource: RestDataSource,
-    protected persistRepository: PersistRepository,
+    protected persistRepository: BasePersistRepository,
     protected messagesService: MessagesService,
     protected resourceName: string) {
     super(dataSource, messagesService, resourceName);

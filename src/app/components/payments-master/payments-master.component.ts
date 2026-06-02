@@ -1,7 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {PaymentObject} from '../../model/payment-object';
-import {CommonTableComponent} from '../../core/table/common-table-component';
+import {BaseCommonTableComponent} from '../../core/table/common-table-component';
 import {PaymentObjectTotals} from '../../model/payment-object-totals';
 import {PaymentObjectPeriodRepository} from '../../repository/payment-object-period-repository';
 import { HttpParams } from '@angular/common/http';
@@ -26,7 +26,7 @@ import {PaymentsTableComponent} from "../payments-table/payments-table.component
   ],
   styleUrls: ['./payments-master.component.scss']
 })
-export class PaymentsMasterComponent extends CommonTableComponent<PaymentObjectTotals> implements OnInit {
+export class PaymentsMasterComponent extends BaseCommonTableComponent<PaymentObjectTotals> implements OnInit {
   private route = inject(ActivatedRoute)
 
   private KEY_ID = 'id';

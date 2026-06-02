@@ -3,7 +3,7 @@ import {PaymentObjectGroupRefs} from '../../model/payment-object-group-refs';
 import {ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {MessagesService} from '../../messages/messages.service';
 import {PaymentObjectGroupRefsRepository} from '../../repository/payment-object-group-refs-repository';
-import {CommonTableComponent} from '../../core/table/common-table-component';
+import {BaseCommonTableComponent} from '../../core/table/common-table-component';
 import {Subject, Subscription} from 'rxjs';
 import {PaymentObject} from '../../model/payment-object';
 import {PaymentGroup} from '../../model/payment-group';
@@ -26,7 +26,7 @@ import {LoadingProgressComponent} from "../../core/components/loading-progress/l
   ],
   styleUrls: ['./update-payment-group.component.scss']
 })
-export class UpdatePaymentGroupComponent extends CommonTableComponent<PaymentObjectGroupRefs> implements OnInit, OnDestroy, Loadable {
+export class UpdatePaymentGroupComponent extends BaseCommonTableComponent<PaymentObjectGroupRefs> implements OnInit, OnDestroy, Loadable {
   private fb = inject(UntypedFormBuilder)
   private modalService = inject(BsModalService)
   public messagesService = inject(MessagesService)

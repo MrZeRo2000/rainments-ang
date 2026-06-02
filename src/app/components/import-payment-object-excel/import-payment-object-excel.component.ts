@@ -7,7 +7,7 @@ import {MessagesService} from '../../messages/messages.service';
 import {SuccessMessage} from '../../messages/message.model';
 import {Loadable} from '../../core/edit/edit-intf';
 import {LoadingModalService} from '../../core/services/loading-modal.service';
-import {CommonTableComponent} from '../../core/table/common-table-component';
+import {BaseCommonTableComponent} from '../../core/table/common-table-component';
 import {Subscription} from 'rxjs';
 import {LoadingProgressComponent} from "../../core/components/loading-progress/loading-progress.component";
 import {NgClass} from "@angular/common";
@@ -22,7 +22,7 @@ import {NgClass} from "@angular/common";
   ],
   styleUrls: ['./import-payment-object-excel.component.scss']
 })
-export class ImportPaymentObjectExcelComponent extends CommonTableComponent<PaymentObject> implements OnInit, OnDestroy, Loadable {
+export class ImportPaymentObjectExcelComponent extends BaseCommonTableComponent<PaymentObject> implements OnInit, OnDestroy, Loadable {
   private fb = inject(UntypedFormBuilder)
   public messagesService = inject(MessagesService)
   private importRepository = inject(ImportPaymentObjectRepository)

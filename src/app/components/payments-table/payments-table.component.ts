@@ -11,7 +11,7 @@ import {
   SimpleChanges,
   ViewChildren
 } from '@angular/core';
-import {CommonEditableTableComponent} from '../../core/table/common-editable-table-component';
+import {BaseCommonEditableTableComponent} from '../../core/table/common-editable-table-component';
 import {PaymentRefs} from '../../model/payment-refs';
 import {Payment} from '../../model/payment';
 import {FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
@@ -81,7 +81,7 @@ enum InlineControl {
   providers: [AmountPipe],
   styleUrls: ['./payments-table.component.scss']
 })
-export class PaymentsTableComponent extends CommonEditableTableComponent<PaymentRefs, Payment>
+export class PaymentsTableComponent extends BaseCommonEditableTableComponent<PaymentRefs, Payment>
   implements OnInit, OnChanges, OnDestroy, AfterViewInit {
 
   private fb = inject(UntypedFormBuilder)

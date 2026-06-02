@@ -8,7 +8,7 @@ export class PersistParams {
   public messageSource?: string;
 }
 
-export abstract class PersistRepository {
+export abstract class BasePersistRepository {
   private persistSuccess: Subject<boolean> = new Subject<boolean>();
   private persistData: Subject<any> = new Subject<any>();
 

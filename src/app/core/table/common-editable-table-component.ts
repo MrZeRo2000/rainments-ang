@@ -1,19 +1,19 @@
 import {Directive, OnDestroy, OnInit} from '@angular/core';
 import {Editable} from '../edit/edit-intf';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
-import {ReadWriteRepository} from '../repository/read-write-repository';
+import {BaseReadWriteRepository} from '../repository/read-write-repository';
 import {EditMode, EditState} from '../edit/edit-state';
 import {CommonEntity} from '../entity/common-entity';
 import {UntypedFormGroup} from '@angular/forms';
 import {Subject, Subscription} from 'rxjs';
 import {ConfirmationModalDialogComponent} from '../components/confirmation-modal-dialog/confirmation-modal-dialog.component';
-import {CommonTableComponent} from './common-table-component';
+import {BaseCommonTableComponent} from './common-table-component';
 import {BaseReadRepository} from '../repository/read-repository';
 
 @Directive()
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
-export abstract class CommonEditableTableComponent<R, W extends CommonEntity>
-  extends CommonTableComponent<R>
+export abstract class BaseCommonEditableTableComponent<R, W extends CommonEntity>
+  extends BaseCommonTableComponent<R>
   implements OnInit, OnDestroy, Editable {
   bsModalRef: BsModalRef;
   editState: EditState<W>;
@@ -25,7 +25,7 @@ export abstract class CommonEditableTableComponent<R, W extends CommonEntity>
     protected ctor: new() => W,
     protected modalService: BsModalService,
     protected readRepository: BaseReadRepository<R>,
-    protected repository: ReadWriteRepository<W>
+    protected repository: BaseReadWriteRepository<W>
   ) {
     super(readRepository);
   }

@@ -5,7 +5,7 @@ import {FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, 
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {PaymentGroupRepository} from '../../repository/payment-group-repository';
 import {urlValidator} from '../../core/directives/url-validator.directive';
-import {CommonSimpleEditableTableComponent} from '../../core/table/common-simple-editable-table-component';
+import {BaseCommonSimpleEditableTableComponent} from '../../core/table/common-simple-editable-table-component';
 import {DragHandlerService} from '../../core/services/drag-handler.service';
 import {AddPanelComponent} from "../../core/components/add-panel/add-panel.component";
 import {DropDownMoreMenuComponent} from "../../core/components/drop-down-more-menu/drop-down-more-menu.component";
@@ -37,7 +37,7 @@ import {LoadingProgressComponent} from "../../core/components/loading-progress/l
   ],
   styleUrls: ['./payment-groups-table.component.scss']
 })
-export class PaymentGroupsTableComponent extends CommonSimpleEditableTableComponent<PaymentGroup> {
+export class PaymentGroupsTableComponent extends BaseCommonSimpleEditableTableComponent<PaymentGroup> {
   private fb = inject(UntypedFormBuilder)
   public dragHandlerService = inject(DragHandlerService)
 

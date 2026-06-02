@@ -3,7 +3,7 @@ import {PaymentObjectRepository} from '../../repository/payment-object-repositor
 import {PaymentObject} from '../../model/payment-object';
 import {ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {BsModalService} from 'ngx-bootstrap/modal';
-import {CommonSimpleEditableTableComponent} from '../../core/table/common-simple-editable-table-component';
+import {BaseCommonSimpleEditableTableComponent} from '../../core/table/common-simple-editable-table-component';
 import {DragHandlerService} from '../../core/services/drag-handler.service';
 import {TimePeriod, TimePeriodType} from '../../core/utils/time-period';
 import {AddPanelComponent} from "../../core/components/add-panel/add-panel.component";
@@ -34,7 +34,7 @@ import {LoadingProgressComponent} from "../../core/components/loading-progress/l
   ],
   styleUrls: ['./payment-objects-table.component.scss']
 })
-export class PaymentObjectsTableComponent extends CommonSimpleEditableTableComponent<PaymentObject> {
+export class PaymentObjectsTableComponent extends BaseCommonSimpleEditableTableComponent<PaymentObject> {
   private fb = inject(UntypedFormBuilder)
   public dragHandlerService = inject(DragHandlerService)
 
