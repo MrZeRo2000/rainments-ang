@@ -1,4 +1,4 @@
-@if (loadable.getLoading()) {
+@if (loadable?.getLoading() || loading()) {
   <div class="text-center">
     {{message}}<app-core-loading-spinner-element></app-core-loading-spinner-element>
   </div>

@@ -132,6 +132,7 @@ export class ReadRepository<T> {
     tap(v => {
       v.messageProcessor.resetMessage();
       this.loadingSignal.set(true)
+      console.log(`Loading signal set to true: start`)
     }),
     switchMap((v) =>
       this.dataSource.getResponse<T>(this.resourceName, v.params).pipe(
@@ -153,12 +154,12 @@ export class ReadRepository<T> {
       )
     ),
     tap(() => {
-      console.log('Loading signal set to false')
       this.loadingSignal.set(false)
+      console.log(`Loading signal set to false: end`)
     })
   )
 
-  loadData(): void {
-    this.loadDataSubject.next(null);
+  loadData(loadParams?: LoadParams): void {
+    this.loadDataSubject.next(loadParams);
   }
 }

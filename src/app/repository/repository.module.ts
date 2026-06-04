@@ -18,7 +18,6 @@ import {PaymentGroupPersistRepository} from './payment-group-persist-repository'
 import {PaymentObjectPersistRepository} from './payment-object-persist-repository';
 import {ProductPersistRepository} from './product-persist-repository';
 import {PaymentPersistRepository} from './payment-persist-repository';
-import {PaymentObjectTotalsRepository} from './payment-object-totals-repository';
 import {PaymentObjectPeriodRepository} from './payment-object-period-repository';
 import {PaymentRepRepository} from './payment-rep-repository';
 
@@ -42,7 +41,6 @@ import {PaymentRepRepository} from './payment-rep-repository';
         UpdatePaymentObjectGroupPersistRepository,
         ImportPaymentObjectPersistRepository,
         BackupDatabasePersistRepository,
-        PaymentObjectTotalsRepository,
         PaymentObjectPeriodRepository,
         PaymentRepRepository,
     ] })

@@ -71,7 +71,6 @@ export class UpdatePaymentGroupComponent extends BaseCommonTableComponent<Paymen
   }
 
   ngOnDestroy(): void {
-    super.ngOnDestroy();
     this.loadingSubscription.unsubscribe();
     this.updateSubscription.unsubscribe();
   }

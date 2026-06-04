@@ -42,7 +42,6 @@ export abstract class BaseCommonEditableTableComponent<R, W extends CommonEntity
   }
 
   ngOnDestroy(): void {
-    super.ngOnDestroy();
     this.persistSubscription.unsubscribe();
   }
 

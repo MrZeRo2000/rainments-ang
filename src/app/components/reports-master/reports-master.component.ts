@@ -117,7 +117,6 @@ export class ReportsMasterComponent extends BaseCommonTableComponent<PaymentRep>
   }
 
   ngOnDestroy(): void {
-    super.ngOnDestroy();
     if (this.loadSuccessSubscription) {
       this.loadSuccessSubscription.unsubscribe();
     }

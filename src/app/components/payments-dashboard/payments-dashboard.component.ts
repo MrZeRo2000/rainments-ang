@@ -1,8 +1,7 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {Router} from '@angular/router';
-import {BaseCommonTableComponent} from '../../core/table/common-table-component';
+import {CommonTableComponent} from '../../core/table/common-table-component';
 import {PaymentObjectTotals} from '../../model/payment-object-totals';
-import {PaymentObjectTotalsRepository} from '../../repository/payment-object-totals-repository';
 import { HttpParams } from '@angular/common/http';
 import {DateGenerator} from '../../core/utils/date-generator';
 import {MessageComponent} from "../../messages/message.component";
@@ -12,6 +11,10 @@ import {ShortMonthYearPipe} from "../../core/pipes/short-month-year.pipe";
 import {ColoredValueLabelComponent} from "../../core/components/colored-value-label/colored-value-label.component";
 import {AmountPipe} from "../../core/pipes/amount.pipe";
 import {LoadingProgressComponent} from "../../core/components/loading-progress/loading-progress.component";
+import {PAYMENT_OBJECT_TOTALS_READ_REPOSITORY} from "../../repository/repository-tokens";
+import {ReadRepository} from "../../core/repository/read-repository";
+import {AsyncPipe} from "@angular/common";
+import {map} from "rxjs";
 
 @Component({
   selector: 'app-payments-dashboard',
@@ -23,30 +26,32 @@ import {LoadingProgressComponent} from "../../core/components/loading-progress/l
     ShortMonthYearPipe,
     ColoredValueLabelComponent,
     AmountPipe,
-    LoadingProgressComponent
+    LoadingProgressComponent,
+    AsyncPipe
   ],
   styleUrls: ['./payments-dashboard.component.scss']
 })
-export class PaymentsDashboardComponent extends BaseCommonTableComponent<PaymentObjectTotals> implements OnInit {
+export class PaymentsDashboardComponent extends CommonTableComponent<PaymentObjectTotals> {
   private router = inject(Router)
 
-  // eslint-disable-next-line @angular-eslint/prefer-inject
-  constructor(public repository: PaymentObjectTotalsRepository) {
-    super(repository);
-  }
+  repositoryData$ = this.readRepository.loadDataAction$.pipe(
+    map(v => v.map(item => (
+      {
+        ...item, paymentDate:
+        item.paymentDate ? new Date(item.paymentDate) : null
+      }
+    )))
+  )
 
-  ngOnInit() {
-    super.ngOnInit();
-  }
-
-  protected getHttpParams(): HttpParams {
-    return new HttpParams()
+  constructor() {
+    super(inject(PAYMENT_OBJECT_TOTALS_READ_REPOSITORY));
+    this.httpParams = new HttpParams()
       .append('currentDate', DateGenerator.getConvertedPeriodDate(DateGenerator.getCurrentDate()).toJSON())
-      ;
+    ;
   }
 
-  getPaymentObjectTotals(): PaymentObjectTotals[] {
-    return this.repository.getData();
+  get repository(): ReadRepository<PaymentObjectTotals> {
+    return this.readRepository;
   }
 
   onSelectPaymentObject(event, item: PaymentObjectTotals) {
