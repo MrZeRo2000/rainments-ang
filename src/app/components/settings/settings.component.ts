@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import {MessagesService} from '../../messages/messages.service';
 import {EnumStringValuePipe} from "../../core/pipes/enum-string-value.pipe";
 import {NgClass} from "@angular/common";
@@ -38,12 +38,11 @@ export class SettingsComponent {
 
   public SettingItemEnumType = SettingItemEnum;
 
-  selectedItem: SettingItemEnum = SettingItemEnum.PAYMENT_OBJECTS;
+  selectedItem = signal(SettingItemEnum.PAYMENT_OBJECTS);
 
   onItemClick(event, item) {
     event.preventDefault();
     this.messagesService.resetMessage();
-    this.selectedItem = item;
+    this.selectedItem.set(item);
   }
-
 }
