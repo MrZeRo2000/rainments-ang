@@ -7,8 +7,9 @@ import {CommonEntity} from '../entity/common-entity';
 import {UntypedFormGroup} from '@angular/forms';
 import {Subject, Subscription} from 'rxjs';
 import {ConfirmationModalDialogComponent} from '../components/confirmation-modal-dialog/confirmation-modal-dialog.component';
-import {BaseCommonTableComponent} from './common-table-component';
-import {BaseReadRepository} from '../repository/read-repository';
+import {BaseCommonTableComponent, CommonTableComponent} from './common-table-component';
+import {BaseReadRepository, ReadRepository} from '../repository/read-repository';
+import {CrudRepository} from "../repository/crud-repository";
 
 @Directive()
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
@@ -164,4 +165,24 @@ export abstract class BaseCommonEditableTableComponent<R, W extends CommonEntity
     event.preventDefault();
     this.repository.setDefaultOrder();
   }
+}
+
+
+@Directive()
+// eslint-disable-next-line @angular-eslint/directive-class-suffix
+export class CommonEditableTableComponent<R, W extends CommonEntity> extends CommonTableComponent<R> {
+
+  /* eslint-disable @angular-eslint/prefer-inject */
+  constructor(
+    protected ctor: new() => W,
+    protected modalService: BsModalService,
+    protected readRepository: ReadRepository<R>,
+    protected crudRepository: CrudRepository<W>
+  ) {
+    super(readRepository);
+  }
+
+  crudData$ = this.crudRepository.crudAction$.pipe(
+
+  )
 }
