@@ -1,4 +1,4 @@
-import {Directive, OnDestroy, OnInit} from '@angular/core';
+import {computed, Directive, OnDestroy, OnInit, signal} from '@angular/core';
 import {Editable} from '../edit/edit-intf';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 import {BaseReadWriteRepository} from '../repository/read-write-repository';
@@ -10,6 +10,8 @@ import {ConfirmationModalDialogComponent} from '../components/confirmation-modal
 import {BaseCommonTableComponent, CommonTableComponent} from './common-table-component';
 import {BaseReadRepository, ReadRepository} from '../repository/read-repository';
 import {CrudRepository} from "../repository/crud-repository";
+import {BaseCommonSimpleEditableTableComponent} from "./common-simple-editable-table-component";
+import {toSignal} from "@angular/core/rxjs-interop";
 
 @Directive()
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
@@ -170,10 +172,14 @@ export abstract class BaseCommonEditableTableComponent<R, W extends CommonEntity
 
 @Directive()
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
-export class CommonEditableTableComponent<R, W extends CommonEntity> extends CommonTableComponent<R> {
+export abstract class CommonEditableTableComponent<R, W
+  extends CommonEntity> extends CommonTableComponent<R>
+  implements OnInit {
+
+  editStateSignal = signal<EditState<W> | undefined>(undefined);
 
   /* eslint-disable @angular-eslint/prefer-inject */
-  constructor(
+  protected constructor(
     protected ctor: new() => W,
     protected modalService: BsModalService,
     protected readRepository: ReadRepository<R>,
@@ -181,8 +187,34 @@ export class CommonEditableTableComponent<R, W extends CommonEntity> extends Com
   ) {
     super(readRepository);
   }
-
   crudData$ = this.crudRepository.crudAction$.pipe(
 
   )
+
+  crudDataSignal = toSignal(this.crudData$)
+
+  editingSignal = computed(() => !this.readRepository.loadingSignal() && !this.editStateSignal())
+
+}
+
+@Directive()
+// eslint-disable-next-line @angular-eslint/directive-class-suffix
+export abstract class CommonSimpleEditableTableComponent<T extends CommonEntity> extends CommonEditableTableComponent<T, T> {
+
+  constructor(
+    protected ctor: new() => T,
+    protected modalService: BsModalService,
+    protected readRepository: ReadRepository<T>,
+    protected crudRepository: CrudRepository<T>) {
+    super(ctor, modalService, readRepository, crudRepository);
+  }
+
+  onDrop(event: any): void {
+    const fromEntity = this.readRepository.dataSignal()[event.previousIndex];
+    const toEntity = this.readRepository.dataSignal()[event.currentIndex];
+
+    if (fromEntity && toEntity && fromEntity.id !== toEntity.id) {
+      //this.repository.moveItem(fromEntity.id, toEntity.id);
+    }
+  }
 }

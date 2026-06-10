@@ -5,7 +5,8 @@ import { HttpParams } from '@angular/common/http';
 import {ErrorMessage} from '../../messages/message.model';
 import {Subject, tap, map, switchMap, catchError, Observable, iif, of, ReplaySubject} from 'rxjs';
 import {RepositoryUtils} from './repository-utils';
-import {signal} from "@angular/core";
+import {signal, WritableSignal} from "@angular/core";
+import {toSignal} from "@angular/core/rxjs-interop";
 
 export class LoadParams {
   constructor(public params?: HttpParams, public updateMessages?: boolean, public messageSource?: string) { }
@@ -134,7 +135,7 @@ export class ReadRepository<T> {
       this.loadingSignal.set(true)
       console.log(`Loading signal set to true: start`)
     }),
-    switchMap((v) =>
+    switchMap((v): Observable<T[]> =>
       this.dataSource.getResponse<T>(this.resourceName, v.params).pipe(
         switchMap(data =>
           iif(
@@ -153,11 +154,13 @@ export class ReadRepository<T> {
         })
       )
     ),
-    tap(() => {
+    tap(v => {
       this.loadingSignal.set(false)
       console.log(`Loading signal set to false: end`)
     })
   )
+
+  dataSignal = toSignal(this.loadDataAction$, { initialValue: [] as T[] });
 
   loadData(loadParams?: LoadParams): void {
     this.loadDataSubject.next(loadParams);

@@ -81,7 +81,7 @@ export class CrudRepository<T extends CommonEntity> {
             of({ status: CrudStatus.Success, data: data.body } as CrudSuccessResult<T>),
             of({ status: CrudStatus.Error, error: data.body } as CrudErrorResult<T>).pipe(
               tap(result =>
-                this.reportErrorMessage('Error reading from server:' + result.error)
+                this.reportErrorMessage(`Error reading from server: ${result.error}`)
               )
             )
           )

@@ -1,5 +1,5 @@
 
-@if (getEditingState()) {
+@if (!editingSignal()) {
   <div class="d-flex mt-2 mb-2">
     <app-core-add-panel (addClick)="onAddClick()"></app-core-add-panel>
     <div class="ms-auto">
@@ -8,9 +8,7 @@
       </app-core-drop-down-more-menu>
     </div>
   </div>
-}
 
-@if (getEditingState()) {
   <table class="table" [ngClass]="this.dragHandlerService.getDragClass()">
     <thead>
       <tr>
@@ -20,31 +18,33 @@
       </tr>
     </thead>
     <tbody cdkDropList cdkDropListLockAxis="y" (cdkDropListDropped)="onDrop($event)">
-      @for (item of getPaymentObjects(); track item) {
-        <tr cdkDrag (cdkDragStarted)="this.dragHandlerService.startDrag()">
-          <td class="text-nowrap align-middle"><div><app-core-drag-grip cdkDragHandle></app-core-drag-grip> {{item.id}}</div></td>
-          <td class="align-middle">{{item.name}}</td>
-          <td class="text-nowrap align-middle">
-            <app-core-edit-delete-panel [item]="item" (deleteClick)="onDeleteClick(item)" (editClick)="onEditClick(item)"></app-core-edit-delete-panel>
-          </td>
-          <td *cdkDragPreview><div class="drag-preview">{{item.name}}</div></td>
-        </tr>
+      @if(repositoryData$ | async; as paymentObjects) {
+        @for (item of paymentObjects; track item) {
+          <tr cdkDrag (cdkDragStarted)="this.dragHandlerService.startDrag()">
+            <td class="text-nowrap align-middle"><div><app-core-drag-grip cdkDragHandle></app-core-drag-grip> {{item.id}}</div></td>
+            <td class="align-middle">{{item.name}}</td>
+            <td class="text-nowrap align-middle">
+              <app-core-edit-delete-panel [item]="item" (deleteClick)="onDeleteClick(item)" (editClick)="onEditClick(item)"></app-core-edit-delete-panel>
+            </td>
+            <td *cdkDragPreview><div class="drag-preview">{{item.name}}</div></td>
+          </tr>
+        }
       }
     </tbody>
   </table>
 }
 
-@if (editState) {
+@if (editStateSignal()) {
   <div>
     <form class="form-group" [formGroup]="editForm">
       <label for="inputName"><strong>Name</strong></label>
-      <input #inputName type="text" class="form-control" [ngClass]="{'is-invalid': editForm.controls.name.errors && editState.submitted}" id="inputName" placeholder="Name" formControlName="name">
-      <div class="mt-2 row" [ngClass]="{'is-invalid': (editForm.controls.period.errors || editForm.controls.termQuantity.errors || editForm.controls.termType.errors) && editState.submitted}">
+      <input #inputName type="text" class="form-control" [ngClass]="{'is-invalid': editForm.controls.name.errors && editStateSignal().submitted}" id="inputName" placeholder="Name" formControlName="name">
+      <div class="mt-2 row" [ngClass]="{'is-invalid': (editForm.controls.period.errors || editForm.controls.termQuantity.errors || editForm.controls.termType.errors) && editStateSignal().submitted}">
         <div class="col-md-4 col-sm-12">
           <label for="inputPeriod">Payment period</label>
           <select
             class="form-select"
-            [ngClass]="{'is-invalid': editForm.controls.period.errors && editState.submitted}"
+            [ngClass]="{'is-invalid': editForm.controls.period.errors && editStateSignal().submitted}"
             formControlName="period"
             id="inputPeriod"
             >
@@ -57,7 +57,7 @@
           <label for="inputTermQuantity">Payment term</label>
           <select
             class="form-select"
-            [ngClass]="{'is-invalid': editForm.controls.termQuantity.errors && editState.submitted}"
+            [ngClass]="{'is-invalid': editForm.controls.termQuantity.errors && editStateSignal().submitted}"
             formControlName="termQuantity"
             id="inputTermQuantity"
             >
@@ -70,7 +70,7 @@
           <label for="inputTermType">&nbsp;</label>
           <select
             class="form-select"
-            [ngClass]="{'is-invalid': editForm.controls.termType.errors && editState.submitted}"
+            [ngClass]="{'is-invalid': editForm.controls.termType.errors && editStateSignal()}"
             formControlName="termType"
             id="inputTermType"
             >
@@ -83,7 +83,7 @@
           <label for="inputPayDelay">Payment due delay</label>
           <select
             class="form-select"
-            [ngClass]="{'is-invalid': editForm.controls.payDelay.errors && editState.submitted}"
+            [ngClass]="{'is-invalid': editForm.controls.payDelay.errors && editStateSignal.submitted}"
             formControlName="payDelay"
             id="inputPayDelay"
             >
@@ -93,7 +93,7 @@
           </select>
         </div>
       </div>
-      @if (editForm.controls.name.errors && editState.submitted) {
+      @if (editForm.controls.name.errors && editStateSignal.submitted) {
         <div class="invalid-feedback">
           @if (editForm.controls.name.errors.required) {
             <div>Name should not be empty</div>
@@ -103,21 +103,21 @@
           }
         </div>
       }
-      @if (editForm.controls.termType.errors && editState.submitted) {
+      @if (editForm.controls.termType.errors && editStateSignal.submitted) {
         <div class="invalid-feedback">
           @if (editForm.controls.termType.errors.termNoPeriod) {
             <div>Term without period</div>
           }
         </div>
       }
-      @if (editForm.controls.payDelay.errors && editState.submitted) {
+      @if (editForm.controls.payDelay.errors && editStateSignal.submitted) {
         <div class="invalid-feedback">
           @if (editForm.controls.payDelay.errors.delayNoPeriod) {
             <div>Payment due delay without period</div>
           }
         </div>
       }
-      @if (editForm.controls.termQuantity.errors && editState.submitted) {
+      @if (editForm.controls.termQuantity.errors && editStateSignal.submitted) {
         <div class="invalid-feedback">
           @if (editForm.controls.termQuantity.errors.termQuantityNoPeriod) {
             <div>Term quantity without period</div>

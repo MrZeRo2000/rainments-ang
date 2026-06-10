@@ -1,19 +1,28 @@
 import {Component, ElementRef, inject, ViewChild} from '@angular/core';
 import {PaymentObjectRepository} from '../../repository/payment-object-repository';
 import {PaymentObject} from '../../model/payment-object';
-import {ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators
+} from '@angular/forms';
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {BaseCommonSimpleEditableTableComponent} from '../../core/table/common-simple-editable-table-component';
 import {DragHandlerService} from '../../core/services/drag-handler.service';
 import {TimePeriod, TimePeriodType} from '../../core/utils/time-period';
 import {AddPanelComponent} from "../../core/components/add-panel/add-panel.component";
 import {DropDownMoreMenuComponent} from "../../core/components/drop-down-more-menu/drop-down-more-menu.component";
-import {NgClass} from "@angular/common";
+import {AsyncPipe, NgClass} from "@angular/common";
 import {CdkDrag, CdkDragHandle, CdkDragPreview, CdkDropList} from "@angular/cdk/drag-drop";
 import {DragGripComponent} from "../../core/components/drag-grip/drag-grip.component";
 import {EditDeletePanelComponent} from "../../core/components/edit-delete-panel/edit-delete-panel.component";
 import {SaveDialogPanelComponent} from "../../core/components/save-dialog-panel/save-dialog-panel.component";
 import {LoadingProgressComponent} from "../../core/components/loading-progress/loading-progress.component";
+import {CommonSimpleEditableTableComponent} from "../../core/table/common-editable-table-component";
+import {PAYMENT_OBJECT_CRUD_REPOSITORY, PAYMENT_OBJECT_READ_REPOSITORY} from "../../repository/repository-tokens";
 
 @Component({
   selector: 'app-payment-objects-table',
@@ -30,12 +39,13 @@ import {LoadingProgressComponent} from "../../core/components/loading-progress/l
     EditDeletePanelComponent,
     ReactiveFormsModule,
     SaveDialogPanelComponent,
-    LoadingProgressComponent
+    LoadingProgressComponent,
+    AsyncPipe
   ],
   styleUrls: ['./payment-objects-table.component.scss']
 })
-export class PaymentObjectsTableComponent extends BaseCommonSimpleEditableTableComponent<PaymentObject> {
-  private fb = inject(UntypedFormBuilder)
+export class PaymentObjectsTableComponent extends CommonSimpleEditableTableComponent<PaymentObject> {
+  private fb = inject(FormBuilder)
   public dragHandlerService = inject(DragHandlerService)
 
   @ViewChild('inputName') inputNameElement: ElementRef;
@@ -45,25 +55,21 @@ export class PaymentObjectsTableComponent extends BaseCommonSimpleEditableTableC
   termQuantities = [...Array(31)].map((c, i) => i === 0 ? undefined : i.toString(10))
   payDelays = [[], [0, 'Current Period'], [1, 'Next Period']]
 
-  constructor(
-    // eslint-disable-next-line @angular-eslint/prefer-inject
-    protected modalService: BsModalService,
-    // eslint-disable-next-line @angular-eslint/prefer-inject
-    public repository: PaymentObjectRepository) {
-    super(PaymentObject, modalService, repository);
+  repositoryData$ = this.readRepository.loadDataAction$;
+
+  constructor() {
+    super(PaymentObject, inject(BsModalService), inject(PAYMENT_OBJECT_READ_REPOSITORY), inject(PAYMENT_OBJECT_CRUD_REPOSITORY));
   }
 
-  protected buildForm(): UntypedFormGroup {
-    return this.fb.group({
+  editForm = this.fb.group({
         name: ['', Validators.required],
         period: [''],
         termQuantity: [''],
         termType: [''],
         payDelay: ['']
-      }
-    );
-  }
+      });
 
+  /*
   protected editFormChanged(data: any) {
     super.editFormChanged(data);
     this.editForm.controls.termType.setErrors(null);
@@ -152,9 +158,11 @@ export class PaymentObjectsTableComponent extends BaseCommonSimpleEditableTableC
 
     return o;
   }
-
+   */
   onDrop(event: any): void {
     this.dragHandlerService.stopDrag();
     super.onDrop(event);
   }
+
+
 }
