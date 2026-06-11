@@ -225,16 +225,11 @@ export abstract class CommonEditableTableComponent<R, W
 
   }
 
-  onCreate(): void {
+  onSave(): void {
     this.editStateSignal.set({...this.editingSignal() as EditState<W>, submitted: true});
     if (this.editForm.valid) {
-      console.log('Form valid')
-    } else {
-      console.log('Form invalid')
-    }
-  }
 
-  onSave(): void {
+    }
   }
 
   onCancel(): void {
