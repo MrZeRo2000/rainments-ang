@@ -4,8 +4,8 @@ import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 import {BaseReadWriteRepository} from '../repository/read-write-repository';
 import {EditMode, EditState} from '../edit/edit-state';
 import {CommonEntity} from '../entity/common-entity';
-import {UntypedFormGroup} from '@angular/forms';
-import {Subject, Subscription} from 'rxjs';
+import {FormGroup, UntypedFormGroup} from '@angular/forms';
+import {debounceTime, defer, distinctUntilChanged, Subject, Subscription, tap} from 'rxjs';
 import {ConfirmationModalDialogComponent} from '../components/confirmation-modal-dialog/confirmation-modal-dialog.component';
 import {BaseCommonTableComponent, CommonTableComponent} from './common-table-component';
 import {BaseReadRepository, ReadRepository} from '../repository/read-repository';
@@ -195,8 +195,26 @@ export abstract class CommonEditableTableComponent<R, W
 
   editingSignal = computed(() => this.readRepository.loadingSignal() || this.editStateSignal())
 
-  onAddClick(): void {
+  abstract editForm: FormGroup;
 
+  editFormAction$ = defer(() => this.editForm.valueChanges).pipe(
+    debounceTime(300),
+    distinctUntilChanged(),
+    tap(() => {
+      const editState = this.editStateSignal()
+      if (editState) {
+        editState.submitted = false
+        this.editStateSignal.set(editState)
+      }
+    })
+  );
+
+  ngOnInit() {
+    super.ngOnInit();
+  }
+
+  onAddClick(): void {
+    this.editStateSignal.set(new EditState<W>(EditMode.EM_CREATE, new this.ctor()))
   }
 
   onEditClick(item: W): void {
@@ -208,15 +226,20 @@ export abstract class CommonEditableTableComponent<R, W
   }
 
   onCreate(): void {
-
+    this.editStateSignal.set({...this.editingSignal() as EditState<W>, submitted: true});
+    if (this.editForm.valid) {
+      console.log('Form valid')
+    } else {
+      console.log('Form invalid')
+    }
   }
 
   onSave(): void {
-
   }
 
   onCancel(): void {
-
+    this.editStateSignal.set(undefined)
+    this.editForm.reset()
   }
 
   onDrop(event: any): void {
