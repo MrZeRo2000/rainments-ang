@@ -7,6 +7,7 @@ import {Subject, tap, map, switchMap, catchError, Observable, iif, of, ReplaySub
 import {RepositoryUtils} from './repository-utils';
 import {signal, WritableSignal} from "@angular/core";
 import {toSignal} from "@angular/core/rxjs-interop";
+import {CommonEntity} from "../entity/common-entity";
 
 export class LoadParams {
   constructor(public params?: HttpParams, public updateMessages?: boolean, public messageSource?: string) { }

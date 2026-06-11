@@ -193,7 +193,44 @@ export abstract class CommonEditableTableComponent<R, W
 
   crudDataSignal = toSignal(this.crudData$)
 
-  editingSignal = computed(() => !this.readRepository.loadingSignal() && !this.editStateSignal())
+  editingSignal = computed(() => this.readRepository.loadingSignal() || this.editStateSignal())
+
+  onAddClick(): void {
+
+  }
+
+  onEditClick(item: W): void {
+
+  }
+
+  onDeleteClick(item: W): void {
+
+  }
+
+  onCreate(): void {
+
+  }
+
+  onSave(): void {
+
+  }
+
+  onCancel(): void {
+
+  }
+
+  onDrop(event: any): void {
+    const fromEntity = this.readRepository.dataSignal()[event.previousIndex] as CommonEntity;
+    const toEntity = this.readRepository.dataSignal()[event.currentIndex] as CommonEntity;
+
+    if (fromEntity && toEntity && fromEntity.id !== toEntity.id) {
+      //this.repository.moveItem(fromEntity.id, toEntity.id);
+    }
+  }
+
+  onSetDefaultOrderClick(event: PointerEvent): void {
+    event.preventDefault();
+  }
 
 }
 
@@ -201,7 +238,7 @@ export abstract class CommonEditableTableComponent<R, W
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
 export abstract class CommonSimpleEditableTableComponent<T extends CommonEntity> extends CommonEditableTableComponent<T, T> {
 
-  constructor(
+  protected constructor(
     protected ctor: new() => T,
     protected modalService: BsModalService,
     protected readRepository: ReadRepository<T>,
@@ -209,12 +246,4 @@ export abstract class CommonSimpleEditableTableComponent<T extends CommonEntity>
     super(ctor, modalService, readRepository, crudRepository);
   }
 
-  onDrop(event: any): void {
-    const fromEntity = this.readRepository.dataSignal()[event.previousIndex];
-    const toEntity = this.readRepository.dataSignal()[event.currentIndex];
-
-    if (fromEntity && toEntity && fromEntity.id !== toEntity.id) {
-      //this.repository.moveItem(fromEntity.id, toEntity.id);
-    }
-  }
 }
