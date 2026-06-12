@@ -1,4 +1,4 @@
-import {computed, Directive, OnDestroy, OnInit, signal} from '@angular/core';
+import {computed, DestroyRef, Directive, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {Editable} from '../edit/edit-intf';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 import {BaseReadWriteRepository} from '../repository/read-write-repository';
@@ -9,9 +9,9 @@ import {debounceTime, defer, distinctUntilChanged, Subject, Subscription, tap} f
 import {ConfirmationModalDialogComponent} from '../components/confirmation-modal-dialog/confirmation-modal-dialog.component';
 import {BaseCommonTableComponent, CommonTableComponent} from './common-table-component';
 import {BaseReadRepository, ReadRepository} from '../repository/read-repository';
-import {CrudRepository} from "../repository/crud-repository";
+import {CrudActionType, CrudRepository, CrudStatus} from "../repository/crud-repository";
 import {BaseCommonSimpleEditableTableComponent} from "./common-simple-editable-table-component";
-import {toSignal} from "@angular/core/rxjs-interop";
+import {takeUntilDestroyed, toSignal} from "@angular/core/rxjs-interop";
 
 @Directive()
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
@@ -176,7 +176,13 @@ export abstract class CommonEditableTableComponent<R, W
   extends CommonEntity> extends CommonTableComponent<R>
   implements OnInit {
 
+  private readonly destroyRef = inject(DestroyRef);
+
   editStateSignal = signal<EditState<W> | undefined>(undefined);
+
+  crudLoadingSignal = signal(false)
+
+  loadingSignal = computed(() => this.readRepository.loadingSignal() || this.crudLoadingSignal())
 
   /* eslint-disable @angular-eslint/prefer-inject */
   protected constructor(
@@ -188,7 +194,14 @@ export abstract class CommonEditableTableComponent<R, W
     super(readRepository);
   }
   crudData$ = this.crudRepository.crudAction$.pipe(
-
+    tap(v => {
+      if (v.status === CrudStatus.Success) {
+        this.editStateSignal.set(undefined)
+        this.editForm.reset()
+        this.loadRepositoryData()
+      }
+      this.crudLoadingSignal.set(false);
+    })
   )
 
   crudDataSignal = toSignal(this.crudData$)
@@ -209,8 +222,22 @@ export abstract class CommonEditableTableComponent<R, W
     })
   );
 
+  protected getPersistData(): W {
+    // this version gives empty strings instead of no value
+    // return Object.assign({}, this.editForm.value);
+
+    const v = this.editForm.value;
+    const d: any = {};
+    Object.keys(v).forEach(c => {if (v[c] !== '') {d[c] = v[c]; }});
+    return d;
+  }
+
   ngOnInit() {
     super.ngOnInit();
+    // editFormAction$ is a side-effect-only stream (debounce form changes -> clear
+    // the "submitted" flag). It produces no value we render, so we don't route it
+    // through toSignal/async; we just activate it and tie its lifetime to the view.
+    this.editFormAction$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
   }
 
   onAddClick(): void {
@@ -228,7 +255,18 @@ export abstract class CommonEditableTableComponent<R, W
   onSave(): void {
     this.editStateSignal.set({...this.editingSignal() as EditState<W>, submitted: true});
     if (this.editForm.valid) {
+      this.crudLoadingSignal.set(true);
 
+      const persistData = this.getPersistData();
+      console.log(`PersistData: ${JSON.stringify(persistData)}`);
+
+      switch(this.editStateSignal().editMode) {
+        case EditMode.EM_CREATE:
+          this.crudRepository.execute({type: CrudActionType.Insert, payload: this.getPersistData()});
+          break
+        case EditMode.EM_EDIT:
+          break;
+      }
     }
   }
 

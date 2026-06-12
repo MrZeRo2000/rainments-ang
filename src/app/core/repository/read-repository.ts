@@ -3,7 +3,7 @@ import {RestDataSource} from '../../data-source/rest-data-source';
 import {MessagesService} from '../../messages/messages.service';
 import { HttpParams } from '@angular/common/http';
 import {ErrorMessage} from '../../messages/message.model';
-import {Subject, tap, map, switchMap, catchError, Observable, iif, of, ReplaySubject} from 'rxjs';
+import {Subject, tap, map, switchMap, catchError, Observable, iif, of, ReplaySubject, shareReplay} from 'rxjs';
 import {RepositoryUtils} from './repository-utils';
 import {signal, WritableSignal} from "@angular/core";
 import {toSignal} from "@angular/core/rxjs-interop";
@@ -158,7 +158,11 @@ export class ReadRepository<T> {
     tap(v => {
       this.loadingSignal.set(false)
       console.log(`Loading signal set to false: end`)
-    })
+    }),
+    // Multicast: dataSignal (toSignal) and the template's `repositoryData$ | async`
+    // both subscribe. Without sharing, each subscription re-runs the switchMap and
+    // fires its own HTTP request, doubling every load.
+    shareReplay({ bufferSize: 1, refCount: true })
   )
 
   dataSignal = toSignal(this.loadDataAction$, { initialValue: [] as T[] });

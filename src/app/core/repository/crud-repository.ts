@@ -1,11 +1,12 @@
 import {CommonEntity} from "../entity/common-entity";
-import {iif, Observable, of, Subject, switchMap, tap} from "rxjs";
+import {catchError, iif, Observable, of, Subject, switchMap, tap, shareReplay} from "rxjs";
 import {RestDataSource} from "../../data-source/rest-data-source";
 import {MessagesService} from "../../messages/messages.service";
 import {HttpParams, HttpResponse} from "@angular/common/http";
 import {signal} from "@angular/core";
 import {ErrorMessage} from "../../messages/message.model";
 import {PersistParams} from "./persist-repository";
+import {RepositoryUtils} from "./repository-utils";
 
 export enum CrudActionType {
   Insert = 'insert',
@@ -81,17 +82,29 @@ export class CrudRepository<T extends CommonEntity> {
             of({ status: CrudStatus.Success, data: data.body } as CrudSuccessResult<T>),
             of({ status: CrudStatus.Error, error: data.body } as CrudErrorResult<T>).pipe(
               tap(result =>
-                this.reportErrorMessage(`Error reading from server: ${result.error}`)
+                this.reportErrorMessage(`Error processing data: ${result.error}`)
               )
             )
           )
-        )
+        ),
+        catchError(err => {
+          this.reportErrorMessage(`Network error: ${RepositoryUtils.getNetworkErrorMessage(err)}`);
+          return []
+        })
       )
     ),
     tap(() => {
       this.loadingSignal.set(false)
       console.log(`Loading signal set to false: end`)
-    })
+    }),
+    // Multicast: crudDataSignal (toSignal) and the template's `crudData$ | async`
+    // both subscribe. Without sharing, each subscription re-runs the switchMap and
+    // fires its own HTTP request, doubling every insert/update/delete.
+    shareReplay({ bufferSize: 1, refCount: true })
   );
+
+  execute(crudAction: CrudAction<T>): void {
+    this.crudSubject.next(crudAction);
+  }
 
 }

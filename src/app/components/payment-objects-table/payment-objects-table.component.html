@@ -1,5 +1,4 @@
-@let data = repositoryData$ | async;
-@let editFormAction = editFormAction$  | async;
+@let data = readRepository.dataSignal();
 
 @if (!editingSignal()) {
   <div class="d-flex mt-2 mb-2">
@@ -20,7 +19,7 @@
       </tr>
     </thead>
     <tbody cdkDropList cdkDropListLockAxis="y" (cdkDropListDropped)="onDrop($event)">
-      @for (item of data; track item) {
+      @for (item of data; track item.id) {
         <tr cdkDrag (cdkDragStarted)="this.dragHandlerService.startDrag()">
           <td class="text-nowrap align-middle"><div><app-core-drag-grip cdkDragHandle></app-core-drag-grip> {{item.id}}</div></td>
           <td class="align-middle">{{item.name}}</td>
@@ -34,7 +33,7 @@
   </table>
 }
 
-@if (editStateSignal()) {
+@if (editStateSignal() && !loadingSignal()) {
   <div>
     <form class="form-group" [formGroup]="editForm">
       <label for="inputName"><strong>Name</strong></label>
@@ -132,4 +131,4 @@
   </div>
 }
 
-<app-core-loading-progress [loading]="readRepository.loadingSignal"></app-core-loading-progress>
+<app-core-loading-progress [loading]="loadingSignal"></app-core-loading-progress>

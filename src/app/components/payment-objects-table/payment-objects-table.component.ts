@@ -16,7 +16,7 @@ import {DragHandlerService} from '../../core/services/drag-handler.service';
 import {TimePeriod, TimePeriodType} from '../../core/utils/time-period';
 import {AddPanelComponent} from "../../core/components/add-panel/add-panel.component";
 import {DropDownMoreMenuComponent} from "../../core/components/drop-down-more-menu/drop-down-more-menu.component";
-import {AsyncPipe, NgClass} from "@angular/common";
+import {NgClass} from "@angular/common";
 import {CdkDrag, CdkDragHandle, CdkDragPreview, CdkDropList} from "@angular/cdk/drag-drop";
 import {DragGripComponent} from "../../core/components/drag-grip/drag-grip.component";
 import {EditDeletePanelComponent} from "../../core/components/edit-delete-panel/edit-delete-panel.component";
@@ -40,8 +40,7 @@ import {PAYMENT_OBJECT_CRUD_REPOSITORY, PAYMENT_OBJECT_READ_REPOSITORY} from "..
     EditDeletePanelComponent,
     ReactiveFormsModule,
     SaveDialogPanelComponent,
-    LoadingProgressComponent,
-    AsyncPipe
+    LoadingProgressComponent
   ],
   styleUrls: ['./payment-objects-table.component.scss']
 })
@@ -55,8 +54,6 @@ export class PaymentObjectsTableComponent extends CommonSimpleEditableTableCompo
   termTypes = [[], [TimePeriodType.D, 'Day'], [TimePeriodType.M, 'Month']];
   termQuantities = [...Array(31)].map((c, i) => i === 0 ? undefined : i.toString(10))
   payDelays = [[], [0, 'Current Period'], [1, 'Next Period']]
-
-  repositoryData$ = this.readRepository.loadDataAction$;
 
   constructor() {
     super(PaymentObject, inject(BsModalService), inject(PAYMENT_OBJECT_READ_REPOSITORY), inject(PAYMENT_OBJECT_CRUD_REPOSITORY));
@@ -213,6 +210,22 @@ export class PaymentObjectsTableComponent extends CommonSimpleEditableTableCompo
     return o;
   }
    */
+
+  protected getPersistData(): PaymentObject {
+    const o: any = super.getPersistData();
+
+    const termPeriod = new TimePeriod(o.termType, o.termQuantity);
+
+    delete o.termQuantity;
+    delete o.termPeriod;
+
+    if (termPeriod && termPeriod.toString()) {
+      o.term = termPeriod.toString();
+    }
+
+    return o;
+  }
+
 
   onDrop(event: any): void {
     this.dragHandlerService.stopDrag();
