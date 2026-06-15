@@ -63,12 +63,14 @@ export class PaymentObjectsTableComponent extends CommonSimpleEditableTableCompo
 
   private duplicateNamesValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
-      const nameDuplicates = this.readRepository.dataSignal().filter(
-        (v) => v.name === this.editForm.controls.name.value
-      );
-      if (nameDuplicates.length > 0) {
-        console.log('Found duplicates')
-        return {existingName: true};
+      if (this.editForm) {
+        const nameDuplicates = this.readRepository.dataSignal().filter(
+          (v) => v.name === this.editForm.controls?.name.value
+        );
+        if (nameDuplicates.length > 0) {
+          console.log('Found duplicates')
+          return {existingName: true};
+        }
       }
       console.log('No duplicates')
       return null
