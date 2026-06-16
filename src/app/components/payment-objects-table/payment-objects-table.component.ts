@@ -1,17 +1,13 @@
-import {Component, computed, effect, ElementRef, inject, viewChild} from '@angular/core';
-import {PaymentObjectRepository} from '../../repository/payment-object-repository';
+import {Component, effect, ElementRef, inject, viewChild} from '@angular/core';
 import {PaymentObject} from '../../model/payment-object';
 import {
   AbstractControl,
   FormBuilder,
-  FormGroup,
   ReactiveFormsModule,
-  UntypedFormBuilder,
-  UntypedFormGroup, ValidationErrors, ValidatorFn,
+  ValidationErrors, ValidatorFn,
   Validators
 } from '@angular/forms';
 import {BsModalService} from 'ngx-bootstrap/modal';
-import {BaseCommonSimpleEditableTableComponent} from '../../core/table/common-simple-editable-table-component';
 import {DragHandlerService} from '../../core/services/drag-handler.service';
 import {TimePeriod, TimePeriodType} from '../../core/utils/time-period';
 import {AddPanelComponent} from "../../core/components/add-panel/add-panel.component";
@@ -64,24 +60,21 @@ export class PaymentObjectsTableComponent extends CommonSimpleEditableTableCompo
   private duplicateNamesValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       if (this.editForm) {
+        const formId  = parseInt(this.editForm.value.id, 10)
         const nameDuplicates = this.readRepository.dataSignal().filter(
-          (v) => v.name === this.editForm.controls?.name.value
+          (v) => (v.name === this.editForm.controls?.name.value) && (!formId || v.id !== formId)
         );
         if (nameDuplicates.length > 0) {
-          console.log('Found duplicates')
           return {existingName: true};
         }
       }
-      console.log('No duplicates')
       return null
     }
   }
 
   private termValidator(): ValidatorFn {
     return (form: AbstractControl): ValidationErrors | null => {
-      console.log('TermValidator started')
       if (this.editForm) {
-        console.log('TermValidator started validation')
         if (this.editForm.controls?.period.value === '') {
           if (this.editForm.controls?.termType.value !== '') {
             this.editForm.controls.termType.setErrors({termNoPeriod: true});
@@ -115,6 +108,7 @@ export class PaymentObjectsTableComponent extends CommonSimpleEditableTableCompo
   }
 
   editForm = this.fb.group({
+        id: [''],
         name: ['', [Validators.required, this.duplicateNamesValidator()]],
         period: [''],
         termQuantity: [''],
@@ -228,6 +222,19 @@ export class PaymentObjectsTableComponent extends CommonSimpleEditableTableCompo
     return o;
   }
 
+  protected getEditValue(item: any): any {
+    const value = super.getEditValue(item);
+
+    const termPeriod = TimePeriod.fromString(value.term);
+    delete value.term;
+
+    if (termPeriod) {
+      value.termType = termPeriod.periodType;
+      value.termQuantity = termPeriod.quantity;
+    }
+
+    return value;
+  }
 
   onDrop(event: any): void {
     this.dragHandlerService.stopDrag();

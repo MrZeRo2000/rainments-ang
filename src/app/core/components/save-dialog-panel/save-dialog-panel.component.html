@@ -2,7 +2,7 @@
   @if ((editable?.getEditState().editMode === EditMode.EM_CREATE) || (editStateSignal && editStateSignal()?.editMode === EditMode.EM_CREATE)) {
     <button type="button" class="btn btn-outline-primary" (click)="onCreate()" [disabled]="loadable?.getLoading() || (loading && loading())">Create</button>
   }
-  @if (editable?.getEditState().editMode === EditMode.EM_EDIT) {
+  @if ((editable?.getEditState().editMode === EditMode.EM_EDIT)  || (editStateSignal && editStateSignal()?.editMode === EditMode.EM_EDIT)) {
     <button type="button" class="btn btn-outline-primary" (click)="onSave()" [disabled]="loadable?.getLoading() || (loading && loading())">Save</button>
   }
   <button type="button" class="btn btn-outline-secondary ms-2" (click)="onCancel()" [disabled]="loadable?.getLoading() || (loading && loading())">Cancel</button>

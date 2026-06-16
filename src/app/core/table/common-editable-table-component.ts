@@ -10,7 +10,6 @@ import {ConfirmationModalDialogComponent} from '../components/confirmation-modal
 import {BaseCommonTableComponent, CommonTableComponent} from './common-table-component';
 import {BaseReadRepository, ReadRepository} from '../repository/read-repository';
 import {CrudActionType, CrudRepository, CrudStatus} from "../repository/crud-repository";
-import {BaseCommonSimpleEditableTableComponent} from "./common-simple-editable-table-component";
 import {takeUntilDestroyed, toSignal} from "@angular/core/rxjs-interop";
 
 @Directive()
@@ -233,6 +232,16 @@ export abstract class CommonEditableTableComponent<R, W
     return d;
   }
 
+  protected getEditValue(item: any): any {
+    const value = {};
+    Object.keys(item).forEach(v => {
+      if (item.hasOwnProperty(v) && (item[v] || item[v] === 0)) {
+        value[v] = item[v].id || item[v];
+      }
+    });
+    return value;
+  }
+
   ngOnInit() {
     super.ngOnInit();
     // editFormAction$ is a side-effect-only stream (debounce form changes -> clear
@@ -246,7 +255,9 @@ export abstract class CommonEditableTableComponent<R, W
   }
 
   onEditClick(item: W): void {
-
+    console.log(`Editing item: ${JSON.stringify(item)}`);
+    this.editStateSignal.set(new EditState<W>(EditMode.EM_EDIT, item))
+    this.editForm.patchValue(this.getEditValue(item));
   }
 
   onDeleteClick(item: W): void {
@@ -277,6 +288,8 @@ export abstract class CommonEditableTableComponent<R, W
           this.crudRepository.execute({type: CrudActionType.Insert, payload: this.getPersistData()});
           break
         case EditMode.EM_EDIT:
+          console.log(`Updating with ${JSON.stringify(this.getPersistData())}`)
+          this.crudRepository.execute({type: CrudActionType.Update, payload: this.getPersistData()});
           break;
       }
     }
