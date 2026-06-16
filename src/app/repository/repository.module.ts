@@ -5,11 +5,8 @@ import {PaymentObjectRepository} from './payment-object-repository';
 import {PaymentRepository} from './payment-repository';
 import {PaymentRefsRepository} from './payment-refs-repository';
 import {ImportPaymentObjectRepository} from './import-payment-object-repository';
-import {BackupDatabaseRepository} from './backup-database-repository';
-import {BackupInfoRepository} from './backup-info-repository';
 import {UpdatePaymentObjectGroupRepository} from './update-payment-object-group-repository';
 import {ImportPaymentObjectPersistRepository} from './import-payment-object-persist-repository';
-import {BackupDatabasePersistRepository} from './backup-database-persist-repository';
 import {PaymentObjectPersistRepository} from './payment-object-persist-repository';
 import {PaymentPersistRepository} from './payment-persist-repository';
 import {PaymentObjectPeriodRepository} from './payment-object-period-repository';
@@ -23,9 +20,6 @@ import {PaymentRepRepository} from './payment-rep-repository';
         PaymentPersistRepository,
         PaymentRefsRepository,
         ImportPaymentObjectRepository,
-        BackupDatabaseRepository,
-        BackupDatabasePersistRepository,
-        BackupInfoRepository,
         UpdatePaymentObjectGroupRepository,
         ImportPaymentObjectPersistRepository,
         PaymentObjectPeriodRepository,

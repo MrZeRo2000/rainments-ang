@@ -1,13 +1,14 @@
-import {Component, inject, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, computed, inject, Input} from '@angular/core';
+import {toSignal} from '@angular/core/rxjs-interop';
+import {tap} from 'rxjs';
+import {DatePipe} from '@angular/common';
 import {MessagesService} from '../../messages/messages.service';
-import {BackupInfoRepository} from '../../repository/backup-info-repository';
-import {Loadable} from '../../core/edit/edit-intf';
-import {BackupDatabaseRepository} from '../../repository/backup-database-repository';
-import {BackupDatabaseInfo} from '../../model/backup-database-info';
 import {SuccessMessage} from '../../messages/message.model';
-import {Subscription} from 'rxjs';
-import {DatePipe} from "@angular/common";
-import {LoadingProgressComponent} from "../../core/components/loading-progress/loading-progress.component";
+import {BackupDatabaseInfo} from '../../model/backup-database-info';
+import {CommonTableComponent} from '../../core/table/common-table-component';
+import {CrudStatus} from '../../core/repository/crud-repository';
+import {LoadingProgressComponent} from '../../core/components/loading-progress/loading-progress.component';
+import {BACKUP_DATABASE_CRUD_REPOSITORY, BACKUP_INFO_READ_REPOSITORY} from '../../repository/repository-tokens';
 
 @Component({
   selector: 'app-backup-database',
@@ -18,49 +19,31 @@ import {LoadingProgressComponent} from "../../core/components/loading-progress/l
   ],
   styleUrls: ['./backup-database.component.scss']
 })
-export class BackupDatabaseComponent implements OnInit, OnDestroy, Loadable {
-  public messagesService = inject(MessagesService)
-  public backupInfoRepository = inject(BackupInfoRepository)
-  public backupDatabaseRepository = inject(BackupDatabaseRepository)
+export class BackupDatabaseComponent extends CommonTableComponent<BackupDatabaseInfo> {
+  private messagesService = inject(MessagesService)
+  private backupDatabaseRepository = inject(BACKUP_DATABASE_CRUD_REPOSITORY)
 
   @Input()
   messageSource: string;
 
-  backupLoading = false;
+  loadingSignal = computed(() => this.readRepository.loadingSignal() || this.backupDatabaseRepository.loadingSignal());
 
-  private backupSubscription: Subscription;
-  private loadingSubscription: Subscription;
+  // Activates the CRUD stream: on success, report the message and refresh the info.
+  private backupResult = toSignal(this.backupDatabaseRepository.crudAction$.pipe(
+    tap(result => {
+      if (result.status === CrudStatus.Success) {
+        this.messagesService.reportMessage(
+          new SuccessMessage(`Backup successful: ${result.data?.message}`, this.messageSource));
+        this.loadRepositoryData();
+      }
+    })
+  ));
 
-  ngOnInit(): void {
-    this.backupInfoRepository.loadData();
-    this.backupSubscription = this.backupDatabaseRepository.getPersistData().subscribe(data => {
-      this.messagesService.reportMessage(new SuccessMessage(`Backup successful: ${data.body.message}`, this.messageSource));
-      this.backupInfoRepository.loadData(null, {updateMessages: false, messageSource: this.messageSource});
-    }
-    );
-    this.loadingSubscription = this.backupDatabaseRepository.getLoadingState().subscribe(value => {
-      this.backupLoading = value;
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.backupSubscription.unsubscribe();
-    this.loadingSubscription.unsubscribe();
-  }
-
-  getLoading(): boolean {
-    return this.backupInfoRepository.getLoading();
-  }
-
-  getBackupInfo(): BackupDatabaseInfo {
-    return this.backupInfoRepository &&
-      this.backupInfoRepository.getData() &&
-      this.backupInfoRepository.getData().length === 1 &&
-      this.backupInfoRepository.getData()[0];
+  constructor() {
+    super(inject(BACKUP_INFO_READ_REPOSITORY));
   }
 
   backupDatabaseClick(): void {
-    this.backupLoading = true;
-    setTimeout(() => this.backupDatabaseRepository.postBackupRequest(), 0);
+    this.backupDatabaseRepository.postFormData();
   }
 }

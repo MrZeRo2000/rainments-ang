@@ -1,7 +1,9 @@
-import {Component, ElementRef, inject, OnDestroy, ViewChild} from '@angular/core';
-import {BackupDatabaseRepository} from "../../repository/backup-database-repository";
-import {Subscription} from "rxjs";
+import {Component, ElementRef, inject, signal, viewChild} from '@angular/core';
+import {toSignal} from '@angular/core/rxjs-interop';
+import {tap} from 'rxjs';
+import {CrudStatus} from "../../core/repository/crud-repository";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
+import {BACKUP_DATABASE_CRUD_REPOSITORY} from "../../repository/repository-tokens";
 
 declare var bootstrap: any;
 
@@ -13,29 +15,27 @@ declare var bootstrap: any;
   ],
   styleUrls: ['./backup-database-button.component.scss']
 })
-export class BackupDatabaseButtonComponent implements OnDestroy {
-  public backupDatabaseRepository = inject(BackupDatabaseRepository)
+export class BackupDatabaseButtonComponent {
+  public backupDatabaseRepository = inject(BACKUP_DATABASE_CRUD_REPOSITORY)
 
-  @ViewChild('liveToast', {static: false}) toast: ElementRef;
+  private toast = viewChild<ElementRef>('liveToast');
 
-  private backupSubscription: Subscription;
+  backupMessage = signal('');
 
-  backupMessage: string = '';
-
-  constructor() {
-    this.backupSubscription = this.backupDatabaseRepository.getPersistData().subscribe(data => {
-        this.backupMessage = data.body.message;
-        const liveToast = bootstrap.Toast.getOrCreateInstance(this.toast.nativeElement);
-        liveToast.show()
+  // Activates the CRUD stream and shows a toast on each successful backup.
+  private backupResult = toSignal(this.backupDatabaseRepository.crudAction$.pipe(
+    tap(result => {
+      if (result.status === CrudStatus.Success) {
+        this.backupMessage.set(result.data?.message ?? '');
+        const element = this.toast()?.nativeElement;
+        if (element) {
+          bootstrap.Toast.getOrCreateInstance(element).show();
+        }
       }
-    );
-  }
+    })
+  ));
 
   onClick() {
-    setTimeout(() => this.backupDatabaseRepository.postBackupRequest(), 0);
-  }
-
-  ngOnDestroy(): void {
-    this.backupSubscription.unsubscribe();
+    this.backupDatabaseRepository.postFormData();
   }
 }

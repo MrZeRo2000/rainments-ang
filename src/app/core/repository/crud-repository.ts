@@ -1,5 +1,5 @@
 import {CommonEntity} from "../entity/common-entity";
-import {catchError, iif, Observable, of, Subject, switchMap, tap} from "rxjs";
+import {catchError, iif, Observable, of, share, Subject, switchMap, tap} from "rxjs";
 import {RestDataSource} from "../../data-source/rest-data-source";
 import {MessagesService} from "../../messages/messages.service";
 import {HttpParams, HttpResponse} from "@angular/common/http";
@@ -110,7 +110,13 @@ export class CrudRepository<T extends CommonEntity> {
     ),
     tap(() => {
       this.loadingSignal.set(false)
-    })
+    }),
+    // Multicast: a single CrudRepository instance can have several subscribers
+    // (e.g. the backup repo is shared by the data-management page and the header
+    // button). Without sharing, each subscription would re-run the POST. share()
+    // (not shareReplay) so a late subscriber isn't replayed a past result as a
+    // spurious notification.
+    share()
   );
 
   execute(crudAction: CrudAction<T>): void {
@@ -119,8 +125,8 @@ export class CrudRepository<T extends CommonEntity> {
 
   // Posts query params (empty body) to the resource and routes the result
   // through the same reactive flow as the other actions.
-  postFormData(params: HttpParams): void {
-    this.execute({ type: CrudActionType.FormData, payload: params });
+  postFormData(params?: HttpParams): void {
+    this.execute({ type: CrudActionType.FormData, payload: params ?? new HttpParams() });
   }
 
   setDefaultPersistParams(persistParams: PersistParams): void {
