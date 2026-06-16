@@ -7,6 +7,7 @@ import {
   ValidationErrors, ValidatorFn,
   Validators
 } from '@angular/forms';
+import {duplicateNamesValidator} from '../../core/validators/entity-validators';
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {DragHandlerService} from '../../core/services/drag-handler.service';
 import {TimePeriod, TimePeriodType} from '../../core/utils/time-period';
@@ -57,21 +58,6 @@ export class PaymentObjectsTableComponent extends CommonSimpleEditableTableCompo
     effect(() => this.inputNameElement()?.nativeElement.focus());
   }
 
-  private duplicateNamesValidator(): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      if (this.editForm) {
-        const formId  = parseInt(this.editForm.value.id, 10)
-        const nameDuplicates = this.readRepository.dataSignal().filter(
-          (v) => (v.name === this.editForm.controls?.name.value) && (!formId || v.id !== formId)
-        );
-        if (nameDuplicates.length > 0) {
-          return {existingName: true};
-        }
-      }
-      return null
-    }
-  }
-
   private termValidator(): ValidatorFn {
     return (form: AbstractControl): ValidationErrors | null => {
       if (this.editForm) {
@@ -109,7 +95,7 @@ export class PaymentObjectsTableComponent extends CommonSimpleEditableTableCompo
 
   editForm = this.fb.group({
         id: [''],
-        name: ['', [Validators.required, this.duplicateNamesValidator()]],
+        name: ['', [Validators.required, duplicateNamesValidator(this.readRepository.dataSignal)]],
         period: [''],
         termQuantity: [''],
         termType: [''],

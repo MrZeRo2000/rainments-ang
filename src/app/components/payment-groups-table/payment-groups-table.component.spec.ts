@@ -7,6 +7,7 @@ import {ModalModule} from 'ngx-bootstrap/modal';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import {ReactiveFormsModule} from '@angular/forms';
 import {RepositoryModule} from '../../repository/repository.module';
+import {FontAwesomeIconsModule} from '../../font-awesome-icons/font-awesome-icons.module';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('PaymentGroupsTableComponent', () => {
@@ -15,7 +16,7 @@ describe('PaymentGroupsTableComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-    imports: [PaymentGroupsTableComponent, ReactiveFormsModule, ModalModule.forRoot(), RepositoryModule],
+    imports: [PaymentGroupsTableComponent, ReactiveFormsModule, ModalModule.forRoot(), RepositoryModule, FontAwesomeIconsModule],
     providers: [RestUrlEnv, RestDataSource, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
 })
     .compileComponents();

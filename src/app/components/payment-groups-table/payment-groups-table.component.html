@@ -1,4 +1,6 @@
-@if (this.getEditingState()) {
+@let data = readRepository.dataSignal();
+
+@if (!editingSignal()) {
   <div class="d-flex mt-2 mb-2">
     <app-core-add-panel (addClick)="onAddClick()"></app-core-add-panel>
     <div class="ms-auto">
@@ -7,9 +9,7 @@
       </app-core-drop-down-more-menu>
     </div>
   </div>
-}
 
-@if (getEditingState()) {
   <table class="table" [ngClass]="this.dragHandlerService.getDragClass()">
     <thead>
       <tr>
@@ -19,14 +19,14 @@
       </tr>
     </thead>
     <tbody cdkDropList cdkDropListLockAxis="y" (cdkDropListDropped)="onDrop($event)">
-      @for (item of getPaymentGroups(); track item) {
+      @for (item of data; track item.id) {
         <tr cdkDrag (cdkDragStarted)="this.dragHandlerService.startDrag()" [ngStyle]="{'--bs-table-bg': item.color}">
           <td class="text-nowrap align-middle"><div><app-core-drag-grip cdkDragHandle></app-core-drag-grip> {{item.id}}</div></td>
           @if (item.url) {
             <td class="align-middle"><a href="{{item.url}}" target="_blank">{{item.name}}</a></td>
           }
           @if (!item.url) {
-            <td class="align-middle" >{{item.name}}</td>
+            <td class="align-middle">{{item.name}}</td>
           }
           <td class="text-nowrap align-middle">
             <app-core-edit-delete-panel [item]="item" (deleteClick)="onDeleteClick(item)" (editClick)="onEditClick(item)"></app-core-edit-delete-panel>
@@ -38,20 +38,18 @@
   </table>
 }
 
-@if (editState) {
+@if (editStateSignal() && !loadingSignal()) {
   <div>
     <form class="form-group" [formGroup]="editForm">
       <label for="inputName" class="form-label"><strong>Name</strong></label>
       <input #inputName type="text" class="form-control"
-        [ngClass]="{'is-invalid': editForm.controls.name.errors && editState.submitted}"
+        [ngClass]="{'is-invalid': editForm.controls.name.errors && editStateSignal().submitted}"
         [ngStyle]="{'background-color': getPreviewColor()}"
         id="inputName"
         placeholder="Name"
         formControlName="name"
         >
-      <label for="inputUrl" class="form-label mt-2">Url</label>
-      <input #inputUrl type="text" class="form-control" [ngClass]="{'is-invalid': editForm.controls.url.errors && editState.submitted}" id="inputUrl" placeholder="Url" formControlName="url">
-      @if (editForm.controls.name.errors && editState.submitted) {
+      @if (editForm.controls.name.errors && editStateSignal().submitted) {
         <div class="invalid-feedback">
           @if (editForm.controls.name.errors.required) {
             <div>Name should not be empty</div>
@@ -61,7 +59,9 @@
           }
         </div>
       }
-      @if (editForm.controls.url.errors && editState.submitted) {
+      <label for="inputUrl" class="form-label mt-2">Url</label>
+      <input #inputUrl type="text" class="form-control" [ngClass]="{'is-invalid': editForm.controls.url.errors && editStateSignal().submitted}" id="inputUrl" placeholder="Url" formControlName="url">
+      @if (editForm.controls.url.errors && editStateSignal().submitted) {
         <div class="invalid-feedback">
           @if (editForm.controls.url.errors.invalidUrl) {
             <div>Invalid Url</div>
@@ -75,9 +75,8 @@
       <input type="checkbox" class="form-check-input" id="inputPreview" [(ngModel)]="preview">
       <label class="form-label" for="inputPreview">Preview</label>
     </div>
-    <app-core-save-dialog-panel [editable]="this" [loadable]="repository" (createClick)="onCreate()" (saveClick)="onSave()" (cancelClick)="onCancel()"></app-core-save-dialog-panel>
+    <app-core-save-dialog-panel [editStateSignal]="this.editStateSignal" [loading]="this.readRepository.loadingSignal" (createClick)="onSave()" (saveClick)="onSave()" (cancelClick)="onCancel()"></app-core-save-dialog-panel>
   </div>
 }
 
-<app-core-loading-progress [loadable]="repository"></app-core-loading-progress>
-
+<app-core-loading-progress [loading]="loadingSignal"></app-core-loading-progress>
