@@ -12,9 +12,6 @@ import {ColoredValueLabelComponent} from "../../core/components/colored-value-la
 import {AmountPipe} from "../../core/pipes/amount.pipe";
 import {LoadingProgressComponent} from "../../core/components/loading-progress/loading-progress.component";
 import {PAYMENT_OBJECT_TOTALS_READ_REPOSITORY} from "../../repository/repository-tokens";
-import {ReadRepository} from "../../core/repository/read-repository";
-import {AsyncPipe} from "@angular/common";
-import {map} from "rxjs";
 
 @Component({
   selector: 'app-payments-dashboard',
@@ -26,41 +23,21 @@ import {map} from "rxjs";
     ShortMonthYearPipe,
     ColoredValueLabelComponent,
     AmountPipe,
-    LoadingProgressComponent,
-    AsyncPipe
+    LoadingProgressComponent
   ],
   styleUrls: ['./payments-dashboard.component.scss']
 })
 export class PaymentsDashboardComponent extends CommonTableComponent<PaymentObjectTotals> {
   private router = inject(Router)
 
-  repositoryData$ = this.readRepository.loadDataAction$.pipe(
-    map(v => v.map(item => (
-      {
-        ...item, paymentDate:
-        item.paymentDate ? new Date(item.paymentDate) : null
-      }
-    )))
-  )
-
   constructor() {
     super(inject(PAYMENT_OBJECT_TOTALS_READ_REPOSITORY));
     this.httpParams = new HttpParams()
-      .append('currentDate', DateGenerator.getConvertedPeriodDate(DateGenerator.getCurrentDate()).toJSON())
-    ;
-  }
-
-  get repository(): ReadRepository<PaymentObjectTotals> {
-    return this.readRepository;
+      .append('currentDate', DateGenerator.getConvertedPeriodDate(DateGenerator.getCurrentDate()).toJSON());
   }
 
   onSelectPaymentObject(event, item: PaymentObjectTotals) {
     event.preventDefault();
     this.router.navigateByUrl('/payments/' + item.paymentObject.id).then();
-  }
-
-  onReportPaymentObject(event, item: PaymentObjectTotals) {
-    event.preventDefault();
-    this.router.navigateByUrl('/reports/' + item.paymentObject.id).then();
   }
 }

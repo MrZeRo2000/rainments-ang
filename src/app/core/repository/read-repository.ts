@@ -113,11 +113,28 @@ export abstract class BaseReadRepository<T> implements Loadable {
   }
 }
 
+export type ItemMapper<T> = (raw: any) => T;
+
+/** Mapper that coerces the named fields from ISO date strings to Date. */
+export function withDates<T>(...dateKeys: (keyof T)[]): ItemMapper<T> {
+  return (raw: any) => {
+    const item = {...raw};
+    for (const key of dateKeys) {
+      if (item[key]) {
+        item[key] = new Date(item[key] as string);
+      }
+    }
+    return item as T;
+  };
+}
+
 export class ReadRepository<T> {
   constructor(
     protected dataSource: RestDataSource,
     protected messagesService: MessagesService,
-    protected resourceName: string) { }
+    protected resourceName: string,
+    // Per-item transform applied to loaded data; identity by default.
+    protected mapItem: ItemMapper<T> = (raw) => raw as T) { }
 
   private defaultLoadParams: LoadParams = new LoadParams(null, true);
 
@@ -141,7 +158,7 @@ export class ReadRepository<T> {
         switchMap(data =>
           iif(
             () => data.ok,
-            of(Array.isArray(data.body) ? data.body : [data.body]),
+            of((Array.isArray(data.body) ? data.body : [data.body]).map(this.mapItem)),
             of([]).pipe(
               tap(() => {
                 v.messageProcessor.reportMessageError('Error reading from server:' + data.body);

@@ -1,5 +1,5 @@
 import {inject, InjectionToken} from "@angular/core";
-import {ReadRepository} from "../core/repository/read-repository";
+import {ReadRepository, withDates} from "../core/repository/read-repository";
 import {RestDataSource} from "../data-source/rest-data-source";
 import {MessagesService} from "../messages/messages.service";
 import {AppInfo} from "../model/app-info";
@@ -38,7 +38,11 @@ export const PAYMENT_OBJECT_TOTALS_READ_REPOSITORY = new InjectionToken<ReadRepo
   'PAYMENT_OBJECT_TOTALS_READ_REPOSITORY',
   {
     providedIn: 'root',
-    factory: () => new ReadRepository(inject(RestDataSource), inject(MessagesService), 'payments:payment_object_totals_by_date')
+    factory: () => new ReadRepository(
+      inject(RestDataSource),
+      inject(MessagesService),
+      'payments:payment_object_totals_by_date',
+      withDates<PaymentObjectTotals>('paymentDate'))
   });
 
 export const PAYMENT_OBJECT_READ_REPOSITORY = new InjectionToken<ReadRepository<PaymentObject>>(

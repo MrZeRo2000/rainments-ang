@@ -6,7 +6,7 @@ import {DateFormatter} from '../utils/date-formatter';
 })
 export class ShortMonthYearPipe implements PipeTransform {
 
-  transform(value: Date): string {
-    return value && DateFormatter.formatDateShortMonthYear(value);
+  transform(value: Date | null | undefined): string {
+    return value ? DateFormatter.formatDateShortMonthYear(value) : '';
   }
 }
