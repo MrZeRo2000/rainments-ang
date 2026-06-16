@@ -13,6 +13,7 @@ export enum CrudActionType {
   Update = 'update',
   Delete = 'delete',
   Move   = 'move',
+  DefaultOrder = 'defaultOrder',
 }
 
 export enum CrudStatus {
@@ -24,7 +25,9 @@ export type CrudAction<T extends CommonEntity> =
   | { type: CrudActionType.Insert; payload: Omit<T, 'id'> }
   | { type: CrudActionType.Update; payload: T }
   | { type: CrudActionType.Delete; payload: Pick<T, 'id'> }
-  | { type: CrudActionType.Move;   payload: { sourceId: T['id']; targetId: T['id'] } };
+  | { type: CrudActionType.Move;   payload: { sourceId: T['id']; targetId: T['id'] } }
+  | { type: CrudActionType.DefaultOrder; payload: {} }
+  ;
 
 
 export type CrudSuccessResult<T> = { status: CrudStatus.Success; data: T | null };
@@ -64,6 +67,11 @@ export class CrudRepository<T extends CommonEntity> {
           this.resourceName + '/operation:move_order',
           {},
           httpParams
+        )
+      case CrudActionType.DefaultOrder:
+        return this.dataSource.postResponse(
+          this.resourceName + '/operation:set_default_order',
+          {}
         )
     }
   }

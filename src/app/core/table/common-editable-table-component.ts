@@ -305,12 +305,13 @@ export abstract class CommonEditableTableComponent<R, W
     const toEntity = this.readRepository.dataSignal()[event.currentIndex] as CommonEntity;
 
     if (fromEntity && toEntity && fromEntity.id !== toEntity.id) {
-      //this.repository.moveItem(fromEntity.id, toEntity.id);
+      this.crudRepository.execute({type: CrudActionType.Move, payload: {sourceId: fromEntity.id, targetId: toEntity.id}});
     }
   }
 
   onSetDefaultOrderClick(event: PointerEvent): void {
     event.preventDefault();
+    this.crudRepository.execute({type: CrudActionType.DefaultOrder, payload: {}});
   }
 
 }
