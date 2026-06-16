@@ -7,6 +7,7 @@ import {BackupDatabaseInfo} from "../model/backup-database-info";
 import {PaymentObjectTotals} from "../model/payment-object-totals";
 import {PaymentObject} from "../model/payment-object";
 import {PaymentGroup} from "../model/payment-group";
+import {Product} from "../model/product";
 import {CrudRepository} from "../core/repository/crud-repository";
 
 
@@ -57,4 +58,18 @@ export const PAYMENT_GROUP_CRUD_REPOSITORY = new InjectionToken<CrudRepository<P
   {
     providedIn: 'root',
     factory: () => new CrudRepository(inject(RestDataSource), inject(MessagesService), 'payment-groups')
+  });
+
+export const PRODUCT_READ_REPOSITORY = new InjectionToken<ReadRepository<Product>>(
+  'PRODUCT_READ_REPOSITORY',
+  {
+    providedIn: 'root',
+    factory: () => new ReadRepository(inject(RestDataSource), inject(MessagesService), 'products')
+  });
+
+export const PRODUCT_CRUD_REPOSITORY = new InjectionToken<CrudRepository<Product>>(
+  'PRODUCT_CRUD_REPOSITORY',
+  {
+    providedIn: 'root',
+    factory: () => new CrudRepository(inject(RestDataSource), inject(MessagesService), 'products')
   });

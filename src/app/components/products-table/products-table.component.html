@@ -1,5 +1,6 @@
+@let data = readRepository.dataSignal();
 
-@if (this.getEditingState()) {
+@if (!editingSignal()) {
   <div class="d-flex mt-2 mb-2">
     <app-core-add-panel (addClick)="onAddClick()"></app-core-add-panel>
     <div class="ms-auto">
@@ -8,9 +9,7 @@
       </app-core-drop-down-more-menu>
     </div>
   </div>
-}
 
-@if (getEditingState()) {
   <table class="table" [ngClass]="this.dragHandlerService.getDragClass()">
     <thead>
       <tr>
@@ -21,7 +20,7 @@
       </tr>
     </thead>
     <tbody cdkDropList cdkDropListLockAxis="y" (cdkDropListDropped)="onDrop($event)">
-      @for (item of getProducts(); track item) {
+      @for (item of data; track item.id) {
         <tr cdkDrag (cdkDragStarted)="this.dragHandlerService.startDrag()">
           <td class="text-nowrap align-middle"><div><app-core-drag-grip cdkDragHandle></app-core-drag-grip> {{item.id}}</div></td>
           <td class="align-middle">{{item.name}}</td>
@@ -36,24 +35,24 @@
   </table>
 }
 
-@if (editState) {
+@if (editStateSignal() && !loadingSignal()) {
   <div>
     <form class="form-group" [formGroup]="editForm">
       <label for="inputName"><strong>Name</strong></label>
-      <input #inputName type="text" class="form-control" [ngClass]="{'is-invalid': editForm.controls.name.errors && editState.submitted}" id="inputName" placeholder="Name" formControlName="name">
+      <input #inputName type="text" class="form-control" [ngClass]="{'is-invalid': editForm.controls.name.errors && editStateSignal().submitted}" id="inputName" placeholder="Name" formControlName="name">
       <label for="inputUnitName" class="mt-2">Unit Name</label>
       <input #inputUnitName type="text" class="form-control" id="inputUnitName" placeholder="Unit Name" formControlName="unitName">
       <label for="counterPrecision" class="mt-2">Counter precision</label>
       <select
-        class="browser-default custom-select"
-        [ngClass]="{'is-invalid': editForm.controls.counterPrecision.errors && editState.submitted}"
+        class="form-select"
+        [ngClass]="{'is-invalid': editForm.controls.counterPrecision.errors && editStateSignal().submitted}"
         formControlName="counterPrecision"
         id="counterPrecision">
         @for (item of counterPrecisionOptions; track item) {
           <option value="{{item}}">{{item}}</option>
         }
       </select>
-      @if (editForm.controls.name.errors && editState.submitted) {
+      @if (editForm.controls.name.errors && editStateSignal().submitted) {
         <div class="invalid-feedback">
           @if (editForm.controls.name.errors.required) {
             <div>Name should not be empty</div>
@@ -63,17 +62,16 @@
           }
         </div>
       }
-      @if (editForm.controls.counterPrecision.errors && editState.submitted) {
+      @if (editForm.controls.counterPrecision.errors && editStateSignal().submitted) {
         <div class="invalid-feedback">
           @if (editForm.controls.counterPrecision.errors.precisionForEmptyUnitName) {
             <div>Precision for empty unit is not allowed</div>
           }
         </div>
       }
-      <app-core-save-dialog-panel [editable]="this" [loadable]="repository" (createClick)="onCreate()" (saveClick)="onSave()" (cancelClick)="onCancel()"></app-core-save-dialog-panel>
+      <app-core-save-dialog-panel [editStateSignal]="this.editStateSignal" [loading]="this.readRepository.loadingSignal" (createClick)="onSave()" (saveClick)="onSave()" (cancelClick)="onCancel()"></app-core-save-dialog-panel>
     </form>
   </div>
 }
 
-<app-core-loading-progress [loadable]="repository"></app-core-loading-progress>
-
+<app-core-loading-progress [loading]="loadingSignal"></app-core-loading-progress>

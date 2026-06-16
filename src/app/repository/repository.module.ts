@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {RestDataSource} from '../data-source/rest-data-source';
 import {PaymentObjectRepository} from './payment-object-repository';
-import {PaymentGroupRepository} from './payment-group-repository';
-import {ProductRepository} from './product-repository';
 import {PaymentRepository} from './payment-repository';
 import {PaymentRefsRepository} from './payment-refs-repository';
 import {ImportPaymentObjectRepository} from './import-payment-object-repository';
@@ -14,9 +12,7 @@ import {UpdatePaymentObjectGroupRepository} from './update-payment-object-group-
 import {UpdatePaymentObjectGroupPersistRepository} from './update-payment-object-group-persist-repository';
 import {ImportPaymentObjectPersistRepository} from './import-payment-object-persist-repository';
 import {BackupDatabasePersistRepository} from './backup-database-persist-repository';
-import {PaymentGroupPersistRepository} from './payment-group-persist-repository';
 import {PaymentObjectPersistRepository} from './payment-object-persist-repository';
-import {ProductPersistRepository} from './product-persist-repository';
 import {PaymentPersistRepository} from './payment-persist-repository';
 import {PaymentObjectPeriodRepository} from './payment-object-period-repository';
 import {PaymentRepRepository} from './payment-rep-repository';
@@ -25,10 +21,6 @@ import {PaymentRepRepository} from './payment-rep-repository';
         RestDataSource,
         PaymentObjectRepository,
         PaymentObjectPersistRepository,
-        PaymentGroupRepository,
-        PaymentGroupPersistRepository,
-        ProductRepository,
-        ProductPersistRepository,
         PaymentRepository,
         PaymentPersistRepository,
         PaymentRefsRepository,

@@ -1,9 +1,12 @@
-import {Component, ElementRef, inject, ViewChild} from '@angular/core';
+import {Component, effect, ElementRef, inject, viewChild} from '@angular/core';
 import {Product} from '../../model/product';
-import {ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
+import {
+  FormBuilder,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
+import {duplicateNamesValidator, precisionValidator} from '../../core/validators/form-validators';
 import {BsModalService} from 'ngx-bootstrap/modal';
-import {ProductRepository} from '../../repository/product-repository';
-import {BaseCommonSimpleEditableTableComponent} from '../../core/table/common-simple-editable-table-component';
 import {DragHandlerService} from '../../core/services/drag-handler.service';
 import {NgClass} from '@angular/common';
 import {CdkDrag, CdkDragHandle, CdkDragPreview, CdkDropList} from '@angular/cdk/drag-drop';
@@ -13,6 +16,8 @@ import {DragGripComponent} from '../../core/components/drag-grip/drag-grip.compo
 import {EditDeletePanelComponent} from '../../core/components/edit-delete-panel/edit-delete-panel.component';
 import {SaveDialogPanelComponent} from '../../core/components/save-dialog-panel/save-dialog-panel.component';
 import {LoadingProgressComponent} from '../../core/components/loading-progress/loading-progress.component';
+import {CommonSimpleEditableTableComponent} from '../../core/table/common-editable-table-component';
+import {PRODUCT_CRUD_REPOSITORY, PRODUCT_READ_REPOSITORY} from '../../repository/repository-tokens';
 
 @Component({
     selector: 'app-products-table',
@@ -33,67 +38,26 @@ import {LoadingProgressComponent} from '../../core/components/loading-progress/l
     ],
     styleUrls: ['./products-table.component.scss']
 })
-export class ProductsTableComponent extends BaseCommonSimpleEditableTableComponent<Product> {
-  private fb = inject(UntypedFormBuilder)
+export class ProductsTableComponent extends CommonSimpleEditableTableComponent<Product> {
+  private fb = inject(FormBuilder)
   public dragHandlerService = inject(DragHandlerService)
 
-  @ViewChild('inputName') inputNameElement: ElementRef;
+  inputNameElement = viewChild<ElementRef<HTMLInputElement>>('inputName');
 
   counterPrecisionOptions = ['', '0', '1', '2'];
 
-  /* eslint-disable @angular-eslint/prefer-inject */
-  constructor(
-    protected modalService: BsModalService,
-    public repository: ProductRepository) {
-    super(Product, modalService, repository);
+  constructor() {
+    super(Product, inject(BsModalService), inject(PRODUCT_READ_REPOSITORY), inject(PRODUCT_CRUD_REPOSITORY));
+
+    effect(() => this.inputNameElement()?.nativeElement.focus());
   }
 
-  protected buildForm(): UntypedFormGroup {
-    return this.fb.group({
-        name: ['', Validators.required],
-        unitName: [''],
-        counterPrecision: ['']
-      }
-    );
-  }
-
-  protected  getDisplayItemName(item: Product): string {
-    return item.name;
-  }
-
-  getProducts(): Product[] {
-    return this.repository.getData();
-  }
-
-  protected setEditFocus(): void {
-    this.inputNameElement.nativeElement.focus();
-  }
-
-  private validatePrecision(): void {
-    if (this.editForm.controls.unitName.value.trim() === '' && this.editForm.controls.counterPrecision.value !== '') {
-      this.editForm.controls.counterPrecision.setErrors({precisionForEmptyUnitName: true});
-    }
-  }
-
-  protected validateCreate(): void {
-    const nameDuplicates = this.repository.getData().filter(
-      (v) => v.name === this.editForm.controls.name.value
-    );
-    if (nameDuplicates.length > 0) {
-      this.editForm.controls.name.setErrors({existingName: true});
-    }
-    this.validatePrecision();
-  }
-
-  protected validateSave(): void {
-    const nameDuplicates = this.repository.getData().filter(
-      (v) => v.name === this.editForm.controls.name.value && v.id !== this.editState.editItem.id
-    );
-    if (nameDuplicates.length > 0) {
-      this.editForm.controls.name.setErrors({existingName: true});
-    }
-    this.validatePrecision();
-  }
+  editForm = this.fb.group({
+      id: [''],
+      name: ['', [Validators.required, duplicateNamesValidator(this.readRepository.dataSignal)]],
+      unitName: [''],
+      counterPrecision: ['']},
+    {validators: precisionValidator()});
 
   onDrop(event: any): void {
     this.dragHandlerService.stopDrag();

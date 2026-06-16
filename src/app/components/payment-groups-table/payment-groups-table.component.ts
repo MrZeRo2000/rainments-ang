@@ -8,8 +8,7 @@ import {
 } from '@angular/forms';
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {DragHandlerService} from '../../core/services/drag-handler.service';
-import {urlValidator} from '../../core/directives/url-validator.directive';
-import {duplicateNamesValidator} from '../../core/validators/entity-validators';
+import {duplicateNamesValidator, urlValidator} from '../../core/validators/form-validators';
 import {AddPanelComponent} from "../../core/components/add-panel/add-panel.component";
 import {DropDownMoreMenuComponent} from "../../core/components/drop-down-more-menu/drop-down-more-menu.component";
 import {NgClass, NgStyle} from "@angular/common";

@@ -1,13 +1,11 @@
 import {Component, effect, ElementRef, inject, viewChild} from '@angular/core';
 import {PaymentObject} from '../../model/payment-object';
 import {
-  AbstractControl,
   FormBuilder,
   ReactiveFormsModule,
-  ValidationErrors, ValidatorFn,
   Validators
 } from '@angular/forms';
-import {duplicateNamesValidator} from '../../core/validators/entity-validators';
+import {duplicateNamesValidator, termValidator} from '../../core/validators/form-validators';
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {DragHandlerService} from '../../core/services/drag-handler.service';
 import {TimePeriod, TimePeriodType} from '../../core/utils/time-period';
@@ -58,41 +56,6 @@ export class PaymentObjectsTableComponent extends CommonSimpleEditableTableCompo
     effect(() => this.inputNameElement()?.nativeElement.focus());
   }
 
-  private termValidator(): ValidatorFn {
-    return (form: AbstractControl): ValidationErrors | null => {
-      if (this.editForm) {
-        if (this.editForm.controls?.period.value === '') {
-          if (this.editForm.controls?.termType.value !== '') {
-            this.editForm.controls.termType.setErrors({termNoPeriod: true});
-          } else {
-            this.editForm.controls.termType.setErrors(null);
-          }
-
-          if (this.editForm.controls?.termQuantity.value !== '') {
-            this.editForm.controls.termQuantity.setErrors({termQuantityNoPeriod: true});
-          } else {
-            this.editForm.controls.termQuantity.setErrors(null);
-          }
-
-          if (this.editForm.controls?.payDelay.value !== '') {
-            this.editForm.controls.payDelay.setErrors({delayNoPeriod: true});
-          } else {
-            this.editForm.controls.payDelay.setErrors(null);
-          }
-
-        } else {
-          if (this.editForm.controls?.termQuantity.value !== '' && this.editForm.controls.termType.value === '') {
-            this.editForm.controls.termQuantity.setErrors({termQuantityNoType: true});
-          } else {
-            this.editForm.controls.termQuantity.setErrors(null);
-          }
-        }
-      }
-
-      return null; // valid
-    };
-  }
-
   editForm = this.fb.group({
         id: [''],
         name: ['', [Validators.required, duplicateNamesValidator(this.readRepository.dataSignal)]],
@@ -100,7 +63,7 @@ export class PaymentObjectsTableComponent extends CommonSimpleEditableTableCompo
         termQuantity: [''],
         termType: [''],
         payDelay: ['']},
-    {validators: this.termValidator()});
+    {validators: termValidator()});
 
   protected getPersistData(): PaymentObject {
     const o: any = super.getPersistData();
