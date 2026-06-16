@@ -48,6 +48,24 @@ export function urlValidator(): ValidatorFn {
 }
 
 /**
+ * Validates that the control's value differs from a sibling control's value.
+ * Empty values pass. Reports `{[errorKey]: true}` when the two are equal, and
+ * composes with other control validators such as `Validators.required`.
+ */
+export function distinctFromSiblingValidator(siblingName: string, errorKey: string): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const sibling = control.parent?.get(siblingName);
+    if (!sibling) {
+      return null;
+    }
+
+    const value = control.value ?? '';
+    const other = sibling.value ?? '';
+    return value !== '' && other !== '' && value === other ? {[errorKey]: true} : null;
+  };
+}
+
+/**
  * Cross-field validator for the payment-object form: a payment term / pay-delay
  * only makes sense when a payment period is set. Sets per-control errors on
  * `termType`, `termQuantity` and `payDelay` rather than a group-level error.

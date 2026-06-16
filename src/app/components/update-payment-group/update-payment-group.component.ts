@@ -11,6 +11,7 @@ import {UpdatePaymentObjectGroupRepository} from '../../repository/update-paymen
 import {SuccessMessage} from '../../messages/message.model';
 import {NgClass} from "@angular/common";
 import {LoadingProgressComponent} from "../../core/components/loading-progress/loading-progress.component";
+import {distinctFromSiblingValidator} from '../../core/validators/form-validators';
 import {PAYMENT_OBJECT_GROUP_REFS_READ_REPOSITORY} from '../../repository/repository-tokens';
 
 @Component({
@@ -46,7 +47,7 @@ export class UpdatePaymentGroupComponent extends CommonTableComponent<PaymentObj
   editForm = this.fb.group({
     paymentObject: ['', Validators.required],
     paymentGroupFrom: ['', Validators.required],
-    paymentGroupTo: ['', Validators.required]
+    paymentGroupTo: ['', [Validators.required, distinctFromSiblingValidator('paymentGroupFrom', 'equalsFrom')]]
   });
 
   constructor() {
@@ -79,12 +80,8 @@ export class UpdatePaymentGroupComponent extends CommonTableComponent<PaymentObj
 
   importClick() {
     this.formSubmitted = true;
-
-    if (this.editForm.valid) {
-      if (this.editForm.controls.paymentGroupFrom.value === this.editForm.controls.paymentGroupTo.value) {
-        this.editForm.controls.paymentGroupTo.setErrors({equalsFrom: true});
-      }
-    }
+    // paymentGroupTo's cross-field validator is stale if paymentGroupFrom changed last.
+    this.editForm.controls.paymentGroupTo.updateValueAndValidity();
 
     if (this.editForm.valid) {
       const resultSubject: Subject<null> = new Subject<null>();
