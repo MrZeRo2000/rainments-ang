@@ -1,20 +1,17 @@
-import {Component, inject, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, computed, inject, Input, OnDestroy, OnInit, signal} from '@angular/core';
 import {PaymentObjectGroupRefs} from '../../model/payment-object-group-refs';
-import {ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
+import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MessagesService} from '../../messages/messages.service';
-import {PaymentObjectGroupRefsRepository} from '../../repository/payment-object-group-refs-repository';
-import {BaseCommonTableComponent} from '../../core/table/common-table-component';
+import {CommonTableComponent} from '../../core/table/common-table-component';
 import {Subject, Subscription} from 'rxjs';
-import {PaymentObject} from '../../model/payment-object';
-import {PaymentGroup} from '../../model/payment-group';
 import {ConfirmationModalDialogComponent} from '../../core/components/confirmation-modal-dialog/confirmation-modal-dialog.component';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 import { HttpParams } from '@angular/common/http';
 import {UpdatePaymentObjectGroupRepository} from '../../repository/update-payment-object-group-repository';
-import {Loadable} from '../../core/edit/edit-intf';
 import {SuccessMessage} from '../../messages/message.model';
 import {NgClass} from "@angular/common";
 import {LoadingProgressComponent} from "../../core/components/loading-progress/loading-progress.component";
+import {PAYMENT_OBJECT_GROUP_REFS_READ_REPOSITORY} from '../../repository/repository-tokens';
 
 @Component({
   selector: 'app-update-payment-group',
@@ -26,8 +23,8 @@ import {LoadingProgressComponent} from "../../core/components/loading-progress/l
   ],
   styleUrls: ['./update-payment-group.component.scss']
 })
-export class UpdatePaymentGroupComponent extends BaseCommonTableComponent<PaymentObjectGroupRefs> implements OnInit, OnDestroy, Loadable {
-  private fb = inject(UntypedFormBuilder)
+export class UpdatePaymentGroupComponent extends CommonTableComponent<PaymentObjectGroupRefs> implements OnInit, OnDestroy {
+  private fb = inject(FormBuilder)
   private modalService = inject(BsModalService)
   public messagesService = inject(MessagesService)
   private updateRepository = inject(UpdatePaymentObjectGroupRepository)
@@ -36,34 +33,33 @@ export class UpdatePaymentGroupComponent extends BaseCommonTableComponent<Paymen
   messageSource: string;
 
   bsModalRef: BsModalRef;
-
-  editForm: UntypedFormGroup;
   formSubmitted = false;
 
   private updateSubscription: Subscription;
   private loadingSubscription: Subscription;
 
-  private updateLoading = false;
+  // Update side is still observable-based (left for a future migration); mirror
+  // its loading into a signal so it composes with the read repository's signal.
+  private updateLoadingSignal = signal(false);
+  loadingSignal = computed(() => this.readRepository.loadingSignal() || this.updateLoadingSignal());
 
-  getLoading() {
-    return this.repository.getLoading() || this.updateLoading;
+  editForm = this.fb.group({
+    paymentObject: ['', Validators.required],
+    paymentGroupFrom: ['', Validators.required],
+    paymentGroupTo: ['', Validators.required]
+  });
+
+  constructor() {
+    super(inject(PAYMENT_OBJECT_GROUP_REFS_READ_REPOSITORY));
   }
 
-  // eslint-disable-next-line @angular-eslint/prefer-inject
-  constructor(public repository : PaymentObjectGroupRefsRepository) {
-    super(repository);
-  }
-
-  ngOnInit(): void {
+  override ngOnInit(): void {
     super.ngOnInit();
 
-    this.editForm = this.buildForm();
-
-    this.repository.setDefaultLoadParams({messageSource: this.messageSource});
     this.updateRepository.setDefaultPersistParams({messageSource: this.messageSource});
 
     this.loadingSubscription = this.updateRepository.getLoadingState().subscribe(value => {
-      this.updateLoading = value;
+      this.updateLoadingSignal.set(value);
     });
     this.updateSubscription = this.updateRepository.getPersistData().subscribe(data => {
       this.messagesService.reportMessage(new SuccessMessage(`Successfully updated ${data.body.rowsAffected} rows`, this.messageSource));
@@ -75,21 +71,10 @@ export class UpdatePaymentGroupComponent extends BaseCommonTableComponent<Paymen
     this.updateSubscription.unsubscribe();
   }
 
-  private buildForm(): UntypedFormGroup {
-    return this.fb.group({
-        paymentObject: ['', Validators.required],
-        paymentGroupFrom: ['', Validators.required],
-        paymentGroupTo: ['', Validators.required]
-      }
-    );
-  }
-
-  getPaymentObjects(): PaymentObject[] {
-    return this.repository.getData().length > 0 && this.repository.getData()[0].paymentObjectList;
-  }
-
-  getPaymentGroups(): PaymentGroup[] {
-    return this.repository.getData().length > 0 && this.repository.getData()[0].paymentGroupList;
+  // Enable scoped reporting of refs-load errors (updateMessages gates the
+  // ReadRepository's error message; messageSource routes it to this panel).
+  protected override loadRepositoryData(): void {
+    this.readRepository.loadData({updateMessages: true, messageSource: this.messageSource});
   }
 
   importClick() {
@@ -114,8 +99,8 @@ export class UpdatePaymentGroupComponent extends BaseCommonTableComponent<Paymen
 
   private getParamsFromEditForm(): HttpParams {
     return new HttpParams()
-      .append('paymentObjectId', this.editForm.controls.paymentObject.value)
-      .append('paymentGroupFromId', this.editForm.controls.paymentGroupFrom.value)
-      .append('paymentGroupToId', this.editForm.controls.paymentGroupTo.value);
+      .append('paymentObjectId', this.editForm.controls.paymentObject.value ?? '')
+      .append('paymentGroupFromId', this.editForm.controls.paymentGroupFrom.value ?? '')
+      .append('paymentGroupToId', this.editForm.controls.paymentGroupTo.value ?? '');
   }
 }

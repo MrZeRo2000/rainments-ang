@@ -8,6 +8,7 @@ import {PaymentObjectTotals} from "../model/payment-object-totals";
 import {PaymentObject} from "../model/payment-object";
 import {PaymentGroup} from "../model/payment-group";
 import {Product} from "../model/product";
+import {PaymentObjectGroupRefs} from "../model/payment-object-group-refs";
 import {CrudRepository} from "../core/repository/crud-repository";
 
 
@@ -72,4 +73,11 @@ export const PRODUCT_CRUD_REPOSITORY = new InjectionToken<CrudRepository<Product
   {
     providedIn: 'root',
     factory: () => new CrudRepository(inject(RestDataSource), inject(MessagesService), 'products')
+  });
+
+export const PAYMENT_OBJECT_GROUP_REFS_READ_REPOSITORY = new InjectionToken<ReadRepository<PaymentObjectGroupRefs>>(
+  'PAYMENT_OBJECT_GROUP_REFS_READ_REPOSITORY',
+  {
+    providedIn: 'root',
+    factory: () => new ReadRepository(inject(RestDataSource), inject(MessagesService), 'payments:payment_object_group_refs')
   });
