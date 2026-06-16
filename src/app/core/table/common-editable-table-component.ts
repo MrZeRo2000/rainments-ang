@@ -177,6 +177,7 @@ export abstract class CommonEditableTableComponent<R, W
   implements OnInit {
 
   private readonly destroyRef = inject(DestroyRef);
+  private bsModalRef: BsModalRef;
 
   editStateSignal = signal<EditState<W> | undefined>(undefined);
 
@@ -249,7 +250,18 @@ export abstract class CommonEditableTableComponent<R, W
   }
 
   onDeleteClick(item: W): void {
-
+    const resultSubject: Subject<W> = new Subject<W>();
+    resultSubject.subscribe((result) => {
+      console.log(`Delete PersistData: ${JSON.stringify(item)}`);
+      this.crudRepository.execute({type: CrudActionType.Delete, payload: item});
+    });
+    const o: any = item
+    if (o.hasOwnProperty('name')) {
+      const name = o['name'];
+      const message = '<strong>' + name + '</strong> will be deleted. <BR>Are you sure?';
+      const initialState  = {message, item, result: resultSubject};
+      this.bsModalRef = this.modalService.show(ConfirmationModalDialogComponent, {initialState});
+    }
   }
 
   onSave(): void {
