@@ -1,13 +1,15 @@
-import {Component, computed, inject, Input, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, computed, inject, Input} from '@angular/core';
+import {toSignal} from '@angular/core/rxjs-interop';
 import {PaymentObjectGroupRefs} from '../../model/payment-object-group-refs';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MessagesService} from '../../messages/messages.service';
 import {CommonTableComponent} from '../../core/table/common-table-component';
-import {Subject, Subscription} from 'rxjs';
+import {Subject, tap} from 'rxjs';
 import {ConfirmationModalDialogComponent} from '../../core/components/confirmation-modal-dialog/confirmation-modal-dialog.component';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 import { HttpParams } from '@angular/common/http';
 import {UpdatePaymentObjectGroupRepository} from '../../repository/update-payment-object-group-repository';
+import {CrudStatus} from '../../core/repository/crud-repository';
 import {SuccessMessage} from '../../messages/message.model';
 import {NgClass} from "@angular/common";
 import {LoadingProgressComponent} from "../../core/components/loading-progress/loading-progress.component";
@@ -24,10 +26,10 @@ import {PAYMENT_OBJECT_GROUP_REFS_READ_REPOSITORY} from '../../repository/reposi
   ],
   styleUrls: ['./update-payment-group.component.scss']
 })
-export class UpdatePaymentGroupComponent extends CommonTableComponent<PaymentObjectGroupRefs> implements OnInit, OnDestroy {
+export class UpdatePaymentGroupComponent extends CommonTableComponent<PaymentObjectGroupRefs> {
   private fb = inject(FormBuilder)
   private modalService = inject(BsModalService)
-  public messagesService = inject(MessagesService)
+  private messagesService = inject(MessagesService)
   private updateRepository = inject(UpdatePaymentObjectGroupRepository)
 
   @Input()
@@ -36,13 +38,7 @@ export class UpdatePaymentGroupComponent extends CommonTableComponent<PaymentObj
   bsModalRef: BsModalRef;
   formSubmitted = false;
 
-  private updateSubscription: Subscription;
-  private loadingSubscription: Subscription;
-
-  // Update side is still observable-based (left for a future migration); mirror
-  // its loading into a signal so it composes with the read repository's signal.
-  private updateLoadingSignal = signal(false);
-  loadingSignal = computed(() => this.readRepository.loadingSignal() || this.updateLoadingSignal());
+  loadingSignal = computed(() => this.readRepository.loadingSignal() || this.updateRepository.loadingSignal());
 
   editForm = this.fb.group({
     paymentObject: ['', Validators.required],
@@ -50,26 +46,19 @@ export class UpdatePaymentGroupComponent extends CommonTableComponent<PaymentObj
     paymentGroupTo: ['', [Validators.required, distinctFromSiblingValidator('paymentGroupFrom', 'equalsFrom')]]
   });
 
+  // Activates the CRUD stream and reports the success message; the repository
+  // reports its own (scoped) errors.
+  private updateResult = toSignal(this.updateRepository.crudAction$.pipe(
+    tap(result => {
+      if (result.status === CrudStatus.Success) {
+        this.messagesService.reportMessage(
+          new SuccessMessage(`Successfully updated ${result.data?.rowsAffected ?? 0} rows`, this.messageSource));
+      }
+    })
+  ));
+
   constructor() {
     super(inject(PAYMENT_OBJECT_GROUP_REFS_READ_REPOSITORY));
-  }
-
-  override ngOnInit(): void {
-    super.ngOnInit();
-
-    this.updateRepository.setDefaultPersistParams({messageSource: this.messageSource});
-
-    this.loadingSubscription = this.updateRepository.getLoadingState().subscribe(value => {
-      this.updateLoadingSignal.set(value);
-    });
-    this.updateSubscription = this.updateRepository.getPersistData().subscribe(data => {
-      this.messagesService.reportMessage(new SuccessMessage(`Successfully updated ${data.body.rowsAffected} rows`, this.messageSource));
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.loadingSubscription.unsubscribe();
-    this.updateSubscription.unsubscribe();
   }
 
   // Enable scoped reporting of refs-load errors (updateMessages gates the
@@ -84,20 +73,19 @@ export class UpdatePaymentGroupComponent extends CommonTableComponent<PaymentObj
     this.editForm.controls.paymentGroupTo.updateValueAndValidity();
 
     if (this.editForm.valid) {
+      // Scope this operation's error messages to this component's panel.
+      this.updateRepository.setDefaultPersistParams({messageSource: this.messageSource});
+
       const resultSubject: Subject<null> = new Subject<null>();
       resultSubject.subscribe(() => {
-        this.updateRepository.postFormData(this.getParamsFromEditForm());
+        this.updateRepository.postFormData(new HttpParams()
+          .append('paymentObjectId', this.editForm.controls.paymentObject.value ?? '')
+          .append('paymentGroupFromId', this.editForm.controls.paymentGroupFrom.value ?? '')
+          .append('paymentGroupToId', this.editForm.controls.paymentGroupTo.value ?? ''));
       });
       const message = '<strong>This operation can not be undone.</strong> <BR>Are you sure?';
       const initialState  = {message, result: resultSubject};
       this.bsModalRef = this.modalService.show(ConfirmationModalDialogComponent, {initialState});
     }
-  }
-
-  private getParamsFromEditForm(): HttpParams {
-    return new HttpParams()
-      .append('paymentObjectId', this.editForm.controls.paymentObject.value ?? '')
-      .append('paymentGroupFromId', this.editForm.controls.paymentGroupFrom.value ?? '')
-      .append('paymentGroupToId', this.editForm.controls.paymentGroupTo.value ?? '');
   }
 }

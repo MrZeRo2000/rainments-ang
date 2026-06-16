@@ -1,5 +1,5 @@
 import {CommonEntity} from "../entity/common-entity";
-import {catchError, iif, Observable, of, Subject, switchMap, tap, shareReplay} from "rxjs";
+import {catchError, iif, Observable, of, Subject, switchMap, tap} from "rxjs";
 import {RestDataSource} from "../../data-source/rest-data-source";
 import {MessagesService} from "../../messages/messages.service";
 import {HttpParams, HttpResponse} from "@angular/common/http";
@@ -14,6 +14,7 @@ export enum CrudActionType {
   Delete = 'delete',
   Move   = 'move',
   DefaultOrder = 'defaultOrder',
+  FormData = 'formData',
 }
 
 export enum CrudStatus {
@@ -27,6 +28,7 @@ export type CrudAction<T extends CommonEntity> =
   | { type: CrudActionType.Delete; payload: Pick<T, 'id'> }
   | { type: CrudActionType.Move;   payload: { sourceId: T['id']; targetId: T['id'] } }
   | { type: CrudActionType.DefaultOrder; payload: {} }
+  | { type: CrudActionType.FormData; payload: HttpParams }
   ;
 
 
@@ -73,6 +75,8 @@ export class CrudRepository<T extends CommonEntity> {
           this.resourceName + '/operation:set_default_order',
           {}
         )
+      case CrudActionType.FormData:
+        return this.dataSource.postResponse(this.resourceName, {}, action.payload)
     }
   }
 
@@ -96,23 +100,31 @@ export class CrudRepository<T extends CommonEntity> {
           )
         ),
         catchError(err => {
-          this.reportErrorMessage(`Network error: ${RepositoryUtils.getNetworkErrorMessage(err)}`);
-          return []
+          const message = `Network error: ${RepositoryUtils.getNetworkErrorMessage(err)}`;
+          this.reportErrorMessage(message);
+          // Emit an error result (rather than an empty stream) so the trailing
+          // tap still runs and resets loadingSignal.
+          return of({ status: CrudStatus.Error, error: message } as CrudErrorResult<T>)
         })
       )
     ),
     tap(() => {
       this.loadingSignal.set(false)
-      console.log(`Loading signal set to false: end`)
-    }),
-    // Multicast: crudDataSignal (toSignal) and the template's `crudData$ | async`
-    // both subscribe. Without sharing, each subscription re-runs the switchMap and
-    // fires its own HTTP request, doubling every insert/update/delete.
-    shareReplay({ bufferSize: 1, refCount: true })
+    })
   );
 
   execute(crudAction: CrudAction<T>): void {
     this.crudSubject.next(crudAction);
+  }
+
+  // Posts query params (empty body) to the resource and routes the result
+  // through the same reactive flow as the other actions.
+  postFormData(params: HttpParams): void {
+    this.execute({ type: CrudActionType.FormData, payload: params });
+  }
+
+  setDefaultPersistParams(persistParams: PersistParams): void {
+    this.defaultPersistParams = persistParams;
   }
 
 }
