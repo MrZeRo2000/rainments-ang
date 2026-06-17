@@ -45,6 +45,17 @@ export const PAYMENT_OBJECT_TOTALS_READ_REPOSITORY = new InjectionToken<ReadRepo
       withDates<PaymentObjectTotals>('paymentDate'))
   });
 
+export const PAYMENT_OBJECT_PERIOD_READ_REPOSITORY = new InjectionToken<ReadRepository<PaymentObjectTotals>>(
+  'PAYMENT_OBJECT_PERIOD_READ_REPOSITORY',
+  {
+    providedIn: 'root',
+    factory: () => new ReadRepository(
+      inject(RestDataSource),
+      inject(MessagesService),
+      'payments:payment_object_period_by_id',
+      withDates<PaymentObjectTotals>('paymentDate'))
+  });
+
 export const PAYMENT_OBJECT_READ_REPOSITORY = new InjectionToken<ReadRepository<PaymentObject>>(
   'PAYMENT_OBJECT_READ_REPOSITORY',
   {
