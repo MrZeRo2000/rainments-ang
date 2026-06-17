@@ -16,7 +16,7 @@ describe('ProductsTableComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-    imports: [ProductsTableComponent, ReactiveFormsModule, ModalModule.forRoot(), RepositoryModule, FontAwesomeIconsModule],
+    imports: [ProductsTableComponent, ReactiveFormsModule, ModalModule, RepositoryModule, FontAwesomeIconsModule],
     providers: [RestUrlEnv, RestDataSource, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
 })
     .compileComponents();

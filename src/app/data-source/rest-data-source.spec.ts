@@ -1,6 +1,6 @@
 import { RestDataSource } from './rest-data-source';
 import {TestBed} from '@angular/core/testing';
-import {RestUrlEnv} from '../config/configuration';
+import {RestUrl, RestUrlEnv} from '../config/configuration';
 import {environment} from '../../environments/environment';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
@@ -19,8 +19,7 @@ describe('RestDataSource', () => {
   });
 
   it('getting correct restUtl', () => {
-    instance = TestBed.inject(RestDataSource);
-    expect(instance.restUrl).toBe(environment.restUrl);
+    expect(TestBed.inject(RestUrl)).toBe(environment.restUrl);
   });
 
 });

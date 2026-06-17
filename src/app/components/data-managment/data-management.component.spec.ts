@@ -15,7 +15,7 @@ describe('ImportExportComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-    imports: [DataManagementComponent, ReactiveFormsModule, ModalModule.forRoot(), RepositoryModule],
+    imports: [DataManagementComponent, ReactiveFormsModule, ModalModule, RepositoryModule],
     providers: [RestUrlEnv, RestDataSource, BsModalService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
 })
     .compileComponents();

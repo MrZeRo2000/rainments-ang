@@ -5,8 +5,12 @@ import {MessagesService} from "../../messages/messages.service";
 import {HttpParams, HttpResponse} from "@angular/common/http";
 import {signal} from "@angular/core";
 import {ErrorMessage} from "../../messages/message.model";
-import {PersistParams} from "./persist-repository";
 import {RepositoryUtils} from "./repository-utils";
+
+/** Params controlling how a persist/CRUD operation reports its messages. */
+export class PersistParams {
+  public messageSource?: string;
+}
 
 export enum CrudActionType {
   Insert = 'insert',

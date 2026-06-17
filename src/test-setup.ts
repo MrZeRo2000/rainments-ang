@@ -5,11 +5,16 @@
 // per-TestBed via `errorOnUnknownElements`/`errorOnUnknownProperties` in
 // configureTestingModule.
 //
-// We also install noop animations so ModalModule.forRoot() and other
-// ngx-bootstrap modules that inject AnimationBuilder don't crash under jsdom.
-// The builder's `providersFile` is dropped because resetTestEnvironment()
-// discards the builder's own provider module.
-import { NgModule } from '@angular/core';
+// We also install noop animations so ngx-bootstrap modules that inject
+// AnimationBuilder don't crash under jsdom. The builder's `providersFile` is
+// dropped because resetTestEnvironment() discards the builder's own provider
+// module.
+//
+// The app runs zoneless and zone.js is no longer installed, so the test
+// environment must provide zoneless change detection too (otherwise Angular
+// errors with "requires Zone.js"). Specs drive CD manually via
+// fixture.detectChanges().
+import { NgModule, provideZonelessChangeDetection } from '@angular/core';
 import { getTestBed } from '@angular/core/testing';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
@@ -17,7 +22,7 @@ import {
   platformBrowserTesting,
 } from '@angular/platform-browser/testing';
 
-@NgModule({ providers: [provideAnimationsAsync('noop')] })
+@NgModule({ providers: [provideZonelessChangeDetection(), provideAnimationsAsync('noop')] })
 class TestEnvironmentProvidersModule {}
 
 getTestBed().resetTestEnvironment();

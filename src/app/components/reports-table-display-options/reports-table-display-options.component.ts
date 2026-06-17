@@ -1,5 +1,7 @@
-import {Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/core';
-import {ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup} from '@angular/forms';
+import {Component, inject, input, OnInit} from '@angular/core';
+import {outputFromObservable} from '@angular/core/rxjs-interop';
+import {map, tap} from 'rxjs';
+import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
 import {BsDropdownModule} from "ngx-bootstrap/dropdown";
 import {DisplayIconElementComponent} from "../../core/components/display-icon-element/display-icon-element.component";
 
@@ -59,35 +61,33 @@ export class ReportsTableDisplayOptions {
   styleUrls: ['./reports-table-display-options.component.scss']
 })
 export class ReportsTableDisplayOptionsComponent implements OnInit {
-  private fb = inject(UntypedFormBuilder)
+  private fb = inject(FormBuilder)
 
-  @Input()
-  reportsTableDisplayOptions: ReportsTableDisplayOptions;
+  reportsTableDisplayOptions = input<ReportsTableDisplayOptions>();
 
-  @Output()
-  selectionChanged = new EventEmitter<ReportsTableDisplayOptions>();
+  displayOptionsForm = this.fb.group({
+    showDate: this.fb.control<boolean | null>(null),
+    showGroup: this.fb.control<boolean | null>(null),
+    showProduct: this.fb.control<boolean | null>(null),
+    displayColors: this.fb.control<boolean | null>(null)
+  });
 
-  displayOptionsForm: UntypedFormGroup;
-
-  private buildForm(): UntypedFormGroup {
-    const formGroup = this.fb.group({
-        showDate: [this.reportsTableDisplayOptions?.showDate],
-        showGroup: [this.reportsTableDisplayOptions?.showGroup],
-        showProduct: [this.reportsTableDisplayOptions?.showProduct],
-        displayColors: [this.reportsTableDisplayOptions?.displayColors]
-      }
-    );
-
-    formGroup.valueChanges.subscribe((value => {
-      Object.assign(this.reportsTableDisplayOptions, value);
-      this.selectionChanged.emit(this.reportsTableDisplayOptions);
-    }))
-
-    return formGroup;
-  }
+  // Output derived from the form: each user change mutates the bound options and re-emits.
+  // The initial seed (ngOnInit) uses emitEvent:false, so it never fires here.
+  selectionChanged = outputFromObservable(
+    this.displayOptionsForm.valueChanges.pipe(
+      tap(value => Object.assign(this.reportsTableDisplayOptions(), value)),
+      map(() => this.reportsTableDisplayOptions())
+    )
+  );
 
   ngOnInit(): void {
-    this.displayOptionsForm = this.buildForm();
+    const options = this.reportsTableDisplayOptions();
+    this.displayOptionsForm.setValue({
+      showDate: options?.showDate ?? null,
+      showGroup: options?.showGroup ?? null,
+      showProduct: options?.showProduct ?? null,
+      displayColors: options?.displayColors ?? null
+    }, {emitEvent: false});
   }
-
 }

@@ -7,6 +7,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import {RouterTestingModule} from '@angular/router/testing';
 import {ReactiveFormsModule} from '@angular/forms';
 import {RepositoryModule} from '../../repository/repository.module';
+import {FontAwesomeIconsModule} from '../../font-awesome-icons/font-awesome-icons.module';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ReportsMasterComponent', () => {
@@ -15,7 +16,7 @@ describe('ReportsMasterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [ReportsMasterComponent, RouterTestingModule, ReactiveFormsModule, RepositoryModule],
+    imports: [ReportsMasterComponent, RouterTestingModule, ReactiveFormsModule, RepositoryModule, FontAwesomeIconsModule],
     providers: [RestUrlEnv, RestDataSource, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
 })
     .compileComponents();

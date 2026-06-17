@@ -1,4 +1,4 @@
-import {Component, computed, inject, Input} from '@angular/core';
+import {Component, computed, inject, input} from '@angular/core';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {tap} from 'rxjs';
 import {DatePipe} from '@angular/common';
@@ -23,8 +23,7 @@ export class BackupDatabaseComponent extends CommonTableComponent<BackupDatabase
   private messagesService = inject(MessagesService)
   private backupDatabaseRepository = inject(BACKUP_DATABASE_CRUD_REPOSITORY)
 
-  @Input()
-  messageSource: string;
+  messageSource = input<string>();
 
   loadingSignal = computed(() => this.readRepository.loadingSignal() || this.backupDatabaseRepository.loadingSignal());
 
@@ -33,7 +32,7 @@ export class BackupDatabaseComponent extends CommonTableComponent<BackupDatabase
     tap(result => {
       if (result.status === CrudStatus.Success) {
         this.messagesService.reportMessage(
-          new SuccessMessage(`Backup successful: ${result.data?.message}`, this.messageSource));
+          new SuccessMessage(`Backup successful: ${result.data?.message}`, this.messageSource()));
         this.loadRepositoryData();
       }
     })

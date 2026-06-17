@@ -17,7 +17,7 @@ describe('SettingsComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-    imports: [SettingsComponent, ReactiveFormsModule, AlertModule.forRoot(), ModalModule.forRoot(),
+    imports: [SettingsComponent, ReactiveFormsModule, AlertModule, ModalModule,
         RepositoryModule, FontAwesomeIconsModule],
     providers: [RestUrlEnv, RestDataSource, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
 })

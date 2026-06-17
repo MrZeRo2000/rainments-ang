@@ -1,4 +1,4 @@
-import {Component, computed, inject, Input} from '@angular/core';
+import {Component, computed, inject, input} from '@angular/core';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {PaymentObjectGroupRefs} from '../../model/payment-object-group-refs';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
@@ -32,8 +32,7 @@ export class UpdatePaymentGroupComponent extends CommonTableComponent<PaymentObj
   private messagesService = inject(MessagesService)
   private updateRepository = inject(UpdatePaymentObjectGroupRepository)
 
-  @Input()
-  messageSource: string;
+  messageSource = input<string>();
 
   bsModalRef: BsModalRef;
   formSubmitted = false;
@@ -52,7 +51,7 @@ export class UpdatePaymentGroupComponent extends CommonTableComponent<PaymentObj
     tap(result => {
       if (result.status === CrudStatus.Success) {
         this.messagesService.reportMessage(
-          new SuccessMessage(`Successfully updated ${result.data?.rowsAffected ?? 0} rows`, this.messageSource));
+          new SuccessMessage(`Successfully updated ${result.data?.rowsAffected ?? 0} rows`, this.messageSource()));
       }
     })
   ));
@@ -64,7 +63,7 @@ export class UpdatePaymentGroupComponent extends CommonTableComponent<PaymentObj
   // Enable scoped reporting of refs-load errors (updateMessages gates the
   // ReadRepository's error message; messageSource routes it to this panel).
   protected override loadRepositoryData(): void {
-    this.readRepository.loadData({updateMessages: true, messageSource: this.messageSource});
+    this.readRepository.loadData({updateMessages: true, messageSource: this.messageSource()});
   }
 
   importClick() {
@@ -74,7 +73,7 @@ export class UpdatePaymentGroupComponent extends CommonTableComponent<PaymentObj
 
     if (this.editForm.valid) {
       // Scope this operation's error messages to this component's panel.
-      this.updateRepository.setDefaultPersistParams({messageSource: this.messageSource});
+      this.updateRepository.setDefaultPersistParams({messageSource: this.messageSource()});
 
       const resultSubject: Subject<null> = new Subject<null>();
       resultSubject.subscribe(() => {

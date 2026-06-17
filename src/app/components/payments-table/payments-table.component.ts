@@ -10,8 +10,6 @@ import {CrudActionType, CrudStatus} from '../../core/repository/crud-repository'
 import {EditMode} from '../../core/edit/edit-state';
 import {PaymentRefs} from '../../model/payment-refs';
 import {Payment} from '../../model/payment';
-import {PaymentGroup} from '../../model/payment-group';
-import {Product} from '../../model/product';
 import {PatchRequest} from '../../model/patch-request';
 import {InlineEditHandler} from '../../core/edit/inline-edit-handler';
 import {SelectableItem} from '../../core/model/selectable-item';
@@ -323,6 +321,12 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
 
   tableRowClick(item: SelectableItem<Payment>): void {
     item.isSelected = !item.isSelected;
+    this.selectableItems.set([...this.selectableItems()]);
+  }
+
+  // The selectable panel mutates isSelected in place (select-all / clear-all);
+  // re-set the signal so selection-derived state (summary, row highlight) updates.
+  onSelectionChanged(): void {
     this.selectableItems.set([...this.selectableItems()]);
   }
 

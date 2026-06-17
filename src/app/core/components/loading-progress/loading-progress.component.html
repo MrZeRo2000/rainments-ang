@@ -1,5 +1,5 @@
-@if (loadable?.getLoading() || (loading && loading())) {
+@if (loading()) {
   <div class="text-center">
-    {{message}}<app-core-loading-spinner-element></app-core-loading-spinner-element>
+    {{message()}}<app-core-loading-spinner-element></app-core-loading-spinner-element>
   </div>
 }

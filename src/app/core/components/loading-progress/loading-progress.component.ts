@@ -1,5 +1,4 @@
-import {Component, Input, Signal} from '@angular/core';
-import {Loadable} from '../../edit/edit-intf';
+import {Component, input} from '@angular/core';
 import {LoadingSpinnerElementComponent} from "../loading-spinner-element/loading-spinner-element.component";
 
 @Component({
@@ -12,9 +11,8 @@ import {LoadingSpinnerElementComponent} from "../loading-spinner-element/loading
 })
 export class LoadingProgressComponent {
 
-  @Input() loadable?: Loadable;
-  @Input() loading?: Signal<boolean>;
+  loading = input<boolean>();
 
-  @Input() message: string;
+  message = input<string>();
 
 }

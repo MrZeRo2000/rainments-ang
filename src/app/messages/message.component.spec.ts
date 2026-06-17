@@ -12,7 +12,7 @@ describe('MessageComponent', () => {
   beforeEach(async() => {
     await TestBed.configureTestingModule({
       providers: [MessagesService],
-      imports: [MessageComponent, AlertModule.forRoot(), FormsModule]
+      imports: [MessageComponent, AlertModule, FormsModule]
     })
     .compileComponents();
   });

@@ -1,10 +1,9 @@
 <div class="input-group mt-2 justify-content-end">
-  @if ((editable?.getEditState().editMode === EditMode.EM_CREATE) || (editStateSignal && editStateSignal()?.editMode === EditMode.EM_CREATE)) {
-    <button type="button" class="btn btn-outline-primary" (click)="onCreate()" [disabled]="loadable?.getLoading() || (loading && loading())">Create</button>
+  @if (editState()?.editMode === EditMode.EM_CREATE) {
+    <button type="button" class="btn btn-outline-primary" (click)="onCreate()" [disabled]="loading()">Create</button>
   }
-  @if ((editable?.getEditState().editMode === EditMode.EM_EDIT)  || (editStateSignal && editStateSignal()?.editMode === EditMode.EM_EDIT)) {
-    <button type="button" class="btn btn-outline-primary" (click)="onSave()" [disabled]="loadable?.getLoading() || (loading && loading())">Save</button>
+  @if (editState()?.editMode === EditMode.EM_EDIT) {
+    <button type="button" class="btn btn-outline-primary" (click)="onSave()" [disabled]="loading()">Save</button>
   }
-  <button type="button" class="btn btn-outline-secondary ms-2" (click)="onCancel()" [disabled]="loadable?.getLoading() || (loading && loading())">Cancel</button>
+  <button type="button" class="btn btn-outline-secondary ms-2" (click)="onCancel()" [disabled]="loading()">Cancel</button>
 </div>
-

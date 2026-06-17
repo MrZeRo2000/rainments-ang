@@ -1,27 +1,23 @@
-import { Injectable } from '@angular/core';
+import {Injectable, signal} from '@angular/core';
 import {Message} from './message.model';
-import {Observable, Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MessagesService {
   private messages: Array<Message> = new Array<Message>();
-  private lastMessage: Subject<Message> = new Subject<Message>();
+  private readonly lastMessageSignal = signal<Message | undefined>(undefined);
 
-  constructor() { }
+  /** The most recently reported message (undefined when reset). */
+  readonly lastMessage = this.lastMessageSignal.asReadonly();
 
   reportMessage(message: Message): void {
     this.messages.push(message);
-    this.lastMessage.next(message);
+    this.lastMessageSignal.set(message);
   }
 
   resetMessage(): void {
     this.reportMessage(undefined);
-  }
-
-  getLastMessage(): Observable<Message> {
-    return this.lastMessage;
   }
 
   getMessages(): Message[] {

@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, input} from '@angular/core';
 import {NgClass} from "@angular/common";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 
@@ -12,6 +12,5 @@ import {FaIconComponent} from "@fortawesome/angular-fontawesome";
   styleUrls: ['./colored-trend-label.component.scss']
 })
 export class ColoredTrendLabelComponent {
-  @Input()
-  value: any;
+  value = input<any>();
 }

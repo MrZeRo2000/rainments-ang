@@ -1,5 +1,4 @@
-import {Component, EventEmitter, Input, Output, Signal} from '@angular/core';
-import {Editable, Loadable} from '../../edit/edit-intf';
+import {Component, input, output} from '@angular/core';
 import {EditMode, EditState} from '../../edit/edit-state';
 
 @Component({
@@ -10,16 +9,12 @@ import {EditMode, EditState} from '../../edit/edit-state';
 export class SaveDialogPanelComponent {
   EditMode = EditMode;
 
-  @Input() editable?: Editable;
-  @Input() loadable?: Loadable;
-  @Input() loading?: Signal<boolean>;
+  loading = input<boolean>();
+  editState = input<EditState<any> | undefined>();
 
-  @Input() editMode?: EditMode;
-  @Input() editStateSignal?: Signal<EditState<any> | undefined>;
-
-  @Output() createClick: EventEmitter<void> = new EventEmitter<void>();
-  @Output() saveClick: EventEmitter<void> = new EventEmitter<void>();
-  @Output() cancelClick: EventEmitter<void> = new EventEmitter<void>();
+  createClick = output<void>();
+  saveClick = output<void>();
+  cancelClick = output<void>();
 
   onCreate(): void {
     this.createClick.emit();

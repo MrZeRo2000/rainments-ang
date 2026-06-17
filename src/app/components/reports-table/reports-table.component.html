@@ -1,48 +1,50 @@
 
-@if (payments) {
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        @if (displayOptions.showDate) {
-          <th scope="col">Date</th>
-        }
-        @if (displayOptions.showGroup) {
-          <th scope="col">Group</th>
-        }
-        @if (displayOptions.showProduct) {
-          <th scope="col">Product</th>
-        }
-        <th scope="col">Payment</th>
-        <th scope="col">Commission</th>
-      </tr>
-    </thead>
-    <tbody>
-      @if (paymentAmountSummary) {
+@if (payments(); as payments) {
+  @if (displayOptions(); as displayOptions) {
+    <table class="table table-bordered">
+      <thead>
         <tr>
-          @if (displayOptions.getColumnNumber() > 0) {
-            <td [colSpan]="displayOptions.getColumnNumber()">&nbsp;</td>
-          }
-          <td class="text-right font-weight-bold">{{paymentAmountSummary.paymentAmount | amount}}</td>
-          <td class="text-right font-weight-bold">{{paymentAmountSummary.commissionAmount | amount}}</td>
-        </tr>
-      }
-      @for (item of payments; track item) {
-        <tr
-          [ngStyle]="{'--bs-table-bg': displayOptions.displayColors? item.paymentGroup?.color : ''}"
-          >
           @if (displayOptions.showDate) {
-            <td>{{item.periodDate | date: "dd.MM.yyyy"}}</td>
+            <th scope="col">Date</th>
           }
           @if (displayOptions.showGroup) {
-            <td>{{item.paymentGroup?.name}}</td>
+            <th scope="col">Group</th>
           }
           @if (displayOptions.showProduct) {
-            <td>{{item.product?.name}}</td>
+            <th scope="col">Product</th>
           }
-          <td class="text-right">{{item.paymentAmount | amount}}</td>
-          <td class="text-right">{{item.commissionAmount | amount}}</td>
+          <th scope="col">Payment</th>
+          <th scope="col">Commission</th>
         </tr>
-      }
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        @if (paymentAmountSummary(); as paymentAmountSummary) {
+          <tr>
+            @if (displayOptions.getColumnNumber() > 0) {
+              <td [colSpan]="displayOptions.getColumnNumber()">&nbsp;</td>
+            }
+            <td class="text-right font-weight-bold">{{paymentAmountSummary.paymentAmount | amount}}</td>
+            <td class="text-right font-weight-bold">{{paymentAmountSummary.commissionAmount | amount}}</td>
+          </tr>
+        }
+        @for (item of payments; track item) {
+          <tr
+            [ngStyle]="{'--bs-table-bg': displayOptions.displayColors? item.paymentGroup?.color : ''}"
+            >
+            @if (displayOptions.showDate) {
+              <td>{{item.periodDate | date: "dd.MM.yyyy"}}</td>
+            }
+            @if (displayOptions.showGroup) {
+              <td>{{item.paymentGroup?.name}}</td>
+            }
+            @if (displayOptions.showProduct) {
+              <td>{{item.product?.name}}</td>
+            }
+            <td class="text-right">{{item.paymentAmount | amount}}</td>
+            <td class="text-right">{{item.commissionAmount | amount}}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
 }

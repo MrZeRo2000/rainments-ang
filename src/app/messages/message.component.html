@@ -1,23 +1,23 @@
-@if (displayMessage) {
+@if (displayMessage(); as message) {
   <div class="container mt-2">
-    @if (displayMessage.messageType === MessageType.MT_ERROR) {
+    @if (message.messageType === MessageType.MT_ERROR) {
       <alert type="danger" [dismissible]=true (onClose)="onClosed()">
-        {{displayMessage.messageText}}
+        {{message.messageText}}
       </alert>
     }
-    @if (displayMessage.messageType === MessageType.MT_INFO) {
+    @if (message.messageType === MessageType.MT_INFO) {
       <alert type="info" [dismissible]=true (onClose)="onClosed()">
-        {{displayMessage.messageText}}
+        {{message.messageText}}
       </alert>
     }
-    @if (displayMessage.messageType === MessageType.MT_SUCCESS) {
+    @if (message.messageType === MessageType.MT_SUCCESS) {
       <alert type="success" [dismissible]=true (onClose)="onClosed()">
-        {{displayMessage.messageText}}
+        {{message.messageText}}
       </alert>
     }
-    @if (displayMessage.messageType === MessageType.MT_WARNING) {
+    @if (message.messageType === MessageType.MT_WARNING) {
       <alert type="warning" [dismissible]=true (onClose)="onClosed()">
-        {{displayMessage.messageText}}
+        {{message.messageText}}
       </alert>
     }
   </div>

@@ -1,4 +1,4 @@
-import {Component, inject, Input} from '@angular/core';
+import {Component, inject, input} from '@angular/core';
 import {Router} from '@angular/router';
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 
@@ -13,14 +13,12 @@ import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 export class ReportNavComponent {
   private router = inject(Router)
 
-  @Input()
-  itemId: number;
+  itemId = input<number>();
 
-  @Input()
-  navigatePath: string;
+  navigatePath = input<string>();
 
   onReportClick(event) {
     event.preventDefault();
-    this.router.navigateByUrl(`/${this.navigatePath}/${this.itemId}` ).then();
+    this.router.navigateByUrl(`/${this.navigatePath()}/${this.itemId()}` ).then();
   }
 }

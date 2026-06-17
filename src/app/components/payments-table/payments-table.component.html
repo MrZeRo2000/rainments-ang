@@ -3,7 +3,7 @@
   <div class="d-flex mt-2 mb-2">
     <div>
       <app-core-add-panel (addClick)="onAddClick()"></app-core-add-panel>
-      <app-payments-selectable-panel class="ms-2" [selectableItems]="selectableItems()"></app-payments-selectable-panel>
+      <app-payments-selectable-panel class="ms-2" [selectableItems]="selectableItems()" (selectionChanged)="onSelectionChanged()"></app-payments-selectable-panel>
     </div>
     <div class="ms-auto">
       @if (cloneAvailable()) {
@@ -328,9 +328,9 @@
           }
         </div>
       }
-      <app-core-save-dialog-panel [editStateSignal]="editStateSignal" [loading]="loadingSignal" (createClick)="onSave()" (saveClick)="onSave()" (cancelClick)="onCancel()"></app-core-save-dialog-panel>
+      <app-core-save-dialog-panel [editState]="editStateSignal()" [loading]="loadingSignal()" (createClick)="onSave()" (saveClick)="onSave()" (cancelClick)="onCancel()"></app-core-save-dialog-panel>
     </form>
   </div>
 }
 
-<app-core-loading-progress [loading]="loadingSignal"></app-core-loading-progress>
+<app-core-loading-progress [loading]="loadingSignal()"></app-core-loading-progress>

@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, input} from '@angular/core';
 import {NgClass} from "@angular/common";
 
 export enum ColorScheme {
@@ -15,16 +15,11 @@ export enum ColorScheme {
   styleUrls: ['./colored-value-label.component.scss']
 })
 export class ColoredValueLabelComponent {
-  @Input()
-  value: any;
+  value = input<any>();
 
-  @Input()
-  displayZero: boolean;
+  displayZero = input<boolean>();
 
-  @Input()
-  colorScheme: ColorScheme;
+  colorScheme = input<ColorScheme>();
 
   colorSchemeType = ColorScheme;
-
-  constructor() { }
 }

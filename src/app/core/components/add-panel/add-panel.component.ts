@@ -1,5 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {Editable} from '../../edit/edit-intf';
+import {Component, output} from '@angular/core';
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 
 @Component({
@@ -12,12 +11,7 @@ import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 })
 export class AddPanelComponent {
 
-  @Input() editable: Editable;
-  @Output() addClick: EventEmitter<any>;
-
-  constructor() {
-    this.addClick = new EventEmitter<any>();
-  }
+  addClick = output<void>();
 
   onClick(): void {
     this.addClick.emit();

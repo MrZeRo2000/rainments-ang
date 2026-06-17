@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter} from '@angular/core';
+import {Component, input, output} from '@angular/core';
 import {SelectableItem} from '../../model/selectable-item';
 import {BsDropdownModule} from "ngx-bootstrap/dropdown";
 import {NgClass} from "@angular/common";
@@ -14,23 +14,21 @@ import {NgClass} from "@angular/common";
 })
 export class DropDownMultiSelectComponent {
 
-  @Input()
-  title: string;
+  title = input<string>();
 
-  @Input()
-  selectableItems: Array<SelectableItem<string>>;
+  selectableItems = input<Array<SelectableItem<string>>>();
 
-  @Output()
-  selectionChanged = new EventEmitter<Array<SelectableItem<string>>>();
+  selectionChanged = output<Array<SelectableItem<string>>>();
 
   public dropDownClick(event: any, item: SelectableItem<string>) {
     event.preventDefault();
+    const items = this.selectableItems() ?? [];
     if (event.ctrlKey) {
-      this.selectableItems.forEach(v => v.isSelected = v.value === item.value);
-      this.selectionChanged.emit(this.selectableItems);
-    } else if (!item.isSelected || (this.selectableItems.filter(v => v.isSelected)).length > 1) {
+      items.forEach(v => v.isSelected = v.value === item.value);
+      this.selectionChanged.emit(items);
+    } else if (!item.isSelected || items.filter(v => v.isSelected).length > 1) {
       item.isSelected = !item.isSelected;
-      this.selectionChanged.emit(this.selectableItems);
+      this.selectionChanged.emit(items);
     }
   }
 

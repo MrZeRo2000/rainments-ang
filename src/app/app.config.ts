@@ -1,11 +1,7 @@
-import { ApplicationConfig, importProvidersFrom, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter, withHashLocation } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { ModalModule } from 'ngx-bootstrap/modal';
-import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 import { routes } from './app.routes';
 import { RestUrlEnv } from './config/configuration';
@@ -15,16 +11,15 @@ import { FontAwesomeIconsModule } from './font-awesome-icons/font-awesome-icons.
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideZonelessChangeDetection(),
     provideRouter(routes, withHashLocation()),
     provideAnimations(),
     provideHttpClient(withInterceptorsFromDi()),
     RestUrlEnv,
+    // ngx-bootstrap 21.x removed forRoot(): its services are providedIn 'root'
+    // and its directives are imported per-component, so no module registration
+    // is needed here.
     importProvidersFrom(
-      ModalModule.forRoot(),
-      TooltipModule.forRoot(),
-      BsDropdownModule.forRoot(),
-      BsDatepickerModule.forRoot(),
       RepositoryModule,
       FontAwesomeIconsModule
     )

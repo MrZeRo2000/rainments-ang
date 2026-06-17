@@ -17,7 +17,7 @@ describe('PaymentsMasterComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-    imports: [PaymentsMasterComponent, RouterTestingModule, ReactiveFormsModule, ModalModule.forRoot(),
+    imports: [PaymentsMasterComponent, RouterTestingModule, ReactiveFormsModule, ModalModule,
         RepositoryModule, FontAwesomeIconsModule],
     providers: [RestUrlEnv, RestDataSource, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
 })

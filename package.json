@@ -28,11 +28,10 @@
     "@fortawesome/free-solid-svg-icons": "^7.1.0",
     "bootstrap": "^5.3.8",
     "d3": "^7.9.0",
-    "ngx-bootstrap": "^21.0.1",
+    "ngx-bootstrap": "^21.2.0",
     "rxjs": "^7.8.2",
     "tslib": "^2.6.0",
-    "webpack": "^5.102.0",
-    "zone.js": "~0.15.1"
+    "webpack": "^5.102.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^21.2.2",

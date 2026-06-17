@@ -16,7 +16,7 @@ describe('PaymentsTableComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-    imports: [PaymentsTableComponent, ReactiveFormsModule, ModalModule.forRoot(), RepositoryModule, FontAwesomeIconsModule],
+    imports: [PaymentsTableComponent, ReactiveFormsModule, ModalModule, RepositoryModule, FontAwesomeIconsModule],
     providers: [RestUrlEnv, RestDataSource, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
 })
     .compileComponents();

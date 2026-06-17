@@ -126,9 +126,9 @@
           }
         </div>
       }
-      <app-core-save-dialog-panel [editStateSignal]="this.editStateSignal" [loading]="this.readRepository.loadingSignal" (createClick)="onSave()" (saveClick)="onSave()" (cancelClick)="onCancel()"></app-core-save-dialog-panel>
+      <app-core-save-dialog-panel [editState]="this.editStateSignal()" [loading]="this.readRepository.loadingSignal()" (createClick)="onSave()" (saveClick)="onSave()" (cancelClick)="onCancel()"></app-core-save-dialog-panel>
     </form>
   </div>
 }
 
-<app-core-loading-progress [loading]="loadingSignal"></app-core-loading-progress>
+<app-core-loading-progress [loading]="loadingSignal()"></app-core-loading-progress>

@@ -14,7 +14,7 @@ describe('AppComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
-        AlertModule.forRoot(),
+        AlertModule,
         RepositoryModule,
         AppComponent,
         AppInfoComponent,

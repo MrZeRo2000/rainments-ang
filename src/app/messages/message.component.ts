@@ -1,4 +1,4 @@
-import {Component, inject, Input} from '@angular/core';
+import {Component, effect, inject, input, signal} from '@angular/core';
 import {MessagesService} from './messages.service';
 import {Message} from './message.model';
 import {MessageType} from './message.model';
@@ -16,34 +16,25 @@ import {AlertComponent} from "ngx-bootstrap/alert";
 export class MessageComponent {
   private messagesService = inject(MessagesService)
 
-  displayMessage: Message = null;
   MessageType = MessageType;
 
-  @Input() messageSource: string;
+  messageSource = input<string>();
+
+  displayMessage = signal<Message | undefined>(undefined);
 
   constructor() {
-    this.messagesService.getLastMessage().subscribe((message) => {
-      if (
-        (this.messageSource && message && message.messageSource && this.messageSource === message.messageSource) ||
-        (!this.messageSource && message && !message.messageSource)
-      ) {
-        this.displayMessage = message;
-      } else {
-        this.displayMessage = null;
-      }
-      /*
-      setTimeout(() => {
-        this.displayMessage = undefined;
-      }, 5000);
-       */
+    // Reflect the latest reported message that matches this panel's source.
+    effect(() => {
+      const message = this.messagesService.lastMessage();
+      const source = this.messageSource();
+      const matches =
+        (!!source && !!message && message.messageSource === source) ||
+        (!source && !!message && !message.messageSource);
+      this.displayMessage.set(matches ? message : undefined);
     });
   }
 
   onClosed(): void {
-    this.clearMessage();
-  }
-
-  clearMessage(): void {
-    this.displayMessage = undefined;
+    this.displayMessage.set(undefined);
   }
 }

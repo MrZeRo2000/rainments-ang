@@ -7,6 +7,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import {ReactiveFormsModule} from '@angular/forms';
 import {RouterTestingModule} from '@angular/router/testing';
 import {RepositoryModule} from '../../repository/repository.module';
+import {FontAwesomeIconsModule} from '../../font-awesome-icons/font-awesome-icons.module';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('PaymentsDashboardComponent', () => {
@@ -15,7 +16,7 @@ describe('PaymentsDashboardComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-    imports: [PaymentsDashboardComponent, RouterTestingModule, ReactiveFormsModule, RepositoryModule],
+    imports: [PaymentsDashboardComponent, RouterTestingModule, ReactiveFormsModule, RepositoryModule, FontAwesomeIconsModule],
     providers: [RestUrlEnv, RestDataSource, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
 })
     .compileComponents();

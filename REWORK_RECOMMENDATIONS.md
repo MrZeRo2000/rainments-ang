@@ -10,9 +10,37 @@
 
 > Snapshot of the codebase at the date above. Some items may have been addressed already (Karma → Vitest, Protractor → Playwright, standalone-bootstrap migration, dead-module cleanup, Sass-deprecation analysis). Re-evaluate before acting on a stale entry.
 >
-> **2026-06 update:** an incremental signals migration is underway — several components (payment-objects/groups/products tables, payments-dashboard, payments-master, payments-date-selection, payments-table + summary, update-payment-group, backup-database) now use signal-based `ReadRepository`/`CrudRepository` injected via tokens (`repository-tokens.ts`), typed forms, `input()`/`output()`, and shared validators (`core/validators/form-validators.ts`). Several `§2`/`§3` entries that describe the old `UntypedFormBuilder` / `getLoadSuccessObservable` / per-entity-repository-class state are now partially stale for those components. App-level Zone removal is still pending. §2.17 below was written against this new signal-based baseline.
+> **2026-06 update:** the signals migration is essentially complete — components now use signal-based `ReadRepository`/`CrudRepository` injected via tokens (`repository-tokens.ts`), typed forms, `input()`/`output()`, and shared validators (`core/validators/form-validators.ts`). Several `§2`/`§3` entries that describe the old `UntypedFormBuilder` / `getLoadSuccessObservable` / per-entity-repository-class state are now stale for those components. **The app now runs zoneless** — see the "Zoneless migration status" section below. §2.17 below was written against this new signal-based baseline.
 
 > **Project convention:** do not suppress build warnings (Sass deprecations, ESLint, TS, schematics). Fix at root where possible, otherwise leave visible — the warning is the signal that upstream has moved.
+
+---
+
+## Zoneless migration status — 2026-06-17
+
+The app was switched to **zoneless change detection**. This subsumes §2.1's "drop Zone.js" recommendation.
+
+### Done
+
+- **Config flipped.** [app.config.ts](src/app/app.config.ts): `provideZoneChangeDetection({ eventCoalescing: true })` → `provideZonelessChangeDetection()`.
+- **Zone polyfill removed.** [src/polyfills.ts](src/polyfills.ts) no longer imports `zone.js`. The bundle dropped from ~3.73 MB to ~3.65 MB.
+- **`zone.js` uninstalled.** Removed from `package.json` (`npm uninstall zone.js`); it now lingers only as a transitive dep of `@angular/core` (which declares it), is never imported, and is not bundled.
+- **TestBed migrated to zoneless.** [src/test-setup.ts](src/test-setup.ts) provides `provideZonelessChangeDetection()` in the test environment; specs drive CD with `fixture.detectChanges()` (none used `fakeAsync`/`tick`/`whenStable`). Full suite green: **84 passed, 2 skipped, 0 failed**. Spec fixups along the way: dropped the removed `ModalModule/AlertModule.forRoot()` calls; registered `FontAwesomeIconsModule` in six specs whose components render `<fa-icon>`; fixed two stale scaffold specs (`CrudRepository` now needs its 3 ctor deps; `RestDataSource.restUrl` is private, so the URL is asserted via the `RestUrl` token).
+- **ngx-bootstrap upgraded `21.0.x` → `21.2.0`** (latest; the version the vendor flags as zoneless-ready). Confirmed by code: services are `providedIn: 'root'`/`'platform'` and `AlertComponent` now exposes signal inputs. **API change:** `forRoot()` was removed from `ModalModule`/`TooltipModule`/`BsDropdownModule`/`BsDatepickerModule`; [app.config.ts](src/app/app.config.ts) no longer registers these modules (services are root-provided, directives are imported per-component).
+- **Components made signal-reactive** so CD is driven by signals/template-events, not Zone:
+  - `MessagesService` exposes a `lastMessage` signal; `MessageComponent` uses `input()` + an `effect` (no `Subject` subscription).
+  - `NavTopComponent` uses `routerLinkActive` instead of a manual Zone-driven active-route flag.
+  - `CoreSelectablePanelComponent` uses `input()`/`output()`; consumers (`payments-table`) re-set their `selectableItems` signal on `selectionChanged`.
+  - `ReportsTableComponent` (last component with logic in `ngOnChanges`) migrated to `input()` + a `computed()` summary.
+- **All decorator I/O converted to signals.** Every `@Input`/`@Output`+`EventEmitter` is now `input()`/`output()` — the last ten holdouts (`add-panel`, `edit-delete-panel`, `save-dialog-panel`, `drop-down-multi-select`, `colored-trend-label`, `colored-value-label`, `loading-progress`, `report-nav`, `backup-database`, `update-payment-group`) were converted and their templates updated to call the input signals. No `@Input`/`@Output`/`EventEmitter` remains in `src/app` (specs included).
+- **Inputs hold values, not signals.** `loading-progress` and `save-dialog-panel` originally took `input<Signal<boolean>>()` / `input<Signal<EditState>>()`, which forced an awkward double call in the template (`loading() && loading()!()`). These were changed to plain value inputs (`input<boolean>()`, `editState = input<EditState<any> | undefined>()`); the ~13 `[loading]` and 4 `[editState]` call sites now unwrap at the binding (`[loading]="loadingSignal()"`). Reactivity is identical (the parent reads the signal in its own binding context), and the components are now reusable from non-signal callers.
+- **All forms are typed** (`fb.control<T | null>()` / typed `FormGroup`); no `UntypedFormBuilder` remains.
+- **Zoneless safety audit passed.** No `NgZone`/`isStable`/`onStable`/`onMicrotaskEmpty` usage. The only `setTimeout` (D3 chart in `reports-chart-date-totals`) draws directly into the SVG DOM and needs no CD. The only bare `.then()` calls are empty `router.navigateByUrl(...).then()`. Every component `.subscribe()` either writes a signal, feeds `toSignal`, or writes a `FormControl` (synchronous `writeValue`) — none mutate a plain template-bound field outside CD. The build is green.
+
+### Yet to be done
+
+- **Runtime smoke test** of the ngx-bootstrap interactive pieces under zoneless: modal open/close, datepicker, dropdown, tooltip. Cleared by code analysis (`markForCheck`-based, no `onMicrotaskEmpty`); not yet exercised in a running browser.
+- **`reports-chart-date-totals` `ngAfterViewInit` `setTimeout`** works (D3 draws directly), but could be modernized to `afterNextRender` for clarity.
 
 ---
 
@@ -32,9 +60,9 @@
 
 ### 2.1 Outdated Angular patterns despite v21 dependencies
 - ~~Every component carries `standalone: false`.~~ **Done 2026-05-29:** all components and directives are now standalone; `AppModule` and `AppRoutingModule` deleted; bootstrap uses `bootstrapApplication(AppComponent, appConfig)`; `inject()` adopted in most components.
-- **Still pending:** no `signal()` / `computed()` / `effect()`, no `httpResource`, no typed forms, no new Router APIs (data resolvers, functional guards).
-- ZoneJS is still in use; templates call methods like `getSelectablePayments()` and `getPrevPeriodProductCounter(...)` on every CD cycle, with no `OnPush`.
-- `UntypedFormBuilder` / `UntypedFormGroup` used throughout [payments-table.component.ts:111-117](src/app/components/payments-table/payments-table.component.ts#L111-L117) — typed forms (Angular 14+) would catch the dozens of string-based `controls.product.value` accesses.
+- ~~no `signal()` / `computed()` / `effect()`, no typed forms~~ **Done 2026-06:** signals, `computed`/`effect`, `input()`/`output()`, and typed forms are now used across the app (see the "Zoneless migration status" section). Still pending: `httpResource`, new Router APIs (data resolvers, functional guards).
+- ~~ZoneJS is still in use~~ **Done 2026-06-17:** the app runs zoneless (`provideZonelessChangeDetection`, no `zone.js` import). Remaining method-call template bindings (e.g. `isAllSelected()`) are cheap and now run only when a tracked signal/event triggers CD.
+- ~~`UntypedFormBuilder` / `UntypedFormGroup` used throughout~~ **Done 2026-06:** all forms are typed; no `Untyped*` remains.
 
 ### 2.2 Empty / vestigial modules
 - ~~[model/model.module.ts](src/app/model/model.module.ts) — empty NgModule, declares nothing.~~ **Deleted 2026-05-29.**
