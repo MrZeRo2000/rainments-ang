@@ -1,5 +1,6 @@
-import {Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/core';
-import {ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
+import {Component, computed, inject, input, OnInit, output, signal} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from '@angular/forms';
 import {DateRangeGenerator, PeriodInfo} from '../../core/utils/date-range-generator';
 import {PaymentObjectTotals} from '../../model/payment-object-totals';
 import {NgClass} from "@angular/common";
@@ -16,120 +17,86 @@ import {FaIconComponent} from "@fortawesome/angular-fontawesome";
   styleUrls: ['./payments-date-selection.component.scss']
 })
 export class PaymentsDateSelectionComponent implements OnInit {
-  private fb = inject(UntypedFormBuilder)
+  private fb = inject(FormBuilder)
 
-  editForm: UntypedFormGroup;
-  periods: Array<PeriodInfo>;
-  years: Array<number>;
-  period: string;
+  paymentObjectTotals = input<PaymentObjectTotals>();
 
-  minSelectionDate: Date;
-  maxSelectionDate: Date;
+  selectedDate = output<Date>();
 
-  lastSelectedDate: Date;
+  editForm = this.fb.group({
+    periodSelect: new FormControl<number | null>(null, Validators.required),
+    yearSelect: new FormControl<number | null>(null, Validators.required)
+  });
 
-  dr: DateRangeGenerator;
+  private readonly minSelectionDate: Date;
+  private readonly maxSelectionDate: Date;
 
-  @Input() paymentObjectTotals: PaymentObjectTotals;
+  private readonly lastSelectedDate = signal<Date>(new Date());
+  private readonly period = signal<string | undefined>(undefined);
+  private readonly dr = signal<DateRangeGenerator | undefined>(undefined);
 
-  @Output() selectedDate = new EventEmitter<Date>();
+  readonly periods = computed<PeriodInfo[]>(() => this.dr()?.getPeriods() ?? []);
+  readonly years = computed<number[]>(() => this.dr()?.getYears() ?? []);
+
+  readonly selectedFirstDate = computed(() => {
+    const dr = this.dr();
+    return !!dr && dr.addPeriod(this.lastSelectedDate(), -1) < this.minSelectionDate;
+  });
+
+  readonly selectedLastDate = computed(() => {
+    const dr = this.dr();
+    return !!dr && dr.addPeriod(this.lastSelectedDate(), 1) > this.maxSelectionDate;
+  });
 
   constructor() {
-    // this.lastSelectedDate = DateGenerator.getPreviousMonthStartDate();
-    this.selectedDate.subscribe(v => {
-      this.lastSelectedDate = v;
-      console.log('Selected ' + JSON.stringify(v));
-      }
-    );
-
     const currentDate = new Date();
     this.minSelectionDate = new Date(currentDate.getFullYear() - 3, 0, 1);
     this.maxSelectionDate = new Date(currentDate.getFullYear() + 1, 11, 31);
 
-    this.editForm = this.buildForm();
+    // Emit when the user changes the dropdowns (period must be initialised first).
+    this.editForm.valueChanges.pipe(takeUntilDestroyed()).subscribe(v => {
+      const dr = this.dr();
+      if (this.period() && dr && v.yearSelect != null && v.periodSelect != null) {
+        this.emitSelectedDate(dr.getPeriodDate(v.yearSelect, v.periodSelect));
+      }
+    });
   }
 
   ngOnInit() {
-    this.lastSelectedDate = (this.paymentObjectTotals && this.paymentObjectTotals.paymentDate) || new Date();
-    this.setPeriod((this.paymentObjectTotals && this.paymentObjectTotals.paymentObject.period) || 'M');
-    this.selectedDate.emit(this.lastSelectedDate);
-  }
-
-  /*
-  ngOnChanges(changes: SimpleChanges): void {
-    for (const propName in changes) {
-      if (changes.hasOwnProperty(propName) && changes[propName].isFirstChange()) {
-        const changedProp = changes[propName];
-        console.log(`Payments Date Selection propName=${propName}, propValue=${JSON.stringify(changedProp.currentValue)}`)
-        if (propName === 'paymentObject' && changedProp.currentValue) {
-          if (changedProp.currentValue.hasOwnProperty('period')) {
-            this.setPeriod(changedProp.currentValue.period)
-          } else {
-            this.setPeriod('M');
-          }
-        }
-      }
-    }
-  }
-   */
-
-  private setPeriod(period: string) {
-    if (period && this.period !== period) {
-      console.log(`Payments Date Selection setting period to ${period}`)
-      this.dr = new DateRangeGenerator(
-        this.minSelectionDate, this.maxSelectionDate, period
-      );
-
-      this.periods = this.dr.getPeriods();
-      this.years = this.dr.getYears();
-
-      // this.editForm.patchValue({monthSelect: 0})
-      this.editForm.controls.yearSelect.setValue(this.lastSelectedDate.getFullYear());
-      this.editForm.controls.periodSelect.setValue(this.dr.getPeriodValue(this.lastSelectedDate));
-      this.period = period;
-    }
-  }
-
-  private buildForm(): UntypedFormGroup {
-    const formGroup = this.fb.group({
-      periodSelect: ['', Validators.required],
-      yearSelect: ['', Validators.required]
-    });
-
-    formGroup.valueChanges.subscribe((v) => {
-      if (this.period) {
-        const periodDate = this.dr.getPeriodDate(v.yearSelect, v.periodSelect);
-        console.log(`Emitting date: ${JSON.stringify(periodDate)}`)
-        this.selectedDate.emit(periodDate);
-      }
-    });
-
-    return formGroup;
-  }
-
-  getSelectedMonth(): number {
-    return this.lastSelectedDate.getMonth();
-  }
-
-  getSelectedYear(): number {
-    return this.lastSelectedDate.getFullYear();
+    const totals = this.paymentObjectTotals();
+    this.lastSelectedDate.set(totals?.paymentDate ?? new Date());
+    this.setPeriod(totals?.paymentObject?.period ?? 'M');
+    this.emitSelectedDate(this.lastSelectedDate());
   }
 
   addPeriod(value: number): void {
+    const dr = this.dr();
+    if (!dr) {
+      return;
+    }
     if ((value > 0 && !this.selectedLastDate()) || (value < 0 && !this.selectedFirstDate())) {
-      // const newDate = new Date(this.lastSelectedDate.setMonth(this.lastSelectedDate.getMonth() + value));
-      const newDate = this.dr.addPeriod(this.lastSelectedDate, value);
-      this.selectedDate.emit(newDate);
-      this.editForm.patchValue({periodSelect: this.dr.getPeriodValue(newDate), yearSelect: newDate.getFullYear()});
+      const newDate = dr.addPeriod(this.lastSelectedDate(), value);
+      this.emitSelectedDate(newDate);
+      this.editForm.patchValue({periodSelect: dr.getPeriodValue(newDate), yearSelect: newDate.getFullYear()});
     }
   }
 
-  selectedFirstDate(): boolean {
-    return this.dr.addPeriod(this.lastSelectedDate, -1) < this.minSelectionDate;
+  private setPeriod(period: string) {
+    if (period && this.period() !== period) {
+      const dr = new DateRangeGenerator(this.minSelectionDate, this.maxSelectionDate, period);
+      this.dr.set(dr);
+
+      // Set both controls at once so valueChanges fires a single time.
+      this.editForm.patchValue({
+        yearSelect: this.lastSelectedDate().getFullYear(),
+        periodSelect: dr.getPeriodValue(this.lastSelectedDate())
+      });
+      this.period.set(period);
+    }
   }
 
-  selectedLastDate(): boolean {
-    return this.dr.addPeriod(this.lastSelectedDate, 1) > this.maxSelectionDate;
+  private emitSelectedDate(date: Date): void {
+    this.lastSelectedDate.set(date);
+    this.selectedDate.emit(date);
   }
-
 }

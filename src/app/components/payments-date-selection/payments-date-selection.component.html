@@ -9,16 +9,16 @@
 
   <label class="ms-2 mb-0 mt-0">
     <select class="form-select" formControlName="periodSelect" name="periodSelect">
-      @for (item of periods; track item) {
-        <option value="{{item.id}}">{{item.name}}</option>
+      @for (item of periods(); track item.id) {
+        <option [ngValue]="item.id">{{item.name}}</option>
       }
     </select>
   </label>
 
   <label class="ms-2 mb-0 mt-0">
     <select class="form-select" formControlName="yearSelect" name="yearSelect">
-      @for (item of years; track item) {
-        <option value="{{item}}">{{item}}</option>
+      @for (item of years(); track item) {
+        <option [ngValue]="item">{{item}}</option>
       }
     </select>
   </label>
