@@ -1,5 +1,5 @@
 
-@if (!editingSignal()) {
+@if (!loadingSignal() && !editStateSignal()) {
   <div class="d-flex mt-2 mb-2">
     <div>
       <app-core-add-panel (addClick)="onAddClick()"></app-core-add-panel>
@@ -21,9 +21,7 @@
       </app-payments-table-display-options>
     </div>
   </div>
-}
 
-@if (!editingSignal()) {
   <div class="row">
     <div [ngClass]="{'col-xl-9 col-lg-8': displayOptions.showSummary(), 'col-12': !displayOptions.showSummary()}">
       <table class="table table-hover table-responsive w-100" [ngClass]="{'table-sm': displayOptions.compactTable()}">
