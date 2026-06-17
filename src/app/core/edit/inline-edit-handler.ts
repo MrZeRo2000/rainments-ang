@@ -1,44 +1,51 @@
+import {signal} from '@angular/core';
 
-export class InlineEditSelection<T> {
-  constructor(public selectedItem: T, public controlName: string, public value: string, public active: boolean = true) {
-  }
-}
-
+/**
+ * Signal-based helper for inline (in-cell) editing. The active selection is held
+ * as signals so template bindings (isEditorVisible, the bound value, validators)
+ * update without relying on Zone change detection.
+ */
 export class InlineEditHandler<T> {
-  public inlineSelection: InlineEditSelection<T>;
+  readonly selectedItem = signal<T | undefined>(undefined);
+  readonly controlName = signal<string | undefined>(undefined);
+  readonly value = signal<string>('');
+  readonly active = signal(false);
 
-  public inputValidator: (item: T, selection: InlineEditSelection<T>) => boolean;
-  public inputProcessor: (item: T, selection: InlineEditSelection<T>) => void;
+  inputValidator: (item: T, controlName: string, value: string) => boolean;
+  inputProcessor: (item: T, controlName: string, value: string) => void;
 
-  public inlineRefOnClick(event: any) {
+  start(item: T, controlName: string, initialValue: string): void {
+    this.selectedItem.set(item);
+    this.controlName.set(controlName);
+    this.value.set(initialValue);
+    this.active.set(true);
+  }
+
+  refOnClick(event: any): void {
     event.preventDefault();
     event.stopPropagation();
   }
 
-  public inlineControlOnClick(event: any): void {
+  controlOnClick(event: any): void {
     event.stopPropagation();
   }
 
-  public inlineControlFocusOut(): void {
-    this.inlineSelection.active = false;
+  focusOut(): void {
+    this.active.set(false);
   }
 
-  public inlineControlKeyUp(event: any, item: T): void {
+  keyUp(event: any, item: T): void {
     if (event.key === 'Escape') {
-      this.inlineSelection.active = false;
+      this.active.set(false);
     } else if (event.key === 'Enter') {
-      if (!this.inputValidator || this.inputValidator(item, this.inlineSelection)) {
-        if (this.inputProcessor) {
-          this.inputProcessor(item, this.inlineSelection);
-        }
-        this.inlineSelection.active = false;
+      if (!this.inputValidator || this.inputValidator(item, this.controlName(), this.value())) {
+        this.inputProcessor?.(item, this.controlName(), this.value());
+        this.active.set(false);
       }
     }
   }
 
-  public isEditorVisible(item: T, controlName: string): boolean {
-    return this.inlineSelection && this.inlineSelection.active &&
-      this.inlineSelection.controlName === controlName && this.inlineSelection.selectedItem === item;
+  isEditorVisible(item: T, controlName: string): boolean {
+    return this.active() && this.controlName() === controlName && this.selectedItem() === item;
   }
-
 }

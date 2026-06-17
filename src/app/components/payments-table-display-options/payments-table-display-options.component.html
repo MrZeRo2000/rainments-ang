@@ -8,44 +8,44 @@
        role="menu" aria-labelledby="button-animated">
     <form class="form-group px-2 py-1">
       <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="showToolTipsCheckBox" [(ngModel)]="paymentsTableDisplayOptions.showTooltips" name="showTooltips">
+        <input class="form-check-input" type="checkbox" id="showToolTipsCheckBox" [ngModel]="paymentsTableDisplayOptions().showTooltips()" (ngModelChange)="paymentsTableDisplayOptions().showTooltips.set($event)" name="showTooltips">
         <label class="form-label text-nowrap" for="showToolTipsCheckBox">
           Show tooltips
         </label>
       </div>
       <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="compactProductCheckBox" [(ngModel)]="paymentsTableDisplayOptions.compactProducts" name="compactProducts">
+        <input class="form-check-input" type="checkbox" id="compactProductCheckBox" [ngModel]="paymentsTableDisplayOptions().compactProducts()" (ngModelChange)="paymentsTableDisplayOptions().compactProducts.set($event)" name="compactProducts">
         <label class="form-label text-nowrap" for="compactProductCheckBox">
           Compact products
         </label>
       </div>
       <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="compactTableCheckBox" [(ngModel)]="paymentsTableDisplayOptions.compactTable" name="compactTable">
+        <input class="form-check-input" type="checkbox" id="compactTableCheckBox" [ngModel]="paymentsTableDisplayOptions().compactTable()" (ngModelChange)="paymentsTableDisplayOptions().compactTable.set($event)" name="compactTable">
         <label class="form-label text-nowrap" for="compactTableCheckBox">
           Compact table
         </label>
       </div>
       <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="showTrendCheckBox" [(ngModel)]="paymentsTableDisplayOptions.showTrend" name="showTrend">
+        <input class="form-check-input" type="checkbox" id="showTrendCheckBox" [ngModel]="paymentsTableDisplayOptions().showTrend()" (ngModelChange)="paymentsTableDisplayOptions().showTrend.set($event)" name="showTrend">
         <label class="form-label text-nowrap" for="showTrendCheckBox">
           Show trend
         </label>
       </div>
       <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="showIdCheckBox" [(ngModel)]="paymentsTableDisplayOptions.showId" name="showId">
+        <input class="form-check-input" type="checkbox" id="showIdCheckBox" [ngModel]="paymentsTableDisplayOptions().showId()" (ngModelChange)="paymentsTableDisplayOptions().showId.set($event)" name="showId">
         <label class="form-label text-nowrap" for="showIdCheckBox">
           Show Id
         </label>
       </div>
       <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="showSummaryCheckBox" [(ngModel)]="paymentsTableDisplayOptions.showSummary" name="showSummary">
+        <input class="form-check-input" type="checkbox" id="showSummaryCheckBox" [ngModel]="paymentsTableDisplayOptions().showSummary()" (ngModelChange)="paymentsTableDisplayOptions().showSummary.set($event)" name="showSummary">
         <label class="form-label text-nowrap" for="showSummaryCheckBox">
           Show Summary
         </label>
       </div>
       <hr>
       <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="displayColorsCheckBox" [(ngModel)]="paymentsTableDisplayOptions.displayColors" name="displayColors">
+        <input class="form-check-input" type="checkbox" id="displayColorsCheckBox" [ngModel]="paymentsTableDisplayOptions().displayColors()" (ngModelChange)="paymentsTableDisplayOptions().displayColors.set($event)" name="displayColors">
         <label class="form-label text-nowrap" for="displayColorsCheckBox">
           Display colors
         </label>

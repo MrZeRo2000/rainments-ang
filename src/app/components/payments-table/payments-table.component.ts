@@ -1,53 +1,40 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  EventEmitter, inject,
-  Input,
-  OnChanges, OnDestroy,
-  OnInit,
-  Output,
-  QueryList,
-  SimpleChanges,
-  ViewChildren
-} from '@angular/core';
-import {BaseCommonEditableTableComponent} from '../../core/table/common-editable-table-component';
+import {Component, computed, effect, ElementRef, inject, input, signal, viewChildren} from '@angular/core';
+import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
+import {tap} from 'rxjs';
+import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {BsModalService} from 'ngx-bootstrap/modal';
+import {HttpParams} from '@angular/common/http';
+import {CommonEditableTableComponent} from '../../core/table/common-editable-table-component';
+import {CommonTableConfig} from '../../core/table/common-table-component';
+import {CrudActionType, CrudStatus} from '../../core/repository/crud-repository';
+import {EditMode} from '../../core/edit/edit-state';
 import {PaymentRefs} from '../../model/payment-refs';
 import {Payment} from '../../model/payment';
-import {FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
-import {BsModalService} from 'ngx-bootstrap/modal';
-import {PaymentRefsRepository} from '../../repository/payment-refs-repository';
-import {PaymentRepository} from '../../repository/payment-repository';
-import {CommonTableConfig} from '../../core/table/common-table-component';
-import { HttpParams } from '@angular/common/http';
 import {PaymentGroup} from '../../model/payment-group';
 import {Product} from '../../model/product';
-import {PaymentObject} from '../../model/payment-object';
-import {InlineEditHandler, InlineEditSelection} from '../../core/edit/inline-edit-handler';
-import {AmountPipe} from '../../core/pipes/amount.pipe';
-import {
-  ColoredValueLabelComponent,
-  ColorScheme
-} from '../../core/components/colored-value-label/colored-value-label.component';
 import {PatchRequest} from '../../model/patch-request';
-import {
-  PaymentsTableDisplayOptions,
-  PaymentsTableDisplayOptionsComponent
-} from '../payments-table-display-options/payments-table-display-options.component';
-import {Subscription} from 'rxjs';
+import {InlineEditHandler} from '../../core/edit/inline-edit-handler';
 import {SelectableItem} from '../../core/model/selectable-item';
-import {AddPanelComponent} from "../../core/components/add-panel/add-panel.component";
-import {PaymentsSelectablePanelComponent} from "../payments-selectable-panel/payments-selectable-panel.component";
-import {FaIconComponent} from "@fortawesome/angular-fontawesome";
-import {NgClass, NgStyle} from "@angular/common";
-import {TooltipModule} from "ngx-bootstrap/tooltip";
-import {ColoredTrendLabelComponent} from "../../core/components/colored-trend-label/colored-trend-label.component";
-import {InputPasteFloatModelDirective} from "../../core/directives/input-paste-float-model.directive";
-import {EditDeletePanelComponent} from "../../core/components/edit-delete-panel/edit-delete-panel.component";
-import {PaymentsSummaryComponent} from "../payments-summary/payments-summary.component";
-import {InputPasteFloatControlDirective} from "../../core/directives/input-paste-float-control.directive";
-import {SaveDialogPanelComponent} from "../../core/components/save-dialog-panel/save-dialog-panel.component";
-import {LoadingProgressComponent} from "../../core/components/loading-progress/loading-progress.component";
+import {AmountPipe} from '../../core/pipes/amount.pipe';
+import {ColoredValueLabelComponent, ColorScheme} from '../../core/components/colored-value-label/colored-value-label.component';
+import {PaymentsTableDisplayOptions, PaymentsTableDisplayOptionsComponent} from '../payments-table-display-options/payments-table-display-options.component';
+import {AddPanelComponent} from '../../core/components/add-panel/add-panel.component';
+import {PaymentsSelectablePanelComponent} from '../payments-selectable-panel/payments-selectable-panel.component';
+import {FaIconComponent} from '@fortawesome/angular-fontawesome';
+import {NgClass, NgStyle} from '@angular/common';
+import {TooltipModule} from 'ngx-bootstrap/tooltip';
+import {ColoredTrendLabelComponent} from '../../core/components/colored-trend-label/colored-trend-label.component';
+import {InputPasteFloatModelDirective} from '../../core/directives/input-paste-float-model.directive';
+import {EditDeletePanelComponent} from '../../core/components/edit-delete-panel/edit-delete-panel.component';
+import {PaymentsSummaryComponent} from '../payments-summary/payments-summary.component';
+import {InputPasteFloatControlDirective} from '../../core/directives/input-paste-float-control.directive';
+import {SaveDialogPanelComponent} from '../../core/components/save-dialog-panel/save-dialog-panel.component';
+import {LoadingProgressComponent} from '../../core/components/loading-progress/loading-progress.component';
+import {
+  PAYMENT_CRUD_REPOSITORY,
+  PAYMENT_DUPLICATE_PERIOD_REPOSITORY,
+  PAYMENT_REFS_READ_REPOSITORY
+} from '../../repository/repository-tokens';
 
 enum InlineControl {
   ProductCounter = 'productCounterControl',
@@ -81,42 +68,85 @@ enum InlineControl {
   providers: [AmountPipe],
   styleUrls: ['./payments-table.component.scss']
 })
-export class PaymentsTableComponent extends BaseCommonEditableTableComponent<PaymentRefs, Payment>
-  implements OnInit, OnChanges, OnDestroy, AfterViewInit {
-
-  private fb = inject(UntypedFormBuilder)
+export class PaymentsTableComponent extends CommonEditableTableComponent<PaymentRefs, Payment> {
+  private fb = inject(FormBuilder)
   private amountPipe = inject(AmountPipe)
+  private duplicateRepository = inject(PAYMENT_DUPLICATE_PERIOD_REPOSITORY)
 
-  @Input()
-  paymentObjectId: number;
+  paymentObjectId = input<number>();
+  paymentPeriodDate = input<Date>();
 
-  @Input()
-  paymentPeriodDate: Date;
-
-  @Output()
-  paymentObject = new EventEmitter<PaymentObject>();
-
-  @ViewChildren('inlineControl') inlineControl: QueryList<ElementRef>;
-
-  private convertedPeriodDate: Date;
-
-  prevPeriodPayment: Payment;
-
-  private prevProduct: number;
-
-  productUsage: number;
-  productUsageForm: UntypedFormGroup = this.fb.group({productUsageCounter: ['']});
-
-  selectableItems: Array<SelectableItem<Payment>> = new Array<SelectableItem<Payment>>();
+  // Loads on input change (effect below), not on init.
+  protected override config = new CommonTableConfig(false);
 
   inlineControlType = InlineControl;
-  inlineEditHandler: InlineEditHandler<Payment>;
-
   colorSchemeType = ColorScheme;
+  inlineEditHandler = new InlineEditHandler<Payment>();
 
-  displayOptions: PaymentsTableDisplayOptions;
+  displayOptions = PaymentsTableDisplayOptions.fromLocalStorage();
 
-  private readonly loadSuccessSubscription: Subscription;
+  private inlineControls = viewChildren<ElementRef>('inlineControl');
+
+  editForm = this.fb.group({
+    paymentGroup: this.fb.control<string | null>('', Validators.required),
+    product: this.fb.control<string | null>('', Validators.required),
+    productCounter: this.fb.control<number | null>(null, Validators.min(0)),
+    paymentAmount: this.fb.control<number | null>(null, [Validators.required, Validators.min(0)]),
+    commissionAmount: this.fb.control<number | null>(null, Validators.min(0))
+  });
+
+  private refs = computed(() => this.readRepository.dataSignal()[0]);
+  payments = computed(() => this.refs()?.paymentList ?? []);
+  prevPeriodPayments = computed(() => this.refs()?.prevPeriodPaymentList ?? []);
+  paymentGroups = computed(() => this.refs()?.paymentGroupList ?? []);
+  products = computed(() => this.refs()?.productList ?? []);
+
+  selectableItems = signal<Array<SelectableItem<Payment>>>([]);
+  selectedPayments = computed(() => this.selectableItems().filter(i => i.isSelected).map(i => i.value));
+
+  cloneAvailable = computed(() => this.prevPeriodPayments().length > 0 && this.payments().length === 0);
+
+  private convertedPeriodDate = computed(() => {
+    const date = this.paymentPeriodDate();
+    if (!date) {
+      return undefined;
+    }
+    const result = new Date(date);
+    result.setMinutes(result.getMinutes() - result.getTimezoneOffset());
+    return result;
+  });
+
+  private editFormValue = toSignal(this.editForm.valueChanges);
+
+  prevPeriodPayment = computed(() => {
+    const value = this.editFormValue()?.product;
+    const productId = value ? Number.parseInt(value, 10) : NaN;
+    return Number.isNaN(productId) ? undefined : this.refs()?.prevProductPayments?.get(productId);
+  });
+
+  selectedPaymentGroup = computed(() => {
+    const value = this.editFormValue()?.paymentGroup;
+    const id = value ? Number.parseInt(value, 10) : NaN;
+    return Number.isNaN(id) ? undefined : this.paymentGroups().find(g => g.id === id);
+  });
+
+  selectedProduct = computed(() => {
+    const value = this.editFormValue()?.product;
+    const id = value ? Number.parseInt(value, 10) : NaN;
+    return Number.isNaN(id) ? undefined : this.products().find(p => p.id === id);
+  });
+
+  productUsage = computed(() => {
+    const prev = this.prevPeriodPayment();
+    const counter = this.editFormValue()?.productCounter;
+    if (prev?.productCounter && counter != null) {
+      return counter - prev.productCounter;
+    }
+    return undefined;
+  });
+
+  productUsageDisplay = computed(() =>
+    this.amountPipe.transform(this.productUsage(), this.selectedProduct()?.counterPrecision));
 
   private static roundValueTo(value: any, precision?: any): number {
     const rate = Math.pow(10, precision || 0);
@@ -127,232 +157,132 @@ export class PaymentsTableComponent extends BaseCommonEditableTableComponent<Pay
     return Math.round(value * 100) / 100;
   }
 
-  private static validateNumericControl(control: any) {
-    const value = control.value;
-    if (value !== null && value !== '' && isNaN(value)) {
-      control.setErrors({isNaN: true});
-    }
-  }
-
-  private calcConvertedPeriodDate(): void {
-    const result = new Date(this.paymentPeriodDate);
-
-    result.setMinutes(
-      result.getMinutes() - result.getTimezoneOffset()
-    );
-
-    this.convertedPeriodDate = new Date(result);
-  }
-
-  private getPaymentPeriodDate(): Date {
-    return this.convertedPeriodDate;
-  }
-
-  /* eslint-disable @angular-eslint/prefer-inject */
-  constructor(
-    protected modalService: BsModalService,
-    public readRepository: PaymentRefsRepository,
-    protected repository: PaymentRepository) {
+  constructor() {
     super(
       Payment,
-      modalService,
-      readRepository,
-      repository
+      inject(BsModalService),
+      inject(PAYMENT_REFS_READ_REPOSITORY),
+      inject(PAYMENT_CRUD_REPOSITORY)
     );
 
-    this.loadSuccessSubscription = readRepository.getLoadSuccessObservable().subscribe(v => {
-      if (v) {
-        this.paymentObject.emit(this.getPaymentObject());
-        this.selectableItems = this.getPayments().map(p => new SelectableItem<Payment>(p, false));
+    // Reload when the object/period inputs change, cancelling any open edit.
+    effect(() => {
+      const id = this.paymentObjectId();
+      const date = this.convertedPeriodDate();
+      if (id && date) {
+        this.onCancel();
+        this.loadRepositoryData();
       }
     });
-  }
 
-  ngOnInit() {
-    super.ngOnInit();
-    this.checkInput();
-    this.displayOptions = PaymentsTableDisplayOptions.fromLocalStorage();
-  }
+    // Rebuild the (deselected) selectable rows whenever the loaded payments change.
+    effect(() => {
+      this.selectableItems.set(this.payments().map(p => new SelectableItem<Payment>(p, false)));
+    });
 
-  ngOnDestroy(): void {
-    super.ngOnDestroy();
-    this.loadSuccessSubscription?.unsubscribe();
-  }
+    // Reset the counter when the product changes.
+    this.editForm.controls.product.valueChanges.pipe(takeUntilDestroyed()).subscribe(() =>
+      this.editForm.controls.productCounter.setValue(null));
 
-  ngOnChanges(changes: SimpleChanges): void {
-    this.calcConvertedPeriodDate();
+    // Reload after a successful "duplicate previous period".
+    toSignal(this.duplicateRepository.crudAction$.pipe(
+      tap(result => {
+        if (result.status === CrudStatus.Success) {
+          this.loadRepositoryData();
+        }
+      })
+    ));
 
-    for (const propName in changes) {
-      if (changes.hasOwnProperty(propName) && changes[propName].isFirstChange()) {
-        return;
+    // Focus the inline editor input when it appears.
+    effect(() => {
+      const controls = this.inlineControls();
+      if (controls.length > 0) {
+        controls[0].nativeElement.focus();
       }
-    }
+    });
 
-    this.checkInput();
-  }
-
-  ngAfterViewInit(): void {
-    this.setupFocusOnInit([
-      this.inlineControl]
-    );
-
-    this.inlineEditHandler = new InlineEditHandler<Payment>();
-    this.inlineEditHandler.inputValidator = ((item, selection) => {
-      if (selection.controlName === InlineControl.ProductCounter) {
+    this.inlineEditHandler.inputValidator = (item, controlName, value) => {
+      if (controlName === InlineControl.ProductCounter) {
         const prevPeriodProductCounter = this.getPrevPeriodProductCounter(item);
-        return selection.value === null || prevPeriodProductCounter === undefined
-          || prevPeriodProductCounter <= Number.parseFloat(selection.value);
-      } else if (selection.controlName === InlineControl.CommissionAmount) {
-        return selection.value === null || Number.parseInt(selection.value, 0) >= 0;
+        return value === null || prevPeriodProductCounter === undefined
+          || prevPeriodProductCounter <= Number.parseFloat(value);
+      } else if (controlName === InlineControl.CommissionAmount) {
+        return value === null || Number.parseInt(value, 10) >= 0;
       } else {
-        return Number.parseInt(selection.value, 0) >= 0;
+        return Number.parseInt(value, 10) >= 0;
       }
-    });
+    };
 
-    this.inlineEditHandler.inputProcessor = ((item, selection) => {
-      const patchRequest = new PatchRequest('replace', '/' + selection.controlName.replace('Control', ''));
-      if (selection.value) {
-        if (selection.controlName === 'productCounterControl') {
-          patchRequest.value = PaymentsTableComponent.roundValueTo(selection.value,
-            item.product && item.product.counterPrecision).toString(10);
+    this.inlineEditHandler.inputProcessor = (item, controlName, value) => {
+      const patchRequest = new PatchRequest('replace', '/' + controlName.replace('Control', ''));
+      if (value) {
+        if (controlName === InlineControl.ProductCounter) {
+          patchRequest.value = PaymentsTableComponent.roundValueTo(value, item.product && item.product.counterPrecision).toString(10);
         } else {
-          patchRequest.value = selection.value;
+          patchRequest.value = value;
         }
-      } else {
-        if (['paymentAmountControl', 'commissionAmountControl'].includes(selection.controlName)) {
-          patchRequest.value = '0';
-        }
+      } else if (controlName === InlineControl.PaymentAmount || controlName === InlineControl.CommissionAmount) {
+        patchRequest.value = '0';
       }
-      this.repository.patchItem(item.id, patchRequest);
-      // alert('HANDLER Entered value ' + selection.value + ' for editor ' + selection.controlName + ' for item ' + JSON.stringify(item));
+      // Show the loading indicator from patch start until the reload completes.
+      // crudData$ (base) clears crudLoadingSignal and reloads on success; the read
+      // repository's loadingSignal then bridges through to reload completion.
+      this.crudLoadingSignal.set(true);
+      this.crudRepository.execute({type: CrudActionType.Patch, payload: {id: item.id, body: patchRequest}});
+    };
+  }
+
+  protected override loadRepositoryData(): void {
+    this.readRepository.loadData({
+      params: new HttpParams()
+        .append('paymentObjectId', this.paymentObjectId()!.toString())
+        .append('paymentPeriodDate', this.convertedPeriodDate()!.toJSON())
     });
   }
 
-  private setupFocusOnInit(viewQueryLists: QueryList<ElementRef>[]) {
-    viewQueryLists.forEach(value => value.changes.subscribe(() => {
-      if (value.length > 0) {
-        value.first.nativeElement.focus();
-      }
-    }));
-  }
-
-  protected getConfig(): CommonTableConfig {
-    return new CommonTableConfig(false);
-  }
-
-  protected getHttpParams(): HttpParams {
-    return new HttpParams()
-      .append('paymentObjectId', this.paymentObjectId.toString())
-      .append('paymentPeriodDate', this.getPaymentPeriodDate().toJSON())
-      ;
-  }
-
-  private checkInput() {
-    if (this.paymentObjectId && this.paymentPeriodDate) {
-      console.log('Ready to load paymentObjectId=' + this.paymentObjectId + ', date=' + this.paymentPeriodDate);
-      this.onCancel();
-      this.loadRepositoryData();
-    }
-  }
-
-  protected loadRepositoryData(): void {
-    super.loadRepositoryData();
-  }
-
-  protected buildEditForm() {
-    super.buildEditForm();
-    this.selectableItems.forEach(p => p.isSelected = false);
-  }
-
-  protected buildForm(): UntypedFormGroup {
-    const form = this.fb.group({
-      paymentGroup: ['', Validators.required],
-      product: ['', Validators.required],
-      // paymentGroup: [this.getPaymentGroups()[0] && this.getPaymentGroups()[0].id, Validators.required],
-      // product: [this.getProducts()[0] && this.getProducts()[0].id, Validators.required],
-      productCounter: ['', Validators.compose([Validators.min(0)])],
-      paymentAmount: ['', Validators.compose([Validators.required, Validators.min(0)])],
-      commissionAmount: ['', Validators.compose([Validators.min(0)])]
-      }
+  protected override getPersistData(): Payment {
+    const editState = this.editStateSignal();
+    const id = editState?.editMode === EditMode.EM_EDIT ? editState.editItem.id : undefined;
+    return new Payment(
+      id,
+      new Date(),
+      this.convertedPeriodDate(),
+      this.refs()?.paymentObject,
+      this.selectedPaymentGroup(),
+      this.selectedProduct(),
+      this.getProductCounter(),
+      PaymentsTableComponent.roundValue(this.getPaymentAmount()),
+      PaymentsTableComponent.roundValue(this.getCommissionAmount())
     );
-
-    form.controls.product.valueChanges.subscribe(value => {
-      form.controls.productCounter.setValue(null);
-    });
-
-    return form;
   }
 
-  private updateProductUsage() {
-    if (this.prevPeriodPayment && this.prevPeriodPayment.productCounter && this.editForm.controls.productCounter.value) {
-      this.productUsage = Number.parseFloat(this.editForm.controls.productCounter.value) - this.prevPeriodPayment.productCounter;
-    } else {
-      this.productUsage = undefined;
-    }
-    this.productUsageForm.controls.productUsageCounter.setValue(
-      this.amountPipe.transform(this.productUsage, this.getProduct() && this.getProduct().counterPrecision));
-  }
-
-  protected editFormInit() {
-    super.editFormInit();
-    this.prevPeriodPayment = undefined;
-  }
-
-  protected editFormChanged(data: any) {
-    super.editFormChanged(data);
-    if (data.product !== '') {
-      this.prevPeriodPayment = this.getPrevPeriodPaymentByProduct(Number.parseInt(data.product, 0));
-      this.updateProductUsage();
-    } else {
-      this.prevPeriodPayment = undefined;
-    }
-  }
-
-  protected getDisplayItemName(item: Payment): string {
-    return item.product.name;
-  }
-
-  protected setEditFocus(): void {
-  }
-
-  protected validateCreate(): void {
-    const productDuplicates = this.getPayments().filter(
-      v => v.product.id === Number.parseInt(this.editForm.controls.product.value, 0)
-    );
-    if (productDuplicates.length > 0) {
+  override onSave(): void {
+    // Cross-field validations that aren't expressible as pure control validators.
+    const editId = this.editStateSignal()?.editItem?.id;
+    const productId = Number.parseInt(this.editForm.controls.product.value ?? '', 10);
+    if (this.payments().some(p => p.product.id === productId && p.id !== editId)) {
       this.editForm.controls.product.setErrors({existingProduct: true});
     }
-    if (this.productUsage && this.productUsage < 0) {
+    const usage = this.productUsage();
+    if (usage != null && usage < 0) {
       this.editForm.controls.productCounter.setErrors({lessThanPreviousPeriod: true});
     }
+    super.onSave();
   }
 
-  protected validateSave(): void {
-    const productDuplicates = this.getPayments().filter(
-      v => v.product.id === Number.parseInt(this.editForm.controls.product.value, 0) && v.id !== this.editState.editItem.id
-    );
-    if (productDuplicates.length > 0) {
-      this.editForm.controls.product.setErrors({existingProduct: true});
-    }
-    if (this.productUsage && this.productUsage < 0) {
-      this.editForm.controls.productCounter.setErrors({lessThanPreviousPeriod: true});
-    }
+  private getProductCounter(): number {
+    const value = this.editForm.controls.productCounter.value;
+    return value != null
+      ? PaymentsTableComponent.roundValueTo(value, this.selectedProduct() && this.selectedProduct().counterPrecision)
+      : null;
   }
 
-  getSelectablePayments(): Array<SelectableItem<Payment>> {
-    return this.selectableItems;
+  private getPaymentAmount(): number {
+    return this.editForm.controls.paymentAmount.value;
   }
 
-  getSelectedPayments(): Array<Payment> {
-    return this.selectableItems.filter(p => p.isSelected).map(p => p.value);
-  }
-
-  getPayments(): Payment[] {
-    return this.readRepository.getData()[0] ? this.readRepository.getData()[0].paymentList : [];
-  }
-
-  getPrevPeriodPayments(): Payment[] {
-    return this.readRepository.getData()[0] ? this.readRepository.getData()[0].prevPeriodPaymentList : [];
+  private getCommissionAmount(): number {
+    return this.editForm.controls.commissionAmount.value || 0;
   }
 
   getPrevPeriodProductCounter(item: Payment): number {
@@ -362,47 +292,25 @@ export class PaymentsTableComponent extends BaseCommonEditableTableComponent<Pay
   getPrevPeriodPaymentDiff(item: Payment): number {
     const prevPeriodValue = item.prevPeriodPayment && item.prevPeriodPayment.paymentAmount;
     const currentValue = item.paymentAmount;
-    if (prevPeriodValue && currentValue) {
-      return currentValue - prevPeriodValue;
-    } else {
-      return null;
-    }
+    return prevPeriodValue && currentValue ? currentValue - prevPeriodValue : null;
   }
 
   getPrevPeriodCommissionDiff(item: Payment): number {
     const prevPeriodValue = item.prevPeriodPayment && item.prevPeriodPayment.commissionAmount;
     const currentValue = item.commissionAmount;
-    if (prevPeriodValue && currentValue) {
-      return currentValue - prevPeriodValue;
-    } else {
-      return null;
-    }
-  }
-
-  getPrevPeriodPaymentByProduct(productId: number): Payment {
-    return this.readRepository.getData()[0] &&
-      this.readRepository.getData()[0].prevProductPayments &&
-      this.readRepository.getData()[0].prevProductPayments.get(productId);
+    return prevPeriodValue && currentValue ? currentValue - prevPeriodValue : null;
   }
 
   getPrevPeriodProductCounterDiffByProduct(item: Payment): number {
     const prevPeriodValue = this.getPrevPeriodProductCounter(item);
     const currentValue = item.productCounter;
-    if (prevPeriodValue && currentValue) {
-      return currentValue - prevPeriodValue;
-    } else {
-      return undefined;
-    }
+    return prevPeriodValue && currentValue ? currentValue - prevPeriodValue : undefined;
   }
 
   getPrevPeriodProductCounterEditDiffByProduct(item: Payment): number {
     const prevPeriodValue = this.getPrevPeriodProductCounter(item);
-    const inputValue = this.inlineEditHandler.inlineSelection && Number.parseFloat(this.inlineEditHandler.inlineSelection.value);
-    if (prevPeriodValue >= 0 && inputValue >= 0) {
-      return inputValue - prevPeriodValue;
-    } else {
-      return undefined;
-    }
+    const inputValue = Number.parseFloat(this.inlineEditHandler.value());
+    return prevPeriodValue >= 0 && inputValue >= 0 ? inputValue - prevPeriodValue : undefined;
   }
 
   getPrevPeriodPaymentAmount(item: Payment): number {
@@ -413,65 +321,9 @@ export class PaymentsTableComponent extends BaseCommonEditableTableComponent<Pay
     return item.prevPeriodPayment && item.prevPeriodPayment.commissionAmount;
   }
 
-  getPaymentGroups(): PaymentGroup[] {
-    return this.readRepository.getData()[0].paymentGroupList;
-  }
-
-  getPaymentGroup(): PaymentGroup {
-    return this.getPaymentGroups().find(
-      value => value.id === Number.parseInt(this.editForm.controls.paymentGroup.value, 0));
-  }
-
-  getProducts(): Product[] {
-    return this.readRepository.getData()[0].productList;
-  }
-
-  getProduct(): Product {
-    return this.getProducts().find(
-      value => value.id === Number.parseInt(this.editForm.controls.product.value, 0));
-  }
-
-  getPaymentObject(): PaymentObject {
-    return this.readRepository.getData()[0].paymentObject;
-  }
-
-  getProductCounter(): number {
-    return this.editForm.controls.productCounter.value !== null && this.editForm.controls.productCounter.value !== '' ?
-      PaymentsTableComponent.roundValueTo(this.editForm.controls.productCounter.value,
-        this.getProduct() && this.getProduct().counterPrecision) : null;
-  }
-
-  getPaymentAmount(): number {
-    return this.editForm.controls.paymentAmount.value;
-  }
-
-  getCommissionAmount(): number {
-    return this.editForm.controls.commissionAmount.value || 0;
-  }
-
-  protected getWritableData(): Payment {
-    const paymentObject: PaymentObject = this.getPaymentObject();
-    const paymentGroup: PaymentGroup = this.getPaymentGroup();
-    const product: Product = this.getProduct();
-    const productCounter = this.getProductCounter();
-    const paymentAmount = this.getPaymentAmount();
-    const commissionAmount = this.getCommissionAmount();
-
-    return new Payment(
-      undefined,
-      new Date(),
-      this.getPaymentPeriodDate(),
-      paymentObject,
-      paymentGroup,
-      product,
-      productCounter,
-      PaymentsTableComponent.roundValue(paymentAmount),
-      PaymentsTableComponent.roundValue(commissionAmount)
-    );
-  }
-
   tableRowClick(item: SelectableItem<Payment>): void {
     item.isSelected = !item.isSelected;
+    this.selectableItems.set([...this.selectableItems()]);
   }
 
   productCounterOnClick(event: any, item: Payment): void {
@@ -482,56 +334,33 @@ export class PaymentsTableComponent extends BaseCommonEditableTableComponent<Pay
         initialValue = prevProductCounter.toString();
       }
     }
-
-    this.inlineEditHandler.inlineRefOnClick(event);
-    this.inlineEditHandler.inlineSelection = new InlineEditSelection<Payment>(
-      item,
-      InlineControl.ProductCounter,
-      initialValue
-    );
+    this.inlineEditHandler.refOnClick(event);
+    this.inlineEditHandler.start(item, InlineControl.ProductCounter, initialValue);
   }
 
   paymentAmountOnClick(event: any, item: Payment): void {
-    this.inlineEditHandler.inlineRefOnClick(event);
-    this.inlineEditHandler.inlineSelection = new InlineEditSelection<Payment>(
-      item,
-      InlineControl.PaymentAmount,
-      item.paymentAmount.toFixed(2)
-    );
+    this.inlineEditHandler.refOnClick(event);
+    this.inlineEditHandler.start(item, InlineControl.PaymentAmount, item.paymentAmount.toFixed(2));
   }
 
   commissionAmountOnClick(event: any, item: Payment): void {
-    this.inlineEditHandler.inlineRefOnClick(event);
-    this.inlineEditHandler.inlineSelection = new InlineEditSelection<Payment>(
-      item,
-      InlineControl.CommissionAmount,
-      item.commissionAmount.toFixed(2)
-    );
+    this.inlineEditHandler.refOnClick(event);
+    this.inlineEditHandler.start(item, InlineControl.CommissionAmount, item.commissionAmount.toFixed(2));
   }
 
-  isCloneAvailable(): boolean {
-    return this.getPrevPeriodPayments() && this.getPrevPeriodPayments().length > 0 && this.getPayments() && this.getPayments().length === 0;
-  }
-
-  duplicatePreviousPeriodOnClick(event: any) {
+  duplicatePreviousPeriodOnClick(event: any): void {
     event.preventDefault();
-    this.repository.duplicatePreviousPeriod(this.paymentObjectId, this.getPaymentPeriodDate());
+    this.duplicateRepository.postFormData(new HttpParams()
+      .append('paymentObjectId', this.paymentObjectId()!.toString(10))
+      .append('paymentPeriodDate', this.convertedPeriodDate()!.toJSON()));
   }
 
-  displayOptionsChanged() {
+  displayOptionsChanged(): void {
     this.displayOptions.saveToLocalStorage();
   }
 
-  pervPeriodCounterLabelClick(event: any, productCounter: number) {
+  pervPeriodCounterLabelClick(event: any, productCounter: number): void {
     event.preventDefault();
     this.editForm.controls.productCounter.setValue(productCounter);
-  }
-
-  numberOnPaste(event: any) {
-    event.preventDefault();
-    const clipboardData = event.clipboardData;
-    const pastedText = clipboardData.getData('text');
-    const convertedText = pastedText.replace(',', '.');
-    this.editForm.controls.commissionAmount.setValue(convertedText);
   }
 }

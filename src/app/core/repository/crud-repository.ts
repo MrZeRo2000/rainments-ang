@@ -15,6 +15,7 @@ export enum CrudActionType {
   Move   = 'move',
   DefaultOrder = 'defaultOrder',
   FormData = 'formData',
+  Patch = 'patch',
 }
 
 export enum CrudStatus {
@@ -29,6 +30,7 @@ export type CrudAction<T extends CommonEntity> =
   | { type: CrudActionType.Move;   payload: { sourceId: T['id']; targetId: T['id'] } }
   | { type: CrudActionType.DefaultOrder; payload: {} }
   | { type: CrudActionType.FormData; payload: HttpParams }
+  | { type: CrudActionType.Patch; payload: { id: T['id']; body: any } }
   ;
 
 
@@ -77,6 +79,8 @@ export class CrudRepository<T extends CommonEntity> {
         )
       case CrudActionType.FormData:
         return this.dataSource.postResponse(this.resourceName, {}, action.payload)
+      case CrudActionType.Patch:
+        return this.dataSource.patchResponse(this.resourceName, action.payload.id, action.payload.body)
     }
   }
 

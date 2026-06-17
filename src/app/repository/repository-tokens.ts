@@ -10,7 +10,26 @@ import {PaymentGroup} from "../model/payment-group";
 import {Product} from "../model/product";
 import {PaymentObjectGroupRefs} from "../model/payment-object-group-refs";
 import {MessageResult} from "../model/message-result";
+import {PaymentRefs} from "../model/payment-refs";
+import {Payment} from "../model/payment";
 import {CrudRepository} from "../core/repository/crud-repository";
+
+/**
+ * Links each payment to its previous-period counterpart and builds the
+ * prevProductPayments lookup (previously done in PaymentRefsRepository.afterLoadData).
+ */
+function mapPaymentRefs(raw: PaymentRefs): PaymentRefs {
+  const refs = raw ?? new PaymentRefs();
+  refs.prevProductPayments = new Map<number, Payment>();
+  const prevPeriodPayments = refs.prevPeriodPaymentList;
+  if (prevPeriodPayments) {
+    (refs.paymentList ?? []).forEach(payment => {
+      payment.prevPeriodPayment = prevPeriodPayments.find(value => value.product.id === payment.product.id);
+    });
+    prevPeriodPayments.forEach(prev => refs.prevProductPayments.set(prev.product.id, prev));
+  }
+  return refs;
+}
 
 
 export const APP_INFO_READ_REPOSITORY = new InjectionToken<ReadRepository<AppInfo>>(
@@ -103,4 +122,25 @@ export const PAYMENT_OBJECT_GROUP_REFS_READ_REPOSITORY = new InjectionToken<Read
   {
     providedIn: 'root',
     factory: () => new ReadRepository(inject(RestDataSource), inject(MessagesService), 'payments:payment_object_group_refs')
+  });
+
+export const PAYMENT_REFS_READ_REPOSITORY = new InjectionToken<ReadRepository<PaymentRefs>>(
+  'PAYMENT_REFS_READ_REPOSITORY',
+  {
+    providedIn: 'root',
+    factory: () => new ReadRepository(inject(RestDataSource), inject(MessagesService), 'payments:refs', mapPaymentRefs)
+  });
+
+export const PAYMENT_CRUD_REPOSITORY = new InjectionToken<CrudRepository<Payment>>(
+  'PAYMENT_CRUD_REPOSITORY',
+  {
+    providedIn: 'root',
+    factory: () => new CrudRepository(inject(RestDataSource), inject(MessagesService), 'payments')
+  });
+
+export const PAYMENT_DUPLICATE_PERIOD_REPOSITORY = new InjectionToken<CrudRepository<Payment>>(
+  'PAYMENT_DUPLICATE_PERIOD_REPOSITORY',
+  {
+    providedIn: 'root',
+    factory: () => new CrudRepository(inject(RestDataSource), inject(MessagesService), 'payments:duplicate_previous_period')
   });

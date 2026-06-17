@@ -15,13 +15,13 @@
       </div>
       @if (hasSelection()) {
         <div class="m2-2 text-end">
-          <div><strong>{{getSelectedSummary().paymentAmount | amount}} / </strong></div>
-          <div><strong>{{getSelectedSummary().commissionAmount | amount}} / </strong></div>
+          <div><strong>{{selectedSummary().paymentAmount | amount}} / </strong></div>
+          <div><strong>{{selectedSummary().commissionAmount | amount}} / </strong></div>
         </div>
       }
       <div class="ms-2 text-end">
-        <div><strong>{{getTotalSummary().paymentAmount | amount}}</strong></div>
-        <div><strong>{{getTotalSummary().commissionAmount | amount}}</strong></div>
+        <div><strong>{{totalSummary().paymentAmount | amount}}</strong></div>
+        <div><strong>{{totalSummary().commissionAmount | amount}}</strong></div>
       </div>
     </div>
   </div>
@@ -41,7 +41,7 @@
           </tr>
         </thead>
         <tbody>
-          @for (item of getGroupSummary(); track item) {
+          @for (item of groupSummary(); track item) {
             <tr [ngStyle]="{'--bs-table-bg': item.paymentGroup.color}">
               <td class="text-start">{{item.paymentGroup.name}}</td>
               <td>

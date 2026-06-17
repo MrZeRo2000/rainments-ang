@@ -1,18 +1,10 @@
-import {
-  Component,
-  DoCheck,
-  inject,
-  Input,
-  IterableDiffer,
-  IterableDiffers,
-  OnInit
-} from '@angular/core';
-import {PaymentRefsRepository} from '../../repository/payment-refs-repository';
+import {Component, computed, inject, input} from '@angular/core';
 import {PaymentGroupAmountSummary} from '../../model/payment-group-amount-summary';
 import {Payment} from '../../model/payment';
 import {PaymentGroup} from '../../model/payment-group';
 import {AmountPipe} from "../../core/pipes/amount.pipe";
 import {NgStyle} from "@angular/common";
+import {PAYMENT_REFS_READ_REPOSITORY} from "../../repository/repository-tokens";
 
 @Component({
   selector: 'app-payments-summary',
@@ -23,91 +15,41 @@ import {NgStyle} from "@angular/common";
   ],
   styleUrls: ['./payments-summary.component.scss']
 })
-export class PaymentsSummaryComponent implements OnInit, DoCheck {
-  protected readRepository = inject(PaymentRefsRepository)
-  private selectedItemsDiffers = inject(IterableDiffers)
+export class PaymentsSummaryComponent {
+  private readRepository = inject(PAYMENT_REFS_READ_REPOSITORY)
 
-  @Input()
-  selectedItems: Array<Payment>;
+  selectedItems = input<Array<Payment>>([]);
 
-  private selectedItemsDiff: IterableDiffer<Payment>;
+  private summary = computed(() => {
+    const payments = this.readRepository.dataSignal()[0]?.paymentList ?? [];
+    const selected = this.selectedItems();
 
-  summaryData: Array<PaymentGroupAmountSummary> = new Array<PaymentGroupAmountSummary>();
+    const total = new PaymentGroupAmountSummary(new PaymentGroup(-1, 'Total'), 0, 0);
+    const selectedSummary = new PaymentGroupAmountSummary(new PaymentGroup(-2, 'Selected'), 0, 0);
+    const groups: Array<PaymentGroupAmountSummary> = [];
 
-  constructor() {
-    // Might not be needed
-    this.calcSummary();
-    this.readRepository.getLoadSuccessObservable().subscribe(v => {
-      if (v) {
-        this.calcSummary();
-      } else {
-        this.clearSummary();
-      }
-    });
-  }
-
-  private calcSummary(): void {
-    this.summaryData.length = 0;
-
-    const data = (this.readRepository.getData()[0] && this.readRepository.getData()[0].paymentList) || [];
-    const totalSummary: PaymentGroupAmountSummary = new PaymentGroupAmountSummary(new PaymentGroup(-1, 'Total'), 0, 0);
-    const selectedSummary: PaymentGroupAmountSummary = new PaymentGroupAmountSummary(new PaymentGroup(-2, 'Selected'), 0, 0);
-
-    data.reduce((accumulator, currentValue) => {
-
-      if (currentValue.paymentGroup) {
-        const v = accumulator.find(value => value.paymentGroup.id === currentValue.paymentGroup.id);
-        if (v === undefined) {
-          accumulator.push(new PaymentGroupAmountSummary(currentValue.paymentGroup, currentValue.paymentAmount, currentValue.commissionAmount));
+    payments.forEach(payment => {
+      if (payment.paymentGroup) {
+        const group = groups.find(value => value.paymentGroup.id === payment.paymentGroup.id);
+        if (group === undefined) {
+          groups.push(new PaymentGroupAmountSummary(payment.paymentGroup, payment.paymentAmount, payment.commissionAmount));
         } else {
-          v.addAmounts(currentValue.paymentAmount, currentValue.commissionAmount);
+          group.addAmounts(payment.paymentAmount, payment.commissionAmount);
         }
       }
 
-      totalSummary.addAmounts(currentValue.paymentAmount, currentValue.commissionAmount);
+      total.addAmounts(payment.paymentAmount, payment.commissionAmount);
 
-      if (this.selectedItems && this.selectedItems.indexOf(currentValue) > -1) {
-        selectedSummary.addAmounts(currentValue.paymentAmount, currentValue.commissionAmount);
+      if (selected.indexOf(payment) > -1) {
+        selectedSummary.addAmounts(payment.paymentAmount, payment.commissionAmount);
       }
+    });
 
-      return accumulator;
-    }, this.summaryData);
-    this.summaryData.unshift(selectedSummary);
-    this.summaryData.unshift(totalSummary);
-  }
+    return {total, selectedSummary, groups};
+  });
 
-  private clearSummary(): void {
-    this.summaryData.length = 0;
-  }
-
-  ngOnInit() {
-    if (this.selectedItems) {
-      this.selectedItemsDiff = this.selectedItemsDiffers.find(this.selectedItems).create();
-    }
-  }
-
-  ngDoCheck(): void {
-    if (this.selectedItems) {
-      const selectedItemsChanges = this.selectedItemsDiff.diff(this.selectedItems);
-      if (selectedItemsChanges) {
-        this.calcSummary();
-      }
-    }
-  }
-
-  getTotalSummary(): PaymentGroupAmountSummary {
-    return this.summaryData[0];
-  }
-
-  getSelectedSummary(): PaymentGroupAmountSummary {
-    return this.summaryData[1];
-  }
-
-  hasSelection(): boolean {
-    return this.selectedItems?.length > 0;
-  }
-
-  getGroupSummary(): PaymentGroupAmountSummary[] {
-    return this.summaryData.slice(2) || [];
-  }
+  totalSummary = computed(() => this.summary().total);
+  selectedSummary = computed(() => this.summary().selectedSummary);
+  groupSummary = computed(() => this.summary().groups);
+  hasSelection = computed(() => this.selectedItems().length > 0);
 }
