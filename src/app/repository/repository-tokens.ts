@@ -12,6 +12,7 @@ import {PaymentObjectGroupRefs} from "../model/payment-object-group-refs";
 import {MessageResult} from "../model/message-result";
 import {PaymentRefs} from "../model/payment-refs";
 import {Payment} from "../model/payment";
+import {PaymentRep} from "../model/payment-rep";
 import {CrudRepository} from "../core/repository/crud-repository";
 
 /**
@@ -29,6 +30,16 @@ function mapPaymentRefs(raw: PaymentRefs): PaymentRefs {
     prevPeriodPayments.forEach(prev => refs.prevProductPayments.set(prev.product.id, prev));
   }
   return refs;
+}
+
+/** Converts each report payment's periodDate string to a Date. */
+function mapPaymentRep(raw: PaymentRep): PaymentRep {
+  raw?.paymentRepList?.forEach(payment => {
+    if (payment.periodDate) {
+      payment.periodDate = new Date(payment.periodDate);
+    }
+  });
+  return raw;
 }
 
 
@@ -143,4 +154,15 @@ export const PAYMENT_DUPLICATE_PERIOD_REPOSITORY = new InjectionToken<CrudReposi
   {
     providedIn: 'root',
     factory: () => new CrudRepository(inject(RestDataSource), inject(MessagesService), 'payments:duplicate_previous_period')
+  });
+
+export const PAYMENT_REP_READ_REPOSITORY = new InjectionToken<ReadRepository<PaymentRep>>(
+  'PAYMENT_REP_READ_REPOSITORY',
+  {
+    providedIn: 'root',
+    factory: () => new ReadRepository(
+      inject(RestDataSource),
+      inject(MessagesService),
+      'payments:payments_by_payment_object_and_payment_period_date_range',
+      mapPaymentRep)
   });

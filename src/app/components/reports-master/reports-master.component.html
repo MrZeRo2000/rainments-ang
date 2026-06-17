@@ -1,11 +1,11 @@
 
 <app-message></app-message>
-@if (paymentRep) {
+@if (paymentRep(); as rep) {
   <div>
     <div class="d-inline-flex">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb p-2">
-          <li aria-current="page"><h5 class="mb-0 text-nowrap">{{paymentRep.paymentObject.name}}</h5></li>
+          <li aria-current="page"><h5 class="mb-0 text-nowrap">{{rep.paymentObject.name}}</h5></li>
         </ol>
       </nav>
     </div>
@@ -18,30 +18,30 @@
           [bsConfig]="{ adaptivePosition: true, rangeInputFormat: 'DD.MM.YYYY' }"
           [minDate]="minSelectionDate"
           [maxDate]="maxSelectionDate"
-          [bsValue] = "dateRange"
+          [bsValue] = "dateRange()"
           (bsValueChange)="onDateRangeValueChange($event)"
           placement="right"
           >
       </div>
-      @if (selectedGroups && selectedGroups.length > 0) {
+      @if (selectedGroups() && selectedGroups().length > 0) {
         <app-drop-down-multi-select
           class="ms-2 mb-2"
           title="Groups"
-          [selectableItems]="selectedGroups"
+          [selectableItems]="selectedGroups()"
           (selectionChanged)="selectedGroupsChanged($event)"
           >
         </app-drop-down-multi-select>
       }
-      @if (selectedProducts && selectedProducts.length > 0) {
+      @if (selectedProducts() && selectedProducts().length > 0) {
         <app-drop-down-multi-select
           class="ms-2 mr-2 mb-2"
           title="Products"
-          [selectableItems]="selectedProducts"
+          [selectableItems]="selectedProducts()"
           (selectionChanged)="selectedProductsChanged($event)"
           >
         </app-drop-down-multi-select>
       }
-      @if (this.selectedControlTab === ControlTab.Table) {
+      @if (selectedControlTab() === ControlTab.Table) {
         <app-reports-table-display-options
           class="mb-2 ms-auto"
           [reportsTableDisplayOptions]="tableDisplayOptions"
@@ -49,7 +49,7 @@
           >
         </app-reports-table-display-options>
       }
-      @if (this.selectedControlTab === ControlTab.Chart) {
+      @if (selectedControlTab() === ControlTab.Chart) {
         <app-reports-chart-date-totals-display-options
           class="mb-2 ms-auto"
           [paymentObjectId]="paymentObjectId"
@@ -65,33 +65,33 @@
   <div class="btn-group-vertical">
     <button
       type="button"
-      class="btn" [ngClass]="{'btn-primary': this.selectedControlTab === ControlTab.Chart}"
-      (click)="this.selectControlTabClick(ControlTab.Chart)"
+      class="btn" [ngClass]="{'btn-primary': selectedControlTab() === ControlTab.Chart}"
+      (click)="selectControlTabClick(ControlTab.Chart)"
       >
       Chart
     </button>
     <button
       type="button"
-      class="btn" [ngClass]="{'btn-primary': this.selectedControlTab === ControlTab.Table}"
-      (click)="this.selectControlTabClick(ControlTab.Table)"
+      class="btn" [ngClass]="{'btn-primary': selectedControlTab() === ControlTab.Table}"
+      (click)="selectControlTabClick(ControlTab.Table)"
       >
       Table
     </button>
   </div>
   <div class="flex-grow-1 p-2" style="min-width: 0">
-    @if (displayPaymentList && (selectedControlTab === ControlTab.Chart)) {
+    @if (selectedControlTab() === ControlTab.Chart) {
       <app-reports-chart-date-totals
-        [payments]="displayPaymentList"
-        [displayOptions]="chartDisplayOptions"
+        [payments]="displayPaymentList()"
+        [displayOptions]="chartDisplayOptions()"
       ></app-reports-chart-date-totals>
     }
-    @if (displayPaymentList && (selectedControlTab === ControlTab.Table)) {
+    @if (selectedControlTab() === ControlTab.Table) {
       <div
         class="table-responsive"
         style="height: 50vh"
         >
         <app-reports-table
-          [payments]="displayPaymentList"
+          [payments]="displayPaymentList()"
           [displayOptions]="tableDisplayOptions"
           >
         </app-reports-table>
@@ -100,13 +100,4 @@
   </div>
 </div>
 
-<!--
-<div>
-  <app-reports-chart-date-totals [payments]="displayPaymentList"></app-reports-chart-date-totals>
-</div>
-<div class="table-responsive" style="height: 40vh">
-  <app-reports-table [payments]="displayPaymentList" [columns]="selectedColumns" *ngIf="paymentRep"></app-reports-table>
-</div>
--->
-
-<app-core-loading-progress [loadable]="repository"></app-core-loading-progress>
+<app-core-loading-progress [loading]="readRepository.loadingSignal"></app-core-loading-progress>
