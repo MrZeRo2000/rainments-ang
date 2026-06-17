@@ -1,5 +1,7 @@
-import {Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/core';
-import {ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup} from '@angular/forms';
+import {Component, inject, input, OnInit} from '@angular/core';
+import {outputFromObservable} from '@angular/core/rxjs-interop';
+import {map, tap} from 'rxjs';
+import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {DisplayIconElementComponent} from '../../core/components/display-icon-element/display-icon-element.component';
 
@@ -54,40 +56,32 @@ export class ReportsChartDateTotalsDisplayOptions {
     styleUrls: ['./reports-chart-date-totals-display-options.component.scss']
 })
 export class ReportsChartDateTotalsDisplayOptionsComponent implements OnInit {
-  private fb = inject(UntypedFormBuilder)
+  private fb = inject(FormBuilder)
 
   ChartStyle = ChartStyle;
 
-  displayOptionsForm: UntypedFormGroup;
+  paymentObjectId = input<number>();
 
   displayOptions: ReportsChartDateTotalsDisplayOptions;
 
-  @Input()
-  paymentObjectId: number;
+  displayOptionsForm = this.fb.group({
+    chartStyle: this.fb.control<string | null>(null)
+  });
 
-  @Output()
-  selectionChanged = new EventEmitter<ReportsChartDateTotalsDisplayOptions>();
-
-  constructor() { }
-
-  private buildForm(): UntypedFormGroup {
-    const formGroup = this.fb.group({
-        chartStyle: [this.displayOptions?.chartStyle]
-      }
-    );
-
-    formGroup.valueChanges.subscribe((value => {
-      Object.assign(this.displayOptions, value);
-      this.displayOptions.saveToLocalStorage(this.paymentObjectId);
-      this.selectionChanged.emit(this.displayOptions);
-    }))
-
-    return formGroup;
-  }
+  // Output derived from the form: each user change persists and re-emits the options.
+  // The initial seed (ngOnInit) uses emitEvent:false, so it never fires here.
+  selectionChanged = outputFromObservable(
+    this.displayOptionsForm.valueChanges.pipe(
+      tap(value => {
+        Object.assign(this.displayOptions, value);
+        this.displayOptions.saveToLocalStorage(this.paymentObjectId());
+      }),
+      map(() => this.displayOptions)
+    )
+  );
 
   ngOnInit(): void {
-    this.displayOptions = ReportsChartDateTotalsDisplayOptions.fromLocalStorage(this.paymentObjectId);
-    this.displayOptionsForm = this.buildForm();
+    this.displayOptions = ReportsChartDateTotalsDisplayOptions.fromLocalStorage(this.paymentObjectId());
+    this.displayOptionsForm.setValue({chartStyle: this.displayOptions.chartStyle}, {emitEvent: false});
   }
-
 }
