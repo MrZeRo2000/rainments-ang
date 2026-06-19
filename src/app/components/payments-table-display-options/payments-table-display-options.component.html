@@ -38,6 +38,12 @@
         </label>
       </div>
       <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="showCommissionCheckBox" [ngModel]="paymentsTableDisplayOptions().showCommission()" (ngModelChange)="paymentsTableDisplayOptions().showCommission.set($event)" name="showCommission">
+        <label class="form-label text-nowrap" for="showCommissionCheckBox">
+          Show Commission
+        </label>
+      </div>
+      <div class="form-check form-switch">
         <input class="form-check-input" type="checkbox" id="showSummaryCheckBox" [ngModel]="paymentsTableDisplayOptions().showSummary()" (ngModelChange)="paymentsTableDisplayOptions().showSummary.set($event)" name="showSummary">
         <label class="form-label text-nowrap" for="showSummaryCheckBox">
           Show Summary

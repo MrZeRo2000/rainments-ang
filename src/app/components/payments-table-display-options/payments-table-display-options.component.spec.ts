@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PaymentsTableDisplayOptionsComponent } from './payments-table-display-options.component';
+import { PaymentsTableDisplayOptionsComponent, PaymentsTableDisplayOptions } from './payments-table-display-options.component';
 import {FontAwesomeIconsModule} from '../../font-awesome-icons/font-awesome-icons.module';
 
 describe('PaymentsTableDisplayOptionsComponent', () => {
@@ -17,6 +17,7 @@ describe('PaymentsTableDisplayOptionsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PaymentsTableDisplayOptionsComponent);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('paymentsTableDisplayOptions', new PaymentsTableDisplayOptions());
     fixture.detectChanges();
   });
 

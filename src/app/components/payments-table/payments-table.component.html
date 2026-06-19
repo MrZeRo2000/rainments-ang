@@ -15,26 +15,27 @@
         </button>
       }
       <app-payments-table-display-options
-        [paymentsTableDisplayOptions]="displayOptions"
-        (change)="displayOptionsChanged()"
+        [paymentsTableDisplayOptions]="displayOptions()"
         >
       </app-payments-table-display-options>
     </div>
   </div>
 
   <div class="row">
-    <div [ngClass]="{'col-xl-9 col-lg-8': displayOptions.showSummary(), 'col-12': !displayOptions.showSummary()}">
-      <table class="table table-hover table-responsive w-100" [ngClass]="{'table-sm': displayOptions.compactTable()}">
+    <div [ngClass]="{'col-xl-9 col-lg-8': displayOptions().showSummary(), 'col-12': !displayOptions().showSummary()}">
+      <table class="table table-hover table-responsive w-100" [ngClass]="{'table-sm': displayOptions().compactTable()}">
         <thead>
           <tr>
-            @if (displayOptions.showId()) {
+            @if (displayOptions().showId()) {
               <th scope="col" class="w-5">ID</th>
             }
             <th scope="col" class="w-15">Group</th>
             <th scope="col" class="w-auto">Product</th>
             <th scope="col" class="w-15 text-end">Counter</th>
             <th scope="col" class="w-15 text-end">Payment</th>
-            <th scope="col" class="w-10 text-end">Commission</th>
+            @if (displayOptions().showCommission()) {
+              <th scope="col" class="w-10 text-end">Commission</th>
+            }
             <th scope="col" class="w-5">Actions</th>
           </tr>
         </thead>
@@ -43,10 +44,10 @@
             <tr
               (click)="tableRowClick(item)"
               [ngClass]="{'table-active': item.isSelected}"
-              [ngStyle]="{'--bs-table-bg': item.isSelected || !displayOptions.displayColors() ? '' : item.value.paymentGroup.color}"
+              [ngStyle]="{'--bs-table-bg': item.isSelected || !displayOptions().displayColors() ? '' : item.value.paymentGroup.color}"
               >
               <!-- ID -->
-              @if (displayOptions.showId()) {
+              @if (displayOptions().showId()) {
                 <td class="text-nowrap">{{item.value.id}}</td>
               }
               <!-- Group -->
@@ -54,9 +55,9 @@
               <!-- Product -->
               <td
                 tooltip={{item.value.product.name}}
-                [isDisabled]="!displayOptions.showTooltips() || item.value.product.name.length < 18"
+                [isDisabled]="!displayOptions().showTooltips() || item.value.product.name.length < 18"
                 [delay]="500"
-                [ngClass]="{'text-truncate': displayOptions.compactProducts()}"
+                [ngClass]="{'text-truncate': displayOptions().compactProducts()}"
                 >
                 {{item.value.product.name}}
               </td>
@@ -78,7 +79,7 @@
                     </span>
                   }
                 </div>
-                @if (!inlineEditHandler.isEditorVisible(item.value, inlineControlType.ProductCounter) && getPrevPeriodProductCounterDiffByProduct(item.value) && displayOptions.showTrend()) {
+                @if (!inlineEditHandler.isEditorVisible(item.value, inlineControlType.ProductCounter) && getPrevPeriodProductCounterDiffByProduct(item.value) && displayOptions().showTrend()) {
                   <div>
                     <app-core-colored-value-label
                       [value]="getPrevPeriodProductCounterDiffByProduct(item.value) | amount: item.value.product.counterPrecision"
@@ -132,7 +133,7 @@
                     </a>
                   }
                 </div>
-                @if (!inlineEditHandler.isEditorVisible(item.value, inlineControlType.PaymentAmount) && displayOptions.showTrend()) {
+                @if (!inlineEditHandler.isEditorVisible(item.value, inlineControlType.PaymentAmount) && displayOptions().showTrend()) {
                   <div>
                     <app-core-colored-trend-label
                       [value]="getPrevPeriodPaymentDiff(item.value)"
@@ -160,44 +161,46 @@
                 }
               </td>
               <!-- Commission -->
-              <td class="text-end text-nowrap">
-                <div>
-                  <app-core-colored-value-label
-                    [value]="getPrevPeriodCommissionAmount(item.value) | amount"
-                    class="me-2"
-                    >
-                  </app-core-colored-value-label>
-                  @if (!inlineEditHandler.isEditorVisible(item.value, inlineControlType.CommissionAmount)) {
-                    <a href="#" (click)="commissionAmountOnClick($event, item.value)">{{item.value.commissionAmount | amount}}</a>
-                  }
-                </div>
-                @if (!inlineEditHandler.isEditorVisible(item.value, inlineControlType.CommissionAmount) && displayOptions.showTrend()) {
+              @if (displayOptions().showCommission()) {
+                <td class="text-end text-nowrap">
                   <div>
-                    <app-core-colored-trend-label
-                      [value]="getPrevPeriodCommissionDiff(item.value)"
+                    <app-core-colored-value-label
+                      [value]="getPrevPeriodCommissionAmount(item.value) | amount"
+                      class="me-2"
                       >
-                    </app-core-colored-trend-label>
+                    </app-core-colored-value-label>
+                    @if (!inlineEditHandler.isEditorVisible(item.value, inlineControlType.CommissionAmount)) {
+                      <a href="#" (click)="commissionAmountOnClick($event, item.value)">{{item.value.commissionAmount | amount}}</a>
+                    }
                   </div>
-                }
-                @if (inlineEditHandler.isEditorVisible(item.value, inlineControlType.CommissionAmount)) {
-                  <label class="mt-2 mb-2">
-                    <input
-                      #inlineControl
-                      type="number"
-                      min="0"
-                      class="form-control text-end"
-                      id="commissionAmountInline"
-                      (focusout)="inlineEditHandler.focusOut()"
-                      (click)="inlineEditHandler.controlOnClick($event)"
-                      (keyup)="inlineEditHandler.keyUp($event, item.value)"
-                      [ngModel]="inlineEditHandler.value()"
-                      (ngModelChange)="inlineEditHandler.value.set($event)"
-                      [ngClass]="{'is-invalid': !inlineEditHandler.inputValidator(item.value, inlineControlType.CommissionAmount, inlineEditHandler.value())}"
-                      appInputPasteFloatModel
-                      >
-                  </label>
-                }
-              </td>
+                  @if (!inlineEditHandler.isEditorVisible(item.value, inlineControlType.CommissionAmount) && displayOptions().showTrend()) {
+                    <div>
+                      <app-core-colored-trend-label
+                        [value]="getPrevPeriodCommissionDiff(item.value)"
+                        >
+                      </app-core-colored-trend-label>
+                    </div>
+                  }
+                  @if (inlineEditHandler.isEditorVisible(item.value, inlineControlType.CommissionAmount)) {
+                    <label class="mt-2 mb-2">
+                      <input
+                        #inlineControl
+                        type="number"
+                        min="0"
+                        class="form-control text-end"
+                        id="commissionAmountInline"
+                        (focusout)="inlineEditHandler.focusOut()"
+                        (click)="inlineEditHandler.controlOnClick($event)"
+                        (keyup)="inlineEditHandler.keyUp($event, item.value)"
+                        [ngModel]="inlineEditHandler.value()"
+                        (ngModelChange)="inlineEditHandler.value.set($event)"
+                        [ngClass]="{'is-invalid': !inlineEditHandler.inputValidator(item.value, inlineControlType.CommissionAmount, inlineEditHandler.value())}"
+                        appInputPasteFloatModel
+                        >
+                    </label>
+                  }
+                </td>
+              }
               <td class="text-nowrap">
                 <app-core-edit-delete-panel [item]="item" (deleteClick)="onDeleteClick(item.value)" (editClick)="onEditClick(item.value)"></app-core-edit-delete-panel>
               </td>
@@ -206,9 +209,9 @@
         </tbody>
       </table>
     </div>
-    @if (displayOptions.showSummary()) {
+    @if (displayOptions().showSummary()) {
       <div class="col-xl-3 col-lg-4">
-        <app-payments-summary [selectedItems]="selectedPayments()"></app-payments-summary>
+        <app-payments-summary [selectedItems]="selectedPayments()" [paymentsTableDisplayOptions]="displayOptions()"></app-payments-summary>
       </div>
     }
   </div>

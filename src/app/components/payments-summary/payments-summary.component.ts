@@ -5,6 +5,7 @@ import {PaymentGroup} from '../../model/payment-group';
 import {AmountPipe} from "../../core/pipes/amount.pipe";
 import {NgStyle} from "@angular/common";
 import {PAYMENT_REFS_READ_REPOSITORY} from "../../repository/repository-tokens";
+import {PaymentsTableDisplayOptions} from "../payments-table-display-options/payments-table-display-options.component";
 
 @Component({
   selector: 'app-payments-summary',
@@ -19,6 +20,7 @@ export class PaymentsSummaryComponent {
   private readRepository = inject(PAYMENT_REFS_READ_REPOSITORY)
 
   selectedItems = input<Array<Payment>>([]);
+  paymentsTableDisplayOptions = input.required<PaymentsTableDisplayOptions>();
 
   private summary = computed(() => {
     const payments = this.readRepository.dataSignal()[0]?.paymentList ?? [];

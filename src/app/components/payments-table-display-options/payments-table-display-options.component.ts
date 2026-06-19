@@ -1,4 +1,4 @@
-import {Component, input, signal} from '@angular/core';
+import {Component, effect, input, Signal, signal} from '@angular/core';
 import {BsDropdownModule} from "ngx-bootstrap/dropdown";
 import {DisplayIconElementComponent} from "../../core/components/display-icon-element/display-icon-element.component";
 import {FormsModule} from "@angular/forms";
@@ -11,6 +11,7 @@ export class PaymentsTableDisplayOptions {
   readonly compactTable = signal(false);
   readonly showTrend = signal(true);
   readonly showId = signal(true);
+  readonly showCommission = signal(true);
   readonly showSummary = signal(true);
   readonly displayColors = signal(true);
 
@@ -28,6 +29,7 @@ export class PaymentsTableDisplayOptions {
       compactTable: this.compactTable(),
       showTrend: this.showTrend(),
       showId: this.showId(),
+      showCommission: this.showCommission(),
       showSummary: this.showSummary(),
       displayColors: this.displayColors(),
     }));
@@ -39,6 +41,7 @@ export class PaymentsTableDisplayOptions {
     this.compactTable.set(false);
     this.showTrend.set(true);
     this.showId.set(true);
+    this.showCommission.set(true);
     this.showSummary.set(true);
     this.displayColors.set(true);
   }
@@ -55,9 +58,11 @@ export class PaymentsTableDisplayOptions {
         this.compactTable.set(localObject.compactTable);
         this.showTrend.set(localObject.showTrend);
         this.showId.set(localObject.showId);
+        this.showCommission.set(localObject.showCommission);
         this.showSummary.set(localObject.showSummary);
         this.displayColors.set(localObject.displayColors);
       } catch (e) {
+        console.error('Fall back to reading default display optoins', e);
         this.loadDefaults();
       }
     }
@@ -76,4 +81,12 @@ export class PaymentsTableDisplayOptions {
 })
 export class PaymentsTableDisplayOptionsComponent {
   paymentsTableDisplayOptions = input.required<PaymentsTableDisplayOptions>();
+
+  constructor() {
+    // Persist whenever any option changes. saveToLocalStorage() reads every
+    // option signal, so this effect tracks them all and re-runs on each toggle.
+    effect(() => {
+      this.paymentsTableDisplayOptions().saveToLocalStorage();
+    });
+  }
 }

@@ -11,17 +11,23 @@
     <div class="d-flex">
       <div class="flex-grow-1">
         <div class="text-right">Payment</div>
-        <div class="text-right">Commission</div>
+        @if (this.paymentsTableDisplayOptions().showCommission()) {
+          <div class="text-right">Commission</div>
+        }
       </div>
       @if (hasSelection()) {
         <div class="m2-2 text-end">
           <div><strong>{{selectedSummary().paymentAmount | amount}} / </strong></div>
-          <div><strong>{{selectedSummary().commissionAmount | amount}} / </strong></div>
+          @if (this.paymentsTableDisplayOptions().showCommission()) {
+            <div><strong>{{selectedSummary().commissionAmount | amount}} / </strong></div>
+          }
         </div>
       }
       <div class="ms-2 text-end">
         <div><strong>{{totalSummary().paymentAmount | amount}}</strong></div>
-        <div><strong>{{totalSummary().commissionAmount | amount}}</strong></div>
+        @if (this.paymentsTableDisplayOptions().showCommission()) {
+          <div><strong>{{totalSummary().commissionAmount | amount}}</strong></div>
+        }
       </div>
     </div>
   </div>
@@ -37,7 +43,8 @@
         <thead>
           <tr>
             <th scope="col" class="text-center align-middle">Group</th>
-            <th scope="col" class="text-center">Payment / Commission</th>
+            <th scope="col" class="text-center">Payment@if (this.paymentsTableDisplayOptions().showCommission()) { / Commission}</th>
+
           </tr>
         </thead>
         <tbody>
@@ -46,7 +53,7 @@
               <td class="text-start">{{item.paymentGroup.name}}</td>
               <td>
                 <div class="text-start">{{item.paymentAmount | amount}}</div>
-                @if (item.commissionAmount) {
+                @if (this.paymentsTableDisplayOptions().showCommission() && item.commissionAmount) {
                   <div class="text-end"><small>{{item.commissionAmount | amount}}</small></div>
                 }
               </td>

@@ -81,7 +81,7 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   colorSchemeType = ColorScheme;
   inlineEditHandler = new InlineEditHandler<Payment>();
 
-  displayOptions = PaymentsTableDisplayOptions.fromLocalStorage();
+  displayOptions = signal(PaymentsTableDisplayOptions.fromLocalStorage());
 
   private inlineControls = viewChildren<ElementRef>('inlineControl');
 
@@ -198,6 +198,7 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
         controls[0].nativeElement.focus();
       }
     });
+
 
     this.inlineEditHandler.inputValidator = (item, controlName, value) => {
       if (controlName === InlineControl.ProductCounter) {
@@ -357,10 +358,6 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     this.duplicateRepository.postFormData(new HttpParams()
       .append('paymentObjectId', this.paymentObjectId()!.toString(10))
       .append('paymentPeriodDate', this.convertedPeriodDate()!.toJSON()));
-  }
-
-  displayOptionsChanged(): void {
-    this.displayOptions.saveToLocalStorage();
   }
 
   pervPeriodCounterLabelClick(event: any, productCounter: number): void {
