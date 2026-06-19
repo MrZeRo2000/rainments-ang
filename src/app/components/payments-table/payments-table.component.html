@@ -39,7 +39,7 @@
           </tr>
         </thead>
         <tbody>
-          @for (item of selectableItems(); track item) {
+          @for (item of selectableItems(); track item.value.id) {
             <tr
               (click)="tableRowClick(item)"
               [ngClass]="{'table-active': item.isSelected}"
@@ -224,7 +224,7 @@
         formControlName="paymentGroup"
         id="paymentGroup"
         >
-        @for (item of paymentGroups(); track item) {
+        @for (item of paymentGroups(); track item.id) {
           <option value="{{item.id}}">{{item.name}}</option>
         }
       </select>
@@ -236,7 +236,7 @@
             [ngClass]="{'is-invalid': editForm.controls.product.errors && editStateSignal().submitted}"
             formControlName="product"
             id="product">
-            @for (item of products(); track item) {
+            @for (item of products(); track item.id) {
               <option value="{{item.id}}">{{item.name}}</option>
             }
           </select>

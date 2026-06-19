@@ -26,6 +26,8 @@ function mapPaymentRefs(raw: PaymentRefs): PaymentRefs {
   if (prevPeriodPayments) {
     (refs.paymentList ?? []).forEach(payment => {
       payment.prevPeriodPayment = prevPeriodPayments.find(value => value.product.id === payment.product.id);
+      // title for delete
+      payment["name"] = `${payment.paymentGroup?.name} \u2192 ${payment.paymentObject.name}`;
     });
     prevPeriodPayments.forEach(prev => refs.prevProductPayments.set(prev.product.id, prev));
   }
@@ -139,7 +141,11 @@ export const PAYMENT_REFS_READ_REPOSITORY = new InjectionToken<ReadRepository<Pa
   'PAYMENT_REFS_READ_REPOSITORY',
   {
     providedIn: 'root',
-    factory: () => new ReadRepository(inject(RestDataSource), inject(MessagesService), 'payments:refs', mapPaymentRefs)
+    factory: () => new ReadRepository(
+      inject(RestDataSource),
+      inject(MessagesService),
+      'payments:refs',
+      mapPaymentRefs)
   });
 
 export const PAYMENT_CRUD_REPOSITORY = new InjectionToken<CrudRepository<Payment>>(

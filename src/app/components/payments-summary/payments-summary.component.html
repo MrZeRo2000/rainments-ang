@@ -41,7 +41,7 @@
           </tr>
         </thead>
         <tbody>
-          @for (item of groupSummary(); track item) {
+          @for (item of groupSummary(); track item.paymentGroup.id) {
             <tr [ngStyle]="{'--bs-table-bg': item.paymentGroup.color}">
               <td class="text-start">{{item.paymentGroup.name}}</td>
               <td>

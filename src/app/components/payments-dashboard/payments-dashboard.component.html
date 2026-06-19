@@ -4,7 +4,7 @@
   <app-message></app-message>
 
   <div class="row justify-content-center">
-    @for (item of readRepository.dataSignal(); track item) {
+    @for (item of readRepository.dataSignal(); track item.paymentObject.id) {
       <div class="col-xl-3 col-lg-4 col-md-6 mb-2">
         <div class="card">
           <div class="card-body">
