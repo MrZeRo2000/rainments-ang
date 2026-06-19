@@ -93,7 +93,9 @@ export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> {
     super(inject(PAYMENT_REP_READ_REPOSITORY));
 
     const dateEnd = DateGenerator.getCurrentMonthStartDate();
-    const dateStart = new Date(dateEnd.getFullYear() - 1, 0, 1);
+    //const dateStart = new Date(dateEnd.getFullYear() - 1, 0, 1);
+    let dateStart = new Date(dateEnd)
+    dateStart.setMonth(dateEnd.getMonth() - 13);
     this.dateRange.set([dateStart, dateEnd]);
 
     const currentDate = new Date();
