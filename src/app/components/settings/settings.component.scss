@@ -1,0 +1,31 @@
+// Docs-site style settings layout (like material.angular.dev): a left nav list
+// of selectable items, a vertical split line, then the content on the right.
+// Stacks on small screens.
+.settings-layout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+}
+
+.settings-nav {
+  flex: 1 1 200px;
+  max-width: 240px;
+  padding-right: 1rem;
+  border-right: 1px solid var(--mat-sys-outline-variant); // vertical split line
+
+  // Rounded (pill) nav items, like the material.angular.dev docs nav.
+  --mat-list-list-item-container-shape: var(--mat-sys-corner-full);
+}
+
+.settings-content {
+  flex: 999 1 320px;
+  min-width: 0;
+  padding-left: 1rem;
+}
+
+// Selected nav item — highlight via Material's list tokens (no !important).
+.settings-nav .selected-list-item {
+  --mat-list-list-item-container-color: var(--mat-sys-secondary-container);
+  --mat-list-list-item-label-text-color: var(--mat-sys-on-secondary-container);
+  --mat-list-list-item-hover-label-text-color: var(--mat-sys-on-secondary-container);
+}

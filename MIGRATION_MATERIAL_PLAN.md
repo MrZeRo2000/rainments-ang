@@ -435,6 +435,18 @@ grep -rhoE 'class="[^"]*"' src --include="*.html" \
   `fa-icon`s with `mat-icon`. Audited already-migrated components:
   `loading-spinner-element` already FA-free ✓; `add-panel` still had a FA plus
   icon → fixed (now `<mat-icon>add</mat-icon>`, fully FA-free). Build ✓, tests ✓.
+- 2026-06-22 — **`components/settings` migrated off Bootstrap.** `nav nav-pills
+  flex-column` → docs-site-style nav: `mat-action-list` + `<button mat-list-item>`
+  (user wanted BUTTONS, not `<a>`). Bootstrap grid `row`/`col-md-*`/
+  `container-fluid` → flexbox (`.settings-layout`/`.settings-nav`/
+  `.settings-content`, wraps on small screens). Vertical split line via
+  `border-right: 1px solid var(--mat-sys-outline-variant)` on the nav. Selected
+  item highlighted with list tokens (`--mat-list-list-item-container-color:
+  secondary-container` + label-text-color), NO `!important`. Dropped `NgClass`;
+  added `MatListModule`. No FA here. Spec keeps `AlertModule`/`ModalModule`/
+  `FontAwesomeIconsModule` (still needed by child message/tables). Build ✓, tests
+  ✓ (84/2). NOTE: `[activated]` highlight is scoped to `mat-nav-list` only — for
+  `mat-action-list` buttons, style the selected state yourself (via list tokens).
 - 2026-06-22 — **`core/components/edit-delete-panel` migrated & FA-free**
   (Phase 5/5b). `<a class="btn btn-sm"><fa-icon trash/edit>` → two
   `<button matIconButton><mat-icon>delete/edit</mat-icon></button>` (matches

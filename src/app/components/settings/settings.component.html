@@ -1,38 +1,27 @@
+<div class="settings-layout">
+  <mat-action-list class="settings-nav">
+    @for (item of SettingItemEnumType | enumStringValue; track item) {
+      <button mat-list-item
+              [class.selected-list-item]="item === selectedItem()"
+              (click)="onItemClick($event, item)">{{item}}</button>
+    }
+  </mat-action-list>
 
-<div class="row">
-  <div class="col-md-2 col-sm-12">
-
-    <ul class="nav nav-pills flex-column">
-      @for (item of SettingItemEnumType | enumStringValue; track item) {
-        <li class="nav-item">
-          <a class="nav-link" href="#" [ngClass]="{'active': item === selectedItem()}" (click)="onItemClick($event, item)">{{item}}</a>
-        </li>
-      }
-    </ul>
-
-  </div>
-
-  <div class="col-md-10 col-sm-12">
-
+  <div class="settings-content">
     @if (selectedItem() !== SettingItemEnumType.DATA_MANAGEMENT) {
       <app-message></app-message>
     }
-
-    <div class="container-fluid">
-      @if (selectedItem() === SettingItemEnumType.PAYMENT_OBJECTS) {
-        <app-payment-objects-table></app-payment-objects-table>
-      }
-      @if (selectedItem() === SettingItemEnumType.PAYMENT_GROUPS) {
-        <app-payment-groups-table></app-payment-groups-table>
-      }
-      @if (selectedItem() === SettingItemEnumType.PRODUCTS) {
-        <app-products-table></app-products-table>
-      }
-      @if (selectedItem() === SettingItemEnumType.DATA_MANAGEMENT) {
-        <app-data-management></app-data-management>
-      }
-    </div>
+    @if (selectedItem() === SettingItemEnumType.PAYMENT_OBJECTS) {
+      <app-payment-objects-table></app-payment-objects-table>
+    }
+    @if (selectedItem() === SettingItemEnumType.PAYMENT_GROUPS) {
+      <app-payment-groups-table></app-payment-groups-table>
+    }
+    @if (selectedItem() === SettingItemEnumType.PRODUCTS) {
+      <app-products-table></app-products-table>
+    }
+    @if (selectedItem() === SettingItemEnumType.DATA_MANAGEMENT) {
+      <app-data-management></app-data-management>
+    }
   </div>
-
 </div>
-
