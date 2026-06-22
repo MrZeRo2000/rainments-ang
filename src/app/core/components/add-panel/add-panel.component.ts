@@ -1,11 +1,13 @@
 import {Component, output} from '@angular/core';
-import {FaIconComponent} from "@fortawesome/angular-fontawesome";
+import {MatButtonModule} from "@angular/material/button";
+import {MatIconModule} from "@angular/material/icon";
 
 @Component({
   selector: 'app-core-add-panel',
   templateUrl: './add-panel.component.html',
   imports: [
-    FaIconComponent
+    MatButtonModule,
+    MatIconModule
   ],
   styleUrls: ['./add-panel.component.scss']
 })

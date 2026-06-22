@@ -1,7 +1,6 @@
-<a class="btn btn-sm" (click)="onDeleteClick(item())">
-  <fa-icon [icon]="['fas', 'trash']"></fa-icon>
-</a>
-<a class="btn btn-sm" (click)="onEditClick(item())">
-  <fa-icon [icon]="['fas', 'edit']"></fa-icon>
-</a>
-
+<button matIconButton (click)="onDeleteClick(item())" aria-label="Delete">
+  <mat-icon>delete</mat-icon>
+</button>
+<button matIconButton (click)="onEditClick(item())" aria-label="Edit">
+  <mat-icon>edit</mat-icon>
+</button>

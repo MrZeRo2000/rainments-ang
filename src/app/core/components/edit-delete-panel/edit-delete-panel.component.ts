@@ -1,11 +1,13 @@
 import {Component, input, output} from '@angular/core';
-import {FaIconComponent} from "@fortawesome/angular-fontawesome";
+import {MatButtonModule} from "@angular/material/button";
+import {MatIconModule} from "@angular/material/icon";
 
 @Component({
   selector: 'app-core-edit-delete-panel',
   templateUrl: './edit-delete-panel.component.html',
   imports: [
-    FaIconComponent
+    MatButtonModule,
+    MatIconModule
   ],
   styleUrls: ['./edit-delete-panel.component.scss']
 })

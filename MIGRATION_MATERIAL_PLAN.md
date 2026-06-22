@@ -1,6 +1,6 @@
-# Migration Plan: Bootstrap + ngx-bootstrap → Angular Material
+# Migration Plan: Bootstrap + ngx-bootstrap + FontAwesome → Angular Material
 
-> **Status: PLANNING — no code changed yet.**
+> **Status: IN PROGRESS.**
 > This is a living document. Update the **Progress Log** and per-component
 > checkboxes at the end of every working session. Read the
 > **Instructions for future sessions** section before starting any work.
@@ -9,18 +9,22 @@
 
 ## 1. Goal & Scope
 
-Fully remove **`bootstrap`** (CSS + `bootstrap.bundle.min.js`) and
-**`ngx-bootstrap`** from the project and replace all of their behaviour and
-styling with **Angular Material** (`@angular/material`, `@angular/cdk`).
+Fully remove **`bootstrap`** (CSS + `bootstrap.bundle.min.js`),
+**`ngx-bootstrap`**, AND **FontAwesome** (`@fortawesome/*`) from the project and
+replace all of their behaviour, styling, and icons with **Angular Material**
+(`@angular/material`, `@angular/cdk`) — icons via **`mat-icon`** (Material Icons
+font, already linked in `index.html` from Phase 0).
+
+> **Scope update (2026-06-22):** FontAwesome removal was added to the target at
+> the user's request. Originally FA was out of scope. **Rule going forward: when
+> you migrate a component, also replace ALL its `fa-icon` usages with
+> `mat-icon`** — do not leave a migrated component depending on FontAwesome.
+> (`add-panel` was briefly migrated with its FA plus icon retained, then fixed.)
 
 Done step by step, **component by component**. The app must build, lint, and
 pass tests after each component is migrated (no big-bang rewrite).
 
 ### Out of scope (do NOT change as part of this migration)
-- **FontAwesome icons** (`@fortawesome/*`). They are orthogonal to the
-  Bootstrap→Material move. Keep them. (A later, separate effort may swap them
-  for `mat-icon`.) Note: Material components do not *require* `mat-icon`; FA
-  icons can live inside Material buttons/menus fine.
 - **D3 charts** (`reports-chart-date-totals`). Pure SVG, no Bootstrap.
 - The signal/zoneless architecture — it is already done. Keep it. Do not
   reintroduce Zone.js. (See related effort: signal + zoneless migration.)
@@ -87,6 +91,51 @@ plus custom rules that reference Bootstrap SCSS vars (`$table-border-color`,
 `.table`, `.breadcrumb`, `.jumbotron`, `.tooltip-inner`, `.badge-*`, link
 underlines, label margins. `angular.json` injects
 `node_modules/bootstrap/dist/js/bootstrap.bundle.min.js`.
+
+### 2c. FontAwesome usage (icons → `mat-icon`)
+
+Packages: `@fortawesome/angular-fontawesome`, `@fortawesome/fontawesome-svg-core`,
+`@fortawesome/free-solid-svg-icons`. Icons are registered centrally in
+`src/app/font-awesome-icons/font-awesome-icons.module.ts` (a `FaIconLibrary`),
+which is provided app-wide via `importProvidersFrom(FontAwesomeIconsModule)` in
+`app.config.ts`. Each component imports `FaIconComponent` and uses `<fa-icon>`.
+
+**Components still using `<fa-icon>` (12; verify before each migration):**
+`backup-database-button`, `payments-dashboard`, `payments-date-selection`,
+`payments-selectable-panel`, `payments-table`, `colored-trend-label`,
+`display-icon-element`, `drag-grip`, `drop-down-more-menu`, `edit-delete-panel`,
+`report-nav`. (DONE/FA-free: `loading-spinner-element`, `add-panel`.)
+
+**Icon name mapping (FA solid → Material Icons ligature).** Use as a default;
+adjust per visual taste:
+
+| FontAwesome | `mat-icon` | | FontAwesome | `mat-icon` |
+|---|---|---|---|---|
+| `faPlus` | `add` | | `faEye` | `visibility` |
+| `faPlusCircle` | `add_circle` | | `faEdit`/`faPen` | `edit` |
+| `faTrash` | `delete` | | `faClone` | `content_copy` |
+| `faSave` | `save` | | `faSearch` | `search` |
+| `faFileExport` | `file_download` | | `faCog` | `settings` |
+| `faLock` | `lock` | | `faChartLine` | `show_chart` |
+| `faSignInAlt` | `login` | | `faEllipsisH` | `more_horiz` |
+| `faSignOutAlt` | `logout` | | `faGripVertical` | `drag_indicator` |
+| `faTimes`/`faWindowClose` | `close` | | `faExclamation` | `priority_high` |
+| `faCheckCircle` | `check_circle` | | `faCheckDouble` | `done_all` |
+| `faAngleLeft` | `chevron_left` | | `faCaretUp` | `arrow_drop_up` |
+| `faAngleRight` | `chevron_right` | | `faCaretDown` | `arrow_drop_down` |
+| `faEquals` | `drag_handle` | | `faSpinner` | (→ `mat-spinner`, done) |
+
+Notes:
+- `colored-trend-label` switches icon by sign (`caret-up`/`caret-down`/`equals`)
+  → conditional `<mat-icon>` with `arrow_drop_up`/`arrow_drop_down`/`drag_handle`
+  (or consider `trending_up`/`trending_down`/`trending_flat` for clearer trend
+  semantics).
+- FA `transform="grow-N"`/`[fixedWidth]` sizing → use `mat-icon` font-size via
+  CSS (`mat-icon { font-size/width/height }`) where size matters.
+- Icon-inside-Material-button: `mat-icon` is styled automatically inside
+  `matButton`/`matIconButton`.
+- **Material Icons font is already linked** in `index.html` (Phase 0), so
+  ligatures like `<mat-icon>add</mat-icon>` render with no extra setup.
 
 ---
 
@@ -257,14 +306,27 @@ ngx-bootstrap JS dependency, just classes.
 - [ ] **Grid** (`row`/`col-*`/`container*`) → flexbox/CSS grid via
       `_utilities.scss`.
 
+### Phase 5b — FontAwesome icons → `mat-icon`
+Done opportunistically as part of each component migration (see the §1 rule:
+never leave a migrated component on FA). This phase is the explicit sweep to
+catch anything left, then remove FA entirely.
+- [ ] Confirm every `<fa-icon>` in §2c's component list has been replaced with
+      `<mat-icon>` (grep `fa-icon`/`FaIcon` → zero in components).
+- [ ] Remove `importProvidersFrom(FontAwesomeIconsModule)` from `app.config.ts`
+      (keep `RepositoryModule`).
+- [ ] Delete `src/app/font-awesome-icons/font-awesome-icons.module.ts`.
+- [ ] `npm uninstall @fortawesome/angular-fontawesome @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons`.
+- [ ] Remove `$fa-font-path` from `src/_variables.scss`.
+
 ### Phase 6 — Teardown
-- [ ] Grep the repo: **zero** matches for `ngx-bootstrap` and for Bootstrap-only
-      classes (`btn`, `form-control`, `row`, `col-`, `navbar`, …) outside the
-      utility shim. Use the verification grep in §6.
+- [ ] Grep the repo: **zero** matches for `ngx-bootstrap`, `@fortawesome`/
+      `fa-icon`, and Bootstrap-only classes (`btn`, `form-control`, `row`,
+      `col-`, `navbar`, …) outside the utility shim. Use the verification grep
+      in §6.
 - [ ] Remove from `styles.scss`: `@import bootstrap`, any Bootstrap-var usages.
 - [ ] Remove `bootstrap.bundle.min.js` from `angular.json` (should already be
       gone after Phase 2).
-- [ ] `npm uninstall bootstrap ngx-bootstrap`.
+- [ ] `npm uninstall bootstrap ngx-bootstrap` (FA already removed in Phase 5b).
 - [ ] Review `src/_variables.scss` — drop Bootstrap-derived vars.
 - [ ] Clean `src/test-setup.ts` comment about "ngx-bootstrap modules that inject
       AnimationBuilder" (noop animations still needed for Material though — keep
@@ -367,6 +429,40 @@ grep -rhoE 'class="[^"]*"' src --include="*.html" \
 
 > Newest entry on top. Format: `YYYY-MM-DD — what changed — build/lint/test status`.
 
+- 2026-06-22 — **SCOPE EXPANDED: remove FontAwesome too** (user request). Plan
+  retitled; §1 goal + §2c FA inventory/icon-map + Phase 5b (FA→mat-icon sweep &
+  uninstall) added. New rule: every component migration must also replace its
+  `fa-icon`s with `mat-icon`. Audited already-migrated components:
+  `loading-spinner-element` already FA-free ✓; `add-panel` still had a FA plus
+  icon → fixed (now `<mat-icon>add</mat-icon>`, fully FA-free). Build ✓, tests ✓.
+- 2026-06-22 — **`core/components/edit-delete-panel` migrated & FA-free**
+  (Phase 5/5b). `<a class="btn btn-sm"><fa-icon trash/edit>` → two
+  `<button matIconButton><mat-icon>delete/edit</mat-icon></button>` (matches
+  violetnote-ang's edit/delete pattern). To honour the user's "same height / no
+  row explosion" requirement, kept them compact via the Material size token
+  (NOT hand CSS): `@include mat.icon-button-overrides((state-layer-size: 32px))`
+  scoped to `:host` (stock is 40px → would grow rows; 32px ≈ old btn-sm). Used by
+  4 tables; standalone, no spec. Build ✓, tests ✓ (84/2). PATTERN: shrink Material
+  components with their density/size tokens (`*-overrides`).
+  GOTCHA: the icon-button `icon-size` token resizes the icon BOX but not the
+  glyph — `mat-icon` draws the glyph via `font-size`. To actually shrink the
+  glyph, user OK'd a small targeted rule: `:host mat-icon { font-size/width/
+  height/line-height: 20px }`. So: button size via token, glyph size via a
+  font-size rule on mat-icon.
+- 2026-06-22 — **`core/components/add-panel` migrated & FA-free** (Phase 5
+  button, done early). FINAL: `<a class="btn btn-outline-primary"><fa-icon plus>`
+  → `<button matMiniFab><mat-icon>add</mat-icon>`, **empty scss, no custom
+  styling**. Dropped dead `text-left` class. Used by 4 tables; standalone, no
+  spec. Build ✓, tests ✓ (84/2). First Bootstrap `.btn` removal.
+  ROOT CAUSE of the icon being off-centre: `matButton`/`matButton="outlined"` is
+  a TEXT button — it reserves a horizontal margin beside `mat-icon` for a label,
+  so an icon-only text button is never horizontally centred. FABs / icon buttons
+  don't. Matched the reference project `violetnote-ang`, whose add button is
+  exactly `<button matMiniFab><mat-icon>add</mat-icon></button>` (no Bootstrap,
+  no custom CSS, perfectly centred). LESSON: for an icon-only button use
+  `matMiniFab` or `matIconButton`, never `matButton`; and don't add per-component
+  CSS — copy the stock pattern from violetnote-ang. (Earlier detours — outlined
+  text button, then matIconButton + border + flex-centering — were reverted.)
 - 2026-06-22 — **Grayscale theme set.** The app's Bootstrap `$primary` is
   `dimgray (#696969)` (see `src/_variables.scss`), so the default azure/blue
   Material palette looked wrong. Generated grayscale M3 palettes via

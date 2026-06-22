@@ -1,0 +1,17 @@
+@use '@angular/material' as mat;
+
+// Stock matIconButton is 40px tall, which would grow the table rows these
+// buttons live in. Use Material's own size token to keep them compact
+// (≈ the old btn-sm height) so row height stays the same.
+:host {
+  @include mat.icon-button-overrides((
+    state-layer-size: 36px,   // compact button (≈ old btn-sm height)
+  ));
+}
+
+// The icon-size token sizes the icon box and centres it, but mat-icon draws the
+// glyph via font-size — which the token does not set. Shrink only the glyph here
+// (size/line-height matched to the 20px box so it stays centred).
+:host mat-icon {
+  font-size: 18px;
+}
