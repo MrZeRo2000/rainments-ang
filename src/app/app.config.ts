@@ -2,6 +2,7 @@ import { ApplicationConfig, importProvidersFrom, provideBrowserGlobalErrorListen
 import { provideRouter, withHashLocation } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 import { routes } from './app.routes';
 import { RestUrlEnv } from './config/configuration';
@@ -15,6 +16,10 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withHashLocation()),
     provideAnimations(),
     provideHttpClient(withInterceptorsFromDi()),
+    // Material date adapter — wired now (Phase 0), first consumed by the
+    // reports-master date range picker in Phase 4. Native adapter keeps the
+    // existing `Date` objects; DD.MM.YYYY display format is configured in Phase 4.
+    provideNativeDateAdapter(),
     RestUrlEnv,
     // ngx-bootstrap 21.x removed forRoot(): its services are providedIn 'root'
     // and its directives are imported per-component, so no module registration

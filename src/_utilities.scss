@@ -1,0 +1,9 @@
+// Utility shim for the Bootstrap -> Material migration.
+//
+// PURPOSE: when Bootstrap is removed (Phase 6), the handful of Bootstrap utility
+// classes the app actually relies on (d-flex, spacing, text-nowrap, w-*, ...)
+// will be reimplemented here so templates barely change.
+//
+// Phase 0: intentionally EMPTY and NOT imported anywhere. Bootstrap still
+// provides these utilities. Populate this file in Phase 5 and import it from
+// styles.scss only when Bootstrap's utilities are being retired.

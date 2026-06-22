@@ -1,7 +1,25 @@
+@use '@angular/material' as mat;
+
   /* You can add global styles to this file, and also import other style files */
 @import 'variables';
 @import 'node_modules/bootstrap/scss/bootstrap';
 @import 'node_modules/ngx-bootstrap/datepicker/bs-datepicker.scss';
+
+// --- Angular Material theme (Phase 0 of Bootstrap -> Material migration) ---
+// Material 3 token theme. Coexists with Bootstrap: Material styles target
+// mat-*/.mat-*/.cdk-* selectors and CSS custom properties (--mat-sys-*), which
+// do not overlap Bootstrap's .btn/.row/.form-control/etc. Bootstrap stays the
+// source of truth for layout/typography until later phases remove it.
+html {
+  color-scheme: light;
+  @include mat.theme((
+    color: (
+      primary: mat.$azure-palette,
+      tertiary: mat.$blue-palette,
+    ),
+    density: 0,
+  ));
+}
 
 .jumbotron {
   padding: 15px 15px !important;
