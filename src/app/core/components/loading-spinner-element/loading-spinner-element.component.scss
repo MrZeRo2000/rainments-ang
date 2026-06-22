@@ -1,0 +1,6 @@
+// mat-spinner is display:block by default; keep it inline next to the loading
+// message text (loading-progress renders "{{message}}<spinner>" on one line).
+:host {
+  display: inline-block;
+  vertical-align: middle;
+}

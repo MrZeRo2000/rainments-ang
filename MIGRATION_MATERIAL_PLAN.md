@@ -190,9 +190,13 @@ Order chosen so shared pieces land before their consumers.
 - [ ] **`payments-table` tooltip** — swap `TooltipModule` → `MatTooltip`
       (`matTooltip` + `matTooltipDisabled`). (Modal in this file handled in
       Phase 3.)
-- [ ] **`loading-spinner-element` / `loading-progress`** — currently FA spinner.
-      Optional: swap to `MatProgressSpinner`/`MatProgressBar`. Low priority;
-      decide if worth it.
+- [x] **`loading-spinner-element`** — DONE (2026-06-22). FA spinner → `mat-spinner`
+      (`MatProgressSpinnerModule`, `[diameter]="32"`, `:host{display:inline-block}`
+      to stay inline next to the loading message). No spec existed. Build ✓ /
+      tests ✓ (84/2). NOTE: `faSpinner` in `font-awesome-icons.module.ts` is now
+      unused (this was its only consumer) — optional cleanup, left in place.
+- [ ] **`loading-progress`** — pure wrapper around the spinner + message; no
+      Bootstrap/ngx-bootstrap. No change needed unless we restyle later.
 
 ### Phase 2 — Dropdowns / menus
 - [ ] **`core/components/drop-down-more-menu`** — replace native Bootstrap
@@ -363,6 +367,22 @@ grep -rhoE 'class="[^"]*"' src --include="*.html" \
 
 > Newest entry on top. Format: `YYYY-MM-DD — what changed — build/lint/test status`.
 
+- 2026-06-22 — **Grayscale theme set.** The app's Bootstrap `$primary` is
+  `dimgray (#696969)` (see `src/_variables.scss`), so the default azure/blue
+  Material palette looked wrong. Generated grayscale M3 palettes via
+  `ng generate @angular/material:theme-color` (seeds: primary #696969, secondary
+  #808080, tertiary #909090, neutral/neutral-variant #7a7a7a; error kept red for
+  a11y) → `src/_theme-colors.scss`. Wired into `styles.scss` via
+  `@use './theme-colors'`. Compiled `--mat-sys-primary: #5e5e5e` (gray) ✓. The
+  spinner now renders gray. Build ✓, tests ✓ (84/2; one flaky fail on first run,
+  green on clean re-run). NOTE: the generator's `--directory` arg is buggy here —
+  it created `src_theme-colors.scss` at root; moved it to `src/_theme-colors.scss`.
+- 2026-06-22 — **Phase 1 (warm-up) `loading-spinner-element` migrated.** FA
+  `fa-icon` spinner → Angular Material `mat-spinner`. First real `mat-*`
+  component rendered — proves the Material pipeline end to end. Build ✓, tests ✓
+  (84/2). FA→Material change (does not shrink the Bootstrap surface yet).
+  `faSpinner` FA icon now unused (optional cleanup). **Next: tooltip → MatTooltip
+  in payments-table — the first ngx-bootstrap module removal.**
 - 2026-06-22 — **Phase 0 EXECUTED.** Installed `@angular/material@21.2.2`; added
   M3 `mat.theme` to `styles.scss`, Material fonts to `index.html`,
   `provideNativeDateAdapter()` to `app.config.ts`; created empty
