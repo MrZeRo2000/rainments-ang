@@ -19,6 +19,7 @@ import {SaveDialogPanelComponent} from "../../core/components/save-dialog-panel/
 import {LoadingProgressComponent} from "../../core/components/loading-progress/loading-progress.component";
 import {CommonSimpleEditableTableComponent} from "../../core/table/common-editable-table-component";
 import {PAYMENT_OBJECT_CRUD_REPOSITORY, PAYMENT_OBJECT_READ_REPOSITORY} from "../../repository/repository-tokens";
+import {MatMenuItem} from "@angular/material/menu";
 
 @Component({
   selector: 'app-payment-objects-table',
@@ -35,7 +36,8 @@ import {PAYMENT_OBJECT_CRUD_REPOSITORY, PAYMENT_OBJECT_READ_REPOSITORY} from "..
     EditDeletePanelComponent,
     ReactiveFormsModule,
     SaveDialogPanelComponent,
-    LoadingProgressComponent
+    LoadingProgressComponent,
+    MatMenuItem
   ],
   styleUrls: ['./payment-objects-table.component.scss']
 })

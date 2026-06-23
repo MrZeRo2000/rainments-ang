@@ -435,6 +435,21 @@ grep -rhoE 'class="[^"]*"' src --include="*.html" \
   `fa-icon`s with `mat-icon`. Audited already-migrated components:
   `loading-spinner-element` already FA-free ✓; `add-panel` still had a FA plus
   icon → fixed (now `<mat-icon>add</mat-icon>`, fully FA-free). Build ✓, tests ✓.
+- 2026-06-23 — **`core/components/drop-down-more-menu` migrated** (Phase 2 + FA).
+  Native Bootstrap-JS dropdown (`data-bs-toggle="dropdown"`, `.dropstart`,
+  `.dropdown-menu`, `btn-outline-primary`, `<fa-icon ellipsis-h>`) → `MatMenu`:
+  `<button matIconButton [matMenuTriggerFor]><mat-icon>more_horiz</mat-icon>` +
+  `<mat-menu xPosition="before"><ng-content></ng-content></mat-menu>`. Updated the
+  3 consumers (payment-objects/groups/products tables) projected item from
+  `<a class="dropdown-item" href="#">` → `<button mat-menu-item>` (preventDefault
+  in handler is harmless on a button). Spec: dropped `FontAwesomeIconsModule`.
+  Build ✓, tests ✓ (84/2). NOTE: content double-projection (consumer → this
+  component's ng-content → mat-menu) works; MatMenu's ContentChildren finds the
+  projected mat-menu-items. ⚠ `bootstrap.bundle.min.js` STILL required — found
+  another native-JS user: `backup-database-button` (Bootstrap toast,
+  `data-bs-dismiss`/`data-bs-delay`). Remove the script only after that toast →
+  MatSnackBar. (So angular.json bootstrap JS removal moves from Phase 2 to
+  after backup-database-button.)
 - 2026-06-22 — **`components/settings` migrated off Bootstrap.** `nav nav-pills
   flex-column` → docs-site-style nav: `mat-action-list` + `<button mat-list-item>`
   (user wanted BUTTONS, not `<a>`). Bootstrap grid `row`/`col-md-*`/
