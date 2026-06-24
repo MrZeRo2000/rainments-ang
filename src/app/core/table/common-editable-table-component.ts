@@ -46,7 +46,9 @@ export abstract class CommonEditableTableComponent<R, W
 
   crudDataSignal = toSignal(this.crudData$)
 
-  editingSignal = computed(() => this.readRepository.loadingSignal() || this.editStateSignal())
+  // Hide the table while ANY operation is in flight (read load, create/edit, or
+  // delete) — loadingSignal already covers read + crud loading.
+  editingSignal = computed(() => this.loadingSignal() || this.editStateSignal())
 
   abstract editForm: FormGroup;
 
@@ -110,6 +112,9 @@ export abstract class CommonEditableTableComponent<R, W
         .subscribe(confirmed => {
           if (confirmed) {
             console.log(`Delete PersistData: ${JSON.stringify(item)}`);
+            // Mirror onSave: drive the loading UI (hide table + show progress)
+            // while the delete + reload is in flight.
+            this.crudLoadingSignal.set(true);
             this.crudRepository.execute({type: CrudActionType.Delete, payload: item});
           }
         });
