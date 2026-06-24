@@ -1,0 +1,39 @@
+// Same column proportions as the other tables: ID and Actions fixed-width,
+// Name fills the rest. Fixed flex-basis keeps header and data cells aligned.
+.mat-column-id {
+  flex: 0 0 4rem;
+  padding-left: 0.5rem;
+  justify-content: center;
+}
+
+.mat-column-actions {
+  flex: 0 0 6rem;
+  padding-right: 0.5rem;
+  justify-content: center;
+  text-wrap: nowrap;
+}
+
+// Preview: paint the WHOLE name field (not just the input text area) with the
+// chosen colour, like the pre-migration Bootstrap control. The colour is set on
+// the field via the --name-preview-bg custom property in the template; ::ng-deep
+// reaches MatFormField's internal wrapper to apply it.
+:host ::ng-deep .name-field .mat-mdc-text-field-wrapper {
+  background-color: var(--name-preview-bg);
+}
+
+// Native color picker (Material has no color-field) laid out with its label.
+.group-color-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  input[type="color"] {
+    width: 100%;
+    height: 2.5rem;
+    padding: 0;
+    border: 1px solid var(--mat-sys-outline);
+    border-radius: 4px;
+    background: none;
+    cursor: pointer;
+  }
+}

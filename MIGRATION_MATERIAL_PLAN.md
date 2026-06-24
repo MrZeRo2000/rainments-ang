@@ -435,6 +435,20 @@ grep -rhoE 'class="[^"]*"' src --include="*.html" \
   `fa-icon`s with `mat-icon`. Audited already-migrated components:
   `loading-spinner-element` already FA-free ✓; `add-panel` still had a FA plus
   icon → fixed (now `<mat-icon>add</mat-icon>`, fully FA-free). Build ✓, tests ✓.
+- 2026-06-24 — **`payment-groups-table` migrated** (modeled on payment-objects).
+  Table → flex `mat-table` + CDK DnD; per-row color via `[style.background-color]="row.color"`
+  (replaces Bootstrap `--bs-table-bg`); name cell keeps conditional URL link. Form
+  → `mat-form-field`/`matInput`/`mat-error` + shared `ErrorStateMatcher` + `.app-form`;
+  Preview switch → `mat-slide-toggle` (`[(ngModel)]` standalone); native
+  `<input type="color">` kept (Material has no color field). Two fixes the user
+  flagged: (1) **Preview paints the WHOLE field** not just the input text — set a
+  `--name-preview-bg` custom prop on the field + `::ng-deep .mat-mdc-text-field-wrapper
+  { background-color: var(...) }`. (2) **Color input `#rrggbb` console error** on
+  reset/edit — coerce empty→`#FFFFFF` via `color.valueChanges` subscription
+  (`takeUntilDestroyed`, `setValue(..., {emitEvent:false})`). Also fixed the shared
+  **drag-grip vertical centering** (bare `mat-icon` inheriting Bootstrap line-height
+  1.5 → `:host mat-icon { line-height:1; display:block }`) — affects all tables.
+  Build ✓, tests ✓ (84/2; one color-utils timeout flake on a slow run, green on re-run).
 - 2026-06-24 — **PHASE 3 DONE: ngx-bootstrap modal → MatDialog (all usages).**
   `ConfirmationModalDialogComponent` → MatDialog content: `MAT_DIALOG_DATA`
   (`{message}`), `<h2 mat-dialog-title>` + `<mat-dialog-content [innerHTML]>` +
