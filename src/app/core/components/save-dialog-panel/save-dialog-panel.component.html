@@ -1,9 +1,9 @@
-<div class="input-group mt-2 justify-content-end">
+<div class="save-dialog-actions">
   @if (editState()?.editMode === EditMode.EM_CREATE) {
-    <button type="button" class="btn btn-outline-primary" (click)="onCreate()" [disabled]="loading()">Create</button>
+    <button type="button" matButton="outlined" (click)="onCreate()" [disabled]="loading()">Create</button>
   }
   @if (editState()?.editMode === EditMode.EM_EDIT) {
-    <button type="button" class="btn btn-outline-primary" (click)="onSave()" [disabled]="loading()">Save</button>
+    <button type="button" matButton="outlined" (click)="onSave()" [disabled]="loading()">Save</button>
   }
-  <button type="button" class="btn btn-outline-secondary ms-2" (click)="onCancel()" [disabled]="loading()">Cancel</button>
+  <button type="button" matButton (click)="onCancel()" [disabled]="loading()">Cancel</button>
 </div>

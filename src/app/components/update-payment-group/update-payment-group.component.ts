@@ -4,9 +4,9 @@ import {PaymentObjectGroupRefs} from '../../model/payment-object-group-refs';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MessagesService} from '../../messages/messages.service';
 import {CommonTableComponent} from '../../core/table/common-table-component';
-import {Subject, tap} from 'rxjs';
+import {tap} from 'rxjs';
 import {ConfirmationModalDialogComponent} from '../../core/components/confirmation-modal-dialog/confirmation-modal-dialog.component';
-import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
+import {MatDialog} from '@angular/material/dialog';
 import { HttpParams } from '@angular/common/http';
 import {UpdatePaymentObjectGroupRepository} from '../../repository/update-payment-object-group-repository';
 import {CrudStatus} from '../../core/repository/crud-repository';
@@ -28,13 +28,12 @@ import {PAYMENT_OBJECT_GROUP_REFS_READ_REPOSITORY} from '../../repository/reposi
 })
 export class UpdatePaymentGroupComponent extends CommonTableComponent<PaymentObjectGroupRefs> {
   private fb = inject(FormBuilder)
-  private modalService = inject(BsModalService)
+  private dialog = inject(MatDialog)
   private messagesService = inject(MessagesService)
   private updateRepository = inject(UpdatePaymentObjectGroupRepository)
 
   messageSource = input<string>();
 
-  bsModalRef: BsModalRef;
   formSubmitted = false;
 
   loadingSignal = computed(() => this.readRepository.loadingSignal() || this.updateRepository.loadingSignal());
@@ -75,16 +74,17 @@ export class UpdatePaymentGroupComponent extends CommonTableComponent<PaymentObj
       // Scope this operation's error messages to this component's panel.
       this.updateRepository.setDefaultPersistParams({messageSource: this.messageSource()});
 
-      const resultSubject: Subject<null> = new Subject<null>();
-      resultSubject.subscribe(() => {
-        this.updateRepository.postFormData(new HttpParams()
-          .append('paymentObjectId', this.editForm.controls.paymentObject.value ?? '')
-          .append('paymentGroupFromId', this.editForm.controls.paymentGroupFrom.value ?? '')
-          .append('paymentGroupToId', this.editForm.controls.paymentGroupTo.value ?? ''));
-      });
       const message = '<strong>This operation can not be undone.</strong> <BR>Are you sure?';
-      const initialState  = {message, result: resultSubject};
-      this.bsModalRef = this.modalService.show(ConfirmationModalDialogComponent, {initialState});
+      this.dialog.open(ConfirmationModalDialogComponent, {data: {message}, minWidth: '450px'})
+        .afterClosed()
+        .subscribe(confirmed => {
+          if (confirmed) {
+            this.updateRepository.postFormData(new HttpParams()
+              .append('paymentObjectId', this.editForm.controls.paymentObject.value ?? '')
+              .append('paymentGroupFromId', this.editForm.controls.paymentGroupFrom.value ?? '')
+              .append('paymentGroupToId', this.editForm.controls.paymentGroupTo.value ?? ''));
+          }
+        });
     }
   }
 }

@@ -6,7 +6,6 @@ import {
   Validators
 } from '@angular/forms';
 import {duplicateNamesValidator, precisionValidator} from '../../core/validators/form-validators';
-import {BsModalService} from 'ngx-bootstrap/modal';
 import {DragHandlerService} from '../../core/services/drag-handler.service';
 import {NgClass} from '@angular/common';
 import {CdkDrag, CdkDragHandle, CdkDragPreview, CdkDropList} from '@angular/cdk/drag-drop';
@@ -47,7 +46,7 @@ export class ProductsTableComponent extends CommonSimpleEditableTableComponent<P
   counterPrecisionOptions = ['', '0', '1', '2'];
 
   constructor() {
-    super(Product, inject(BsModalService), inject(PRODUCT_READ_REPOSITORY), inject(PRODUCT_CRUD_REPOSITORY));
+    super(Product, inject(PRODUCT_READ_REPOSITORY), inject(PRODUCT_CRUD_REPOSITORY));
 
     effect(() => this.inputNameElement()?.nativeElement.focus());
   }

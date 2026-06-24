@@ -1,0 +1,35 @@
+@use '@angular/material' as mat;
+
+// Header: close (X) pinned right, "Confirmation" centred in the remaining space
+// (the title span fills the width left of the X and centres its own text).
+.confirm-title {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  margin-bottom: 1rem;
+}
+
+.confirm-title > span {
+  flex: 1;
+  text-align: left;
+}
+
+.confirm-close {
+  line-height: 1; // keep the X glyph centered (Bootstrap line-height coexistence)
+}
+
+// Footer: divider above, buttons right-aligned.
+.confirm-actions {
+  justify-content: flex-end;
+  border-top: 1px solid var(--mat-sys-outline-variant);
+  margin-top: 1rem;
+}
+
+// Destructive action — make the Confirm button red via Material's own button
+// colour tokens (no ad-hoc background hacks).
+.confirm-button {
+  @include mat.button-overrides((
+    filled-container-color: var(--mat-sys-error),
+    filled-label-text-color: var(--mat-sys-on-error),
+  ));
+}

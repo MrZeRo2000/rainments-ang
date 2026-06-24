@@ -1,11 +1,11 @@
-<div class="modal-header">
-  <h4 class="modal-title pull-left">Confirmation</h4>
-  <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+<h4 mat-dialog-title class="confirm-title">
+  <span>Confirmation</span>
+  <button matIconButton mat-dialog-close aria-label="Close" class="confirm-close">
+    <mat-icon>close</mat-icon>
   </button>
-</div>
-<div class="modal-body" [innerHTML]="message">
-</div>
-<div class="modal-footer">
-  <button type="button" class="btn btn-danger" (click)="onConfirmClick()">Confirm</button>
-  <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">Cancel</button>
-</div>
+</h4>
+<mat-dialog-content [innerHTML]="data.message"></mat-dialog-content>
+<mat-dialog-actions class="confirm-actions">
+  <button matButton="filled" class="confirm-button" mat-dialog-close="true">Confirm</button>
+  <button matButton mat-dialog-close>Cancel</button>
+</mat-dialog-actions>

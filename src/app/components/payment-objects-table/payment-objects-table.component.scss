@@ -1,0 +1,16 @@
+// Keep the old column proportions: ID and Actions are fixed-width, Name fills
+// the rest (mat-table columns are flex:1 by default). A fixed flex-basis (rather
+// than auto) is required so the header cell and data cell of each column get the
+// SAME width and stay aligned.
+.mat-column-id {
+  flex: 0 0 4rem;
+  padding-left: 0.5rem;
+  justify-content: center;
+}
+
+.mat-column-actions {
+  flex: 0 0 6rem;
+  padding-right: 0.5rem;
+  justify-content: center;
+  text-wrap: nowrap;
+}

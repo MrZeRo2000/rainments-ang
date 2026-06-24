@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Set-ExecutionPolicy *)",
+      "PowerShell(Set-Location *)",
+      "PowerShell(.\\env.ps1)",
+      "PowerShell(.\\env.ps1 *)",
+      "PowerShell(npm *)",
+      "PowerShell(npx *)",
+      "PowerShell(Out-Null)",
+      "PowerShell(Select-Object *)"
+    ]
+  }
+}

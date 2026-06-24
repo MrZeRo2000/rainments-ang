@@ -1,0 +1,32 @@
+// Common layout for Material edit/add forms migrated from Bootstrap forms.
+// Reused across the table edit forms (payment objects / groups, products, ...).
+// New class names (app-*) so they don't collide with Bootstrap while both
+// libraries coexist during the migration.
+
+.app-form {
+  display: flex;
+  flex-direction: column;
+  // Fields use the default (fixed) subscript, which reserves a line under each
+  // field for the hint/error — so showing an error fills that reserved space and
+  // the height stays constant. A small gap adds a little breathing room on top.
+  gap: 0.5rem;
+}
+
+// Full-width fields stacked vertically (the common case).
+.app-form > mat-form-field {
+  width: 100%;
+}
+
+// A responsive row of fields: side by side on wider screens, stacking when
+// narrow (replaces the old Bootstrap row / col-md-* grid).
+.app-form-row {
+  display: flex;
+  flex-wrap: wrap;
+  // Only a horizontal gap between side-by-side fields; vertical spacing (incl.
+  // when fields wrap) comes from each field's reserved subscript line.
+  gap: 0 0.5rem;
+}
+
+.app-form-row > mat-form-field {
+  flex: 1 1 12rem;
+}

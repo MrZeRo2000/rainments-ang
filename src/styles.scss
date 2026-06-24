@@ -1,5 +1,6 @@
 @use '@angular/material' as mat;
 @use './theme-colors' as theme-colors;
+@use './forms';
 
   /* You can add global styles to this file, and also import other style files */
 @import 'variables';
@@ -24,6 +25,10 @@ html {
     ),
     density: 0,
   ));
+
+  // The grayscale theme's surface is a light gray (~rgb(251,249,249)); force
+  // mat-table backgrounds to white app-wide.
+  --mat-table-background-color: #ffffff;
 }
 
 .jumbotron {

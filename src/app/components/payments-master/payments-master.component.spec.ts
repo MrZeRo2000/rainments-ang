@@ -3,7 +3,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PaymentsMasterComponent } from './payments-master.component';
 import {RouterTestingModule} from '@angular/router/testing';
 import {ReactiveFormsModule} from '@angular/forms';
-import {ModalModule} from 'ngx-bootstrap/modal';
 import {RestUrlEnv} from '../../config/configuration';
 import {RestDataSource} from '../../data-source/rest-data-source';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
@@ -17,7 +16,7 @@ describe('PaymentsMasterComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-    imports: [PaymentsMasterComponent, RouterTestingModule, ReactiveFormsModule, ModalModule,
+    imports: [PaymentsMasterComponent, RouterTestingModule, ReactiveFormsModule,
         RepositoryModule, FontAwesomeIconsModule],
     providers: [RestUrlEnv, RestDataSource, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
 })

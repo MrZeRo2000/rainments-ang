@@ -2,7 +2,6 @@ import {Component, computed, effect, ElementRef, inject, input, signal, viewChil
 import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
 import {tap} from 'rxjs';
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {BsModalService} from 'ngx-bootstrap/modal';
 import {HttpParams} from '@angular/common/http';
 import {CommonEditableTableComponent} from '../../core/table/common-editable-table-component';
 import {CommonTableConfig} from '../../core/table/common-table-component';
@@ -158,7 +157,6 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   constructor() {
     super(
       Payment,
-      inject(BsModalService),
       inject(PAYMENT_REFS_READ_REPOSITORY),
       inject(PAYMENT_CRUD_REPOSITORY)
     );

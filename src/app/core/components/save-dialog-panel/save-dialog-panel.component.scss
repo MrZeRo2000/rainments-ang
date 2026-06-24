@@ -1,0 +1,8 @@
+// Form actions row: buttons right-aligned with a small gap (replaces the old
+// Bootstrap input-group / justify-content-end / mt-2 / ms-2).
+.save-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0;
+}

@@ -1,9 +1,9 @@
 import {computed, DestroyRef, Directive, inject, OnInit, signal} from '@angular/core';
-import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
+import {MatDialog} from '@angular/material/dialog';
 import {EditMode, EditState} from '../edit/edit-state';
 import {CommonEntity} from '../entity/common-entity';
 import {FormGroup} from '@angular/forms';
-import {debounceTime, defer, distinctUntilChanged, Subject, tap} from 'rxjs';
+import {debounceTime, defer, distinctUntilChanged, tap} from 'rxjs';
 import {ConfirmationModalDialogComponent} from '../components/confirmation-modal-dialog/confirmation-modal-dialog.component';
 import {CommonTableComponent} from './common-table-component';
 import {ReadRepository} from '../repository/read-repository';
@@ -17,7 +17,7 @@ export abstract class CommonEditableTableComponent<R, W
   implements OnInit {
 
   private readonly destroyRef = inject(DestroyRef);
-  private bsModalRef: BsModalRef;
+  private dialog = inject(MatDialog);
 
   editStateSignal = signal<EditState<W> | undefined>(undefined);
 
@@ -28,7 +28,6 @@ export abstract class CommonEditableTableComponent<R, W
   /* eslint-disable @angular-eslint/prefer-inject */
   protected constructor(
     protected ctor: new() => W,
-    protected modalService: BsModalService,
     protected readRepository: ReadRepository<R>,
     protected crudRepository: CrudRepository<W>
   ) {
@@ -102,17 +101,18 @@ export abstract class CommonEditableTableComponent<R, W
   }
 
   onDeleteClick(item: W): void {
-    const resultSubject: Subject<W> = new Subject<W>();
-    resultSubject.subscribe((result) => {
-      console.log(`Delete PersistData: ${JSON.stringify(item)}`);
-      this.crudRepository.execute({type: CrudActionType.Delete, payload: item});
-    });
     const o: any = item
     if (o.hasOwnProperty('name')) {
       const name = o['name'];
       const message = '<strong>' + name + '</strong> will be deleted. <BR>Are you sure?';
-      const initialState  = {message, item, result: resultSubject};
-      this.bsModalRef = this.modalService.show(ConfirmationModalDialogComponent, {initialState});
+      this.dialog.open(ConfirmationModalDialogComponent, {data: {message}, minWidth: '450px'})
+        .afterClosed()
+        .subscribe(confirmed => {
+          if (confirmed) {
+            console.log(`Delete PersistData: ${JSON.stringify(item)}`);
+            this.crudRepository.execute({type: CrudActionType.Delete, payload: item});
+          }
+        });
     }
   }
 
@@ -163,10 +163,9 @@ export abstract class CommonSimpleEditableTableComponent<T extends CommonEntity>
 
   protected constructor(
     protected ctor: new() => T,
-    protected modalService: BsModalService,
     protected readRepository: ReadRepository<T>,
     protected crudRepository: CrudRepository<T>) {
-    super(ctor, modalService, readRepository, crudRepository);
+    super(ctor, readRepository, crudRepository);
   }
 
 }

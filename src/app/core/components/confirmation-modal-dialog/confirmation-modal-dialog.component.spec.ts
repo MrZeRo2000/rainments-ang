@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ConfirmationModalDialogComponent } from './confirmation-modal-dialog.component';
-import {BsModalRef} from 'ngx-bootstrap/modal';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 describe('DialogConfirmationComponent', () => {
   let component: ConfirmationModalDialogComponent;
@@ -10,7 +10,10 @@ describe('DialogConfirmationComponent', () => {
   beforeEach(async() => {
     await TestBed.configureTestingModule({
       imports: [ConfirmationModalDialogComponent],
-      providers: [BsModalRef]
+      providers: [
+        { provide: MAT_DIALOG_DATA, useValue: { message: 'test' } },
+        { provide: MatDialogRef, useValue: {} }
+      ]
     })
     .compileComponents();
   });

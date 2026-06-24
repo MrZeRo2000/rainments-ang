@@ -6,7 +6,6 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
-import {BsModalService} from 'ngx-bootstrap/modal';
 import {DragHandlerService} from '../../core/services/drag-handler.service';
 import {duplicateNamesValidator, urlValidator} from '../../core/validators/form-validators';
 import {AddPanelComponent} from "../../core/components/add-panel/add-panel.component";
@@ -54,7 +53,7 @@ export class PaymentGroupsTableComponent extends CommonSimpleEditableTableCompon
   }
 
   constructor() {
-    super(PaymentGroup, inject(BsModalService), inject(PAYMENT_GROUP_READ_REPOSITORY), inject(PAYMENT_GROUP_CRUD_REPOSITORY));
+    super(PaymentGroup, inject(PAYMENT_GROUP_READ_REPOSITORY), inject(PAYMENT_GROUP_CRUD_REPOSITORY));
 
     effect(() => this.inputNameElement()?.nativeElement.focus());
   }

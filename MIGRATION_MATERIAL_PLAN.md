@@ -435,6 +435,65 @@ grep -rhoE 'class="[^"]*"' src --include="*.html" \
   `fa-icon`s with `mat-icon`. Audited already-migrated components:
   `loading-spinner-element` already FA-free ✓; `add-panel` still had a FA plus
   icon → fixed (now `<mat-icon>add</mat-icon>`, fully FA-free). Build ✓, tests ✓.
+- 2026-06-24 — **PHASE 3 DONE: ngx-bootstrap modal → MatDialog (all usages).**
+  `ConfirmationModalDialogComponent` → MatDialog content: `MAT_DIALOG_DATA`
+  (`{message}`), `<h2 mat-dialog-title>` + `<mat-dialog-content [innerHTML]>` +
+  `<mat-dialog-actions>`. Replaced the old `BsModalService.show()` + `Subject`/
+  `initialState` plumbing with `MatDialog.open(...).afterClosed().subscribe(confirmed
+  => …)` in the base `common-editable-table-component` (delete confirm) and in
+  `update-payment-group` (import confirm). Removed `modalService` param from BOTH
+  base constructors (`CommonEditableTableComponent`, `CommonSimpleEditableTableComponent`)
+  → base now `inject(MatDialog)`; updated 4 subclass `super()` calls
+  (payment-objects/groups/products/payments tables) to drop `inject(BsModalService)`.
+  Dialog UX: expressive header (warning `mat-icon` in `--mat-sys-error`) + red
+  Confirm via `mat.button-overrides((filled-container-color: error, ...))`.
+  Cleaned ngx `ModalModule`/`BsModalService` from 8 specs + confirmation spec now
+  provides `MAT_DIALOG_DATA`/`MatDialogRef`. **Zero `ngx-bootstrap/modal` refs left
+  in src.** Build ✓, tests ✓ (84/2). ngx-bootstrap remaining: alert (message.component),
+  dropdown (multi-select + display-options), datepicker (reports-master), tooltip.
+- 2026-06-23 — **`core/components/save-dialog-panel` migrated.** Bootstrap
+  `input-group`/`btn btn-outline-primary`/`btn-outline-secondary`/`mt-2`/`ms-2`/
+  `justify-content-end` → `matButton="outlined"` (Create/Save) + `matButton`
+  (Cancel) in a `.save-dialog-actions` flex row (right-aligned, gap, margin-top).
+  Kept `type="button"` (lives inside a `<form>` — Material buttons default to
+  submit otherwise). Added `MatButtonModule`. Shared by all 4 tables; no spec, no
+  FA. Build ✓, tests ✓ (84/2). NOTE on tooling: settings.json permission rules
+  added mid-session aren't honored until a config reload (`/hooks` or restart) —
+  that caused repeated npm prompts; resolved after reload. npm is allowlisted in
+  `~/.claude/settings.json`.
+- 2026-06-23 — **`payment-objects-table` EDIT FORM migrated** + **common form
+  styles created.** Bootstrap form (`form-group`/`form-control`/`form-select`/
+  `is-invalid`/`invalid-feedback`/`row`/`col-md-*`) → `mat-form-field` +
+  `matInput` (name) + `mat-select`/`mat-option` (period/termQuantity/termType/
+  payDelay) + `mat-error`. Created reusable **`src/_forms.scss`** (`.app-form`,
+  `.app-form > mat-form-field` full width, `.app-form-row` responsive flex row) —
+  `@use`d in styles.scss; new `app-*` class names so they don't collide with
+  still-loaded Bootstrap. This is the "common bootstrap-resembling styles" the
+  user asked for; reuse it for the products/payment-groups edit forms.
+  Validation: custom `ErrorStateMatcher` (`invalid && editStateSignal().submitted`)
+  preserves the old "errors only after Save" behaviour; `mat-error` per field;
+  `subscriptSizing="dynamic"` so error space doesn't reserve permanently. mat-option
+  values use `item[0] ?? ''` so the blank option stays `''` (matches form init and
+  the getPersistData empty-filter). Dropped `NgClass`. payDelay values are now
+  numbers (0/1) not strings — watch backend if issues. Build ✓, tests ✓ (84/2).
+  **`payment-objects-table` now fully off Bootstrap & FA except the delete-confirm
+  modal (BsModalService, Phase 3).**
+- 2026-06-23 — **`payment-objects-table` TABLE migrated to `mat-table` + DnD**
+  (+ shared `drag-grip`). Bootstrap `<table class="table">` → flex `<mat-table>`
+  with matColumnDef (id/name/actions), following the violetnote reference
+  pattern. CDK drag-drop preserved exactly: `cdkDropList`+`cdkDropListLockAxis` on
+  mat-table, `cdkDrag`+`[cdkDragData]`+`(cdkDragStarted)` on `mat-row`,
+  `cdkDragHandle` on the grip; base `onDrop(previousIndex/currentIndex)` unchanged.
+  Chose flex mat-table (not `<table mat-table>`) because native-table rows
+  collapse cell widths while dragging. `drag-grip`: FA `grip-vertical` →
+  `<mat-icon>drag_indicator</mat-icon>` (shared, also used by products/
+  payment-groups). Dropped the custom `*cdkDragPreview` box → default row-clone
+  preview (like the reference). Column widths via `.mat-column-*` flex in scss.
+  `displayedColumns` added. Specs: drag-grip dropped `FontAwesomeIconsModule`.
+  Build ✓, tests ✓ (84/2). ⚠ NOT YET DONE in this component: the EDIT FORM is
+  still Bootstrap (`form-control`/`form-select`/`is-invalid`/`invalid-feedback`/
+  grid + custom `submitted`-based validation display) — sizable separate piece,
+  awaiting go-ahead. Modal (delete confirm via BsModalService) still Phase 3.
 - 2026-06-23 — **`core/components/drop-down-more-menu` migrated** (Phase 2 + FA).
   Native Bootstrap-JS dropdown (`data-bs-toggle="dropdown"`, `.dropstart`,
   `.dropdown-menu`, `btn-outline-primary`, `<fa-icon ellipsis-h>`) → `MatMenu`:

@@ -5,7 +5,6 @@ import {RestDataSource} from '../../data-source/rest-data-source';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import {RestUrlEnv} from '../../config/configuration';
 import {ReactiveFormsModule} from '@angular/forms';
-import {ModalModule} from 'ngx-bootstrap/modal';
 import {RepositoryModule} from '../../repository/repository.module';
 import {FontAwesomeIconsModule} from '../../font-awesome-icons/font-awesome-icons.module';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
@@ -16,7 +15,7 @@ describe('PaymentObjectsTableComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-    imports: [PaymentObjectsTableComponent, ReactiveFormsModule, ModalModule, RepositoryModule, FontAwesomeIconsModule],
+    imports: [PaymentObjectsTableComponent, ReactiveFormsModule, RepositoryModule, FontAwesomeIconsModule],
     providers: [RestUrlEnv, RestDataSource, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
 })
     .compileComponents();
