@@ -435,6 +435,14 @@ grep -rhoE 'class="[^"]*"' src --include="*.html" \
   `fa-icon`s with `mat-icon`. Audited already-migrated components:
   `loading-spinner-element` already FA-free ✓; `add-panel` still had a FA plus
   icon → fixed (now `<mat-icon>add</mat-icon>`, fully FA-free). Build ✓, tests ✓.
+- 2026-06-25 — **`colored-value-label` migrated.** Bootstrap `badge`/`bg-success`/
+  `bg-danger`/`badge-value(-light)` + `NgClass` → a styled `.value-label` pill
+  (component scss) with `[class.value-label--positive/negative]` modifiers; kept
+  the same look (green `#198754` / red `#dc3545` / neutral `#6c757dad`). No
+  Material component (matBadge is an overlay, mat-chip too heavy) — a styled span
+  is the faithful equivalent. Removed `NgClass`. Used by dashboard + payments-table.
+  Global `.badge-value`/`.badge-value-light` in styles.scss now dead (remove in
+  teardown). Build ✓, tests ✓ (84/2).
 - 2026-06-25 — **`report-nav` migrated & FA-free.** FA `chart-line` (`text-muted
   h4`) → `<mat-icon>show_chart</mat-icon>` inside the existing nav anchor; muted
   via `.report-link { color: var(--mat-sys-on-surface-variant) }` + `mat-icon`
