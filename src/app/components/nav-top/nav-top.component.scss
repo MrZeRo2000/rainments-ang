@@ -1,0 +1,21 @@
+@use '@angular/material' as mat;
+
+// Nav bar in the theme's primary gray (lighter than the near-black
+// inverse-surface) with light links.
+.nav-top {
+  gap: 0.25rem;
+
+  @include mat.toolbar-overrides((
+    container-background-color: var(--mat-sys-primary),
+    container-text-color: var(--mat-sys-on-primary),
+  ));
+  @include mat.button-overrides((
+    text-label-text-color: var(--mat-sys-on-primary),
+  ));
+}
+
+// Active route highlight.
+.nav-top__active {
+  background-color: rgba(255, 255, 255, 0.15);
+  font-weight: 500;
+}

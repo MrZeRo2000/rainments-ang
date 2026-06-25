@@ -435,6 +435,13 @@ grep -rhoE 'class="[^"]*"' src --include="*.html" \
   `fa-icon`s with `mat-icon`. Audited already-migrated components:
   `loading-spinner-element` already FA-free ✓; `add-panel` still had a FA plus
   icon → fixed (now `<mat-icon>add</mat-icon>`, fully FA-free). Build ✓, tests ✓.
+- 2026-06-25 — **`nav-top` migrated.** Bootstrap `navbar navbar-dark bg-dark`
+  + `nav-link`/`navbar-nav` → `<mat-toolbar>` with `<a mat-button routerLink
+  routerLinkActive>`. Kept the dark look via `mat.toolbar-overrides`
+  (container-background = `--mat-sys-inverse-surface`, text = inverse-on-surface)
+  + `mat.button-overrides(text-label-text-color: inverse-on-surface)` so links are
+  light on dark. Active route → `.nav-top__active` (subtle light overlay + bold).
+  Dropped the empty navbar-brand. Build ✓, tests ✓ (84/2).
 - 2026-06-25 — **`payments-dashboard` migrated** (appearance retained). Bootstrap
   `card`/`card-body`/`card-title` → `<mat-card appearance="outlined">` (outlined ≈
   Bootstrap card border). Responsive `row`/`col-xl-3`/`col-lg-4`/`col-md-6` → CSS

@@ -1,11 +1,4 @@
-<nav class="navbar navbar-expand navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">&nbsp; </a>
-  <ul class="navbar-nav me-auto">
-    <li class="nav-item">
-      <a class="nav-link" routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" routerLink="/settings" routerLinkActive="active">Settings</a>
-    </li>
-  </ul>
-</nav>
+<mat-toolbar class="nav-top">
+  <a mat-button routerLink="" routerLinkActive="nav-top__active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+  <a mat-button routerLink="/settings" routerLinkActive="nav-top__active">Settings</a>
+</mat-toolbar>
