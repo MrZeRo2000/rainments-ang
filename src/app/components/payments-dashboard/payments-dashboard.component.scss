@@ -1,0 +1,66 @@
+.dashboard {
+  padding: 0 0.75rem; // ≈ Bootstrap container-fluid gutter
+}
+
+// Responsive card layout matching the old Bootstrap columns:
+// col-md-6 (2), col-lg-4 (3), col-xl-3 (4); 1 column below md.
+// Flexbox + justify-content:center so a partial last row is centered (like the
+// old `row justify-content-center`), instead of left-aligned as CSS grid does.
+.dashboard-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+// Whole-card click target (replaces Bootstrap .stretched-link). Widths are
+// "100/N% minus the gap" so N cards fit per row with the rest centered.
+.dashboard-card {
+  position: relative;
+  flex: 0 0 auto;
+  width: 100%;
+
+  @media (min-width: 768px) { width: calc(50% - 0.5rem); }
+  @media (min-width: 992px) { width: calc(33.333% - 0.5rem); }
+  @media (min-width: 1200px) { width: calc(25% - 0.5rem); }
+}
+
+// Lay the content out as a column so a gap separates the header and footer rows.
+// Also set vertical padding explicitly: the overlay link is the card's first
+// child, so mat-card-content loses Material's default :first-child top padding.
+.dashboard-card mat-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.card-link {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.card-header-row,
+.card-footer-row {
+  display: flex;
+  align-items: center;
+}
+
+.card-header-row .card-title {
+  flex-grow: 1;
+  margin: 0;
+}
+
+// report-nav sits above the card-link so its own links stay clickable.
+.card-footer-row .report-nav-cell {
+  position: relative;
+  z-index: 2;
+  flex-grow: 1;
+}
+
+.overdue-icon {
+  color: var(--mat-sys-error);
+}

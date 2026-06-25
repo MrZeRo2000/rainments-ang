@@ -435,6 +435,16 @@ grep -rhoE 'class="[^"]*"' src --include="*.html" \
   `fa-icon`s with `mat-icon`. Audited already-migrated components:
   `loading-spinner-element` already FA-free ✓; `add-panel` still had a FA plus
   icon → fixed (now `<mat-icon>add</mat-icon>`, fully FA-free). Build ✓, tests ✓.
+- 2026-06-25 — **`payments-dashboard` migrated** (appearance retained). Bootstrap
+  `card`/`card-body`/`card-title` → `<mat-card appearance="outlined">` (outlined ≈
+  Bootstrap card border). Responsive `row`/`col-xl-3`/`col-lg-4`/`col-md-6` → CSS
+  grid with matching breakpoints (4/3/2/1 cols at ≥1200/992/768/else). `.stretched-link`
+  → custom `.card-link` (absolute inset-0, z-index 1); `report-nav-cell` z-index 2
+  so its links stay clickable. FA `exclamation` (text-danger) → `<mat-icon
+  class="overdue-icon">priority_high</mat-icon>` colored `--mat-sys-error`. d-flex
+  utilities → component scss flex. Removed inert `<app-message>` + MessageComponent
+  import. Spec keeps `FontAwesomeIconsModule` (report-nav child still uses FA).
+  Build ✓, tests ✓ (84/2).
 - 2026-06-25 — **`backup-database-button` migrated → BOOTSTRAP JS DROPPED.**
   Header button: `btn btn-outline-primary` + FA save + Bootstrap **toast**
   (`bootstrap.Toast`, `data-bs-*`) → `<button matIconButton matTooltip="Backup

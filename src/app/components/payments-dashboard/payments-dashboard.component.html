@@ -1,35 +1,26 @@
+<div class="dashboard">
 
-<div class="container-fluid">
-
-  <app-message></app-message>
-
-  <div class="row justify-content-center">
+  <div class="dashboard-grid">
     @for (item of readRepository.dataSignal(); track item.paymentObject.id) {
-      <div class="col-xl-3 col-lg-4 col-md-6 mb-2">
-        <div class="card">
-          <div class="card-body">
-            <a href="#" class="stretched-link" (click)="onSelectPaymentObject($event, item)"></a>
-            <div class="d-flex">
-              <div class="flex-grow-1">
-                <h5 class="card-title">{{item.paymentObject.name}}</h5>
-              </div>
-              @if (item.paymentOverdue) {
-                <div>
-                  <fa-icon [icon]="['fas', 'exclamation']" class="text-danger"></fa-icon>
-                </div>
-              }
+      <mat-card appearance="outlined" class="dashboard-card">
+        <a class="card-link" (click)="onSelectPaymentObject($event, item)" aria-label="Open payments"></a>
+        <mat-card-content>
+          <div class="card-header-row">
+            <h5 class="card-title">{{item.paymentObject.name}}</h5>
+            @if (item.paymentOverdue) {
+              <mat-icon class="overdue-icon">priority_high</mat-icon>
+            }
+          </div>
+          <div class="card-footer-row">
+            <div class="report-nav-cell">
+              <app-report-nav [itemId]="item.paymentObject.id" navigatePath="reports"></app-report-nav>
             </div>
-            <div class="d-flex">
-              <div class="flex-grow-1" style="z-index: 1">
-                <app-report-nav [itemId]="item.paymentObject.id" navigatePath="reports"></app-report-nav>
-              </div>
-              <div>
-                {{item.paymentDate | shortMonthYear}} <app-core-colored-value-label [value]="item.paymentAmount | amount" [displayZero]="true"></app-core-colored-value-label>
-              </div>
+            <div>
+              {{item.paymentDate | shortMonthYear}} <app-core-colored-value-label [value]="item.paymentAmount | amount" [displayZero]="true"></app-core-colored-value-label>
             </div>
           </div>
-        </div>
-      </div>
+        </mat-card-content>
+      </mat-card>
     }
   </div>
 
