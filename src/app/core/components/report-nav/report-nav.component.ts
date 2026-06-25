@@ -1,12 +1,12 @@
 import {Component, inject, input} from '@angular/core';
 import {Router} from '@angular/router';
-import {FaIconComponent} from "@fortawesome/angular-fontawesome";
+import {MatIconModule} from "@angular/material/icon";
 
 @Component({
   selector: 'app-report-nav',
   templateUrl: './report-nav.component.html',
   imports: [
-    FaIconComponent
+    MatIconModule
   ],
   styleUrls: ['./report-nav.component.scss']
 })

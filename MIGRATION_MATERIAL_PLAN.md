@@ -435,6 +435,15 @@ grep -rhoE 'class="[^"]*"' src --include="*.html" \
   `fa-icon`s with `mat-icon`. Audited already-migrated components:
   `loading-spinner-element` already FA-free ✓; `add-panel` still had a FA plus
   icon → fixed (now `<mat-icon>add</mat-icon>`, fully FA-free). Build ✓, tests ✓.
+- 2026-06-25 — **`report-nav` migrated & FA-free.** FA `chart-line` (`text-muted
+  h4`) → `<mat-icon>show_chart</mat-icon>` inside the existing nav anchor; muted
+  via `.report-link { color: var(--mat-sys-on-surface-variant) }` + `mat-icon`
+  line-height:1. Spec dropped `FontAwesomeIconsModule`. Used by dashboard +
+  payments-master. NOTE: nav-top final bg = `--mat-sys-primary` (lighter than the
+  near-black inverse-surface, per user). The Bootstrap-era link-underline rule in
+  styles.scss still underlines Material anchors on hover — user OK with it; it'll
+  go away in the Bootstrap CSS teardown (remove those `a:not(...)` rules then).
+  Build ✓, tests ✓ (84/2).
 - 2026-06-25 — **`nav-top` migrated.** Bootstrap `navbar navbar-dark bg-dark`
   + `nav-link`/`navbar-nav` → `<mat-toolbar>` with `<a mat-button routerLink
   routerLinkActive>`. Kept the dark look via `mat.toolbar-overrides`

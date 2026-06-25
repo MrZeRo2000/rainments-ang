@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReportNavComponent } from './report-nav.component';
 import {RouterTestingModule} from '@angular/router/testing';
-import {FontAwesomeIconsModule} from '../../../font-awesome-icons/font-awesome-icons.module';
 
 describe('ReportNavComponent', () => {
   let component: ReportNavComponent;
@@ -10,7 +9,7 @@ describe('ReportNavComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReportNavComponent, RouterTestingModule, FontAwesomeIconsModule]
+      imports: [ReportNavComponent, RouterTestingModule]
     })
     .compileComponents();
   });
