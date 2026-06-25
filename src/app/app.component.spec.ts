@@ -3,7 +3,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { NavTopComponent } from './components/nav-top/nav-top.component';
 import {MessageComponent} from './messages/message.component';
-import {AlertModule} from 'ngx-bootstrap/alert';
 import {AppInfoComponent} from './components/app-info/app-info.component';
 import {RepositoryModule} from './repository/repository.module';
 import {RestUrlEnv} from './config/configuration';
@@ -14,7 +13,6 @@ describe('AppComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
-        AlertModule,
         RepositoryModule,
         AppComponent,
         AppInfoComponent,

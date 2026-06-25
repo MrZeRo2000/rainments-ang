@@ -55,6 +55,9 @@ export class ReadRepository<T> {
 
   loadingSignal = signal(false)
 
+  /** True when the most recent load failed (network or server error). */
+  errorSignal = signal(false)
+
   loadDataSubject = new ReplaySubject<LoadParams>(1);
 
   loadDataAction$: Observable<T[]> = this.loadDataSubject.pipe(
@@ -65,6 +68,7 @@ export class ReadRepository<T> {
     )),
     tap(v => {
       v.messageProcessor.resetMessage();
+      this.errorSignal.set(false)
       this.loadingSignal.set(true)
       console.log(`Loading signal set to true: start`)
     }),
@@ -76,14 +80,19 @@ export class ReadRepository<T> {
             of((Array.isArray(data.body) ? data.body : [data.body]).map(this.mapItem)),
             of([]).pipe(
               tap(() => {
+                this.errorSignal.set(true);
                 v.messageProcessor.reportMessageError('Error reading from server:' + data.body);
               })
             )
           )
         ),
         catchError(err => {
+          this.errorSignal.set(true);
           v.messageProcessor.reportMessageError('Network error:' + RepositoryUtils.getNetworkErrorMessage(err));
-          return []
+          // Emit an empty result (of([])) — NOT `[]`, which as an ObservableInput
+          // emits nothing, so the downstream `loadingSignal.set(false)` tap never
+          // runs and loading stays stuck on after an error.
+          return of([])
         })
       )
     ),

@@ -1,40 +1,12 @@
-import {Component, effect, inject, input, signal} from '@angular/core';
-import {MessagesService} from './messages.service';
-import {Message} from './message.model';
-import {MessageType} from './message.model';
-import {AlertComponent} from "ngx-bootstrap/alert";
+import {Component, input} from '@angular/core';
 
 @Component({
   selector: 'app-message',
-  templateUrl: './message.component.html',
-  imports: [
-    AlertComponent
-  ],
-  styleUrls: ['./message.component.scss']
+  // Messages are now shown globally via MatSnackBar from MessagesService, so this
+  // component renders nothing. Kept (with its messageSource input) so existing
+  // <app-message> tags keep compiling; the tags can be removed in a later cleanup.
+  template: ''
 })
-
 export class MessageComponent {
-  private messagesService = inject(MessagesService)
-
-  MessageType = MessageType;
-
   messageSource = input<string>();
-
-  displayMessage = signal<Message | undefined>(undefined);
-
-  constructor() {
-    // Reflect the latest reported message that matches this panel's source.
-    effect(() => {
-      const message = this.messagesService.lastMessage();
-      const source = this.messageSource();
-      const matches =
-        (!!source && !!message && message.messageSource === source) ||
-        (!source && !!message && !message.messageSource);
-      this.displayMessage.set(matches ? message : undefined);
-    });
-  }
-
-  onClosed(): void {
-    this.displayMessage.set(undefined);
-  }
 }

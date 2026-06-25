@@ -1,6 +1,6 @@
 @let data = readRepository.dataSignal();
 
-@if (!editingSignal()) {
+@if (!editingSignal() && !readRepository.errorSignal()) {
   <div class="d-flex mt-2 mb-2">
     <app-core-add-panel (addClick)="onAddClick()"></app-core-add-panel>
     <div class="ms-auto">

@@ -435,6 +435,31 @@ grep -rhoE 'class="[^"]*"' src --include="*.html" \
   `fa-icon`s with `mat-icon`. Audited already-migrated components:
   `loading-spinner-element` already FA-free ✓; `add-panel` still had a FA plus
   icon → fixed (now `<mat-icon>add</mat-icon>`, fully FA-free). Build ✓, tests ✓.
+- 2026-06-25 — **Message snackbar moved to `MessagesService` + read-repo error
+  fix.** Two bugs surfaced by a simulated 404: (1) **stuck loading** — read
+  repository's `catchError` returned `[]` (an ObservableInput that emits nothing),
+  so the `loadingSignal.set(false)` tap never ran → changed to `of([])`.
+  (2) **error snackbar never showed** — the component-`effect()` approach +
+  `initialized` guard swallowed the error reported around panel mount. Moved the
+  snackbar into `MessagesService.reportMessage()` (opens at report-time, like
+  violetnote's MessageService) — robust, no mount-timing dependency. `MessageComponent`
+  reduced to a no-op (`template: ''`, keeps `messageSource` input) since display is
+  now global; `<app-message>` tags left inert (removable later). Test-safe: no spec
+  calls reportMessage. Build ✓, tests ✓ (84/2).
+- 2026-06-25 — **`MessageComponent` redesigned → MatSnackBar** (Phase 1 alert,
+  violetnote-style). Replaced the inline ngx-bootstrap `<alert>` with a snackbar:
+  the component now renders nothing (`template: ''`) and, via an effect on
+  `MessagesService.lastMessage()` filtered by `messageSource`, opens a
+  `MatSnackBar` (bottom-center, duration 7s errors / 4s else, panelClass per
+  severity). Kept the `<app-message>`+`messageSource` routing and the
+  `MessagesService` API unchanged (no template/caller changes). An `initialized`
+  guard skips the pre-existing message on mount so navigation doesn't re-toast a
+  stale message. Deleted message.component.html/.scss. Added global snackbar
+  color classes in styles.scss (`.app-snackbar-error/success/warning/info` via an
+  `app-snackbar` mixin). Removed `ngx-bootstrap/alert` (`AlertModule`) from the
+  message/settings/app.component specs. **Zero `ngx-bootstrap/alert` refs left in
+  src.** Build ✓, tests ✓ (84/2). ngx-bootstrap remaining: dropdown (multi-select
+  + 3 display-options), datepicker (reports-master), tooltip (payments-table).
 - 2026-06-25 — **`products-table` migrated** (last of the 3 tables; modeled on
   payment-objects). Table → flex `mat-table` + CDK DnD (id/name/unitName/actions);
   form → `mat-form-field`/`matInput` (name, unitName) + `mat-select` (counterPrecision)

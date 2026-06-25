@@ -147,3 +147,20 @@ label {
   background-color: lightgray;
   border-radius: $btn-border-radius;
 }
+
+// --- App message snackbars (MessageComponent sets these as panelClass) ---
+// Color the snackbar surface per message severity. The snackbar renders in the
+// CDK overlay (outside any component), so these must be global.
+@mixin app-snackbar($bg, $fg) {
+  .mat-mdc-snackbar-surface {
+    background-color: $bg !important;
+  }
+  .mat-mdc-snackbar-surface .mat-mdc-snack-bar-label {
+    color: $fg;
+  }
+}
+
+.app-snackbar-error { @include app-snackbar(var(--mat-sys-error-container), var(--mat-sys-on-error-container)); }
+.app-snackbar-success { @include app-snackbar(#1b5e20, #ffffff); }
+.app-snackbar-warning { @include app-snackbar(#e65100, #ffffff); }
+.app-snackbar-info { @include app-snackbar(var(--mat-sys-inverse-surface), var(--mat-sys-inverse-on-surface)); }

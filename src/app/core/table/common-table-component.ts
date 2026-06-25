@@ -20,7 +20,8 @@ export class CommonTableComponent<R> implements OnInit {
   constructor(protected readRepository: ReadRepository<R>)  {}
 
   protected loadRepositoryData(): void {
-    this.readRepository.loadData({params: this.httpParams});
+    // updateMessages: surface load errors (e.g. as a snackbar) instead of failing silently.
+    this.readRepository.loadData({params: this.httpParams, updateMessages: true});
   }
 
   // OnInit
