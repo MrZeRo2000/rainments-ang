@@ -1,36 +1,35 @@
-import {Component, ElementRef, inject, signal, viewChild} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {tap} from 'rxjs';
 import {CrudStatus} from "../../core/repository/crud-repository";
-import {FaIconComponent} from "@fortawesome/angular-fontawesome";
+import {MatButtonModule} from "@angular/material/button";
+import {MatIconModule} from "@angular/material/icon";
+import {MatTooltipModule} from "@angular/material/tooltip";
+import {MessagesService} from "../../messages/messages.service";
+import {SuccessMessage} from "../../messages/message.model";
 import {BACKUP_DATABASE_CRUD_REPOSITORY} from "../../repository/repository-tokens";
-
-declare var bootstrap: any;
 
 @Component({
   selector: 'app-backup-database-button',
   templateUrl: './backup-database-button.component.html',
   imports: [
-    FaIconComponent
+    MatButtonModule,
+    MatIconModule,
+    MatTooltipModule
   ],
   styleUrls: ['./backup-database-button.component.scss']
 })
 export class BackupDatabaseButtonComponent {
   public backupDatabaseRepository = inject(BACKUP_DATABASE_CRUD_REPOSITORY)
+  private messagesService = inject(MessagesService)
 
-  private toast = viewChild<ElementRef>('liveToast');
-
-  backupMessage = signal('');
-
-  // Activates the CRUD stream and shows a toast on each successful backup.
+  // Activates the CRUD stream and reports a snackbar on each successful backup.
+  // (This button is always present in the header, so it's the reliable place to
+  // surface backup feedback.)
   private backupResult = toSignal(this.backupDatabaseRepository.crudAction$.pipe(
     tap(result => {
       if (result.status === CrudStatus.Success) {
-        this.backupMessage.set(result.data?.message ?? '');
-        const element = this.toast()?.nativeElement;
-        if (element) {
-          bootstrap.Toast.getOrCreateInstance(element).show();
-        }
+        this.messagesService.reportMessage(new SuccessMessage(`Backup successful: ${result.data?.message ?? ''}`));
       }
     })
   ));

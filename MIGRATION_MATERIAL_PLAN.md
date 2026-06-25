@@ -435,6 +435,19 @@ grep -rhoE 'class="[^"]*"' src --include="*.html" \
   `fa-icon`s with `mat-icon`. Audited already-migrated components:
   `loading-spinner-element` already FA-free ✓; `add-panel` still had a FA plus
   icon → fixed (now `<mat-icon>add</mat-icon>`, fully FA-free). Build ✓, tests ✓.
+- 2026-06-25 — **`backup-database-button` migrated → BOOTSTRAP JS DROPPED.**
+  Header button: `btn btn-outline-primary` + FA save + Bootstrap **toast**
+  (`bootstrap.Toast`, `data-bs-*`) → `<button matIconButton matTooltip="Backup
+  database">` + `<mat-icon>save</mat-icon>`. Disabled while running via
+  `[disabled]="backupDatabaseRepository.loadingSignal()"` (prevents repeat
+  presses). Removed the toast entirely; success feedback is the snackbar — the
+  button now reports it (`MessagesService.reportMessage(SuccessMessage)`) since
+  it's always mounted, and `BackupDatabaseComponent` no longer reports (avoids a
+  duplicate snackbar; it just refreshes its info). This was the LAST
+  `bootstrap.bundle.min.js` user → **removed the script from `angular.json`**
+  (`scripts: []`). Confirmed zero `data-bs-*`/`bootstrap.*` JS in src. Build ✓,
+  tests ✓ (84/2). Bootstrap **CSS** + ngx-bootstrap (dropdown/datepicker/tooltip)
+  still present; FA still used by ~7 components.
 - 2026-06-25 — **`update-payment-group`, `backup-database`, `data-management`
   migrated.** update-payment-group: 3 Bootstrap `form-select` → `mat-form-field`
   + `mat-select` + `mat-error` (shared-style, ErrorStateMatcher gated on the
