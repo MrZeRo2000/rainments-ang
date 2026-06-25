@@ -1,0 +1,8 @@
+// Info box (replaces Bootstrap .alert-info) showing the last backup status.
+.backup-info {
+  margin-bottom: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  background-color: var(--mat-sys-surface-container);
+  color: var(--mat-sys-on-surface);
+}

@@ -2,76 +2,49 @@
 @let paymentObjects = refs?.paymentObjectList ?? [];
 @let paymentGroups = refs?.paymentGroupList ?? [];
 
-<form class="form-group" [formGroup]="editForm">
-
-  <label for="paymentObject" class="mt-2"><strong>Payment object</strong></label>
-  <select
-    class="form-select"
-    [ngClass]="{'is-invalid': editForm.controls.paymentObject.errors && formSubmitted}"
-    formControlName="paymentObject"
-    id="paymentObject"
-    >
-    @for (item of paymentObjects; track item.id) {
-      <option value="{{item.id}}">{{item.name}}</option>
+<form class="app-form" [formGroup]="editForm">
+  <mat-form-field>
+    <mat-label>Payment object</mat-label>
+    <mat-select formControlName="paymentObject" [errorStateMatcher]="errorMatcher">
+      @for (item of paymentObjects; track item.id) {
+        <mat-option [value]="item.id">{{item.name}}</mat-option>
+      }
+    </mat-select>
+    @if (editForm.controls.paymentObject.errors?.required) {
+      <mat-error>Payment object should not be empty</mat-error>
     }
-  </select>
+  </mat-form-field>
 
-  <label for="paymentGroupFrom" class="mt-2"><strong>Payment group from</strong></label>
-  <select
-    class="form-select"
-    [ngClass]="{'is-invalid': editForm.controls.paymentGroupFrom.errors && formSubmitted}"
-    formControlName="paymentGroupFrom"
-    id="paymentGroupFrom"
-    >
-    @for (item of paymentGroups; track item.id) {
-      <option value="{{item.id}}">{{item.name}}</option>
+  <mat-form-field>
+    <mat-label>Payment group from</mat-label>
+    <mat-select formControlName="paymentGroupFrom" [errorStateMatcher]="errorMatcher">
+      @for (item of paymentGroups; track item.id) {
+        <mat-option [value]="item.id">{{item.name}}</mat-option>
+      }
+    </mat-select>
+    @if (editForm.controls.paymentGroupFrom.errors?.required) {
+      <mat-error>Payment group <strong>from</strong> should not be empty</mat-error>
     }
-  </select>
+  </mat-form-field>
 
-  <label for="paymentGroupTo" class="mt-2"><strong>Payment group to</strong></label>
-  <select
-    class="form-select"
-    [ngClass]="{'is-invalid': editForm.controls.paymentGroupTo.errors && formSubmitted}"
-    formControlName="paymentGroupTo"
-    id="paymentGroupTo"
-    >
-    @for (item of paymentGroups; track item.id) {
-      <option value="{{item.id}}">{{item.name}}</option>
+  <mat-form-field>
+    <mat-label>Payment group to</mat-label>
+    <mat-select formControlName="paymentGroupTo" [errorStateMatcher]="errorMatcher">
+      @for (item of paymentGroups; track item.id) {
+        <mat-option [value]="item.id">{{item.name}}</mat-option>
+      }
+    </mat-select>
+    @if (editForm.controls.paymentGroupTo.errors?.required) {
+      <mat-error>Payment group <strong>to</strong> should not be empty</mat-error>
     }
-  </select>
+    @if (editForm.controls.paymentGroupTo.errors?.equalsFrom) {
+      <mat-error>Payment groups should be different</mat-error>
+    }
+  </mat-form-field>
 
-  @if (editForm.controls.paymentObject.errors && formSubmitted) {
-    <div class="invalid-feedback">
-      @if (editForm.controls.paymentObject.errors.required) {
-        <div>Payment object should not be empty</div>
-      }
-    </div>
-  }
-
-  @if (editForm.controls.paymentGroupFrom.errors && formSubmitted) {
-    <div class="invalid-feedback">
-      @if (editForm.controls.paymentGroupFrom.errors.required) {
-        <div>Payment group <strong>from</strong> should not be empty</div>
-      }
-    </div>
-  }
-
-  @if (editForm.controls.paymentGroupTo.errors && formSubmitted) {
-    <div class="invalid-feedback">
-      @if (editForm.controls.paymentGroupTo.errors.required) {
-        <div>Payment group <strong>to</strong> should not be empty</div>
-      }
-      @if (editForm.controls.paymentGroupTo.errors.equalsFrom) {
-        <div>Payment groups should be different</div>
-      }
-    </div>
-  }
-
-  <div class="input-group mt-2 justify-content-end">
-    <button type="button" class="btn btn-outline-primary" (click)="importClick()" [disabled]="loadingSignal()">Update</button>
+  <div class="app-form-actions">
+    <button type="button" matButton="outlined" (click)="importClick()" [disabled]="loadingSignal()">Update</button>
   </div>
-
-
 </form>
 
 <app-core-loading-progress [loading]="loadingSignal()"></app-core-loading-progress>

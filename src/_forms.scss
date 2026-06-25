@@ -30,3 +30,10 @@
 .app-form-row > mat-form-field {
   flex: 1 1 12rem;
 }
+
+// Right-aligned action buttons row (e.g. a single Update/Backup button).
+.app-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}

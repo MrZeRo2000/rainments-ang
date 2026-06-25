@@ -11,7 +11,10 @@ import { HttpParams } from '@angular/common/http';
 import {UpdatePaymentObjectGroupRepository} from '../../repository/update-payment-object-group-repository';
 import {CrudStatus} from '../../core/repository/crud-repository';
 import {SuccessMessage} from '../../messages/message.model';
-import {NgClass} from "@angular/common";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatSelectModule} from "@angular/material/select";
+import {MatButtonModule} from "@angular/material/button";
+import {ErrorStateMatcher} from "@angular/material/core";
 import {LoadingProgressComponent} from "../../core/components/loading-progress/loading-progress.component";
 import {distinctFromSiblingValidator} from '../../core/validators/form-validators';
 import {PAYMENT_OBJECT_GROUP_REFS_READ_REPOSITORY} from '../../repository/repository-tokens';
@@ -21,7 +24,9 @@ import {PAYMENT_OBJECT_GROUP_REFS_READ_REPOSITORY} from '../../repository/reposi
   templateUrl: './update-payment-group.component.html',
   imports: [
     ReactiveFormsModule,
-    NgClass,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatButtonModule,
     LoadingProgressComponent
   ],
   styleUrls: ['./update-payment-group.component.scss']
@@ -35,6 +40,12 @@ export class UpdatePaymentGroupComponent extends CommonTableComponent<PaymentObj
   messageSource = input<string>();
 
   formSubmitted = false;
+
+  // Show field errors only after an Update attempt (mirrors the old
+  // `errors && formSubmitted` gate).
+  readonly errorMatcher: ErrorStateMatcher = {
+    isErrorState: (control) => !!control?.invalid && this.formSubmitted
+  };
 
   loadingSignal = computed(() => this.readRepository.loadingSignal() || this.updateRepository.loadingSignal());
 

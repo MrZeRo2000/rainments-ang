@@ -435,6 +435,19 @@ grep -rhoE 'class="[^"]*"' src --include="*.html" \
   `fa-icon`s with `mat-icon`. Audited already-migrated components:
   `loading-spinner-element` already FA-free ✓; `add-panel` still had a FA plus
   icon → fixed (now `<mat-icon>add</mat-icon>`, fully FA-free). Build ✓, tests ✓.
+- 2026-06-25 — **`update-payment-group`, `backup-database`, `data-management`
+  migrated.** update-payment-group: 3 Bootstrap `form-select` → `mat-form-field`
+  + `mat-select` + `mat-error` (shared-style, ErrorStateMatcher gated on the
+  component's `formSubmitted` flag); Update button → `matButton="outlined"` in a
+  new global `.app-form-actions` row (added to _forms.scss). backup-database:
+  `.alert-info` → a `.backup-info` box (surface-container); Backup button →
+  `matButton="outlined"`. data-management: removed the now-inert `<app-message>`
+  tags + `MessageComponent` import (messages are global snackbars now). Error
+  gating from the prior entry also applies. Build ✓, tests ✓ (84/2). NOTE:
+  `backup-database-button` (header save button, NOT in scope) still uses the
+  Bootstrap **toast** (`bootstrap.bundle.min.js`) + FA save icon — it's the last
+  native-Bootstrap-JS user; migrate it (toast → snackbar) before dropping the
+  bootstrap script.
 - 2026-06-25 — **Message snackbar moved to `MessagesService` + read-repo error
   fix.** Two bugs surfaced by a simulated 404: (1) **stuck loading** — read
   repository's `catchError` returned `[]` (an ObservableInput that emits nothing),

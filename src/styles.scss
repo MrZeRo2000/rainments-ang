@@ -161,6 +161,6 @@ label {
 }
 
 .app-snackbar-error { @include app-snackbar(var(--mat-sys-error-container), var(--mat-sys-on-error-container)); }
-.app-snackbar-success { @include app-snackbar(#1b5e20, #ffffff); }
-.app-snackbar-warning { @include app-snackbar(#e65100, #ffffff); }
+.app-snackbar-success { @include app-snackbar(#c8e6c9, #1b5e20); }   // pale green bg, dark green text
+.app-snackbar-warning { @include app-snackbar(#ffe0b2, #e65100); }   // pale amber bg, dark orange text
 .app-snackbar-info { @include app-snackbar(var(--mat-sys-inverse-surface), var(--mat-sys-inverse-on-surface)); }

@@ -7,6 +7,7 @@ import {SuccessMessage} from '../../messages/message.model';
 import {BackupDatabaseInfo} from '../../model/backup-database-info';
 import {CommonTableComponent} from '../../core/table/common-table-component';
 import {CrudStatus} from '../../core/repository/crud-repository';
+import {MatButtonModule} from '@angular/material/button';
 import {LoadingProgressComponent} from '../../core/components/loading-progress/loading-progress.component';
 import {BACKUP_DATABASE_CRUD_REPOSITORY, BACKUP_INFO_READ_REPOSITORY} from '../../repository/repository-tokens';
 
@@ -15,6 +16,7 @@ import {BACKUP_DATABASE_CRUD_REPOSITORY, BACKUP_INFO_READ_REPOSITORY} from '../.
   templateUrl: './backup-database.component.html',
   imports: [
     DatePipe,
+    MatButtonModule,
     LoadingProgressComponent
   ],
   styleUrls: ['./backup-database.component.scss']

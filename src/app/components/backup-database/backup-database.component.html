@@ -1,15 +1,15 @@
 @let info = readRepository.dataSignal()[0];
 
-<div>
-  <div class="alert alert-info mb-2">
+<div class="app-form">
+  <div class="backup-info">
     @if (!info || info.backupFileCount === 0) {
-      <div>Backup information not available</div>
+      Backup information not available
     } @else {
-      <div>Last backup time: <strong>{{info.lastBackupDateTime | date:'medium'}}</strong></div>
+      Last backup time: <strong>{{info.lastBackupDateTime | date:'medium'}}</strong>
     }
   </div>
-  <div class="input-group justify-content-end">
-    <button type="button" class="btn btn-outline-primary" (click)="backupDatabaseClick()" [disabled]="loadingSignal()">Backup database</button>
+  <div class="app-form-actions">
+    <button type="button" matButton="outlined" (click)="backupDatabaseClick()" [disabled]="loadingSignal()">Backup database</button>
   </div>
 </div>
 
