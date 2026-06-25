@@ -2,7 +2,6 @@ import {Component, inject, signal} from '@angular/core';
 import {MessagesService} from '../../messages/messages.service';
 import {EnumStringValuePipe} from "../../core/pipes/enum-string-value.pipe";
 import {MatListModule} from "@angular/material/list";
-import {MessageComponent} from "../../messages/message.component";
 import {PaymentObjectsTableComponent} from "../payment-objects-table/payment-objects-table.component";
 import {PaymentGroupsTableComponent} from "../payment-groups-table/payment-groups-table.component";
 import {ProductsTableComponent} from "../products-table/products-table.component";
@@ -26,7 +25,6 @@ export enum SettingItemEnum {
   imports: [
     EnumStringValuePipe,
     MatListModule,
-    MessageComponent,
     PaymentObjectsTableComponent,
     PaymentGroupsTableComponent,
     ProductsTableComponent,

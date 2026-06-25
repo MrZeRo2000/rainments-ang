@@ -8,9 +8,6 @@
   </mat-action-list>
 
   <div class="settings-content">
-    @if (selectedItem() !== SettingItemEnumType.DATA_MANAGEMENT) {
-      <app-message></app-message>
-    }
     @if (selectedItem() === SettingItemEnumType.PAYMENT_OBJECTS) {
       <app-payment-objects-table></app-payment-objects-table>
     }

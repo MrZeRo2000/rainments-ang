@@ -16,7 +16,6 @@ import {
 import {
   ReportsChartDateTotalsDisplayOptions, ReportsChartDateTotalsDisplayOptionsComponent
 } from '../reports-chart-date-totals-display-options/reports-chart-date-totals-display-options.component';
-import {MessageComponent} from "../../messages/message.component";
 import {
   DropDownMultiSelectComponent
 } from "../../core/components/drop-down-multi-select/drop-down-multi-select.component";
@@ -34,7 +33,6 @@ enum ControlTab {
   selector: 'app-reports-master',
   templateUrl: './reports-master.component.html',
   imports: [
-    MessageComponent,
     BsDatepickerModule,
     DropDownMultiSelectComponent,
     ReportsChartDateTotalsDisplayOptionsComponent,

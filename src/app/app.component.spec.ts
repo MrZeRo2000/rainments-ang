@@ -2,7 +2,6 @@ import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { NavTopComponent } from './components/nav-top/nav-top.component';
-import {MessageComponent} from './messages/message.component';
 import {AppInfoComponent} from './components/app-info/app-info.component';
 import {RepositoryModule} from './repository/repository.module';
 import {RestUrlEnv} from './config/configuration';
@@ -16,8 +15,7 @@ describe('AppComponent', () => {
         RepositoryModule,
         AppComponent,
         AppInfoComponent,
-        NavTopComponent,
-        MessageComponent
+        NavTopComponent
       ],
       providers: [RestUrlEnv, RestDataSource]
     }).compileComponents();

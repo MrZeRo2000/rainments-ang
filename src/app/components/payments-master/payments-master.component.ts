@@ -4,7 +4,6 @@ import {CommonTableComponent} from '../../core/table/common-table-component';
 import {PaymentObjectTotals} from '../../model/payment-object-totals';
 import { HttpParams } from '@angular/common/http';
 import {DateGenerator} from '../../core/utils/date-generator';
-import {MessageComponent} from "../../messages/message.component";
 import {PaymentsDateSelectionComponent} from "../payments-date-selection/payments-date-selection.component";
 import {ReportNavComponent} from "../../core/components/report-nav/report-nav.component";
 import {LoadingProgressComponent} from "../../core/components/loading-progress/loading-progress.component";
@@ -15,7 +14,6 @@ import {PAYMENT_OBJECT_PERIOD_READ_REPOSITORY} from "../../repository/repository
   selector: 'app-payments-master',
   templateUrl: './payments-master.component.html',
   imports: [
-    MessageComponent,
     PaymentsDateSelectionComponent,
     ReportNavComponent,
     LoadingProgressComponent,

@@ -148,7 +148,7 @@ label {
   border-radius: $btn-border-radius;
 }
 
-// --- App message snackbars (MessageComponent sets these as panelClass) ---
+// --- App message snackbars (MessagesService sets these as panelClass) ---
 // Color the snackbar surface per message severity. The snackbar renders in the
 // CDK overlay (outside any component), so these must be global.
 @mixin app-snackbar($bg, $fg) {
