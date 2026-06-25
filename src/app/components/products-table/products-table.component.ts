@@ -7,8 +7,13 @@ import {
 } from '@angular/forms';
 import {duplicateNamesValidator, precisionValidator} from '../../core/validators/form-validators';
 import {DragHandlerService} from '../../core/services/drag-handler.service';
-import {NgClass} from '@angular/common';
-import {CdkDrag, CdkDragHandle, CdkDragPreview, CdkDropList} from '@angular/cdk/drag-drop';
+import {CdkDrag, CdkDragHandle, CdkDropList} from '@angular/cdk/drag-drop';
+import {MatTableModule} from '@angular/material/table';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {MatMenuItem} from '@angular/material/menu';
+import {ErrorStateMatcher} from '@angular/material/core';
 import {AddPanelComponent} from '../../core/components/add-panel/add-panel.component';
 import {DropDownMoreMenuComponent} from '../../core/components/drop-down-more-menu/drop-down-more-menu.component';
 import {DragGripComponent} from '../../core/components/drag-grip/drag-grip.component';
@@ -24,16 +29,19 @@ import {PRODUCT_CRUD_REPOSITORY, PRODUCT_READ_REPOSITORY} from '../../repository
     imports: [
       AddPanelComponent,
       DropDownMoreMenuComponent,
-      NgClass,
       CdkDropList,
       CdkDrag,
-      CdkDragPreview,
+      MatTableModule,
+      MatFormFieldModule,
+      MatInputModule,
+      MatSelectModule,
       CdkDragHandle,
       DragGripComponent,
       EditDeletePanelComponent,
       ReactiveFormsModule,
       SaveDialogPanelComponent,
-      LoadingProgressComponent
+      LoadingProgressComponent,
+      MatMenuItem
     ],
     styleUrls: ['./products-table.component.scss']
 })
@@ -42,6 +50,14 @@ export class ProductsTableComponent extends CommonSimpleEditableTableComponent<P
   public dragHandlerService = inject(DragHandlerService)
 
   inputNameElement = viewChild<ElementRef<HTMLInputElement>>('inputName');
+
+  displayedColumns = ['id', 'name', 'unitName', 'actions'];
+
+  // Show field errors only once Save has been attempted (mirrors the old
+  // Bootstrap behaviour that gated invalid-feedback on editState.submitted).
+  readonly errorMatcher: ErrorStateMatcher = {
+    isErrorState: (control) => !!control?.invalid && !!this.editStateSignal()?.submitted
+  };
 
   counterPrecisionOptions = ['', '0', '1', '2'];
 

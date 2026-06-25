@@ -435,6 +435,17 @@ grep -rhoE 'class="[^"]*"' src --include="*.html" \
   `fa-icon`s with `mat-icon`. Audited already-migrated components:
   `loading-spinner-element` already FA-free ✓; `add-panel` still had a FA plus
   icon → fixed (now `<mat-icon>add</mat-icon>`, fully FA-free). Build ✓, tests ✓.
+- 2026-06-25 — **`products-table` migrated** (last of the 3 tables; modeled on
+  payment-objects). Table → flex `mat-table` + CDK DnD (id/name/unitName/actions);
+  form → `mat-form-field`/`matInput` (name, unitName) + `mat-select` (counterPrecision)
+  + `mat-error` + shared `ErrorStateMatcher` + `.app-form`. Removed `NgClass`/
+  `CdkDragPreview`. ALSO FIXED: products was missing `MatMenuItem` in imports (its
+  Phase-3 `<button mat-menu-item>` was rendering as a plain button) — added it.
+  Column widths in scss (id/unitName/actions fixed, name fills). Build ✓, tests ✓
+  (84/2; color-utils timeout flake again on a slow run, green on re-run).
+  **All 3 editable tables (objects/groups/products) now fully Material + FA-free
+  except shared bits already done.** Remaining ngx-bootstrap: alert, dropdown
+  (multi-select + display-options), datepicker, tooltip.
 - 2026-06-24 — **`payment-groups-table` migrated** (modeled on payment-objects).
   Table → flex `mat-table` + CDK DnD; per-row color via `[style.background-color]="row.color"`
   (replaces Bootstrap `--bs-table-bg`); name cell keeps conditional URL link. Form

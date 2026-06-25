@@ -10,68 +10,78 @@
     </div>
   </div>
 
-  <table class="table" [ngClass]="this.dragHandlerService.getDragClass()">
-    <thead>
-      <tr>
-        <th scope="col" class="w-auto">ID</th>
-        <th scope="col" class="w-100">Name</th>
-        <th scope="col" class="w-auto">Unit Name</th>
-        <th scope="col" class="w-auto">Actions</th>
-      </tr>
-    </thead>
-    <tbody cdkDropList cdkDropListLockAxis="y" (cdkDropListDropped)="onDrop($event)">
-      @for (item of data; track item.id) {
-        <tr cdkDrag (cdkDragStarted)="this.dragHandlerService.startDrag()">
-          <td class="text-nowrap align-middle"><div><app-core-drag-grip cdkDragHandle></app-core-drag-grip> {{item.id}}</div></td>
-          <td class="align-middle">{{item.name}}</td>
-          <td class="align-middle">{{item.unitName}}</td>
-          <td class="text-nowrap align-middle">
-            <app-core-edit-delete-panel [item]="item" (deleteClick)="onDeleteClick(item)" (editClick)="onEditClick(item)"></app-core-edit-delete-panel>
-          </td>
-          <td *cdkDragPreview><div class="drag-preview">{{item.name}}</div></td>
-        </tr>
-      }
-    </tbody>
-  </table>
+  <mat-table
+    [dataSource]="data"
+    cdkDropList
+    cdkDropListLockAxis="y"
+    (cdkDropListDropped)="onDrop($event)"
+    [class.cursor-grip]="dragHandlerService.dragging">
+
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+      <mat-cell *matCellDef="let item" class="text-nowrap">
+        <app-core-drag-grip cdkDragHandle></app-core-drag-grip>&nbsp;{{item.id}}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+      <mat-cell *matCellDef="let item">{{item.name}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="unitName">
+      <mat-header-cell *matHeaderCellDef>Unit Name</mat-header-cell>
+      <mat-cell *matCellDef="let item">{{item.unitName}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+      <mat-cell *matCellDef="let item">
+        <app-core-edit-delete-panel [item]="item" (deleteClick)="onDeleteClick(item)" (editClick)="onEditClick(item)"></app-core-edit-delete-panel>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row
+      *matRowDef="let row; columns: displayedColumns"
+      cdkDrag
+      [cdkDragData]="row"
+      (cdkDragStarted)="dragHandlerService.startDrag()"></mat-row>
+  </mat-table>
 }
 
 @if (editStateSignal() && !loadingSignal()) {
-  <div>
-    <form class="form-group" [formGroup]="editForm">
-      <label for="inputName"><strong>Name</strong></label>
-      <input #inputName type="text" class="form-control" [ngClass]="{'is-invalid': editForm.controls.name.errors && editStateSignal().submitted}" id="inputName" placeholder="Name" formControlName="name">
-      <label for="inputUnitName" class="mt-2">Unit Name</label>
-      <input #inputUnitName type="text" class="form-control" id="inputUnitName" placeholder="Unit Name" formControlName="unitName">
-      <label for="counterPrecision" class="mt-2">Counter precision</label>
-      <select
-        class="form-select"
-        [ngClass]="{'is-invalid': editForm.controls.counterPrecision.errors && editStateSignal().submitted}"
-        formControlName="counterPrecision"
-        id="counterPrecision">
+  <form class="app-form" [formGroup]="editForm">
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input #inputName matInput formControlName="name" placeholder="Name" [errorStateMatcher]="errorMatcher">
+      @if (editForm.controls.name.errors?.required) {
+        <mat-error>Name should not be empty</mat-error>
+      }
+      @if (editForm.controls.name.errors?.existingName) {
+        <mat-error>Name should be unique</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Unit Name</mat-label>
+      <input #inputUnitName matInput formControlName="unitName" placeholder="Unit Name">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Counter precision</mat-label>
+      <mat-select formControlName="counterPrecision" [errorStateMatcher]="errorMatcher">
         @for (item of counterPrecisionOptions; track item) {
-          <option value="{{item}}">{{item}}</option>
+          <mat-option [value]="item">{{item}}</mat-option>
         }
-      </select>
-      @if (editForm.controls.name.errors && editStateSignal().submitted) {
-        <div class="invalid-feedback">
-          @if (editForm.controls.name.errors.required) {
-            <div>Name should not be empty</div>
-          }
-          @if (editForm.controls.name.errors.existingName) {
-            <div>Name should be unique</div>
-          }
-        </div>
+      </mat-select>
+      @if (editForm.controls.counterPrecision.errors?.precisionForEmptyUnitName) {
+        <mat-error>Precision for empty unit is not allowed</mat-error>
       }
-      @if (editForm.controls.counterPrecision.errors && editStateSignal().submitted) {
-        <div class="invalid-feedback">
-          @if (editForm.controls.counterPrecision.errors.precisionForEmptyUnitName) {
-            <div>Precision for empty unit is not allowed</div>
-          }
-        </div>
-      }
-      <app-core-save-dialog-panel [editState]="this.editStateSignal()" [loading]="this.readRepository.loadingSignal()" (createClick)="onSave()" (saveClick)="onSave()" (cancelClick)="onCancel()"></app-core-save-dialog-panel>
-    </form>
-  </div>
+    </mat-form-field>
+
+    <app-core-save-dialog-panel [editState]="this.editStateSignal()" [loading]="this.readRepository.loadingSignal()" (createClick)="onSave()" (saveClick)="onSave()" (cancelClick)="onCancel()"></app-core-save-dialog-panel>
+  </form>
 }
 
 <app-core-loading-progress [loading]="loadingSignal()"></app-core-loading-progress>

@@ -1,0 +1,18 @@
+// Same column proportions as the other tables: ID/Unit Name/Actions fixed-width,
+// Name fills the rest. Fixed flex-basis keeps header and data cells aligned.
+.mat-column-id {
+  flex: 0 0 4rem;
+  padding-left: 0.5rem;
+  justify-content: center;
+}
+
+.mat-column-unitName {
+  flex: 0 0 8rem;
+}
+
+.mat-column-actions {
+  flex: 0 0 6rem;
+  padding-right: 0.5rem;
+  justify-content: center;
+  text-wrap: nowrap;
+}
