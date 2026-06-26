@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PaymentsDateSelectionComponent } from './payments-date-selection.component';
 import {ReactiveFormsModule} from '@angular/forms';
-import {FontAwesomeIconsModule} from '../../font-awesome-icons/font-awesome-icons.module';
 
 describe('PaymentsDateSelectionComponent', () => {
   let component: PaymentsDateSelectionComponent;
@@ -10,7 +9,7 @@ describe('PaymentsDateSelectionComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      imports: [PaymentsDateSelectionComponent, ReactiveFormsModule, FontAwesomeIconsModule]
+      imports: [PaymentsDateSelectionComponent, ReactiveFormsModule]
     })
     .compileComponents();
   });

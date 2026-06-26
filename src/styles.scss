@@ -160,6 +160,13 @@ label {
   }
 }
 
+// Bootstrap's global line-height: 1.5 leaks into Material icon buttons (which set
+// no line-height of their own), making the icon glyph sit off-centre. Normalize
+// it while Bootstrap CSS is still loaded (remove this in the Bootstrap teardown).
+.mat-mdc-icon-button {
+  line-height: 1;
+}
+
 .app-snackbar-error { @include app-snackbar(var(--mat-sys-error-container), var(--mat-sys-on-error-container)); }
 .app-snackbar-success { @include app-snackbar(#c8e6c9, #1b5e20); }   // pale green bg, dark green text
 .app-snackbar-warning { @include app-snackbar(#ffe0b2, #e65100); }   // pale amber bg, dark orange text

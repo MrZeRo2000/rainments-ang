@@ -3,16 +3,20 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from '@angular/forms';
 import {DateRangeGenerator, PeriodInfo} from '../../core/utils/date-range-generator';
 import {PaymentObjectTotals} from '../../model/payment-object-totals';
-import {NgClass} from "@angular/common";
-import {FaIconComponent} from "@fortawesome/angular-fontawesome";
+import {MatButtonModule} from "@angular/material/button";
+import {MatIconModule} from "@angular/material/icon";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatSelectModule} from "@angular/material/select";
 
 @Component({
   selector: 'app-payments-date-selection',
   templateUrl: './payments-date-selection.component.html',
   imports: [
     ReactiveFormsModule,
-    NgClass,
-    FaIconComponent
+    MatButtonModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatSelectModule
   ],
   styleUrls: ['./payments-date-selection.component.scss']
 })

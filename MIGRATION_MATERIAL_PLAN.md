@@ -319,6 +319,25 @@ catch anything left, then remove FA entirely.
 - [ ] Remove `$fa-font-path` from `src/_variables.scss`.
 
 ### Phase 6 — Teardown
+
+> **Bootstrap-coexistence workarounds to REMOVE once Bootstrap CSS is gone**
+> (added only because Bootstrap's global resets still apply during migration):
+> - [ ] `styles.scss`: `.mat-mdc-icon-button { line-height: 1 }` (counteracts
+>       Bootstrap's global `line-height: 1.5` offsetting icon-button glyphs).
+> - [ ] `styles.scss`: the `a:not([class*="btn"])…:hover { text-decoration }`
+>       link-underline rules (they underline Material anchors on hover).
+> - [ ] Per-component `line-height: 1` glyph-centering rules added for the same
+>       Bootstrap leak: `drag-grip` (`:host mat-icon`), `report-nav`
+>       (`.report-link mat-icon`), `drop-down-more-menu` (`:host button` — now
+>       redundant with the global icon-button rule), `confirmation-modal-dialog`
+>       (`.confirm-close`). Re-check each renders centered WITHOUT the rule, then
+>       delete.
+> - [ ] `colored-value-label`: literal Bootstrap-ish colors (#198754/#dc3545/
+>       #6c757dad) — revisit vs theme tokens.
+> - [ ] Dead global rules in `styles.scss`: `.badge-value`, `.badge-value-light`
+>       (last consumer migrated), `.jumbotron`/`.breadcrumb`/table-border fixes
+>       (re-check usage).
+
 - [ ] Grep the repo: **zero** matches for `ngx-bootstrap`, `@fortawesome`/
       `fa-icon`, and Bootstrap-only classes (`btn`, `form-control`, `row`,
       `col-`, `navbar`, …) outside the utility shim. Use the verification grep
@@ -435,6 +454,20 @@ grep -rhoE 'class="[^"]*"' src --include="*.html" \
   `fa-icon`s with `mat-icon`. Audited already-migrated components:
   `loading-spinner-element` already FA-free ✓; `add-panel` still had a FA plus
   icon → fixed (now `<mat-icon>add</mat-icon>`, fully FA-free). Build ✓, tests ✓.
+- 2026-06-26 — **`payments-date-selection` migrated & FA-free.** Date navigator
+  `[<][period][year][>]`: FA `angle-left/right` buttons → `matIconButton` +
+  `<mat-icon>chevron_left/right</mat-icon>` with real `[disabled]` at boundaries
+  (selectedFirstDate/LastDate); Bootstrap `form-select` selects → `mat-form-field`
+  + `mat-select` (`subscriptSizing="dynamic"`, `[ngValue]`→`[value]`); `form-inline
+  d-flex` → `.date-selection` flex row (scss, fields 9rem). Removed `NgClass`/FA;
+  spec dropped `FontAwesomeIconsModule`. Build ✓, tests ✓ (83/2).
+- 2026-06-25 — **Removed `MessageComponent` entirely.** Since messages are global
+  snackbars (MessagesService), the no-op `<app-message>` was dead. Removed the 3
+  remaining tags (payments-master, reports-master, settings) + their MessageComponent
+  imports + app.component.spec import; deleted message.component.ts + .spec. Kept
+  MessagesService + message.model. NOTE: `messageSource` inputs on update-payment-group
+  / backup-database remain (flow into the message's now-ignored source field) —
+  optional deeper cleanup. Test count 84→83 (deleted spec). Build ✓, tests ✓ (83/2).
 - 2026-06-25 — **`colored-value-label` migrated.** Bootstrap `badge`/`bg-success`/
   `bg-danger`/`badge-value(-light)` + `NgClass` → a styled `.value-label` pill
   (component scss) with `[class.value-label--positive/negative]` modifiers; kept
