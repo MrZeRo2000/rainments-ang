@@ -4,6 +4,12 @@
 // buttons live in. Use Material's own size token to keep them compact
 // (≈ the old btn-sm height) so row height stays the same.
 :host {
+  // Keep the two action buttons on a single line — never wrap — regardless of
+  // how narrow the actions column is in the host table. Defined here (once) so
+  // every table gets it without repeating a nowrap rule per component.
+  display: inline-flex;
+  flex-wrap: nowrap;
+
   @include mat.icon-button-overrides((
     state-layer-size: 36px,   // compact button (≈ old btn-sm height)
   ));

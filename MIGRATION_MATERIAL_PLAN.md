@@ -100,11 +100,13 @@ Packages: `@fortawesome/angular-fontawesome`, `@fortawesome/fontawesome-svg-core
 which is provided app-wide via `importProvidersFrom(FontAwesomeIconsModule)` in
 `app.config.ts`. Each component imports `FaIconComponent` and uses `<fa-icon>`.
 
-**Components still using `<fa-icon>` (12; verify before each migration):**
+**Components still using `<fa-icon>` (verify before each migration; list is
+loosely maintained — grep `fa-icon` for ground truth):**
+`display-icon-element`, and any not-yet-migrated reports components.
+(DONE/FA-free includes: `loading-spinner-element`, `add-panel`, `payments-table`,
+`colored-trend-label`, `edit-delete-panel`, `drag-grip`, `report-nav`,
 `backup-database-button`, `payments-dashboard`, `payments-date-selection`,
-`payments-selectable-panel`, `payments-table`, `colored-trend-label`,
-`display-icon-element`, `drag-grip`, `drop-down-more-menu`, `edit-delete-panel`,
-`report-nav`. (DONE/FA-free: `loading-spinner-element`, `add-panel`.)
+`payments-selectable-panel`, `drop-down-more-menu`.)
 
 **Icon name mapping (FA solid → Material Icons ligature).** Use as a default;
 adjust per visual taste:
@@ -236,9 +238,13 @@ Order chosen so shared pieces land before their consumers.
       `app-alert` (or MatSnackBar per §3.4). Update `message.component.spec.ts`
       and `app.component.spec.ts` / `settings.component.spec.ts` which import
       `AlertModule`.
-- [ ] **`payments-table` tooltip** — swap `TooltipModule` → `MatTooltip`
-      (`matTooltip` + `matTooltipDisabled`). (Modal in this file handled in
-      Phase 3.)
+- [x] **`payments-table`** — DONE (2026-07-01). Bootstrap `<table>` → flex
+      `mat-table` (dynamic `displayedColumns` signal, per-row group colour, row
+      selection/hover); `TooltipModule` → `matTooltip`/`matTooltipDisabled`; FA
+      clone icon → `mat-icon content_copy`; edit form → `.app-form` +
+      `mat-form-field`; in-cell editors restyled (`.inline-edit-input`). Build ✓,
+      tests ✓ (83/2). (Modal handled in Phase 3; `colored-trend-label` FA arrows
+      migrated in a follow-up — see log.)
 - [x] **`loading-spinner-element`** — DONE (2026-06-22). FA spinner → `mat-spinner`
       (`MatProgressSpinnerModule`, `[diameter]="32"`, `:host{display:inline-block}`
       to stay inline next to the loading message). No spec existed. Build ✓ /
@@ -334,6 +340,17 @@ catch anything left, then remove FA entirely.
 >       delete.
 > - [ ] `colored-value-label`: literal Bootstrap-ish colors (#198754/#dc3545/
 >       #6c757dad) — revisit vs theme tokens.
+> - [ ] `payments-table`: `.payment-row:hover` / `.selected-row` rules that
+>       re-create Bootstrap's `.table-hover` / `.table-active`; `.inline-edit-input`
+>       (replaces `.form-control` for the in-cell numeric editors, with
+>       `--mat-sys-*` fallbacks to Bootstrap-ish hex); `mat-icon { line-height: 1 }`
+>       (same Bootstrap line-height leak on the "Clone previous" button). (Bootstrap
+>       utility classes were fully removed from this component's template — the
+>       above are only the leak/emulation rules that can be simplified once
+>       Bootstrap's global resets are gone.)
+> - [ ] `colored-trend-label`: `.trend-up`/`.trend-down` literal colours
+>       (#dc3545/#198754) + `mat-icon { line-height: 1 }` — revisit vs theme
+>       tokens / drop the line-height once Bootstrap is gone.
 > - [ ] Dead global rules in `styles.scss`: `.badge-value`, `.badge-value-light`
 >       (last consumer migrated), `.jumbotron`/`.breadcrumb`/table-border fixes
 >       (re-check usage).
@@ -448,6 +465,47 @@ grep -rhoE 'class="[^"]*"' src --include="*.html" \
 
 > Newest entry on top. Format: `YYYY-MM-DD — what changed — build/lint/test status`.
 
+- 2026-07-01 — **`colored-trend-label` migrated** (FA → mat-icon). Trend arrows
+  `fa caret-up`/`caret-down`/`equals` → `<mat-icon>arrow_drop_up</mat-icon>` /
+  `arrow_drop_down` / `remove` (used `remove` for the zero/flat case rather than
+  the map's `drag_handle`, which is our drag-grip glyph and would read as a
+  handle). Bootstrap `text-success`/`text-danger` (via `[ngClass]`) → scoped
+  `.trend-up` (#dc3545) / `.trend-down` (#198754) — up = increase = red, down =
+  green, matching the old logic. Dropped `NgClass` + `FaIconComponent` + the
+  spec's `FontAwesomeIconsModule`. This was `payments-table`'s last FA
+  descendant, so that spec's `FontAwesomeIconsModule` was dropped too. Build ✓,
+  tests ✓ (83/2).
+- 2026-07-01 — **`payments-table` de-Bootstrapped** (follow-up to the migration
+  below, at the user's request — don't leave Bootstrap classes in migrated
+  components). Replaced ALL Bootstrap classes with scoped SCSS: toolbar
+  `d-flex mt-2 mb-2`/`ms-auto`/`ms-2`/`me-2` → `.table-toolbar`/`.toolbar-group`/
+  `.toolbar-end`; `.row`+`col-xl-9 col-lg-8`/`col-xl-3 col-lg-4`/`col-12` →
+  `.content-row`/`.table-col.with-summary`/`.summary-col` flex + media queries at
+  the same lg/xl breakpoints; `text-nowrap`/`text-truncate`/`text-end`/`w-100`/
+  `me-2` → `.numeric-cell`/`.truncate`/`.align-end`/`.value-gap` + `mat-table{width:100%}`.
+  Also: **gap between table and summary** (user request) via `.content-row{gap:1.5rem}`
+  with bases `calc(% - 0.75rem)`; when summary is hidden the single child spans
+  full width. `NgClass` import removed (no longer used). Build ✓, tests ✓ (83/2).
+- 2026-07-01 — **`payments-table` migrated** (the app's central, richest table).
+  Bootstrap `<table class="table table-hover table-responsive">` → flex
+  **`mat-table`** with a **`displayedColumns` computed signal** (ID / Commission
+  columns still toggle via display options). Per-row group colour via
+  `[style.background]`; selection highlight `.selected-row` + hover `.payment-row`
+  replace `.table-active`/`.table-hover`; `[ngStyle]`/`--bs-table-bg` dropped
+  (NgStyle import removed). ngx-bootstrap **`TooltipModule`** on the Product cell
+  → **`matTooltip`** (`[matTooltipDisabled]`/`[matTooltipShowDelay]`). FA **clone**
+  icon on "Clone previous" → `matButton="outlined"` + `<mat-icon>content_copy</mat-icon>`
+  (FaIconComponent import removed). In-cell numeric editors kept as plain inputs
+  restyled via `.inline-edit-input` (a full mat-form-field would blow up row
+  height); `refOnClick`/`controlOnClick` `stopPropagation` still gate row-select.
+  Bottom **edit form** → `.app-form` + `mat-form-field`/`mat-select`/`matInput`/
+  `mat-error` with the shared `errorMatcher` (submitted-gated); prev-period
+  reference values moved to `mat-hint`. **Note:** `mat-option [value]` now binds
+  the **numeric** `item.id` (was a string) because `mat-select` matches by strict
+  equality and `getEditValue` populates the controls with numeric ids — the
+  `parseInt` computeds work for both. `colored-trend-label` still renders FA
+  arrows (migrates later; that's why the spec keeps `FontAwesomeIconsModule`).
+  Build ✓, tests ✓ (83/2).
 - 2026-06-22 — **SCOPE EXPANDED: remove FontAwesome too** (user request). Plan
   retitled; §1 goal + §2c FA inventory/icon-map + Phase 5b (FA→mat-icon sweep &
   uninstall) added. New rule: every component migration must also replace its

@@ -1,13 +1,11 @@
 import {Component, input} from '@angular/core';
-import {NgClass} from "@angular/common";
-import {FaIconComponent} from "@fortawesome/angular-fontawesome";
+import {MatIconModule} from '@angular/material/icon';
 
 @Component({
   selector: 'app-core-colored-trend-label',
   templateUrl: './colored-trend-label.component.html',
   imports: [
-    NgClass,
-    FaIconComponent
+    MatIconModule
   ],
   styleUrls: ['./colored-trend-label.component.scss']
 })

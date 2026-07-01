@@ -27,9 +27,15 @@ html {
     density: 0,
   ));
 
-  // The grayscale theme's surface is a light gray (~rgb(251,249,249)); force
-  // mat-table backgrounds to white app-wide.
-  --mat-table-background-color: #ffffff;
+  // App-wide mat-table tokens:
+  //  - background: the grayscale theme's surface is a light gray
+  //    (~rgb(251,249,249)); force tables to white.
+  //  - text size: bump header + row cell text from the default 14px to 16px.
+  @include mat.table-overrides((
+    background-color: #ffffff,
+    header-headline-size: 16px,
+    row-item-label-text-size: 16px,
+  ));
 
   // ...and mat-card on pure white (surface is the same off-white gray).
   @include mat.card-overrides((

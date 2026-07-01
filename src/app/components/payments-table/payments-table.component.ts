@@ -17,9 +17,14 @@ import {ColoredValueLabelComponent, ColorScheme} from '../../core/components/col
 import {PaymentsTableDisplayOptions, PaymentsTableDisplayOptionsComponent} from '../payments-table-display-options/payments-table-display-options.component';
 import {AddPanelComponent} from '../../core/components/add-panel/add-panel.component';
 import {PaymentsSelectablePanelComponent} from '../payments-selectable-panel/payments-selectable-panel.component';
-import {FaIconComponent} from '@fortawesome/angular-fontawesome';
-import {NgClass, NgStyle} from '@angular/common';
-import {TooltipModule} from 'ngx-bootstrap/tooltip';
+import {MatTableModule} from '@angular/material/table';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {ErrorStateMatcher} from '@angular/material/core';
 import {ColoredTrendLabelComponent} from '../../core/components/colored-trend-label/colored-trend-label.component';
 import {InputPasteFloatModelDirective} from '../../core/directives/input-paste-float-model.directive';
 import {EditDeletePanelComponent} from '../../core/components/edit-delete-panel/edit-delete-panel.component';
@@ -45,11 +50,14 @@ enum InlineControl {
   imports: [
     AddPanelComponent,
     PaymentsSelectablePanelComponent,
-    FaIconComponent,
-    NgClass,
     PaymentsTableDisplayOptionsComponent,
-    NgStyle,
-    TooltipModule,
+    MatTableModule,
+    MatTooltipModule,
+    MatButtonModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
     ColoredValueLabelComponent,
     AmountPipe,
     FormsModule,
@@ -81,6 +89,27 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   inlineEditHandler = new InlineEditHandler<Payment>();
 
   displayOptions = signal(PaymentsTableDisplayOptions.fromLocalStorage());
+
+  // Columns shown depend on the display options (ID / Commission are toggleable).
+  displayedColumns = computed(() => {
+    const options = this.displayOptions();
+    const columns: string[] = [];
+    if (options.showId()) {
+      columns.push('id');
+    }
+    columns.push('group', 'product', 'counter', 'payment');
+    if (options.showCommission()) {
+      columns.push('commission');
+    }
+    columns.push('actions');
+    return columns;
+  });
+
+  // Show field errors only once the user has attempted to save (mirrors the old
+  // Bootstrap behaviour that gated `invalid-feedback` on editState.submitted).
+  readonly errorMatcher: ErrorStateMatcher = {
+    isErrorState: (control) => !!control?.invalid && !!this.editStateSignal()?.submitted
+  };
 
   private inlineControls = viewChildren<ElementRef>('inlineControl');
 
