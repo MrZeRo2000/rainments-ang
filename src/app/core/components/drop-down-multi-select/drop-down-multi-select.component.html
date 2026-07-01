@@ -1,21 +1,17 @@
+<button matButton="outlined" [matMenuTriggerFor]="menu">
+  {{title()}}
+  <mat-icon>arrow_drop_down</mat-icon>
+</button>
 
-<div class="btn-group" dropdown [insideClick]="false">
-  <button dropdownToggle type="button" class="btn btn-outline-primary dropdown-toggle">
-    {{title()}} <span class="caret"></span>
-  </button>
-  <ul *dropdownMenu class="dropdown-menu" role="menu">
-    @for (item of selectableItems(); track item) {
-      <li role="menuitem">
-        <button class="dropdown-item" [ngClass]="{'active': item.isSelected}" (click)="dropDownClick($event, item)">{{item.value}}</button>
-      </li>
+<mat-menu #menu="matMenu">
+  <!-- Keep the menu open while toggling items (stop clicks from closing it),
+       mirroring the old [insideClick]="false". -->
+  <div class="multi-select-menu" (click)="$event.stopPropagation()">
+    @for (item of selectableItems(); track item.value) {
+      <button mat-menu-item (click)="dropDownClick($event, item)">
+        <mat-icon>{{item.isSelected ? 'check_box' : 'check_box_outline_blank'}}</mat-icon>
+        <span>{{item.value}}</span>
+      </button>
     }
-    <!--
-    <li role="menuitem"><a class="dropdown-item active" href="#">Action</a></li>
-    <li role="menuitem"><a class="dropdown-item" href="#">Another action</a></li>
-    <li role="menuitem"><a class="dropdown-item" href="#">Something else here</a></li>
-    <li class="divider dropdown-divider"></li>
-    <li role="menuitem"><a class="dropdown-item" href="#">Separated link</a>
-  </li>
-  -->
-</ul>
-</div>
+  </div>
+</mat-menu>

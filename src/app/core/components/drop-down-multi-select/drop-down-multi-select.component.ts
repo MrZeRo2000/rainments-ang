@@ -1,14 +1,16 @@
 import {Component, input, output} from '@angular/core';
 import {SelectableItem} from '../../model/selectable-item';
-import {BsDropdownModule} from "ngx-bootstrap/dropdown";
-import {NgClass} from "@angular/common";
+import {MatButtonModule} from "@angular/material/button";
+import {MatIconModule} from "@angular/material/icon";
+import {MatMenuModule} from "@angular/material/menu";
 
 @Component({
   selector: 'app-drop-down-multi-select',
   templateUrl: './drop-down-multi-select.component.html',
   imports: [
-    BsDropdownModule,
-    NgClass
+    MatButtonModule,
+    MatIconModule,
+    MatMenuModule
   ],
   styleUrls: ['./drop-down-multi-select.component.scss']
 })
@@ -25,10 +27,12 @@ export class DropDownMultiSelectComponent {
     const items = this.selectableItems() ?? [];
     if (event.ctrlKey) {
       items.forEach(v => v.isSelected = v.value === item.value);
-      this.selectionChanged.emit(items);
+      // Emit a new array so the consumer's signal (set-with-Object.is) actually
+      // changes and its filter recomputes — the items are mutated in place.
+      this.selectionChanged.emit([...items]);
     } else if (!item.isSelected || items.filter(v => v.isSelected).length > 1) {
       item.isSelected = !item.isSelected;
-      this.selectionChanged.emit(items);
+      this.selectionChanged.emit([...items]);
     }
   }
 

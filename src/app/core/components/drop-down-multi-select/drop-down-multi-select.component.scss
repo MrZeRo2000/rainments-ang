@@ -1,0 +1,5 @@
+// Bootstrap's global line-height: 1.5 offsets the trailing dropdown-arrow glyph;
+// normalise (Phase 6 teardown once Bootstrap CSS is gone).
+mat-icon {
+  line-height: 1;
+}

@@ -258,9 +258,13 @@ Order chosen so shared pieces land before their consumers.
       `data-bs-toggle` dropdown with `MatMenu`. **This removes the last runtime
       dependency on `bootstrap.bundle.min.js`** → after this, remove the script
       from `angular.json` and re-test.
-- [ ] **`core/components/drop-down-multi-select`** — `MatMenu` with checkable
-      items (multi-select). Uses `[insideClick]="false"` semantics → keep panel
-      open on selection (stopPropagation pattern, §2a caveat).
+- [x] **`core/components/drop-down-multi-select`** — DONE (2026-07-01). ngx
+      `dropdown`/`[insideClick]="false"` → `MatMenu` with a stopPropagation wrapper
+      (keeps the panel open on toggle). Trigger → `matButton="outlined"` +
+      `arrow_drop_down`; each item a `mat-menu-item` with a `check_box`/
+      `check_box_outline_blank` icon for selection state. Kept `dropDownClick` as
+      is, so ctrl+click (select-only-this) and can't-deselect-the-last still work.
+      Build ✓, tests ✓ (84/2).
 - [ ] **`payments-table-display-options`** — form-in-menu (7 switches). MatMenu +
       stopPropagation, `mat-slide-toggle` or `mat-checkbox` for switches.
 - [ ] **`reports-table-display-options`** — same pattern.
@@ -474,6 +478,16 @@ grep -rhoE 'class="[^"]*"' src --include="*.html" \
 ## 8. Progress Log
 
 > Newest entry on top. Format: `YYYY-MM-DD — what changed — build/lint/test status`.
+
+- 2026-07-01 — **`drop-down-multi-select` migrated** (dropdown → MatMenu). ngx
+  `dropdown`/`dropdownToggle`/`*dropdownMenu` + `[insideClick]="false"` →
+  `matButton="outlined"` trigger + `mat-menu`, items kept open via a
+  `(click)="$event.stopPropagation()"` wrapper. Selection shown with
+  `check_box`/`check_box_outline_blank` icons instead of the Bootstrap `active`
+  class; `dropDownClick` unchanged so ctrl+click and can't-deselect-last behave
+  as before. Dropped `BsDropdownModule` + `NgClass`. Remaining ngx-bootstrap in
+  src: the 2 display-options dropdowns (reports-table-display-options,
+  reports-chart-date-totals-display-options). Build ✓, tests ✓ (84/2).
 
 - 2026-07-01 — **Extracted `NavListSelectorComponent`** (`core/components/
   nav-list-selector`) — a reusable vertical list of pill buttons (mat-action-list
