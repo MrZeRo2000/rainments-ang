@@ -1,7 +1,6 @@
 import {Component, inject, signal} from '@angular/core';
 import {MessagesService} from '../../messages/messages.service';
-import {EnumStringValuePipe} from "../../core/pipes/enum-string-value.pipe";
-import {MatListModule} from "@angular/material/list";
+import {NavListSelectorComponent} from "../../core/components/nav-list-selector/nav-list-selector.component";
 import {PaymentObjectsTableComponent} from "../payment-objects-table/payment-objects-table.component";
 import {PaymentGroupsTableComponent} from "../payment-groups-table/payment-groups-table.component";
 import {ProductsTableComponent} from "../products-table/products-table.component";
@@ -23,8 +22,7 @@ export enum SettingItemEnum {
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss'],
   imports: [
-    EnumStringValuePipe,
-    MatListModule,
+    NavListSelectorComponent,
     PaymentObjectsTableComponent,
     PaymentGroupsTableComponent,
     ProductsTableComponent,
@@ -35,12 +33,12 @@ export class SettingsComponent {
   private messagesService: MessagesService = inject(MessagesService);
 
   public SettingItemEnumType = SettingItemEnum;
+  settingItems = Object.values(SettingItemEnum);
 
   selectedItem = signal(SettingItemEnum.PAYMENT_OBJECTS);
 
-  onItemClick(event, item) {
-    event.preventDefault();
+  onItemSelected(item: string) {
     this.messagesService.resetMessage();
-    this.selectedItem.set(item);
+    this.selectedItem.set(item as SettingItemEnum);
   }
 }

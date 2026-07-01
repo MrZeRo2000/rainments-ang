@@ -282,11 +282,20 @@ Order chosen so shared pieces land before their consumers.
 - [ ] Remove `data-management.component.spec.ts` `ModalModule` import etc.
 
 ### Phase 4 — Datepicker (highest risk)
-- [ ] **`components/reports-master`** — replace `bsDaterangepicker` with
-      `mat-date-range-input` + `mat-date-range-picker` (+ `MatFormField`).
-      Preserve: min/max dates, `Date[]` two-element range, `DD.MM.YYYY` display
-      format, the `onDateRangeValueChange` reload behaviour. Remove the
-      `bs-datepicker.scss` import from `styles.scss`.
+- [x] **`components/reports-master`** — DONE (2026-07-01). Replaced
+      `bsDaterangepicker` with `mat-date-range-input` + `mat-date-range-picker`
+      (+ `MatFormField`, `provideNativeDateAdapter()` in component providers).
+      A `FormGroup{start,end}` backs the inputs; its `valueChanges` bridges a
+      completed range to the existing `onDateRangeValueChange([start,end])` /
+      reload flow (min/max + `Date[]` shape preserved). Also migrated in the same
+      component: the Bootstrap `btn-group-vertical` Chart/Table toggle →
+      `mat-button-toggle-group vertical`; breadcrumb + all layout classes
+      (`d-flex`/`form-inline`/`ms-auto`/`table-responsive`/…) → scoped SCSS;
+      dropped `NgClass`. Since this was the **last** ngx datepicker consumer, the
+      now-dead `bs-datepicker.scss` import was removed from `styles.scss`.
+      **Deviation:** display format is the native adapter's locale default (not
+      the old `DD.MM.YYYY`) — a `MAT_DATE_FORMATS`/locale can be added if wanted.
+      Build ✓, tests ✓ (83/2).
 
 ### Phase 5 — Structural CSS: buttons, forms, tables, nav, cards, grid
 Migrate Bootstrap CSS-only components to Material, file by file. These have no
@@ -403,7 +412,8 @@ catch anything left, then remove FA entirely.
 - [ ] `src/app/app.config.ts` (comment cleanup + add date adapter)
 
 **Config/global:**
-- [ ] `src/styles.scss` (remove bootstrap + bs-datepicker imports; add theme + utilities)
+- [ ] `src/styles.scss` (remove bootstrap import; add theme + utilities — the
+      `bs-datepicker.scss` import was already removed with reports-master)
 - [ ] `src/_variables.scss` (drop bootstrap vars)
 - [ ] `angular.json` (remove bootstrap JS script)
 - [ ] `package.json` (uninstall bootstrap, ngx-bootstrap)
@@ -464,6 +474,32 @@ grep -rhoE 'class="[^"]*"' src --include="*.html" \
 ## 8. Progress Log
 
 > Newest entry on top. Format: `YYYY-MM-DD — what changed — build/lint/test status`.
+
+- 2026-07-01 — **Extracted `NavListSelectorComponent`** (`core/components/
+  nav-list-selector`) — a reusable vertical list of pill buttons (mat-action-list
+  + `selected-list-item` highlight via secondary-container tokens). Replaced
+  reports-master's `mat-button-toggle-group` Chart/Table selector with it (per
+  user request: "vertical buttons like Settings"), and refactored `settings` to
+  use it too, so the pill/selected styling lives in one place (settings keeps only
+  its layout: split line + column sizing). Dropped `MatButtonToggleModule` from
+  reports-master and `MatListModule`/`EnumStringValuePipe` from settings. Added a
+  spec for the new component. Build ✓, tests ✓ (84/2).
+
+- 2026-07-01 — **`reports-master` migrated** (Phase 4 datepicker — the riskiest
+  item). `bsDaterangepicker` → `mat-date-range-input`/`mat-date-range-picker` in a
+  `mat-form-field`, backed by a `FormGroup{start,end}` whose `valueChanges` feeds
+  the existing `onDateRangeValueChange`/reload logic (min/max + `Date[]` shape
+  preserved); `provideNativeDateAdapter()` added to the component providers. The
+  Bootstrap `btn-group-vertical` Chart/Table selector → `mat-button-toggle-group
+  vertical`; breadcrumb + layout classes → scoped SCSS (`.reports-header/
+  -controls/-body/-content`, `.controls-end` for the old `ms-auto`); `NgClass`
+  dropped. This was the last ngx **datepicker** consumer, so the dead
+  `bs-datepicker.scss` import was removed from `styles.scss` (one less Sass
+  deprecation warning). Note: date display format is now the native adapter's
+  locale default, not the old `DD.MM.YYYY` (can add `MAT_DATE_FORMATS` if wanted).
+  Remaining ngx-bootstrap in src: the 3 dropdown components (drop-down-multi-select,
+  reports-table-display-options, reports-chart-date-totals-display-options).
+  Build ✓, tests ✓ (83/2).
 
 - 2026-07-01 — **`colored-trend-label` migrated** (FA → mat-icon). Trend arrows
   `fa caret-up`/`caret-down`/`equals` → `<mat-icon>arrow_drop_up</mat-icon>` /

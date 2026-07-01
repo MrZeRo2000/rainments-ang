@@ -1,30 +1,24 @@
-
 @if (paymentRep(); as rep) {
-  <div>
-    <div class="d-inline-flex">
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb p-2">
-          <li aria-current="page"><h5 class="mb-0 text-nowrap">{{rep.paymentObject.name}}</h5></li>
-        </ol>
-      </nav>
-    </div>
-    <div class="d-flex">
-      <div class="form-inline mb-2">
-        <input type="text"
-          placeholder="Daterangepicker"
-          class="form-control"
-          bsDaterangepicker
-          [bsConfig]="{ adaptivePosition: true, rangeInputFormat: 'DD.MM.YYYY' }"
-          [minDate]="minSelectionDate"
-          [maxDate]="maxSelectionDate"
-          [bsValue] = "dateRange()"
-          (bsValueChange)="onDateRangeValueChange($event)"
-          placement="right"
+  <div class="reports-header">
+    <h5 class="report-title">{{rep.paymentObject.name}}</h5>
+    <div class="reports-controls">
+      <mat-form-field class="date-range-field" subscriptSizing="dynamic">
+        <mat-label>Date range</mat-label>
+        <mat-date-range-input
+          [formGroup]="dateRangeForm"
+          [rangePicker]="picker"
+          [min]="minSelectionDate"
+          [max]="maxSelectionDate"
           >
-      </div>
+          <input matStartDate formControlName="start" placeholder="Start date">
+          <input matEndDate formControlName="end" placeholder="End date">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
+
       @if (selectedGroups() && selectedGroups().length > 0) {
         <app-drop-down-multi-select
-          class="ms-2 mb-2"
           title="Groups"
           [selectableItems]="selectedGroups()"
           (selectionChanged)="selectedGroupsChanged($event)"
@@ -33,7 +27,6 @@
       }
       @if (selectedProducts() && selectedProducts().length > 0) {
         <app-drop-down-multi-select
-          class="ms-2 mr-2 mb-2"
           title="Products"
           [selectableItems]="selectedProducts()"
           (selectionChanged)="selectedProductsChanged($event)"
@@ -42,7 +35,7 @@
       }
       @if (selectedControlTab() === ControlTab.Table) {
         <app-reports-table-display-options
-          class="mb-2 ms-auto"
+          class="controls-end"
           [reportsTableDisplayOptions]="tableDisplayOptions"
           (selectionChanged)="tableDisplayOptionsChanged($event)"
           >
@@ -50,7 +43,7 @@
       }
       @if (selectedControlTab() === ControlTab.Chart) {
         <app-reports-chart-date-totals-display-options
-          class="mb-2 ms-auto"
+          class="controls-end"
           [paymentObjectId]="paymentObjectId"
           (selectionChanged)="chartDisplayOptionsChanged($event)"
           >
@@ -60,24 +53,16 @@
   </div>
 }
 
-<div class="d-flex align-items-start">
-  <div class="btn-group-vertical">
-    <button
-      type="button"
-      class="btn" [ngClass]="{'btn-primary': selectedControlTab() === ControlTab.Chart}"
-      (click)="selectControlTabClick(ControlTab.Chart)"
-      >
-      Chart
-    </button>
-    <button
-      type="button"
-      class="btn" [ngClass]="{'btn-primary': selectedControlTab() === ControlTab.Table}"
-      (click)="selectControlTabClick(ControlTab.Table)"
-      >
-      Table
-    </button>
-  </div>
-  <div class="flex-grow-1 p-2" style="min-width: 0">
+<div class="reports-body">
+  <app-core-nav-list-selector
+    class="reports-nav"
+    [items]="controlTabs"
+    [selected]="selectedControlTab()"
+    (selectedChange)="selectControlTabClick($event)"
+    >
+  </app-core-nav-list-selector>
+
+  <div class="reports-content">
     @if (selectedControlTab() === ControlTab.Chart) {
       <app-reports-chart-date-totals
         [payments]="displayPaymentList()"
@@ -85,10 +70,7 @@
       ></app-reports-chart-date-totals>
     }
     @if (selectedControlTab() === ControlTab.Table) {
-      <div
-        class="table-responsive"
-        style="height: 50vh"
-        >
+      <div class="reports-table-scroll">
         <app-reports-table
           [payments]="displayPaymentList()"
           [displayOptions]="tableDisplayOptions"

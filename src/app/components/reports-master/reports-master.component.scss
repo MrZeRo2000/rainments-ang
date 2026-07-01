@@ -1,0 +1,51 @@
+// Header: report title + the controls row (date range, group/product filters,
+// display options). Replaces the Bootstrap breadcrumb + d-flex/form-inline.
+.report-title {
+  margin: 0;
+  padding: 0.5rem;
+  white-space: nowrap;
+}
+
+.reports-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+// Push the display-options control to the far right (replaces `ms-auto`).
+.controls-end {
+  margin-left: auto;
+}
+
+.date-range-field {
+  width: 16rem;
+}
+
+// Body: the vertical Chart/Table toggle on the left, content filling the rest
+// (replaces `d-flex align-items-start` + `btn-group-vertical` + `flex-grow-1`).
+.reports-body {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+// Fixed-width left column for the Chart/Table selector so both pill buttons get
+// the same width.
+.reports-nav {
+  flex: 0 0 9rem;
+}
+
+.reports-content {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0.5rem;
+}
+
+// Scroll container for the reports table (replaces Bootstrap `.table-responsive`
+// with the inline height).
+.reports-table-scroll {
+  height: 50vh;
+  overflow: auto;
+}

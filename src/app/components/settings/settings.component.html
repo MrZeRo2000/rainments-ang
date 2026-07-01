@@ -1,11 +1,11 @@
 <div class="settings-layout">
-  <mat-action-list class="settings-nav">
-    @for (item of SettingItemEnumType | enumStringValue; track item) {
-      <button mat-list-item
-              [class.selected-list-item]="item === selectedItem()"
-              (click)="onItemClick($event, item)">{{item}}</button>
-    }
-  </mat-action-list>
+  <app-core-nav-list-selector
+    class="settings-nav"
+    [items]="settingItems"
+    [selected]="selectedItem()"
+    (selectedChange)="onItemSelected($event)"
+    >
+  </app-core-nav-list-selector>
 
   <div class="settings-content">
     @if (selectedItem() === SettingItemEnumType.PAYMENT_OBJECTS) {

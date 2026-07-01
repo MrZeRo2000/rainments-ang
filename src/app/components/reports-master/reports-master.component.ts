@@ -1,8 +1,12 @@
 import {Component, computed, effect, inject, signal, untracked} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {ActivatedRoute} from '@angular/router';
 import { HttpParams } from '@angular/common/http';
-import {NgClass} from "@angular/common";
-import {BsDatepickerModule} from "ngx-bootstrap/datepicker";
+import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {provideNativeDateAdapter} from '@angular/material/core';
+import {NavListSelectorComponent} from '../../core/components/nav-list-selector/nav-list-selector.component';
 import {CommonTableComponent} from '../../core/table/common-table-component';
 import {PaymentRep} from '../../model/payment-rep';
 import {Payment} from '../../model/payment';
@@ -33,21 +37,25 @@ enum ControlTab {
   selector: 'app-reports-master',
   templateUrl: './reports-master.component.html',
   imports: [
-    BsDatepickerModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    NavListSelectorComponent,
     DropDownMultiSelectComponent,
     ReportsChartDateTotalsDisplayOptionsComponent,
-    NgClass,
     ReportsChartDateTotalsComponent,
     LoadingProgressComponent,
     ReportsTableComponent,
     ReportsTableDisplayOptionsComponent
   ],
+  providers: [provideNativeDateAdapter()],
   styleUrls: ['./reports-master.component.scss']
 })
 export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> {
   private route = inject(ActivatedRoute)
 
   ControlTab = ControlTab;
+  controlTabs = [ControlTab.Chart, ControlTab.Table];
 
   private static readonly PERIOD_DATE_COLUMN = 'periodDate';
   private static readonly PAYMENT_GROUP_COLUMN = 'paymentGroup';
@@ -59,6 +67,13 @@ export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> {
   dateRange = signal<Date[]>([]);
   minSelectionDate: Date;
   maxSelectionDate: Date;
+
+  // Backs the Material date-range picker inputs (start/end). Its value changes
+  // are bridged to the existing dateRange()/loadRepositoryData() flow.
+  dateRangeForm = new FormGroup({
+    start: new FormControl<Date | null>(null),
+    end: new FormControl<Date | null>(null),
+  });
 
   selectedControlTab = signal<ControlTab>(ControlTab.Chart);
   selectedColumns = signal<Array<string>>(ReportsMasterComponent.COLUMNS);
@@ -95,6 +110,15 @@ export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> {
     let dateStart = new Date(dateEnd)
     dateStart.setMonth(dateEnd.getMonth() - 13);
     this.dateRange.set([dateStart, dateEnd]);
+    this.dateRangeForm.setValue({start: dateStart, end: dateEnd}, {emitEvent: false});
+
+    // A completed range (both ends picked) drives the reload, mirroring the old
+    // (bsValueChange) handler.
+    this.dateRangeForm.valueChanges.pipe(takeUntilDestroyed()).subscribe(({start, end}) => {
+      if (start && end) {
+        this.onDateRangeValueChange([start, end]);
+      }
+    });
 
     const currentDate = new Date();
     this.minSelectionDate = new Date(currentDate.getFullYear() - 3, 0, 1);
@@ -162,7 +186,7 @@ export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> {
     this.chartDisplayOptions.set({...displayOptions} as ReportsChartDateTotalsDisplayOptions);
   }
 
-  selectControlTabClick(selectedControlTab: ControlTab): void {
-    this.selectedControlTab.set(selectedControlTab);
+  selectControlTabClick(selectedControlTab: string): void {
+    this.selectedControlTab.set(selectedControlTab as ControlTab);
   }
 }

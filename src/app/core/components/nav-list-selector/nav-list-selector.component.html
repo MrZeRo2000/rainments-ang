@@ -1,0 +1,7 @@
+<mat-action-list class="nav-list">
+  @for (item of items(); track item) {
+    <button mat-list-item
+            [class.selected-list-item]="item === selected()"
+            (click)="onItemClick($event, item)">{{item}}</button>
+  }
+</mat-action-list>

@@ -1,0 +1,11 @@
+// Rounded (pill) nav items, like the material.angular.dev docs nav.
+.nav-list {
+  --mat-list-list-item-container-shape: var(--mat-sys-corner-full);
+}
+
+// Selected item — highlight via Material's list tokens (no !important).
+.nav-list .selected-list-item {
+  --mat-list-list-item-container-color: var(--mat-sys-secondary-container);
+  --mat-list-list-item-label-text-color: var(--mat-sys-on-secondary-container);
+  --mat-list-list-item-hover-label-text-color: var(--mat-sys-on-secondary-container);
+}
