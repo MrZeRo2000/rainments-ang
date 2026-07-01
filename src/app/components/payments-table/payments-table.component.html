@@ -52,7 +52,7 @@
         <ng-container matColumnDef="counter">
           <mat-header-cell *matHeaderCellDef class="numeric-cell">Counter</mat-header-cell>
           <mat-cell *matCellDef="let item" class="numeric-cell">
-            <div>
+            <div class="value-row">
               <app-core-colored-value-label [value]="getPrevPeriodProductCounter(item.value) | amount: item.value.product.counterPrecision" class="value-gap"></app-core-colored-value-label>
               @if (!inlineEditHandler.isEditorVisible(item.value, inlineControlType.ProductCounter) && item.value.productCounter) {
                 <a href="#" (click)="productCounterOnClick($event, item.value)">
@@ -64,7 +64,7 @@
               }
             </div>
             @if (!inlineEditHandler.isEditorVisible(item.value, inlineControlType.ProductCounter) && getPrevPeriodProductCounterDiffByProduct(item.value) && displayOptions().showTrend()) {
-              <div>
+              <div class="value-row">
                 <app-core-colored-value-label
                   [value]="getPrevPeriodProductCounterDiffByProduct(item.value) | amount: item.value.product.counterPrecision"
                   [colorScheme]="colorSchemeType.POS_GREEN_NEG_RED"
@@ -91,7 +91,7 @@
               </label>
             }
             @if (inlineEditHandler.isEditorVisible(item.value, inlineControlType.ProductCounter) && getPrevPeriodProductCounterEditDiffByProduct(item.value)) {
-              <div>
+              <div class="value-row">
                 <app-core-colored-value-label
                   [value]="getPrevPeriodProductCounterEditDiffByProduct(item.value) | amount: item.value.product.counterPrecision"
                   [colorScheme]="colorSchemeType.POS_GREEN_NEG_RED"
@@ -107,7 +107,7 @@
         <ng-container matColumnDef="payment">
           <mat-header-cell *matHeaderCellDef class="numeric-cell">Payment</mat-header-cell>
           <mat-cell *matCellDef="let item" class="numeric-cell">
-            <div>
+            <div class="value-row">
               <app-core-colored-value-label
                 [value]="getPrevPeriodPaymentAmount(item.value) | amount"
                 class="value-gap"
@@ -147,7 +147,7 @@
         <ng-container matColumnDef="commission">
           <mat-header-cell *matHeaderCellDef class="numeric-cell">Commission</mat-header-cell>
           <mat-cell *matCellDef="let item" class="numeric-cell">
-            <div>
+            <div class="value-row">
               <app-core-colored-value-label
                 [value]="getPrevPeriodCommissionAmount(item.value) | amount"
                 class="value-gap"

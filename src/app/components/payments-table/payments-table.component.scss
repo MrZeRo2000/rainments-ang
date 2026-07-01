@@ -93,12 +93,25 @@ mat-table {
 
 // Numeric columns are right-aligned and can stack a value, a trend line and an
 // inline editor vertically (mat-cell is a horizontal flex box by default).
+// Top-align (flex-start) rather than centre so the value row stays put when the
+// cell grows (trend line, or the inline editor in edit mode) — otherwise centred
+// content drifts down relative to the shorter cells in the same row.
 .numeric-cell {
   flex-direction: column;
   align-items: flex-end;
-  justify-content: center;
+  justify-content: flex-start;
   text-align: right;
   white-space: nowrap;
+  // Small vertical gap between stacked rows (e.g. the value row and the trend
+  // row below it).
+  gap: 0.25rem;
+}
+
+// Top-align the other (flex-row) cells too, so every column's first line lines
+// up across the row even when one cell is taller. Excludes numeric cells so
+// their right-alignment (align-items: flex-end) is preserved.
+.payment-row .mat-mdc-cell:not(.numeric-cell) {
+  align-items: flex-start;
 }
 
 // Column widths. ID + Actions stay fixed; Group keeps its original 15%; the
@@ -170,9 +183,12 @@ mat-table {
 
 // In-cell numeric editor. Replaces Bootstrap's `.form-control` for the small
 // inline inputs (a full mat-form-field would blow up the row height).
+// The cell's flex gap already puts 0.25rem above the editor; add another 0.25rem
+// on top so the gap to the value row above (0.5rem) matches the cell's bottom
+// padding below it (0.5rem) and the editor sits symmetrically.
 .inline-edit-label {
   display: block;
-  margin: 0.5rem 0;
+  margin: 0.25rem 0 0;
 }
 
 .inline-edit-input {
@@ -203,6 +219,16 @@ mat-table {
 // (replaces Bootstrap's `.me-2`).
 .value-gap {
   margin-right: 0.5rem;
+}
+
+// A row of value pieces (prev-period pill + current value/link + unit). The pill
+// is smaller than the text, so inline baseline alignment looks off — lay them
+// out with flexbox and centre them vertically. Kept right-aligned to match the
+// numeric column.
+.value-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 // The "Clone previous" button pairs an icon with a label; keep the glyph from

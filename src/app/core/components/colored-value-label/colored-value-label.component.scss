@@ -1,3 +1,11 @@
+// Hug the pill tightly: as an inline element the host would give the pill a
+// line-height strut, leaving a gap above it when centred inside a flex row.
+// inline-flex removes that strut so the host box equals the pill.
+:host {
+  display: inline-flex;
+  align-items: center;
+}
+
 // Value pill (was Bootstrap .badge .badge-value / .badge-value-light / bg-*).
 .value-label {
   display: inline-block;
