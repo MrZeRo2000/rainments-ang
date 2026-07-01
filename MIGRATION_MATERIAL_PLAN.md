@@ -267,7 +267,14 @@ Order chosen so shared pieces land before their consumers.
       Build ✓, tests ✓ (84/2).
 - [ ] **`payments-table-display-options`** — form-in-menu (7 switches). MatMenu +
       stopPropagation, `mat-slide-toggle` or `mat-checkbox` for switches.
-- [ ] **`reports-table-display-options`** — same pattern.
+- [x] **`reports-table-display-options`** — DONE (2026-07-01). Same MatMenu +
+      slide-toggle pattern as payments-table-display-options, but KEPT its reactive
+      form: `mat-slide-toggle formControlName=…` (slide-toggle is a CVA), so the
+      `outputFromObservable(valueChanges)` output logic is unchanged; `<hr>` →
+      `mat-divider`; FA cog `display-icon-element` trigger → `matIconButton` +
+      inline `<mat-icon>settings</mat-icon>`. Dropped `BsDropdownModule` +
+      `DisplayIconElementComponent`; spec dropped `FontAwesomeIconsModule`.
+      Build ✓, tests ✓ (84/2).
 - [ ] **`reports-chart-date-totals-display-options`** — same pattern.
 
 ### Phase 3 — Dialogs (Modal)
@@ -478,6 +485,19 @@ grep -rhoE 'class="[^"]*"' src --include="*.html" \
 ## 8. Progress Log
 
 > Newest entry on top. Format: `YYYY-MM-DD — what changed — build/lint/test status`.
+
+- 2026-07-01 — **`reports-table-display-options` migrated** (dropdown → MatMenu).
+  ngx `dropdown`/`[insideClick]="false"` + 4 Bootstrap `form-check form-switch` +
+  FA cog trigger → `matIconButton`+`<mat-icon>settings</mat-icon>` opening a
+  `mat-menu` (`xPosition="before"`) with `mat-slide-toggle`s + a `mat-divider`.
+  Notably KEPT the existing reactive form: slide-toggles use `formControlName`
+  (they're CVAs), so the `outputFromObservable(displayOptionsForm.valueChanges)`
+  output is untouched; form-in-menu stays open via `(click)="$event.stopPropagation()"`.
+  Dropped `BsDropdownModule` + `DisplayIconElementComponent` (the FA cog shared
+  component is still used by reports-chart-date-totals-display-options until that's
+  migrated); spec dropped `FontAwesomeIconsModule`. Only **one** ngx-bootstrap
+  dropdown left in src: `reports-chart-date-totals-display-options`. Build ✓,
+  tests ✓ (84/2).
 
 - 2026-07-01 — **`drop-down-multi-select` migrated** (dropdown → MatMenu). ngx
   `dropdown`/`dropdownToggle`/`*dropdownMenu` + `[insideClick]="false"` →

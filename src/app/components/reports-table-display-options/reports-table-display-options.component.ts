@@ -2,8 +2,11 @@ import {Component, inject, input, OnInit} from '@angular/core';
 import {outputFromObservable} from '@angular/core/rxjs-interop';
 import {map, tap} from 'rxjs';
 import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
-import {BsDropdownModule} from "ngx-bootstrap/dropdown";
-import {DisplayIconElementComponent} from "../../core/components/display-icon-element/display-icon-element.component";
+import {MatMenuModule} from "@angular/material/menu";
+import {MatButtonModule} from "@angular/material/button";
+import {MatIconModule} from "@angular/material/icon";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MatDividerModule} from "@angular/material/divider";
 
 export class ReportsTableDisplayOptions {
   private readonly KEY = 'reportsTableDisplayOptions';
@@ -54,9 +57,12 @@ export class ReportsTableDisplayOptions {
   selector: 'app-reports-table-display-options',
   templateUrl: './reports-table-display-options.component.html',
   imports: [
-    BsDropdownModule,
-    DisplayIconElementComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatMenuModule,
+    MatButtonModule,
+    MatIconModule,
+    MatSlideToggleModule,
+    MatDividerModule
   ],
   styleUrls: ['./reports-table-display-options.component.scss']
 })
