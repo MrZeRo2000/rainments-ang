@@ -1,7 +1,9 @@
 import {Component, effect, input, Signal, signal} from '@angular/core';
-import {BsDropdownModule} from "ngx-bootstrap/dropdown";
-import {DisplayIconElementComponent} from "../../core/components/display-icon-element/display-icon-element.component";
-import {FormsModule} from "@angular/forms";
+import {MatMenuModule} from "@angular/material/menu";
+import {MatButtonModule} from "@angular/material/button";
+import {MatIconModule} from "@angular/material/icon";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MatDividerModule} from "@angular/material/divider";
 
 export class PaymentsTableDisplayOptions {
   private readonly keyPaymentsTableDisplayOptions = 'paymentsTableDisplayOptions';
@@ -73,9 +75,11 @@ export class PaymentsTableDisplayOptions {
   selector: 'app-payments-table-display-options',
   templateUrl: './payments-table-display-options.component.html',
   imports: [
-    BsDropdownModule,
-    DisplayIconElementComponent,
-    FormsModule
+    MatMenuModule,
+    MatButtonModule,
+    MatIconModule,
+    MatSlideToggleModule,
+    MatDividerModule
   ],
   styleUrls: ['./payments-table-display-options.component.scss']
 })

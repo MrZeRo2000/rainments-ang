@@ -1,62 +1,18 @@
+<button matIconButton [matMenuTriggerFor]="menu" aria-label="Display options">
+  <mat-icon>settings</mat-icon>
+</button>
 
-<div class="btn-group" dropdown [insideClick]="false">
-  <button id="button-animated" dropdownToggle type="button" class="btn btn-outline-primary ml-2 pl-2 pr-2 rounded"
-          aria-controls="form-dropdown-animated">
-    <app-core-display-icon-element></app-core-display-icon-element>
-  </button>
-  <div id="form-dropdown-animated" *dropdownMenu class="dropdown-menu dropdown-menu-right"
-       role="menu" aria-labelledby="button-animated">
-    <form class="form-group px-2 py-1">
-      <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="showToolTipsCheckBox" [ngModel]="paymentsTableDisplayOptions().showTooltips()" (ngModelChange)="paymentsTableDisplayOptions().showTooltips.set($event)" name="showTooltips">
-        <label class="form-label text-nowrap" for="showToolTipsCheckBox">
-          Show tooltips
-        </label>
-      </div>
-      <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="compactProductCheckBox" [ngModel]="paymentsTableDisplayOptions().compactProducts()" (ngModelChange)="paymentsTableDisplayOptions().compactProducts.set($event)" name="compactProducts">
-        <label class="form-label text-nowrap" for="compactProductCheckBox">
-          Compact products
-        </label>
-      </div>
-      <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="compactTableCheckBox" [ngModel]="paymentsTableDisplayOptions().compactTable()" (ngModelChange)="paymentsTableDisplayOptions().compactTable.set($event)" name="compactTable">
-        <label class="form-label text-nowrap" for="compactTableCheckBox">
-          Compact table
-        </label>
-      </div>
-      <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="showTrendCheckBox" [ngModel]="paymentsTableDisplayOptions().showTrend()" (ngModelChange)="paymentsTableDisplayOptions().showTrend.set($event)" name="showTrend">
-        <label class="form-label text-nowrap" for="showTrendCheckBox">
-          Show trend
-        </label>
-      </div>
-      <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="showIdCheckBox" [ngModel]="paymentsTableDisplayOptions().showId()" (ngModelChange)="paymentsTableDisplayOptions().showId.set($event)" name="showId">
-        <label class="form-label text-nowrap" for="showIdCheckBox">
-          Show Id
-        </label>
-      </div>
-      <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="showCommissionCheckBox" [ngModel]="paymentsTableDisplayOptions().showCommission()" (ngModelChange)="paymentsTableDisplayOptions().showCommission.set($event)" name="showCommission">
-        <label class="form-label text-nowrap" for="showCommissionCheckBox">
-          Show Commission
-        </label>
-      </div>
-      <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="showSummaryCheckBox" [ngModel]="paymentsTableDisplayOptions().showSummary()" (ngModelChange)="paymentsTableDisplayOptions().showSummary.set($event)" name="showSummary">
-        <label class="form-label text-nowrap" for="showSummaryCheckBox">
-          Show Summary
-        </label>
-      </div>
-      <hr>
-      <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="displayColorsCheckBox" [ngModel]="paymentsTableDisplayOptions().displayColors()" (ngModelChange)="paymentsTableDisplayOptions().displayColors.set($event)" name="displayColors">
-        <label class="form-label text-nowrap" for="displayColorsCheckBox">
-          Display colors
-        </label>
-      </div>
-
-    </form>
+<mat-menu #menu="matMenu" xPosition="before">
+  <!-- Keep the menu open while toggling (stop clicks from closing it). -->
+  <div class="display-options" (click)="$event.stopPropagation()">
+    <mat-slide-toggle [checked]="paymentsTableDisplayOptions().showTooltips()" (change)="paymentsTableDisplayOptions().showTooltips.set($event.checked)">Show tooltips</mat-slide-toggle>
+    <mat-slide-toggle [checked]="paymentsTableDisplayOptions().compactProducts()" (change)="paymentsTableDisplayOptions().compactProducts.set($event.checked)">Compact products</mat-slide-toggle>
+    <mat-slide-toggle [checked]="paymentsTableDisplayOptions().compactTable()" (change)="paymentsTableDisplayOptions().compactTable.set($event.checked)">Compact table</mat-slide-toggle>
+    <mat-slide-toggle [checked]="paymentsTableDisplayOptions().showTrend()" (change)="paymentsTableDisplayOptions().showTrend.set($event.checked)">Show trend</mat-slide-toggle>
+    <mat-slide-toggle [checked]="paymentsTableDisplayOptions().showId()" (change)="paymentsTableDisplayOptions().showId.set($event.checked)">Show Id</mat-slide-toggle>
+    <mat-slide-toggle [checked]="paymentsTableDisplayOptions().showCommission()" (change)="paymentsTableDisplayOptions().showCommission.set($event.checked)">Show Commission</mat-slide-toggle>
+    <mat-slide-toggle [checked]="paymentsTableDisplayOptions().showSummary()" (change)="paymentsTableDisplayOptions().showSummary.set($event.checked)">Show Summary</mat-slide-toggle>
+    <mat-divider></mat-divider>
+    <mat-slide-toggle [checked]="paymentsTableDisplayOptions().displayColors()" (change)="paymentsTableDisplayOptions().displayColors.set($event.checked)">Display colors</mat-slide-toggle>
   </div>
-</div>
+</mat-menu>

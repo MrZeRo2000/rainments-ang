@@ -454,6 +454,17 @@ grep -rhoE 'class="[^"]*"' src --include="*.html" \
   `fa-icon`s with `mat-icon`. Audited already-migrated components:
   `loading-spinner-element` already FA-free ✓; `add-panel` still had a FA plus
   icon → fixed (now `<mat-icon>add</mat-icon>`, fully FA-free). Build ✓, tests ✓.
+- 2026-07-01 — **`payments-table-display-options` migrated** (first dropdown →
+  MatMenu). ngx-bootstrap `dropdown`/`[insideClick]="false"` + 8 Bootstrap
+  `form-check form-switch` + FA cog trigger → `matIconButton`+`<mat-icon>settings</mat-icon>`
+  triggering a `mat-menu` (`xPosition="before"`). Switches → `mat-slide-toggle`
+  via `[checked]`/`(change)` (no ngModel/FormsModule needed); `<hr>` → `mat-divider`.
+  Form-in-menu stays open: wrapper `(click)="$event.stopPropagation()"`. Inlined
+  `mat-icon settings` instead of the FA `display-icon-element` (dropped its import;
+  that shared cog component still used by the other 2 display-options panels until
+  migrated). Spec dropped `FontAwesomeIconsModule`. Build ✓, tests ✓ (83/2). First
+  of the ngx dropdowns done; pattern set for reports-table-display-options +
+  reports-chart-date-totals-display-options + drop-down-multi-select.
 - 2026-07-01 — **Cards forced white.** `--mat-sys-surface` is `#fbf9f9` (off-white
   gray from the grayscale seed) so mat-cards looked tinted vs Material examples.
   Added `mat.card-overrides((elevated/outlined-container-color: #ffffff))` in
