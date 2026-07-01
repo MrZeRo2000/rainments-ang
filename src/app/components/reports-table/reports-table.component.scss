@@ -1,2 +1,9 @@
-thead th { position: sticky; top: -1px; background: white;}
-//thead tr:nth-child(1) th {background: white; position: sticky;top: 0;z-index: 10}
+mat-table {
+  width: 100%;
+}
+
+// Right-aligned numeric columns (Payment / Commission).
+.num {
+  justify-content: flex-end;
+  text-align: right;
+}

@@ -495,6 +495,18 @@ grep -rhoE 'class="[^"]*"' src --include="*.html" \
 
 > Newest entry on top. Format: `YYYY-MM-DD — what changed — build/lint/test status`.
 
+- 2026-07-01 — **`reports-table` → flex `mat-table`** (superseded the same-day
+  native-table restyle below). At the user's request the **totals row was dropped**
+  (it was the only thing blocking mat-table — a colspan row on top), so it's now a
+  clean flex `mat-table`: dynamic columns (Date/Group/Product toggle + Payment/
+  Commission), per-row group colour via `[style.background]`, right-aligned
+  `.num` numeric columns, and a **sticky header** (`*matHeaderRowDef sticky: true`,
+  works inside reports-master's `.reports-table-scroll`). Columns come from a
+  memoized `displayedColumns()` method (not a computed) because the parent mutates
+  the `displayOptions` object in place — the method returns a stable array
+  reference until the toggles change. Removed the now-unused `paymentAmountSummary`
+  computed + `PaymentUtils` import. Build ✓, tests ✓ (84/2).
+
 - 2026-07-01 — **`reports-chart-date-totals-display-options` migrated** (last ngx
   dropdown). 3 Bootstrap radio `form-check`s → `mat-radio-group`
   (`formControlName="chartStyle"`) inside a `mat-menu`; reactive form +

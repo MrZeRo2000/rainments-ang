@@ -1,50 +1,36 @@
-
 @if (payments(); as payments) {
   @if (displayOptions(); as displayOptions) {
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          @if (displayOptions.showDate) {
-            <th scope="col">Date</th>
-          }
-          @if (displayOptions.showGroup) {
-            <th scope="col">Group</th>
-          }
-          @if (displayOptions.showProduct) {
-            <th scope="col">Product</th>
-          }
-          <th scope="col">Payment</th>
-          <th scope="col">Commission</th>
-        </tr>
-      </thead>
-      <tbody>
-        @if (paymentAmountSummary(); as paymentAmountSummary) {
-          <tr>
-            @if (displayOptions.getColumnNumber() > 0) {
-              <td [colSpan]="displayOptions.getColumnNumber()">&nbsp;</td>
-            }
-            <td class="text-right font-weight-bold">{{paymentAmountSummary.paymentAmount | amount}}</td>
-            <td class="text-right font-weight-bold">{{paymentAmountSummary.commissionAmount | amount}}</td>
-          </tr>
-        }
-        @for (item of payments; track item) {
-          <tr
-            [ngStyle]="{'--bs-table-bg': displayOptions.displayColors? item.paymentGroup?.color : ''}"
-            >
-            @if (displayOptions.showDate) {
-              <td>{{item.periodDate | date: "dd.MM.yyyy"}}</td>
-            }
-            @if (displayOptions.showGroup) {
-              <td>{{item.paymentGroup?.name}}</td>
-            }
-            @if (displayOptions.showProduct) {
-              <td>{{item.product?.name}}</td>
-            }
-            <td class="text-right">{{item.paymentAmount | amount}}</td>
-            <td class="text-right">{{item.commissionAmount | amount}}</td>
-          </tr>
-        }
-      </tbody>
-    </table>
+    <mat-table [dataSource]="payments" class="report-table">
+
+      <ng-container matColumnDef="date">
+        <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{item.periodDate | date: "dd.MM.yyyy"}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="group">
+        <mat-header-cell *matHeaderCellDef>Group</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{item.paymentGroup?.name}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="product">
+        <mat-header-cell *matHeaderCellDef>Product</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{item.product?.name}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="payment">
+        <mat-header-cell *matHeaderCellDef class="num">Payment</mat-header-cell>
+        <mat-cell *matCellDef="let item" class="num">{{item.paymentAmount | amount}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="commission">
+        <mat-header-cell *matHeaderCellDef class="num">Commission</mat-header-cell>
+        <mat-cell *matCellDef="let item" class="num">{{item.commissionAmount | amount}}</mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns(); sticky: true"></mat-header-row>
+      <mat-row
+        *matRowDef="let row; columns: displayedColumns()"
+        [style.background]="displayOptions.displayColors ? row.paymentGroup?.color : null"></mat-row>
+    </mat-table>
   }
 }
