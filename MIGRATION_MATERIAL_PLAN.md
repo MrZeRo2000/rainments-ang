@@ -275,7 +275,16 @@ Order chosen so shared pieces land before their consumers.
       inline `<mat-icon>settings</mat-icon>`. Dropped `BsDropdownModule` +
       `DisplayIconElementComponent`; spec dropped `FontAwesomeIconsModule`.
       Build ✓, tests ✓ (84/2).
-- [ ] **`reports-chart-date-totals-display-options`** — same pattern.
+- [x] **`reports-chart-date-totals-display-options`** — DONE (2026-07-01). Same
+      MatMenu pattern; the 3 Bootstrap radio `form-check`s → a `mat-radio-group`
+      (`formControlName="chartStyle"`, a CVA) so the reactive form +
+      `outputFromObservable(valueChanges)` stayed intact; FA cog trigger →
+      `matIconButton`+`<mat-icon>settings</mat-icon>`. This was the **last** ngx
+      dropdown AND the last `display-icon-element` consumer → deleted the now-dead
+      `display-icon-element` component. Build ✓, tests ✓ (84/2).
+      **ngx-bootstrap now has zero runtime usage** (only comments in app.config /
+      test-setup); **FontAwesome's only remaining references are the shared
+      module/provider + spec imports** (ready for the Phase 5b uninstall).
 
 ### Phase 3 — Dialogs (Modal)
 - [ ] **`core/components/confirmation-modal-dialog`** — convert to `MatDialog`
@@ -485,6 +494,19 @@ grep -rhoE 'class="[^"]*"' src --include="*.html" \
 ## 8. Progress Log
 
 > Newest entry on top. Format: `YYYY-MM-DD — what changed — build/lint/test status`.
+
+- 2026-07-01 — **`reports-chart-date-totals-display-options` migrated** (last ngx
+  dropdown). 3 Bootstrap radio `form-check`s → `mat-radio-group`
+  (`formControlName="chartStyle"`) inside a `mat-menu`; reactive form +
+  `outputFromObservable` kept; FA cog → `matIconButton`+`settings`; form-in-menu
+  stays open via stopPropagation. **Deleted the now-dead `display-icon-element`**
+  (this + reports-table-display-options were its only consumers). Result:
+  **ngx-bootstrap has no runtime usage left** (only comments), and **FA's only
+  remaining references are `FontAwesomeIconsModule` (app.config provider + ~10
+  spec imports)** — no `<fa-icon>` anywhere. Ready for Phase 5b (remove FA
+  provider/module, `npm uninstall @fortawesome/*`, drop `$fa-font-path`, clean
+  specs) and Phase 6 (Bootstrap CSS teardown + `npm uninstall bootstrap
+  ngx-bootstrap`). Build ✓, tests ✓ (84/2).
 
 - 2026-07-01 — **`reports-table-display-options` migrated** (dropdown → MatMenu).
   ngx `dropdown`/`[insideClick]="false"` + 4 Bootstrap `form-check form-switch` +

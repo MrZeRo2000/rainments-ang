@@ -2,8 +2,10 @@ import {Component, inject, input, OnInit} from '@angular/core';
 import {outputFromObservable} from '@angular/core/rxjs-interop';
 import {map, tap} from 'rxjs';
 import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
-import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
-import {DisplayIconElementComponent} from '../../core/components/display-icon-element/display-icon-element.component';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {MatRadioModule} from '@angular/material/radio';
 
 export enum ChartStyle {
   BarChart = "Bar Chart",
@@ -49,9 +51,11 @@ export class ReportsChartDateTotalsDisplayOptions {
     selector: 'app-reports-chart-date-totals-display-options',
     templateUrl: './reports-chart-date-totals-display-options.component.html',
     imports: [
-      BsDropdownModule,
-      DisplayIconElementComponent,
-      ReactiveFormsModule
+      ReactiveFormsModule,
+      MatMenuModule,
+      MatButtonModule,
+      MatIconModule,
+      MatRadioModule
     ],
     styleUrls: ['./reports-chart-date-totals-display-options.component.scss']
 })

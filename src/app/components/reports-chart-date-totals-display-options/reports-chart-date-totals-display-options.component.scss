@@ -1,0 +1,11 @@
+// Chart-style options inside the display-options menu.
+.display-options {
+  padding: 0.5rem 1rem;
+}
+
+// Stack the radio buttons vertically (a mat-radio-group is inline by default).
+.chart-style-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
