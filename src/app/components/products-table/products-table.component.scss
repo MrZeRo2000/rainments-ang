@@ -4,6 +4,7 @@
   flex: 0 0 4rem;
   padding-left: 0.5rem;
   justify-content: center;
+  white-space: nowrap;
 }
 
 .mat-column-unitName {
@@ -14,4 +15,16 @@
   flex: 0 0 6rem;
   padding-right: 0.5rem;
   justify-content: center;
+}
+
+// Toolbar above the table (add button + more-menu). Was Bootstrap
+// `d-flex mt-2 mb-2` + `ms-auto`.
+.table-toolbar {
+  display: flex;
+  align-items: center;
+  margin: 0.5rem 0;
+}
+
+.toolbar-end {
+  margin-left: auto;
 }

@@ -1,0 +1,16 @@
+// Header row: date selection + object-name chip + report nav
+// (was Bootstrap `d-inline-flex align-items-center` + `.breadcrumb`).
+.payments-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+// Object-name chip (was the Bootstrap breadcrumb: light-gray, rounded).
+.object-title {
+  margin: 0;
+  padding: 0.5rem;
+  white-space: nowrap;
+  background-color: lightgray;
+  border-radius: 0.375rem;
+}

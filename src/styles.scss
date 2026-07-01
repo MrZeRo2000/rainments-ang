@@ -2,19 +2,11 @@
 @use './theme-colors' as theme-colors;
 @use './forms';
 
-  /* You can add global styles to this file, and also import other style files */
-@import 'variables';
-@import 'node_modules/bootstrap/scss/bootstrap';
+/* Global styles. */
 
-// --- Angular Material theme (Phase 0 of Bootstrap -> Material migration) ---
-// Material 3 token theme. Coexists with Bootstrap: Material styles target
-// mat-*/.mat-*/.cdk-* selectors and CSS custom properties (--mat-sys-*), which
-// do not overlap Bootstrap's .btn/.row/.form-control/etc. Bootstrap stays the
-// source of truth for layout/typography until later phases remove it.
-//
+// --- Angular Material theme ---
 // Grayscale palettes (in ./_theme-colors.scss) were generated from the app's
-// existing Bootstrap $primary: dimgray (#696969) so Material components match
-// the current gray look instead of the default azure/blue.
+// original $primary: dimgray (#696969), so Material matches the old gray look.
 html {
   color-scheme: light;
   @include mat.theme((
@@ -26,29 +18,25 @@ html {
     density: 0,
   ));
 
-  // App-wide mat-table tokens:
-  //  - background: the grayscale theme's surface is a light gray
-  //    (~rgb(251,249,249)); force tables to white.
-  //  - text size: bump header + row cell text from the default 14px to 16px.
+  // App-wide mat-table tokens: white background + 16px header/row text.
   @include mat.table-overrides((
     background-color: #ffffff,
     header-headline-size: 16px,
     row-item-label-text-size: 16px,
   ));
 
-  // ...and mat-card on pure white (surface is the same off-white gray).
+  // mat-card on pure white (the theme surface is a light gray).
   @include mat.card-overrides((
     elevated-container-color: #ffffff,
     outlined-container-color: #ffffff,
   ));
 }
 
-.jumbotron {
-  padding: 15px 15px !important;
-  border-radius: 0 !important;
-  margin-bottom: 0 !important;
-  background-image: url("assets/images/rain3.jpg");
-  background-size: cover;
+// --- Base reset (replaces Bootstrap's reboot, now that Bootstrap is removed) ---
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 html {
@@ -57,64 +45,50 @@ html {
 }
 
 body {
-  margin-bottom: 50px !important;
+  margin: 0 0 50px;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--mat-sys-on-surface);
+  background: #ffffff;
 }
 
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 40px;
-  line-height: 40px;
+// Reusable heading typography built on Angular Material's system type scale
+// (`--mat-sys-*`). Apply these to headings instead of relying on the browser's
+// default h* sizes (which, without Bootstrap's reboot, render h5/h6 tiny — h6
+// ≈ 10.72px — and bold). Sizes are close to the old Bootstrap headings:
+// title-large ≈ 22px (h5 was 20px), title-medium ≈ 16px (h6 was 16px). A
+// component's own layout class still wins for margins (e.g. `.object-title`).
+.app-title-large {
+  margin: 0 0 0.5rem;
+  font: var(--mat-sys-title-large);
 }
 
-.w-5 {
-  width: 5%!important;
+.app-title-medium {
+  margin: 0 0 0.5rem;
+  font: var(--mat-sys-title-medium);
 }
 
-.w-10 {
-  width: 10%!important;
+// Links: themed colour, no underline (matches the pre-teardown look; also drops
+// the old Bootstrap-era hover underline that leaked onto the nav).
+a {
+  color: var(--mat-sys-primary);
+  text-decoration: none;
 }
 
-.w-15 {
-  width: 15%!important;
+// A few forms still use a plain <label>; keep the small bottom spacing.
+label {
+  margin-bottom: 0.5rem;
 }
 
-.w-50 {
-  width: 50%!important;
+// App header banner (was Bootstrap `.jumbotron`).
+.app-header {
+  padding: 15px;
+  background-image: url("assets/images/rain3.jpg");
+  background-size: cover;
 }
 
-.w-20 {
-  width: 20%!important;
-}
-
-.w-25 {
-  width: 20%!important;
-}
-
-.w-30 {
-  width: 20%!important;
-}
-
-.old_fa-css-prefix-lg {
-  font-size: calc(4em / 3);
-  line-height: calc(3em / 4);
-  vertical-align: -.075em;
-}
-
-.tooltip-inner {
-  border: 1px solid #ddd;
-}
-
-.badge-value {
-  font-weight: 400 !important;
-}
-
-.badge-value-light {
-  color: #fff;
-  background-color: #6c757dad;
-}
-
+// Drag-handle cursor + grip (used by the editable tables' drag handle).
 .cursor-grip {
   cursor: move;
 }
@@ -124,45 +98,14 @@ body {
   @extend .cursor-grip;
 }
 
-div.drag-preview {
-  border:dashed 1px #aaaaaa;
-  border-radius: $border-radius;
-  padding: $table-cell-padding-y;
-  vertical-align: middle;
-  position:relative;
-  top:-1.25rem;
-  background-color: #dddddd;
-  opacity: 0.9;
-}
-
-// fix table borders in bootstrap 5
-.table thead th {
-  border-top: 1px solid $table-border-color;
-  border-bottom: 2px solid $table-border-color;
-}
-
-// fix link underline in bootstrap 5
-a:not([class*="btn"]):not([class*="nav-link"]) {
-  text-decoration: none;
-}
-
-a:not([class*="btn"]):not([class*="nav-link"]):hover {
-  text-decoration: underline;
-}
-
-// fix label bottom margin changes in bootstrap 5
-label {
-  margin-bottom: 0.5rem
-}
-
-.breadcrumb {
-  background-color: lightgray;
-  border-radius: $btn-border-radius;
+// Body line-height (1.5) would push mat-icon glyphs off-centre inside icon
+// buttons; pin icon buttons to 1.
+.mat-mdc-icon-button {
+  line-height: 1;
 }
 
 // --- App message snackbars (MessagesService sets these as panelClass) ---
-// Color the snackbar surface per message severity. The snackbar renders in the
-// CDK overlay (outside any component), so these must be global.
+// The snackbar renders in the CDK overlay (outside any component), so global.
 @mixin app-snackbar($bg, $fg) {
   .mat-mdc-snackbar-surface {
     background-color: $bg !important;
@@ -170,13 +113,6 @@ label {
   .mat-mdc-snackbar-surface .mat-mdc-snack-bar-label {
     color: $fg;
   }
-}
-
-// Bootstrap's global line-height: 1.5 leaks into Material icon buttons (which set
-// no line-height of their own), making the icon glyph sit off-centre. Normalize
-// it while Bootstrap CSS is still loaded (remove this in the Bootstrap teardown).
-.mat-mdc-icon-button {
-  line-height: 1;
 }
 
 .app-snackbar-error { @include app-snackbar(var(--mat-sys-error-container), var(--mat-sys-on-error-container)); }

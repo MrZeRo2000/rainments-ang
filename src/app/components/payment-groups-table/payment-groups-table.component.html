@@ -1,9 +1,9 @@
 @let data = readRepository.dataSignal();
 
 @if (!editingSignal() && !readRepository.errorSignal()) {
-  <div class="d-flex mt-2 mb-2">
+  <div class="table-toolbar">
     <app-core-add-panel (addClick)="onAddClick()"></app-core-add-panel>
-    <div class="ms-auto">
+    <div class="toolbar-end">
       <app-core-drop-down-more-menu>
         <button mat-menu-item (click)="onSetDefaultOrderClick($event)">Set default order</button>
       </app-core-drop-down-more-menu>
@@ -19,7 +19,7 @@
 
     <ng-container matColumnDef="id">
       <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
-      <mat-cell *matCellDef="let item" class="text-nowrap">
+      <mat-cell *matCellDef="let item">
         <app-core-drag-grip cdkDragHandle></app-core-drag-grip>&nbsp;{{item.id}}
       </mat-cell>
     </ng-container>

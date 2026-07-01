@@ -1,6 +1,9 @@
 # Migration Plan: Bootstrap + ngx-bootstrap + FontAwesome → Angular Material
 
-> **Status: IN PROGRESS.**
+> **Status: COMPLETE (pending visual QA).** bootstrap, ngx-bootstrap, and
+> FontAwesome are fully removed from `package.json` and `src`. Build ✓, tests ✓
+> (84/2). Remaining: manual visual verification of the components listed in the
+> 2026-07-01 teardown log entry.
 > This is a living document. Update the **Progress Log** and per-component
 > checkboxes at the end of every working session. Read the
 > **Instructions for future sessions** section before starting any work.
@@ -494,6 +497,27 @@ grep -rhoE 'class="[^"]*"' src --include="*.html" \
 ## 8. Progress Log
 
 > Newest entry on top. Format: `YYYY-MM-DD — what changed — build/lint/test status`.
+
+- 2026-07-01 — **BOOTSTRAP FULLY REMOVED (Phase 6 complete).** `npm uninstall
+  bootstrap`; removed `@import 'node_modules/bootstrap/scss/bootstrap'` and the
+  `@import 'variables'` from `styles.scss`; deleted `_variables.scss`. Added a
+  **minimal reset** to replace Bootstrap's reboot (`box-sizing: border-box`,
+  `body` margin/font/line-height(1.5)/color/`background:#fff`, `a { color:
+  var(--mat-sys-primary); text-decoration:none }`). Migrated the last Bootstrap
+  classes to scoped SCSS: **app.component** (`jumbotron`→`.app-header` global bg
+  rule; `container-fluid`/`d-flex`/`display-4` → `.app-content`/`.app-title-row`/
+  `.app-title`); **payments-master** (`breadcrumb`/`d-inline-flex`/`ms-2` →
+  `.payments-header`/`.object-title`); **3 editable tables** (`d-flex mt-2 mb-2`/
+  `ms-auto` → `.table-toolbar`/`.toolbar-end`; id-cell `text-nowrap` → column
+  `white-space`); **loading-progress** (`text-center`→`.loading-message`);
+  **app-info** (`text-end`→`.app-info`). Deleted dead global rules (`.w-*`,
+  `.badge-value*`, `.tooltip-inner`, `.old_fa*`, `div.drag-preview`,
+  `.table thead th`, `.footer`, the `a:not(...)` underline hack). Kept
+  `.cursor-grip`/`.fa-grip` (drag handle), the snackbar classes, and
+  `.mat-mdc-icon-button{line-height:1}` (still valid — body line-height is 1.5).
+  Cleaned the stale bootstrap comment/duplicate viewport in index.html. Build ✓
+  (no more Sass deprecation warnings), tests ✓ (84/2). **All three legacy CSS/JS
+  libraries are now gone.**
 
 - 2026-07-01 — **FontAwesome + ngx-bootstrap FULLY REMOVED** (Phase 5b done; ngx
   part of Phase 6 done). Verified zero runtime usage first (no `<fa-icon>`, no
