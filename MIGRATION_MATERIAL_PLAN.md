@@ -495,6 +495,22 @@ grep -rhoE 'class="[^"]*"' src --include="*.html" \
 
 > Newest entry on top. Format: `YYYY-MM-DD — what changed — build/lint/test status`.
 
+- 2026-07-01 — **FontAwesome + ngx-bootstrap FULLY REMOVED** (Phase 5b done; ngx
+  part of Phase 6 done). Verified zero runtime usage first (no `<fa-icon>`, no
+  ngx directives). Deleted `font-awesome-icons.module.ts`, dropped its
+  `importProvidersFrom` + import from `app.config.ts`, stripped
+  `FontAwesomeIconsModule` from all 10 specs, removed `$fa-font-path` from
+  `_variables.scss`, and updated the stale ngx comment in `test-setup.ts`.
+  `npm uninstall @fortawesome/angular-fontawesome @fortawesome/fontawesome-svg-core
+  @fortawesome/free-solid-svg-icons ngx-bootstrap` (removed 5 packages). Build ✓,
+  tests ✓ (84/2). **Bootstrap NOT removed** — still actively used: layout/utility
+  classes in ~7 templates (3 editable tables' `d-flex mt-2 mb-2`/`ms-auto`/
+  `text-nowrap` toolbars, payments-master `breadcrumb`/`d-inline-flex`,
+  app.component `jumbotron`/`container-fluid`/`display-4`, loading-progress
+  `text-center`, app-info `text-end`) + reliance on Bootstrap's global reboot
+  (box-sizing/body reset) + a few `$…` var usages in styles.scss. Needs those
+  migrated + a minimal reset added before the `@import bootstrap` can go.
+
 - 2026-07-01 — **`reports-table` → flex `mat-table`** (superseded the same-day
   native-table restyle below). At the user's request the **totals row was dropped**
   (it was the only thing blocking mat-table — a colspan row on top), so it's now a

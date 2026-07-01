@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BackupDatabaseComponent } from './backup-database.component';
 import {RepositoryModule} from '../../repository/repository.module';
-import {FontAwesomeIconsModule} from '../../font-awesome-icons/font-awesome-icons.module';
 import {RestUrlEnv} from '../../config/configuration';
 import {RestDataSource} from '../../data-source/rest-data-source';
 
@@ -12,7 +11,7 @@ describe('BackupDatabaseComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      imports: [BackupDatabaseComponent, RepositoryModule, FontAwesomeIconsModule],
+      imports: [BackupDatabaseComponent, RepositoryModule],
       providers: [RestUrlEnv, RestDataSource]
     })
     .compileComponents();

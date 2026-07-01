@@ -6,7 +6,6 @@ import {RestUrlEnv} from "../../config/configuration";
 import {RestDataSource} from "../../data-source/rest-data-source";
 import {provideHttpClient, withInterceptorsFromDi} from "@angular/common/http";
 import {provideHttpClientTesting} from "@angular/common/http/testing";
-import {FontAwesomeIconsModule} from "../../font-awesome-icons/font-awesome-icons.module";
 
 describe('BackupDatabaseButtonComponent', () => {
   let component: BackupDatabaseButtonComponent;
@@ -14,7 +13,7 @@ describe('BackupDatabaseButtonComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [BackupDatabaseButtonComponent, RepositoryModule, FontAwesomeIconsModule],
+      imports: [BackupDatabaseButtonComponent, RepositoryModule],
       providers: [RestUrlEnv, RestDataSource, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
     });
     fixture = TestBed.createComponent(BackupDatabaseButtonComponent);

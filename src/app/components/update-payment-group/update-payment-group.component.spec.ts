@@ -6,7 +6,6 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {RepositoryModule} from '../../repository/repository.module';
 import {RestUrlEnv} from '../../config/configuration';
 import {RestDataSource} from '../../data-source/rest-data-source';
-import {FontAwesomeIconsModule} from '../../font-awesome-icons/font-awesome-icons.module';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('UpdatePaymentGroupComponent', () => {
@@ -15,7 +14,7 @@ describe('UpdatePaymentGroupComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-    imports: [UpdatePaymentGroupComponent, ReactiveFormsModule, RepositoryModule, FontAwesomeIconsModule],
+    imports: [UpdatePaymentGroupComponent, ReactiveFormsModule, RepositoryModule],
     providers: [RestUrlEnv, RestDataSource, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
 })
     .compileComponents();

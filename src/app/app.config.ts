@@ -8,7 +8,6 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { routes } from './app.routes';
 import { RestUrlEnv } from './config/configuration';
 import { RepositoryModule } from './repository/repository.module';
-import { FontAwesomeIconsModule } from './font-awesome-icons/font-awesome-icons.module';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -24,12 +23,6 @@ export const appConfig: ApplicationConfig = {
     // Match the reference project (violetnote-ang): outlined form fields app-wide.
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
     RestUrlEnv,
-    // ngx-bootstrap 21.x removed forRoot(): its services are providedIn 'root'
-    // and its directives are imported per-component, so no module registration
-    // is needed here.
-    importProvidersFrom(
-      RepositoryModule,
-      FontAwesomeIconsModule
-    )
+    importProvidersFrom(RepositoryModule)
   ]
 };

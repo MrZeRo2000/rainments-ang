@@ -7,7 +7,6 @@ import {RestUrlEnv} from '../../config/configuration';
 import {RestDataSource} from '../../data-source/rest-data-source';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import {RepositoryModule} from '../../repository/repository.module';
-import {FontAwesomeIconsModule} from '../../font-awesome-icons/font-awesome-icons.module';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('PaymentsMasterComponent', () => {
@@ -17,7 +16,7 @@ describe('PaymentsMasterComponent', () => {
   beforeEach(async() => {
     await TestBed.configureTestingModule({
     imports: [PaymentsMasterComponent, RouterTestingModule, ReactiveFormsModule,
-        RepositoryModule, FontAwesomeIconsModule],
+        RepositoryModule],
     providers: [RestUrlEnv, RestDataSource, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
 })
     .compileComponents();

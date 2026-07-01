@@ -5,7 +5,7 @@
 // per-TestBed via `errorOnUnknownElements`/`errorOnUnknownProperties` in
 // configureTestingModule.
 //
-// We also install noop animations so ngx-bootstrap modules that inject
+// We also install noop animations so Angular Material components that inject
 // AnimationBuilder don't crash under jsdom. The builder's `providersFile` is
 // dropped because resetTestEnvironment() discards the builder's own provider
 // module.
