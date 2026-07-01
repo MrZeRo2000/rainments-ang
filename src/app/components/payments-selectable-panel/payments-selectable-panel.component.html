@@ -1,18 +1,12 @@
-<span class="text-left">
+<span class="selectable-panel">
   @if (!isAllSelected()) {
-    <a
-      class="btn btn-outline-primary me-2"
-      (click)="onCheckAllClick($event)"
-      >
-      <fa-icon [icon]="['fas', 'check-double']" transform="grow-4"></fa-icon>
-    </a>
+    <button matIconButton (click)="onCheckAllClick($event)" matTooltip="Select all" aria-label="Select all">
+      <mat-icon>done_all</mat-icon>
+    </button>
   }
   @if (isAnySelected()) {
-    <a
-      class="btn btn-outline-primary me-2"
-      (click)="onClearAllClick($event)"
-      >
-      <fa-icon [icon]="['fas', 'times']" transform="grow-4"></fa-icon>
-    </a>
+    <button matIconButton (click)="onClearAllClick($event)" matTooltip="Clear all" aria-label="Clear all">
+      <mat-icon>clear</mat-icon>
+    </button>
   }
 </span>
