@@ -1,0 +1,34 @@
+.group-card {
+  margin-top: 0.5rem;
+}
+
+// Summary card: labels on the left, amount columns right-aligned.
+.summary-row {
+  display: flex;
+  align-items: flex-start;
+}
+
+.summary-labels {
+  flex-grow: 1;
+}
+
+.summary-values {
+  margin-left: 0.5rem;
+  text-align: right;
+}
+
+// "By group" table: Group fills, amount is fixed-width; amount cell stacks
+// payment over the (right-aligned) commission.
+.mat-column-amount {
+  flex: 0 0 8rem;
+}
+
+.amount-cell {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.amount-cell__commission {
+  text-align: right;
+}

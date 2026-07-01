@@ -1,66 +1,60 @@
-<div class="card">
-  <h5 class="card-header">
-    @if (!hasSelection()) {
-      <span>Summary</span>
-    }
-    @if (hasSelection()) {
-      <span>Selection / Summary</span>
-    }
-  </h5>
-  <div class="card-body">
-    <div class="d-flex">
-      <div class="flex-grow-1">
-        <div class="text-right">Payment</div>
-        @if (this.paymentsTableDisplayOptions().showCommission()) {
-          <div class="text-right">Commission</div>
+<mat-card appearance="outlined">
+  <mat-card-header>
+    <mat-card-title>{{ hasSelection() ? 'Selection / Summary' : 'Summary' }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="summary-row">
+      <div class="summary-labels">
+        <div>Payment</div>
+        @if (paymentsTableDisplayOptions().showCommission()) {
+          <div>Commission</div>
         }
       </div>
       @if (hasSelection()) {
-        <div class="m2-2 text-end">
+        <div class="summary-values">
           <div><strong>{{selectedSummary().paymentAmount | amount}} / </strong></div>
-          @if (this.paymentsTableDisplayOptions().showCommission()) {
+          @if (paymentsTableDisplayOptions().showCommission()) {
             <div><strong>{{selectedSummary().commissionAmount | amount}} / </strong></div>
           }
         </div>
       }
-      <div class="ms-2 text-end">
+      <div class="summary-values">
         <div><strong>{{totalSummary().paymentAmount | amount}}</strong></div>
-        @if (this.paymentsTableDisplayOptions().showCommission()) {
+        @if (paymentsTableDisplayOptions().showCommission()) {
           <div><strong>{{totalSummary().commissionAmount | amount}}</strong></div>
         }
       </div>
     </div>
-  </div>
-</div>
+  </mat-card-content>
+</mat-card>
 
-<div class="card mt-2">
-  <h5 class="card-header">
-    By group
-  </h5>
-  <div class="card-body">
-    <div class="table-responsive table-sm">
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th scope="col" class="text-center align-middle">Group</th>
-            <th scope="col" class="text-center">Payment@if (this.paymentsTableDisplayOptions().showCommission()) { / Commission}</th>
+<mat-card appearance="outlined" class="group-card">
+  <mat-card-header>
+    <mat-card-title>By group</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-table [dataSource]="groupSummary()">
+      <ng-container matColumnDef="group">
+        <mat-header-cell *matHeaderCellDef>Group</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{item.paymentGroup.name}}</mat-cell>
+      </ng-container>
 
-          </tr>
-        </thead>
-        <tbody>
-          @for (item of groupSummary(); track item.paymentGroup.id) {
-            <tr [ngStyle]="{'--bs-table-bg': item.paymentGroup.color}">
-              <td class="text-start">{{item.paymentGroup.name}}</td>
-              <td>
-                <div class="text-start">{{item.paymentAmount | amount}}</div>
-                @if (this.paymentsTableDisplayOptions().showCommission() && item.commissionAmount) {
-                  <div class="text-end"><small>{{item.commissionAmount | amount}}</small></div>
-                }
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
+      <ng-container matColumnDef="amount">
+        <mat-header-cell *matHeaderCellDef>
+          Payment@if (paymentsTableDisplayOptions().showCommission()) { / Commission}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let item">
+          <div class="amount-cell">
+            <div>{{item.paymentAmount | amount}}</div>
+            @if (paymentsTableDisplayOptions().showCommission() && item.commissionAmount) {
+              <div class="amount-cell__commission"><small>{{item.commissionAmount | amount}}</small></div>
+            }
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns" [style.background-color]="row.paymentGroup.color"></mat-row>
+    </mat-table>
+  </mat-card-content>
+</mat-card>

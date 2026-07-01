@@ -23,12 +23,19 @@ html {
       primary: theme-colors.$primary-palette,
       tertiary: theme-colors.$tertiary-palette,
     ),
+    typography: Roboto,
     density: 0,
   ));
 
   // The grayscale theme's surface is a light gray (~rgb(251,249,249)); force
   // mat-table backgrounds to white app-wide.
   --mat-table-background-color: #ffffff;
+
+  // ...and mat-card on pure white (surface is the same off-white gray).
+  @include mat.card-overrides((
+    elevated-container-color: #ffffff,
+    outlined-container-color: #ffffff,
+  ));
 }
 
 .jumbotron {

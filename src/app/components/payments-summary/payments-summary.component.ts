@@ -3,7 +3,8 @@ import {PaymentGroupAmountSummary} from '../../model/payment-group-amount-summar
 import {Payment} from '../../model/payment';
 import {PaymentGroup} from '../../model/payment-group';
 import {AmountPipe} from "../../core/pipes/amount.pipe";
-import {NgStyle} from "@angular/common";
+import {MatCardModule} from "@angular/material/card";
+import {MatTableModule} from "@angular/material/table";
 import {PAYMENT_REFS_READ_REPOSITORY} from "../../repository/repository-tokens";
 import {PaymentsTableDisplayOptions} from "../payments-table-display-options/payments-table-display-options.component";
 
@@ -12,7 +13,8 @@ import {PaymentsTableDisplayOptions} from "../payments-table-display-options/pay
   templateUrl: './payments-summary.component.html',
   imports: [
     AmountPipe,
-    NgStyle
+    MatCardModule,
+    MatTableModule
   ],
   styleUrls: ['./payments-summary.component.scss']
 })
@@ -21,6 +23,8 @@ export class PaymentsSummaryComponent {
 
   selectedItems = input<Array<Payment>>([]);
   paymentsTableDisplayOptions = input.required<PaymentsTableDisplayOptions>();
+
+  displayedColumns = ['group', 'amount'];
 
   private summary = computed(() => {
     const payments = this.readRepository.dataSignal()[0]?.paymentList ?? [];

@@ -454,6 +454,28 @@ grep -rhoE 'class="[^"]*"' src --include="*.html" \
   `fa-icon`s with `mat-icon`. Audited already-migrated components:
   `loading-spinner-element` already FA-free ✓; `add-panel` still had a FA plus
   icon → fixed (now `<mat-icon>add</mat-icon>`, fully FA-free). Build ✓, tests ✓.
+- 2026-07-01 — **Cards forced white.** `--mat-sys-surface` is `#fbf9f9` (off-white
+  gray from the grayscale seed) so mat-cards looked tinted vs Material examples.
+  Added `mat.card-overrides((elevated/outlined-container-color: #ffffff))` in
+  styles.scss (targeted, like the table-white override; menus/dialogs unaffected).
+  Build ✓, tests ✓ (83/2).
+- 2026-07-01 — **Enabled Material typography.** `mat.theme` had `color`+`density`
+  but no `typography`, so type-scale tokens (`--mat-sys-title-large` etc.) didn't
+  exist → `mat-card-title` looked like body text (user noticed on payments-summary).
+  Added `typography: Roboto` (Roboto already linked in index.html). Affects only
+  Material components' text (not Bootstrap elements); permanent (not a coexistence
+  workaround). `--mat-sys-title-large: 400 1.375rem/1.75rem Roboto`. Build ✓, tests ✓.
+- 2026-07-01 — **`payments-summary` migrated.** Two Bootstrap `card`s →
+  `<mat-card appearance="outlined">` + `mat-card-header`/`mat-card-title`. Summary
+  card: `d-flex`/`text-end` → `.summary-row`/`.summary-labels`/`.summary-values`
+  scss. "By group" `table table-bordered` → flex `mat-table` (group/amount cols,
+  per-row `[style.background-color]="row.paymentGroup.color"`, replacing
+  `--bs-table-bg`). Removed `NgStyle`; added MatCard/MatTable. No FA. Build ✓,
+  tests ✓ (83/2).
+- 2026-07-01 — **`payments-selectable-panel` migrated & FA-free.** Select-all /
+  clear-all: `btn btn-outline-primary` + FA `check-double`/`times` →
+  `matIconButton` + `<mat-icon>done_all</mat-icon>`/`clear` with tooltips; `.text-left`
+  span + `me-2` → `.selectable-panel` inline-flex gap. Removed FA. Build ✓, tests ✓.
 - 2026-06-26 — **`payments-date-selection` migrated & FA-free.** Date navigator
   `[<][period][year][>]`: FA `angle-left/right` buttons → `matIconButton` +
   `<mat-icon>chevron_left/right</mat-icon>` with real `[disabled]` at boundaries
