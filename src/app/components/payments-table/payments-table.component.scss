@@ -68,9 +68,12 @@ mat-table {
 // cell-padding theme token, so set it directly on the cells. A class selector
 // (raised by view encapsulation) outranks Material's element-level `:first/
 // last-of-type` defaults, so this one rule covers every cell.
-.mat-mdc-header-cell.mat-mdc-header-cell,
+
 .mat-mdc-cell.mat-mdc-cell {
   padding: 0.5rem;
+}
+
+.mat-mdc-header-cell.mat-mdc-header-cell {
   justify-content: center;
 }
 
@@ -142,14 +145,15 @@ mat-table {
   flex: 0 0 11rem;
 }
 
-.mat-column-payment,
-.mat-column-commission {
+.mat-mdc-cell.mat-column-payment.mat-column-payment,
+.mat-mdc-cell.mat-column-commission.mat-column-commission {
   flex: 0 0 9rem;
+  justify-content: start;
 }
 
-.mat-column-actions {
+.mat-column-actions.mat-column-actions {
   flex: 0 0 6rem;
-  justify-content: center;
+  align-items: center!important;
 }
 
 // Product name truncates (with ellipsis) only in the compact-products mode.
