@@ -1,8 +1,0 @@
-// The icon button is display:inline-block with no line-height of its own, so it
-// inherits Bootstrap's global line-height: 1.5 (still loaded during migration).
-// That makes its line box (1.5 * 24px = 36px) taller than the 24px content area
-// and pushes the inline icon off-centre vertically. Resetting the BUTTON's
-// line-height (not the icon's) fixes it.
-:host button {
-  line-height: 1;
-}

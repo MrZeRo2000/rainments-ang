@@ -231,8 +231,3 @@ mat-table {
   justify-content: flex-end;
 }
 
-// The "Clone previous" button pairs an icon with a label; keep the glyph from
-// being pushed off-centre by Bootstrap's global line-height leak.
-mat-icon {
-  line-height: 1;
-}

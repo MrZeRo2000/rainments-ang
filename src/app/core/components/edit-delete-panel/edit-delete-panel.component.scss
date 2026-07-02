@@ -15,9 +15,8 @@
   ));
 }
 
-// The icon-size token sizes the icon box and centres it, but mat-icon draws the
-// glyph via font-size — which the token does not set. Shrink only the glyph here
-// (size/line-height matched to the 20px box so it stays centred).
+// Shrink the glyph to 18px; centring on both axes is handled by the global
+// .mat-mdc-icon-button / .mat-icon flex rules.
 :host mat-icon {
   font-size: 18px;
 }

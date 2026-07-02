@@ -2,7 +2,7 @@
 @if (paymentObjectTotals(); as totals) {
   <div class="payments-header">
     <app-payments-date-selection (selectedDate)="onSelectDate($event)" [paymentObjectTotals]="totals"></app-payments-date-selection>
-    <h5 class="app-title-large object-title">{{totals.paymentObject?.name}}</h5>
+    <span class="app-title-large object-title">{{totals.paymentObject?.name}}</span>
     <app-report-nav [itemId]="paymentObjectId" navigatePath="reports"></app-report-nav>
   </div>
 

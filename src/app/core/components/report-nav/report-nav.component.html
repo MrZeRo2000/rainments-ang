@@ -1,3 +1,3 @@
-<a href="#" (click)="onReportClick($event)" class="report-link" aria-label="Reports">
+<a matIconButton [routerLink]="['/', navigatePath(), itemId()]" class="report-link" aria-label="Reports">
   <mat-icon>show_chart</mat-icon>
 </a>

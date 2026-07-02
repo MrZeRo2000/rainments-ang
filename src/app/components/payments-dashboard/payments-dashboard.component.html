@@ -6,7 +6,7 @@
         <a class="card-link" (click)="onSelectPaymentObject($event, item)" aria-label="Open payments"></a>
         <mat-card-content>
           <div class="card-header-row">
-            <h5 class="app-title-large card-title">{{item.paymentObject.name}}</h5>
+            <span class="app-title-large card-title">{{item.paymentObject.name}}</span>
             @if (item.paymentOverdue) {
               <mat-icon class="overdue-icon">priority_high</mat-icon>
             }

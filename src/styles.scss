@@ -76,11 +76,6 @@ a {
   text-decoration: none;
 }
 
-// A few forms still use a plain <label>; keep the small bottom spacing.
-label {
-  margin-bottom: 0.5rem;
-}
-
 // App header banner (was Bootstrap `.jumbotron`).
 .app-header {
   padding: 15px;
@@ -98,9 +93,24 @@ label {
   @extend .cursor-grip;
 }
 
-// Body line-height (1.5) would push mat-icon glyphs off-centre inside icon
-// buttons; pin icon buttons to 1.
-.mat-mdc-icon-button {
+// Icon-button icon centering. Material's icon button is display:inline-block and
+// centres its icon via text-align + padding + line-height, so the inherited body
+// line-height (1.5) and baseline alignment push the glyph off-centre. Flex-centre
+// the button's content instead — robust regardless of line-height/font-size.
+// The doubled class raises specificity above Material's own `.mat-mdc-icon-button`
+// (same-specificity) rule, which is injected after this global stylesheet.
+.mat-mdc-icon-button.mat-mdc-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Centre the glyph within a bare mat-icon too (icons not inside a button, e.g.
+// the drag grip and trend arrows), for the same line-height reason.
+.mat-icon.mat-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   line-height: 1;
 }
 

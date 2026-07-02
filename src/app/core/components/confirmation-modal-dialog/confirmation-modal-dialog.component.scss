@@ -14,10 +14,6 @@
   text-align: left;
 }
 
-.confirm-close {
-  line-height: 1; // keep the X glyph centered (Bootstrap line-height coexistence)
-}
-
 // Footer: divider above, buttons right-aligned.
 .confirm-actions {
   justify-content: flex-end;

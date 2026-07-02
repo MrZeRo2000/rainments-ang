@@ -1,8 +1,7 @@
-// mat-icon inherits Bootstrap's global line-height (1.5) during the migration,
-// which makes the grip glyph sit low in its 24px box and look off-centre next to
-// the row text. line-height: 1 centres the glyph in its box (the box itself is
-// centred by the table cell's flex layout).
-:host mat-icon {
-  line-height: 1;
-  display: block;
+// The host is inline, so it inherits the body line-height (1.5) and gets a line
+// box taller than the 24px icon — leaving a gap below the glyph. inline-flex
+// makes the host hug the icon (no line-box strut), removing the gap.
+:host {
+  display: inline-flex;
+  align-items: center;
 }
