@@ -14,6 +14,7 @@ import {PaymentRefs} from "../model/payment-refs";
 import {Payment} from "../model/payment";
 import {PaymentRep} from "../model/payment-rep";
 import {CrudRepository} from "../core/repository/crud-repository";
+import {RowsAffectedResult} from "../model/rows-affected-result";
 
 /**
  * Links each payment to its previous-period counterpart and builds the
@@ -115,6 +116,14 @@ export const PAYMENT_GROUP_CRUD_REPOSITORY = new InjectionToken<CrudRepository<P
     providedIn: 'root',
     factory: () => new CrudRepository(inject(RestDataSource), inject(MessagesService), 'payment-groups')
   });
+
+export const PAYMENT_GROUP_UPDATE_CRUD_REPOSITORY = new InjectionToken<CrudRepository<RowsAffectedResult>>(
+  'PAYMENT_GROUP_UPDATE_CRUD_REPOSITORY',
+  {
+    providedIn: 'root',
+    factory: () => new CrudRepository(inject(RestDataSource), inject(MessagesService), 'payments:update_payment_group')
+  });
+
 
 export const PRODUCT_READ_REPOSITORY = new InjectionToken<ReadRepository<Product>>(
   'PRODUCT_READ_REPOSITORY',

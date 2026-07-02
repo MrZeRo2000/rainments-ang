@@ -8,7 +8,6 @@ import {tap} from 'rxjs';
 import {ConfirmationModalDialogComponent} from '../../core/components/confirmation-modal-dialog/confirmation-modal-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
 import { HttpParams } from '@angular/common/http';
-import {UpdatePaymentObjectGroupRepository} from '../../repository/update-payment-object-group-repository';
 import {CrudStatus} from '../../core/repository/crud-repository';
 import {SuccessMessage} from '../../messages/message.model';
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -17,7 +16,10 @@ import {MatButtonModule} from "@angular/material/button";
 import {ErrorStateMatcher} from "@angular/material/core";
 import {LoadingProgressComponent} from "../../core/components/loading-progress/loading-progress.component";
 import {distinctFromSiblingValidator} from '../../core/validators/form-validators';
-import {PAYMENT_OBJECT_GROUP_REFS_READ_REPOSITORY} from '../../repository/repository-tokens';
+import {
+  PAYMENT_GROUP_UPDATE_CRUD_REPOSITORY,
+  PAYMENT_OBJECT_GROUP_REFS_READ_REPOSITORY
+} from '../../repository/repository-tokens';
 
 @Component({
   selector: 'app-update-payment-group',
@@ -35,7 +37,7 @@ export class UpdatePaymentGroupComponent extends CommonTableComponent<PaymentObj
   private fb = inject(FormBuilder)
   private dialog = inject(MatDialog)
   private messagesService = inject(MessagesService)
-  private updateRepository = inject(UpdatePaymentObjectGroupRepository)
+  private updateRepository = inject(PAYMENT_GROUP_UPDATE_CRUD_REPOSITORY)
 
   formSubmitted = false;
 

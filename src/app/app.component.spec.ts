@@ -3,7 +3,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { NavTopComponent } from './components/nav-top/nav-top.component';
 import {AppInfoComponent} from './components/app-info/app-info.component';
-import {RepositoryModule} from './repository/repository.module';
 import {RestUrlEnv} from './config/configuration';
 import {RestDataSource} from './data-source/rest-data-source';
 
@@ -12,7 +11,6 @@ describe('AppComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
-        RepositoryModule,
         AppComponent,
         AppInfoComponent,
         NavTopComponent

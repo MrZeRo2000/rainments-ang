@@ -3,7 +3,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UpdatePaymentGroupComponent } from './update-payment-group.component';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import {ReactiveFormsModule} from '@angular/forms';
-import {RepositoryModule} from '../../repository/repository.module';
 import {RestUrlEnv} from '../../config/configuration';
 import {RestDataSource} from '../../data-source/rest-data-source';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
@@ -14,7 +13,7 @@ describe('UpdatePaymentGroupComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-    imports: [UpdatePaymentGroupComponent, ReactiveFormsModule, RepositoryModule],
+    imports: [UpdatePaymentGroupComponent, ReactiveFormsModule],
     providers: [RestUrlEnv, RestDataSource, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
 })
     .compileComponents();

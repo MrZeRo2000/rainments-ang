@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AppInfoComponent } from './app-info.component';
-import {RepositoryModule} from '../../repository/repository.module';
 import {RestUrlEnv} from '../../config/configuration';
 import {RestDataSource} from '../../data-source/rest-data-source';
 
@@ -11,7 +10,7 @@ describe('AppInfoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppInfoComponent, RepositoryModule],
+      imports: [AppInfoComponent],
       providers: [RestUrlEnv, RestDataSource]
     })
     .compileComponents();

@@ -5,7 +5,6 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import {ReactiveFormsModule} from '@angular/forms';
 import {RestUrlEnv} from '../../config/configuration';
 import {RestDataSource} from '../../data-source/rest-data-source';
-import {RepositoryModule} from '../../repository/repository.module';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ImportExportComponent', () => {
@@ -14,7 +13,7 @@ describe('ImportExportComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-    imports: [DataManagementComponent, ReactiveFormsModule, RepositoryModule],
+    imports: [DataManagementComponent, ReactiveFormsModule],
     providers: [RestUrlEnv, RestDataSource, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
 })
     .compileComponents();
