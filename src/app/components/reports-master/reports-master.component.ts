@@ -5,7 +5,8 @@ import { HttpParams } from '@angular/common/http';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatDatepickerModule} from '@angular/material/datepicker';
-import {provideNativeDateAdapter} from '@angular/material/core';
+import {DateAdapter, provideNativeDateAdapter} from '@angular/material/core';
+import {AppDateAdapter, APP_DATE_FORMATS} from '../../core/date/app-date-formats';
 import {NavListSelectorComponent} from '../../core/components/nav-list-selector/nav-list-selector.component';
 import {CommonTableComponent} from '../../core/table/common-table-component';
 import {PaymentRep} from '../../model/payment-rep';
@@ -48,7 +49,11 @@ enum ControlTab {
     ReportsTableComponent,
     ReportsTableDisplayOptionsComponent
   ],
-  providers: [provideNativeDateAdapter()],
+  providers: [
+    // Native date adapter with dotted dd.MM.yyyy input (see AppDateAdapter).
+    provideNativeDateAdapter(APP_DATE_FORMATS),
+    {provide: DateAdapter, useClass: AppDateAdapter},
+  ],
   styleUrls: ['./reports-master.component.scss']
 })
 export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> {

@@ -1,4 +1,4 @@
-import {Component, computed, inject, input} from '@angular/core';
+import {Component, computed, inject} from '@angular/core';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {PaymentObjectGroupRefs} from '../../model/payment-object-group-refs';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
@@ -37,8 +37,6 @@ export class UpdatePaymentGroupComponent extends CommonTableComponent<PaymentObj
   private messagesService = inject(MessagesService)
   private updateRepository = inject(UpdatePaymentObjectGroupRepository)
 
-  messageSource = input<string>();
-
   formSubmitted = false;
 
   // Show field errors only after an Update attempt (mirrors the old
@@ -61,7 +59,7 @@ export class UpdatePaymentGroupComponent extends CommonTableComponent<PaymentObj
     tap(result => {
       if (result.status === CrudStatus.Success) {
         this.messagesService.reportMessage(
-          new SuccessMessage(`Successfully updated ${result.data?.rowsAffected ?? 0} rows`, this.messageSource()));
+          new SuccessMessage(`Successfully updated ${result.data?.rowsAffected ?? 0} rows`));
       }
     })
   ));
@@ -70,10 +68,10 @@ export class UpdatePaymentGroupComponent extends CommonTableComponent<PaymentObj
     super(inject(PAYMENT_OBJECT_GROUP_REFS_READ_REPOSITORY));
   }
 
-  // Enable scoped reporting of refs-load errors (updateMessages gates the
-  // ReadRepository's error message; messageSource routes it to this panel).
+  // Enable reporting of refs-load errors (updateMessages gates the
+  // ReadRepository's error message → global snackbar).
   protected override loadRepositoryData(): void {
-    this.readRepository.loadData({updateMessages: true, messageSource: this.messageSource()});
+    this.readRepository.loadData({updateMessages: true});
   }
 
   importClick() {
@@ -82,9 +80,6 @@ export class UpdatePaymentGroupComponent extends CommonTableComponent<PaymentObj
     this.editForm.controls.paymentGroupTo.updateValueAndValidity();
 
     if (this.editForm.valid) {
-      // Scope this operation's error messages to this component's panel.
-      this.updateRepository.setDefaultPersistParams({messageSource: this.messageSource()});
-
       const message = '<strong>This operation can not be undone.</strong> <BR>Are you sure?';
       this.dialog.open(ConfirmationModalDialogComponent, {data: {message}, minWidth: '450px'})
         .afterClosed()

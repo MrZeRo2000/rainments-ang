@@ -10,6 +10,13 @@
 
 > Snapshot of the codebase at the date above. Some items may have been addressed already (Karma → Vitest, Protractor → Playwright, standalone-bootstrap migration, dead-module cleanup, Sass-deprecation analysis). Re-evaluate before acting on a stale entry.
 >
+> **Update (2026-07):** The UI was fully migrated to **Angular Material** —
+> `bootstrap`, `ngx-bootstrap`, jQuery and FontAwesome are all uninstalled. Any
+> entries below about those libraries are obsolete: the Sass `@use 'bootstrap'`
+> migration (§2.15 / item #16) no longer applies (the Bootstrap `@import` is gone),
+> ngx-bootstrap items (#15, and the "runtime smoke test of ngx-bootstrap pieces")
+> are moot, and `styles.scss` no longer imports Bootstrap or references its vars.
+>
 > **2026-06 update:** the signals migration is essentially complete — components now use signal-based `ReadRepository`/`CrudRepository` injected via tokens (`repository-tokens.ts`), typed forms, `input()`/`output()`, and shared validators (`core/validators/form-validators.ts`). Several `§2`/`§3` entries that describe the old `UntypedFormBuilder` / `getLoadSuccessObservable` / per-entity-repository-class state are now stale for those components. **The app now runs zoneless** — see the "Zoneless migration status" section below. §2.17 below was written against this new signal-based baseline.
 
 > **Project convention:** do not suppress build warnings (Sass deprecations, ESLint, TS, schematics). Fix at root where possible, otherwise leave visible — the warning is the signal that upstream has moved.

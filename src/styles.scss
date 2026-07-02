@@ -30,6 +30,13 @@ html {
     elevated-container-color: #ffffff,
     outlined-container-color: #ffffff,
   ));
+
+  // App semantic value colours (positive / negative / neutral). The theme is
+  // grayscale, so Material has no green/red token — these are the single source
+  // of truth for the coloured value pills and trend arrows.
+  --app-value-positive: #198754;
+  --app-value-negative: #dc3545;
+  --app-value-neutral: #6c757dad;
 }
 
 // --- Base reset (replaces Bootstrap's reboot, now that Bootstrap is removed) ---

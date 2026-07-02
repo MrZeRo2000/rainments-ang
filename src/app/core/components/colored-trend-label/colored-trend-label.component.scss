@@ -3,12 +3,12 @@
   align-items: center;
 }
 
-// Trend direction colours (kept in sync with colored-value-label's literals;
-// revisit vs theme tokens in Phase 6). Up = increase = red, down = green.
+// Trend direction colours (shared app value colours). Up = increase = red,
+// down = green.
 .trend-up {
-  color: #dc3545;
+  color: var(--app-value-negative);
 }
 
 .trend-down {
-  color: #198754;
+  color: var(--app-value-positive);
 }

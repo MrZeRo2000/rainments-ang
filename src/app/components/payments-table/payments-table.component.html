@@ -251,7 +251,7 @@
           appInputPasteFloatControl
           [errorStateMatcher]="errorMatcher"
           >
-        @if (prevPeriodPayment()?.productCounter != null) {
+        @if (prevPeriodPayment()?.productCounter !== undefined) {
           <mat-hint>
             Prev:
             <a href="#" (click)="pervPeriodCounterLabelClick($event, prevPeriodPayment()?.productCounter)">
@@ -282,7 +282,7 @@
         appInputPasteFloatControl
         [errorStateMatcher]="errorMatcher"
         >
-      @if (prevPeriodPayment()?.paymentAmount != null) {
+      @if (prevPeriodPayment()?.paymentAmount !== undefined) {
         <mat-hint>Prev: <app-core-colored-value-label [value]="prevPeriodPayment()?.paymentAmount"></app-core-colored-value-label></mat-hint>
       }
       @if (editForm.controls.paymentAmount.errors?.required) {
@@ -301,7 +301,7 @@
         formControlName="commissionAmount"
         appInputPasteFloatControl
         >
-      @if (prevPeriodPayment()?.commissionAmount != null) {
+      @if (prevPeriodPayment()?.commissionAmount !== undefined) {
         <mat-hint>Prev: <app-core-colored-value-label [value]="prevPeriodPayment()?.commissionAmount | amount"></app-core-colored-value-label></mat-hint>
       }
     </mat-form-field>

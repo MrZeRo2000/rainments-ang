@@ -1,4 +1,4 @@
-import {Component, computed, inject, input} from '@angular/core';
+import {Component, computed, inject} from '@angular/core';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {tap} from 'rxjs';
 import {DatePipe} from '@angular/common';
@@ -21,8 +21,6 @@ import {BACKUP_DATABASE_CRUD_REPOSITORY, BACKUP_INFO_READ_REPOSITORY} from '../.
 })
 export class BackupDatabaseComponent extends CommonTableComponent<BackupDatabaseInfo> {
   private backupDatabaseRepository = inject(BACKUP_DATABASE_CRUD_REPOSITORY)
-
-  messageSource = input<string>();
 
   loadingSignal = computed(() => this.readRepository.loadingSignal() || this.backupDatabaseRepository.loadingSignal());
 
