@@ -83,9 +83,17 @@ a {
   text-decoration: none;
 }
 
+
+.top-container {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+}
 // App header banner (was Bootstrap `.jumbotron`).
 .app-header {
-  padding: 15px;
+  padding: 4px 16px;
   background-image: url("assets/images/rain3.jpg");
   background-size: cover;
 }

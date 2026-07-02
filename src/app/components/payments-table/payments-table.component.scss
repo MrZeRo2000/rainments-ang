@@ -68,9 +68,10 @@ mat-table {
 // cell-padding theme token, so set it directly on the cells. A class selector
 // (raised by view encapsulation) outranks Material's element-level `:first/
 // last-of-type` defaults, so this one rule covers every cell.
-.mat-mdc-header-cell,
-.mat-mdc-cell {
+.mat-mdc-header-cell.mat-mdc-header-cell,
+.mat-mdc-cell.mat-mdc-cell {
   padding: 0.5rem;
+  justify-content: center;
 }
 
 // Rows are clickable (toggle selection); show it and add a hover cue to replace

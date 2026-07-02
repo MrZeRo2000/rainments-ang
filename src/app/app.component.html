@@ -1,12 +1,15 @@
-<div class="app-header">
-  <app-app-info></app-app-info>
-  <div class="app-title-row">
-    <h1 class="app-title">{{ title }}</h1>
-    <app-backup-database-button class="app-backup"></app-backup-database-button>
+<div class="top-container">
+  <div class="app-header">
+    <div class="app-title-row">
+      <div class="app-title">{{ title }}</div>
+      <div class="app-detail-column">
+        <app-app-info class="app-detail"></app-app-info>
+        <app-backup-database-button class="app-detail"></app-backup-database-button>
+      </div>
+    </div>
   </div>
+  <app-nav-top></app-nav-top>
 </div>
-
-<app-nav-top></app-nav-top>
 
 <div class="app-content">
   <router-outlet></router-outlet>
