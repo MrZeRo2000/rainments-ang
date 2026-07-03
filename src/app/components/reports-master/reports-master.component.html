@@ -17,68 +17,73 @@
         <mat-date-range-picker #picker></mat-date-range-picker>
       </mat-form-field>
 
-      @if (selectedGroups() && selectedGroups().length > 0) {
-        <app-drop-down-multi-select
-          title="Groups"
-          [selectableItems]="selectedGroups()"
-          (selectionChanged)="selectedGroupsChanged($event)"
-          >
-        </app-drop-down-multi-select>
-      }
-      @if (selectedProducts() && selectedProducts().length > 0) {
-        <app-drop-down-multi-select
-          title="Products"
-          [selectableItems]="selectedProducts()"
-          (selectionChanged)="selectedProductsChanged($event)"
-          >
-        </app-drop-down-multi-select>
-      }
-      @if (selectedControlTab() === ControlTab.Table) {
-        <app-reports-table-display-options
-          class="controls-end"
-          [reportsTableDisplayOptions]="tableDisplayOptions"
-          (selectionChanged)="tableDisplayOptionsChanged($event)"
-          >
-        </app-reports-table-display-options>
-      }
-      @if (selectedControlTab() === ControlTab.Chart) {
-        <app-reports-chart-date-totals-display-options
-          class="controls-end"
-          [paymentObjectId]="paymentObjectId"
-          (selectionChanged)="chartDisplayOptionsChanged($event)"
-          >
-        </app-reports-chart-date-totals-display-options>
+      @if (rep.paymentRepList.length > 0) {
+
+        @if (selectedGroups() && selectedGroups().length > 0) {
+          <app-drop-down-multi-select
+            title="Groups"
+            [selectableItems]="selectedGroups()"
+            (selectionChanged)="selectedGroupsChanged($event)"
+            >
+          </app-drop-down-multi-select>
+        }
+        @if (selectedProducts() && selectedProducts().length > 0) {
+          <app-drop-down-multi-select
+            title="Products"
+            [selectableItems]="selectedProducts()"
+            (selectionChanged)="selectedProductsChanged($event)"
+            >
+          </app-drop-down-multi-select>
+        }
+        @if (selectedControlTab() === ControlTab.Table) {
+          <app-reports-table-display-options
+            class="controls-end"
+            [reportsTableDisplayOptions]="tableDisplayOptions"
+            (selectionChanged)="tableDisplayOptionsChanged($event)"
+            >
+          </app-reports-table-display-options>
+        }
+        @if (selectedControlTab() === ControlTab.Chart) {
+          <app-reports-chart-date-totals-display-options
+            class="controls-end"
+            [paymentObjectId]="paymentObjectId"
+            (selectionChanged)="chartDisplayOptionsChanged($event)"
+            >
+          </app-reports-chart-date-totals-display-options>
+        }
       }
     </div>
   </div>
-}
 
-<div class="reports-body">
-  <app-core-nav-list-selector
-    class="reports-nav"
-    [items]="controlTabs"
-    [selected]="selectedControlTab()"
-    (selectedChange)="selectControlTabClick($event)"
-    >
-  </app-core-nav-list-selector>
+  @if (rep.paymentRepList.length > 0) {
+    <div class="reports-body">
+      <app-core-nav-list-selector
+        class="reports-nav"
+        [items]="controlTabs"
+        [selected]="selectedControlTab()"
+        (selectedChange)="selectControlTabClick($event)"
+      >
+      </app-core-nav-list-selector>
 
-  <div class="reports-content">
-    @if (selectedControlTab() === ControlTab.Chart) {
-      <app-reports-chart-date-totals
-        [payments]="displayPaymentList()"
-        [displayOptions]="chartDisplayOptions()"
-      ></app-reports-chart-date-totals>
-    }
-    @if (selectedControlTab() === ControlTab.Table) {
-      <div class="reports-table-scroll">
-        <app-reports-table
-          [payments]="displayPaymentList()"
-          [displayOptions]="tableDisplayOptions"
-          >
-        </app-reports-table>
+      <div class="reports-content">
+        @if (selectedControlTab() === ControlTab.Chart) {
+          <app-reports-chart-date-totals
+            [payments]="displayPaymentList()"
+            [displayOptions]="chartDisplayOptions()"
+          ></app-reports-chart-date-totals>
+        }
+        @if (selectedControlTab() === ControlTab.Table) {
+          <div class="reports-table-scroll">
+            <app-reports-table
+              [payments]="displayPaymentList()"
+              [displayOptions]="tableDisplayOptions"
+            >
+            </app-reports-table>
+          </div>
+        }
       </div>
-    }
-  </div>
-</div>
+    </div>
+  }
+}
 
 <app-core-loading-progress [loading]="readRepository.loadingSignal()"></app-core-loading-progress>

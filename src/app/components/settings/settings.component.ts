@@ -29,7 +29,7 @@ export enum SettingItemEnum {
     DataManagementComponent
   ]
 })
-export class SettingsComponent {
+export default class SettingsComponent {
   private messagesService: MessagesService = inject(MessagesService);
 
   public SettingItemEnumType = SettingItemEnum;

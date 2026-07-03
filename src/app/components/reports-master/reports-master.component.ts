@@ -56,7 +56,7 @@ enum ControlTab {
   ],
   styleUrls: ['./reports-master.component.scss']
 })
-export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> {
+export default class ReportsMasterComponent extends CommonTableComponent<PaymentRep> {
   private route = inject(ActivatedRoute)
 
   ControlTab = ControlTab;
@@ -131,17 +131,21 @@ export class ReportsMasterComponent extends CommonTableComponent<PaymentRep> {
 
     // Rebuild the group/product filters when new data loads, preserving prior selection.
     effect(() => {
+      console.log('Report-master effect')
       const rep = this.paymentRep();
-      if (rep) {
+      if (rep && rep.paymentRepList.length > 0) {
+        untracked(() => console.log(`Report-master effect setting selected groups before: ${JSON.stringify(this.selectedGroups())}`))
         this.selectedGroups.set(
           this.buildSelectableItems(untracked(() => this.selectedGroups()), rep.paymentRepList, v => v.paymentGroup.name));
         this.selectedProducts.set(
           this.buildSelectableItems(untracked(() => this.selectedProducts()), rep.paymentRepList, v => v.product.name));
+        untracked(() => console.log(`Report-master effect setting selected groups after: ${JSON.stringify(this.selectedGroups())}`))
       }
     });
   }
 
   protected override loadRepositoryData(): void {
+    console.log('Report-master loadRepositoryData')
     this.readRepository.loadData({
       params: new HttpParams()
         .append('paymentObjectId', this.paymentObjectId.toString())
