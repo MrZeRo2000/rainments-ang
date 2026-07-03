@@ -51,11 +51,13 @@ copy from dist to webapps directory
 ng update @angular/cli @angular/core
 
 ## Run local json server
-npm run server
+npm run server           # json-server (fetched via npx) on server/db.json
+npm run seed             # reset server/db.json from server/db-original.json
+npm run server:data      # seed then run the server
 
 ## Run with int configuration
-ng serve --configuration=int
-npm run start-int
+npm run start:int        # ng serve --configuration=int
+npm run start:int-ide    # ng serve --configuration=int-ide
 
 ## Run one selected test file only
 ng test --include=src/app/core/date-range-generator*.ts
