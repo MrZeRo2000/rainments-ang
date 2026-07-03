@@ -4,7 +4,7 @@
 
       <ng-container matColumnDef="date">
         <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
-        <mat-cell *matCellDef="let item">{{item.periodDate | date: "dd.MM.yyyy"}}</mat-cell>
+        <mat-cell *matCellDef="let item">{{item.periodDate | date: "MMM yyyy"}}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="group">
