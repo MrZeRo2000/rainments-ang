@@ -186,6 +186,10 @@ mat-table {
   }
 }
 
+.editor-group {
+  padding-top: 16px;
+}
+
 // In-cell numeric editor. Replaces Bootstrap's `.form-control` for the small
 // inline inputs (a full mat-form-field would blow up the row height).
 // The cell's flex gap already puts 0.25rem above the editor; add another 0.25rem

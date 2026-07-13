@@ -209,7 +209,7 @@
 }
 
 @if (editStateSignal() && !loadingSignal()) {
-  <form class="app-form" [formGroup]="editForm">
+  <form class="app-form editor-group" [formGroup]="editForm">
     <mat-form-field>
       <mat-label>Payment group</mat-label>
       <mat-select formControlName="paymentGroup" [errorStateMatcher]="errorMatcher">
