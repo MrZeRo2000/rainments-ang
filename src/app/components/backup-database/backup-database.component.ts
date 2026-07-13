@@ -1,7 +1,7 @@
 import {Component, computed, inject} from '@angular/core';
 import {DatePipe} from '@angular/common';
 import {BackupDatabaseInfo} from '../../model/backup-database-info';
-import {CommonTableComponent} from '../../core/table/common-table-component';
+import {CommonTableComponent, CommonTableConfig} from '../../core/table/common-table-component';
 import {MatButtonModule} from '@angular/material/button';
 import {LoadingProgressComponent} from '../../core/components/loading-progress/loading-progress.component';
 import {BACKUP_DATABASE_CRUD_REPOSITORY, BACKUP_INFO_READ_REPOSITORY} from '../../repository/repository-tokens';
@@ -23,14 +23,11 @@ export class BackupDatabaseComponent extends CommonTableComponent<BackupDatabase
 
   constructor() {
     super(inject(BACKUP_INFO_READ_REPOSITORY));
-  }
-
-  override ngOnInit(): void {
-    // Reuse the cached backup info shared via the root-provided read repository
-    // (first fetched by the always-present header backup button); a no-op with no
-    // REST call once loaded. The header button also owns refreshing the shared
-    // value after a backup, so this page updates reactively via the shared signal.
-    this.readRepository.loadDataOnce();
+    // Don't auto-load on open: the backup info is fetched once by the always-present
+    // header backup button and shared via the root-provided repository's signal, so
+    // this page reuses the cached value (and post-backup refreshes) with no REST call
+    // of its own.
+    this.config = new CommonTableConfig(false);
   }
 
   backupDatabaseClick(): void {

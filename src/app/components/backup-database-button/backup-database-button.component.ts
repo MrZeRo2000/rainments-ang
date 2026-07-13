@@ -51,9 +51,10 @@ export class BackupDatabaseButtonComponent {
   ));
 
   constructor() {
-    // Populate the tooltip once at startup; the value is then reused from cache by
-    // every other observer without an extra REST call.
-    this.backupInfoRepository.loadDataOnce();
+    // Fetch the backup info once at startup (this button is created a single time, at
+    // app bootstrap). The value is cached in the shared repository's signal and reused
+    // by the data-management page, so no observer issues its own REST call.
+    this.backupInfoRepository.loadData();
   }
 
   onClick() {

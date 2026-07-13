@@ -108,23 +108,7 @@ export class ReadRepository<T> {
 
   dataSignal = toSignal(this.loadDataAction$, { initialValue: [] as T[] });
 
-  /** True once data has been loaded at least once; drives loadDataOnce caching. */
-  private loaded = false;
-
   loadData(loadParams?: LoadParams): void {
-    this.loaded = true;
     this.loadDataSubject.next(loadParams);
-  }
-
-  /**
-   * Loads only if data has never been loaded. Subsequent callers reuse the value
-   * already cached by dataSignal / the shareReplay in loadDataAction$, so several
-   * observers of the same (root-provided) repository share one value without each
-   * issuing its own REST call. Use loadData() to force a refresh.
-   */
-  loadDataOnce(loadParams?: LoadParams): void {
-    if (!this.loaded) {
-      this.loadData(loadParams);
-    }
   }
 }
