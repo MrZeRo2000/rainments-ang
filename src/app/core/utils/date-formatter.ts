@@ -11,4 +11,8 @@ export class DateFormatter {
     return date.toLocaleDateString(locales);
   }
 
+  static formatLocaleDateTime(date: Date, locales?: string) {
+    return date.toLocaleString(locales);
+  }
+
 }
