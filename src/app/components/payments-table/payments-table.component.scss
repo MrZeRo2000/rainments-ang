@@ -240,3 +240,6 @@ mat-table {
   justify-content: flex-end;
 }
 
+.editor-group mat-hint app-core-colored-value-label {
+  font-size: var(--mat-table-row-item-label-text-size, var(--mat-sys-body-medium-size));
+ }
