@@ -14,7 +14,7 @@ import {PaymentRefs} from "../model/payment-refs";
 import {Payment} from "../model/payment";
 import {PaymentRep} from "../model/payment-rep";
 import {CrudRepository} from "../core/repository/crud-repository";
-import {RowsAffectedResult} from "../model/rows-affected-result";
+import {RowsAffectedResult} from "../model/result";
 import {ScanResult} from "../model/scan";
 
 /**

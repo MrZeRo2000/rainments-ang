@@ -17,7 +17,7 @@ import {toSignal} from "@angular/core/rxjs-interop";
 import {catchError, finalize, Observable, of, Subject, switchMap, tap} from "rxjs";
 import {PaymentImport, ScanResult} from "../../model/scan";
 import {Payment} from "../../model/payment";
-import {RowsAffectedResult} from "../../model/rows-affected-result";
+import {RowsAffectedResult} from "../../model/result";
 import {RestDataSource} from "../../data-source/rest-data-source";
 import {MessagesService} from "../../messages/messages.service";
 import {RepositoryUtils} from "../../core/repository/repository-utils";

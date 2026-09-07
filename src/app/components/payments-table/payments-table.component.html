@@ -112,38 +112,44 @@
         <ng-container matColumnDef="payment">
           <mat-header-cell *matHeaderCellDef class="numeric-cell">Payment</mat-header-cell>
           <mat-cell *matCellDef="let item" class="numeric-cell">
-            <div class="value-row">
-              <app-core-colored-value-label
-                [value]="getPrevPeriodPaymentAmount(item.value) | amount"
-                class="value-gap"
-                >
-              </app-core-colored-value-label>
-              @if (!inlineEditHandler.isEditorVisible(item.value, inlineControlType.PaymentAmount)) {
-                <a href="#" (click)="paymentAmountOnClick($event, item.value)">{{item.value.paymentAmount | amount}}</a>
-              }
-            </div>
-            @if (!inlineEditHandler.isEditorVisible(item.value, inlineControlType.PaymentAmount) && displayOptions().showTrend()) {
-              <div>
-                <app-core-colored-trend-label [value]="getPrevPeriodPaymentDiff(item.value)"></app-core-colored-trend-label>
+            @if (item.loadingPath === "/paymentAmount") {
+              <div class="progress-row">
+                <app-core-loading-progress [loading]="true"></app-core-loading-progress>
               </div>
-            }
-            @if (inlineEditHandler.isEditorVisible(item.value, inlineControlType.PaymentAmount)) {
-              <label class="inline-edit-label">
-                <input
-                  #inlineControl
-                  type="number"
-                  min="0"
-                  class="inline-edit-input"
-                  id="paymentAmountInline"
-                  (focusout)="inlineEditHandler.focusOut()"
-                  (click)="inlineEditHandler.controlOnClick($event)"
-                  (keyup)="inlineEditHandler.keyUp($event, item.value)"
-                  [ngModel]="inlineEditHandler.value()"
-                  (ngModelChange)="inlineEditHandler.value.set($event)"
-                  [class.inline-edit-input--invalid]="!inlineEditHandler.inputValidator(item.value, inlineControlType.PaymentAmount, inlineEditHandler.value())"
-                  appInputPasteFloatModel
+            } @else {
+              <div class="value-row">
+                <app-core-colored-value-label
+                  [value]="getPrevPeriodPaymentAmount(item.value) | amount"
+                  class="value-gap"
                   >
-              </label>
+                </app-core-colored-value-label>
+                @if (!inlineEditHandler.isEditorVisible(item.value, inlineControlType.PaymentAmount)) {
+                  <a href="#" (click)="paymentAmountOnClick($event, item.value)">{{item.value.paymentAmount | amount}}</a>
+                }
+              </div>
+              @if (!inlineEditHandler.isEditorVisible(item.value, inlineControlType.PaymentAmount) && displayOptions().showTrend()) {
+                <div>
+                  <app-core-colored-trend-label [value]="getPrevPeriodPaymentDiff(item.value)"></app-core-colored-trend-label>
+                </div>
+              }
+              @if (inlineEditHandler.isEditorVisible(item.value, inlineControlType.PaymentAmount)) {
+                <label class="inline-edit-label">
+                  <input
+                    #inlineControl
+                    type="number"
+                    min="0"
+                    class="inline-edit-input"
+                    id="paymentAmountInline"
+                    (focusout)="inlineEditHandler.focusOut()"
+                    (click)="inlineEditHandler.controlOnClick($event)"
+                    (keyup)="inlineEditHandler.keyUp($event, item.value)"
+                    [ngModel]="inlineEditHandler.value()"
+                    (ngModelChange)="inlineEditHandler.value.set($event)"
+                    [class.inline-edit-input--invalid]="!inlineEditHandler.inputValidator(item.value, inlineControlType.PaymentAmount, inlineEditHandler.value())"
+                    appInputPasteFloatModel
+                    >
+                </label>
+              }
             }
           </mat-cell>
         </ng-container>

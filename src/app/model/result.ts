@@ -9,3 +9,9 @@ export class RowsAffectedResult extends CommonEntity {
     super();
   }
 }
+
+export class AmountResult extends CommonEntity {
+  constructor(id: number, public amount: number) {
+    super(id);
+  }
+}

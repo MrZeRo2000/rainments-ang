@@ -1,11 +1,11 @@
 import {Component, computed, effect, ElementRef, inject, input, signal, viewChildren} from '@angular/core';
 import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
-import {tap} from 'rxjs';
+import {catchError, of, Subject, switchMap, tap} from 'rxjs';
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {HttpParams} from '@angular/common/http';
 import {CommonEditableTableComponent} from '../../core/table/common-editable-table-component';
 import {CommonTableConfig} from '../../core/table/common-table-component';
-import {CrudActionType, CrudStatus} from '../../core/repository/crud-repository';
+import {CrudStatus} from '../../core/repository/crud-repository';
 import {EditMode} from '../../core/edit/edit-state';
 import {PaymentRefs} from '../../model/payment-refs';
 import {Payment} from '../../model/payment';
@@ -40,6 +40,11 @@ import {
 import {MatDialog} from "@angular/material/dialog";
 import {PaymentsImportDialogComponent} from "../payments-import-dialog/payments-import-dialog.component";
 import {PaymentObject} from "../../model/payment-object";
+import {RestDataSource} from "../../data-source/rest-data-source";
+import {MessagesService} from "../../messages/messages.service";
+import {AmountResult} from "../../model/result";
+import {RepositoryUtils} from "../../core/repository/repository-utils";
+import {ErrorMessage} from "../../messages/message.model";
 
 enum InlineControl {
   ProductCounter = 'productCounterControl',
@@ -80,6 +85,8 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   private fb = inject(FormBuilder)
   private amountPipe = inject(AmountPipe)
   private duplicateRepository = inject(PAYMENT_DUPLICATE_PERIOD_REPOSITORY)
+  private readonly dataSource: RestDataSource = inject(RestDataSource)
+  private readonly messagesService: MessagesService = inject(MessagesService)
   readonly importDialog = inject(MatDialog);
 
   paymentObject = input<PaymentObject>();
@@ -188,6 +195,41 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
     return Math.round((value ?? 0) * 100) / 100;
   }
 
+  updateAmountSubject = new Subject<{id: number, body: PatchRequest}>();
+
+  updateAmountAction$ = this.updateAmountSubject.pipe(
+    tap(v => {
+      const currentItems = this.selectableItems()
+      const selectedItem = currentItems.find(f => f.value.id === v.id)
+      selectedItem!.loadingPath = v.body.path
+      selectedItem!.isSelected = false
+      this.selectableItems.set([... currentItems])
+    }),
+    switchMap(updateAmountData =>
+      this.dataSource.patchResponse<AmountResult>("payments", updateAmountData.id, updateAmountData.body).pipe(
+        tap(r => {
+          const currentItems = this.selectableItems()
+          const updatedItem = currentItems.find(f => f.value.id === updateAmountData.id)
+          if (r.body) {
+            updatedItem!.loadingPath = undefined
+            updatedItem!.value.paymentAmount = r.body.amount
+            this.selectableItems.set([... currentItems])
+          } else {
+            this.loadRepositoryData()
+          }
+        }),
+        catchError(err => {
+          const message = `Network error: ${RepositoryUtils.getNetworkErrorMessage(err)}`;
+          this.messagesService.reportMessage(new ErrorMessage( message));
+          this.loadRepositoryData()
+          return of({ })
+        }),
+      )
+    )
+  )
+
+  updateAmountSignal = toSignal(this.updateAmountAction$)
+
   constructor() {
     super(
       Payment,
@@ -231,6 +273,10 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
       }
     });
 
+    effect(() => {
+      console.log(`Update amount signal returned ${JSON.stringify(this.updateAmountSignal())}`)
+    })
+
 
     this.inlineEditHandler.inputValidator = (item, controlName, value) => {
       if (controlName === InlineControl.ProductCounter) {
@@ -258,8 +304,10 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
       // Show the loading indicator from patch start until the reload completes.
       // crudData$ (base) clears crudLoadingSignal and reloads on success; the read
       // repository's loadingSignal then bridges through to reload completion.
-      this.crudLoadingSignal.set(true);
-      this.crudRepository.execute({type: CrudActionType.Patch, payload: {id: item.id, body: patchRequest}});
+
+      // this.crudLoadingSignal.set(true);
+      //this.crudRepository.execute({type: CrudActionType.Patch, payload: {id: item.id, body: patchRequest}});
+      this.updateAmountSubject.next({id: item.id!, body: patchRequest})
     };
   }
 

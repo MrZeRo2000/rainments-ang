@@ -1,5 +1,5 @@
 export class SelectableItem<T> {
-  constructor(public value: T, public isSelected: boolean) {
+  constructor(public value: T, public isSelected: boolean, public loadingPath: string | undefined = undefined) {
   }
 
   public static getSelectedItemValues<T>(items: Array<SelectableItem<T>>): Array<T> {
