@@ -86,7 +86,7 @@ export class PaymentsImportDialogComponent implements OnInit {
   importAction$: Observable<RowsAffectedResult> = this.importSubject.pipe(
     tap(() => this.importLoadingSignal.set(true)),
     switchMap(v =>
-      this.dataSource.patchBulkResponse<RowsAffectedResult>("payments:import", v).pipe(
+      this.dataSource.patchBulkResponse<RowsAffectedResult>("payments:update_amount", v).pipe(
         switchMap(data => {
           return of(data.body as RowsAffectedResult)
         }),
