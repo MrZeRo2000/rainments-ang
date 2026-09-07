@@ -25,7 +25,7 @@
 
   <div class="content-row">
     <div class="table-col" [class.with-summary]="displayOptions().showSummary()">
-      <mat-table [dataSource]="selectableItems()" [class.compact-table]="displayOptions().compactTable()">
+      <mat-table [dataSource]="selectableItems()" [trackBy]="(_, row) => row.value.id" [class.compact-table]="displayOptions().compactTable()">
 
         <!-- ID -->
         <ng-container matColumnDef="id">
