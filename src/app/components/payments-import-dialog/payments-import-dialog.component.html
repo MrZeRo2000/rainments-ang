@@ -5,14 +5,14 @@
       <mat-selection-list [formField]="importForm.items">
         @for (importItem of dataSignal(); track importItem) {
           <mat-list-option [value]="importItem" togglePosition="before" [selected]="!importItem.scan.disabled" [disabled]="importItem.scan.disabled">
-            <div class="row">
-              <div class=description-cell>
+            <span class="row">
+              <span class=description-cell>
                 {{importItem.scan.productName}}
-              </div>
-              <div class="amount-cell">
+              </span>
+              <span class="amount-cell">
                 {{importItem.scan.scanValue | number : '1.2-2'}}
-              </div>
-            </div>
+              </span>
+            </span>
           </mat-list-option>
         }
       </mat-selection-list>
@@ -30,6 +30,6 @@
 
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button matButton="filled" class="confirm-button" [disabled]="loadingSignal()" (click)="importOnClick()">Import</button>
+  <button matButton="filled" class="confirm-button" [disabled]="loadingSignal() || (importTotals() === 0)" (click)="importOnClick()">Import</button>
   <button matButton mat-dialog-close [disabled]="loadingSignal()">Cancel</button>
 </mat-dialog-actions>

@@ -1,7 +1,8 @@
 .row {
   display: flex;
+  flex: 0 0;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .row-summary {
@@ -11,10 +12,13 @@
 .description-cell {
   display: flex;
   flex-grow: 1;
+  white-space: wrap;
 }
 
 .amount-cell {
   margin-left: 1rem;
   display: flex;
+  flex-shrink: 0;
+  justify-content: flex-end;
 }
 
