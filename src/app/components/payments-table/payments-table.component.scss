@@ -109,6 +109,7 @@ mat-table {
   // Small vertical gap between stacked rows (e.g. the value row and the trend
   // row below it).
   gap: 0.25rem;
+  max-width: fit-content;
 }
 
 // Top-align the other (flex-row) cells too, so every column's first line lines
@@ -228,6 +229,28 @@ mat-table {
 // (replaces Bootstrap's `.me-2`).
 .value-gap {
   margin-right: 0.5rem;
+}
+
+.content-wrapper {
+  position: relative;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0; /* top: 0; right: 0; bottom: 0; left: 0 */
+  background: rgba(255, 255, 255, 0.6);
+  z-index: 10;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* blocks mouse interaction with content underneath */
+  pointer-events: all;
+}
+
+.is-updating {
+  filter: blur(1px);
 }
 
 // A row of value pieces (prev-period pill + current value/link + unit). The pill

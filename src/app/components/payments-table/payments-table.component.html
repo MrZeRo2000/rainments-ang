@@ -41,7 +41,7 @@
 
         <!-- Product -->
         <ng-container matColumnDef="product">
-          <mat-header-cell *matHeaderCellDef>Product</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef class="product-cell">Product</mat-header-cell>
           <mat-cell
             *matCellDef="let item"
             class="product-cell"
@@ -112,16 +112,12 @@
         <ng-container matColumnDef="payment">
           <mat-header-cell *matHeaderCellDef class="numeric-cell">Payment</mat-header-cell>
           <mat-cell *matCellDef="let item" class="numeric-cell">
-            @if (item.loadingPath === "/paymentAmount") {
-              <div class="progress-row">
-                <app-core-loading-progress [loading]="true"></app-core-loading-progress>
-              </div>
-            } @else {
-              <div class="value-row">
+            <div class="content-wrapper">
+              <div class="value-row" [class.is-updating]="item.loadingPath === '/paymentAmount'">
                 <app-core-colored-value-label
                   [value]="getPrevPeriodPaymentAmount(item.value) | amount"
                   class="value-gap"
-                  >
+                >
                 </app-core-colored-value-label>
                 @if (!inlineEditHandler.isEditorVisible(item.value, inlineControlType.PaymentAmount)) {
                   <a href="#" (click)="paymentAmountOnClick($event, item.value)">{{item.value.paymentAmount | amount}}</a>
@@ -147,10 +143,17 @@
                     (ngModelChange)="inlineEditHandler.value.set($event)"
                     [class.inline-edit-input--invalid]="!inlineEditHandler.inputValidator(item.value, inlineControlType.PaymentAmount, inlineEditHandler.value())"
                     appInputPasteFloatModel
-                    >
+                  >
                 </label>
               }
-            }
+
+              @if(item.loadingPath === "/paymentAmount") {
+                <div class="overlay">
+                  <mat-icon>refresh</mat-icon>
+                </div>
+              }
+            </div>
+
           </mat-cell>
         </ng-container>
 
