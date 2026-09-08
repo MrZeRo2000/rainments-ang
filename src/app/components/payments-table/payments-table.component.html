@@ -57,54 +57,61 @@
         <ng-container matColumnDef="counter">
           <mat-header-cell *matHeaderCellDef class="numeric-cell">Counter</mat-header-cell>
           <mat-cell *matCellDef="let item" class="numeric-cell">
-            <div class="value-row">
-              <app-core-colored-value-label [value]="getPrevPeriodProductCounter(item.value) | amount: item.value.product.counterPrecision" class="value-gap"></app-core-colored-value-label>
-              @if (!inlineEditHandler.isEditorVisible(item.value, inlineControlType.ProductCounter) && item.value.productCounter) {
-                <a href="#" (click)="productCounterOnClick($event, item.value)">
-                  {{item.value.productCounter | amount: item.value.product.counterPrecision}}
-                </a>
+            <div class="content-wrapper">
+              <div class="value-row" [class.is-updating]="item.loadingPath === '/productCounter'">
+                <app-core-colored-value-label [value]="getPrevPeriodProductCounter(item.value) | amount: item.value.product.counterPrecision" class="value-gap"></app-core-colored-value-label>
+                @if (!inlineEditHandler.isEditorVisible(item.value, inlineControlType.ProductCounter) && item.value.productCounter) {
+                  <a href="#" (click)="productCounterOnClick($event, item.value)">
+                    {{item.value.productCounter | amount: item.value.product.counterPrecision}}
+                  </a>
+                }
+                @if ((item.value.productCounter || getPrevPeriodProductCounter(item.value))) {
+                  <span> {{item.value.product.unitName}}</span>
+                }
+              </div>
+              @if (!inlineEditHandler.isEditorVisible(item.value, inlineControlType.ProductCounter) && getPrevPeriodProductCounterDiffByProduct(item.value) && displayOptions().showTrend()) {
+                <div class="value-row">
+                  <app-core-colored-value-label
+                    [value]="getPrevPeriodProductCounterDiffByProduct(item.value) | amount: item.value.product.counterPrecision"
+                    [colorScheme]="colorSchemeType.POS_GREEN_NEG_RED"
+                    class="value-gap"
+                    >
+                  </app-core-colored-value-label>{{item.value.product.unitName}}
+                </div>
               }
-              @if ((item.value.productCounter || getPrevPeriodProductCounter(item.value))) {
-                <span> {{item.value.product.unitName}}</span>
+              @if (inlineEditHandler.isEditorVisible(item.value, inlineControlType.ProductCounter)) {
+                <label class="inline-edit-label">
+                  <input
+                    #inlineControl
+                    type="number"
+                    min="0"
+                    class="inline-edit-input"
+                    id="inlineProductCounter"
+                    (focusout)="inlineEditHandler.focusOut()"
+                    (click)="inlineEditHandler.controlOnClick($event)"
+                    (keyup)="inlineEditHandler.keyUp($event, item.value)"
+                    [ngModel]="inlineEditHandler.value()"
+                    (ngModelChange)="inlineEditHandler.value.set($event)"
+                    [class.inline-edit-input--invalid]="!inlineEditHandler.inputValidator(item.value, inlineControlType.ProductCounter, inlineEditHandler.value())"
+                    >
+                </label>
+              }
+              @if (inlineEditHandler.isEditorVisible(item.value, inlineControlType.ProductCounter) && getPrevPeriodProductCounterEditDiffByProduct(item.value)) {
+                <div class="value-row">
+                  <app-core-colored-value-label
+                    [value]="getPrevPeriodProductCounterEditDiffByProduct(item.value) | amount: item.value.product.counterPrecision"
+                    [colorScheme]="colorSchemeType.POS_GREEN_NEG_RED"
+                    class="value-gap"
+                    >
+                  </app-core-colored-value-label>{{item.value.product.unitName}}
+                </div>
+              }
+              @if(item.loadingPath === "/productCounter") {
+                <div class="overlay">
+                  <mat-icon>refresh</mat-icon>
+                </div>
               }
             </div>
-            @if (!inlineEditHandler.isEditorVisible(item.value, inlineControlType.ProductCounter) && getPrevPeriodProductCounterDiffByProduct(item.value) && displayOptions().showTrend()) {
-              <div class="value-row">
-                <app-core-colored-value-label
-                  [value]="getPrevPeriodProductCounterDiffByProduct(item.value) | amount: item.value.product.counterPrecision"
-                  [colorScheme]="colorSchemeType.POS_GREEN_NEG_RED"
-                  class="value-gap"
-                  >
-                </app-core-colored-value-label>{{item.value.product.unitName}}
-              </div>
-            }
-            @if (inlineEditHandler.isEditorVisible(item.value, inlineControlType.ProductCounter)) {
-              <label class="inline-edit-label">
-                <input
-                  #inlineControl
-                  type="number"
-                  min="0"
-                  class="inline-edit-input"
-                  id="inlineProductCounter"
-                  (focusout)="inlineEditHandler.focusOut()"
-                  (click)="inlineEditHandler.controlOnClick($event)"
-                  (keyup)="inlineEditHandler.keyUp($event, item.value)"
-                  [ngModel]="inlineEditHandler.value()"
-                  (ngModelChange)="inlineEditHandler.value.set($event)"
-                  [class.inline-edit-input--invalid]="!inlineEditHandler.inputValidator(item.value, inlineControlType.ProductCounter, inlineEditHandler.value())"
-                  >
-              </label>
-            }
-            @if (inlineEditHandler.isEditorVisible(item.value, inlineControlType.ProductCounter) && getPrevPeriodProductCounterEditDiffByProduct(item.value)) {
-              <div class="value-row">
-                <app-core-colored-value-label
-                  [value]="getPrevPeriodProductCounterEditDiffByProduct(item.value) | amount: item.value.product.counterPrecision"
-                  [colorScheme]="colorSchemeType.POS_GREEN_NEG_RED"
-                  class="value-gap"
-                  >
-                </app-core-colored-value-label>{{item.value.product.unitName}}
-              </div>
-            }
           </mat-cell>
         </ng-container>
 
@@ -161,39 +168,46 @@
         <ng-container matColumnDef="commission">
           <mat-header-cell *matHeaderCellDef class="numeric-cell">Commission</mat-header-cell>
           <mat-cell *matCellDef="let item" class="numeric-cell">
-            <div class="value-row">
-              <app-core-colored-value-label
-                [value]="getPrevPeriodCommissionAmount(item.value) | amount"
-                class="value-gap"
-                >
-              </app-core-colored-value-label>
-              @if (!inlineEditHandler.isEditorVisible(item.value, inlineControlType.CommissionAmount)) {
-                <a href="#" (click)="commissionAmountOnClick($event, item.value)">{{item.value.commissionAmount | amount}}</a>
+            <div class="content-wrapper">
+              <div class="value-row" [class.is-updating]="item.loadingPath === '/commissionAmount'">
+                <app-core-colored-value-label
+                  [value]="getPrevPeriodCommissionAmount(item.value) | amount"
+                  class="value-gap"
+                  >
+                </app-core-colored-value-label>
+                @if (!inlineEditHandler.isEditorVisible(item.value, inlineControlType.CommissionAmount)) {
+                  <a href="#" (click)="commissionAmountOnClick($event, item.value)">{{item.value.commissionAmount | amount}}</a>
+                }
+              </div>
+              @if (!inlineEditHandler.isEditorVisible(item.value, inlineControlType.CommissionAmount) && displayOptions().showTrend()) {
+                <div>
+                  <app-core-colored-trend-label [value]="getPrevPeriodCommissionDiff(item.value)"></app-core-colored-trend-label>
+                </div>
+              }
+              @if (inlineEditHandler.isEditorVisible(item.value, inlineControlType.CommissionAmount)) {
+                <label class="inline-edit-label">
+                  <input
+                    #inlineControl
+                    type="number"
+                    min="0"
+                    class="inline-edit-input"
+                    id="commissionAmountInline"
+                    (focusout)="inlineEditHandler.focusOut()"
+                    (click)="inlineEditHandler.controlOnClick($event)"
+                    (keyup)="inlineEditHandler.keyUp($event, item.value)"
+                    [ngModel]="inlineEditHandler.value()"
+                    (ngModelChange)="inlineEditHandler.value.set($event)"
+                    [class.inline-edit-input--invalid]="!inlineEditHandler.inputValidator(item.value, inlineControlType.CommissionAmount, inlineEditHandler.value())"
+                    appInputPasteFloatModel
+                    >
+                </label>
+              }
+              @if(item.loadingPath === "/commissionAmount") {
+                <div class="overlay">
+                  <mat-icon>refresh</mat-icon>
+                </div>
               }
             </div>
-            @if (!inlineEditHandler.isEditorVisible(item.value, inlineControlType.CommissionAmount) && displayOptions().showTrend()) {
-              <div>
-                <app-core-colored-trend-label [value]="getPrevPeriodCommissionDiff(item.value)"></app-core-colored-trend-label>
-              </div>
-            }
-            @if (inlineEditHandler.isEditorVisible(item.value, inlineControlType.CommissionAmount)) {
-              <label class="inline-edit-label">
-                <input
-                  #inlineControl
-                  type="number"
-                  min="0"
-                  class="inline-edit-input"
-                  id="commissionAmountInline"
-                  (focusout)="inlineEditHandler.focusOut()"
-                  (click)="inlineEditHandler.controlOnClick($event)"
-                  (keyup)="inlineEditHandler.keyUp($event, item.value)"
-                  [ngModel]="inlineEditHandler.value()"
-                  (ngModelChange)="inlineEditHandler.value.set($event)"
-                  [class.inline-edit-input--invalid]="!inlineEditHandler.inputValidator(item.value, inlineControlType.CommissionAmount, inlineEditHandler.value())"
-                  appInputPasteFloatModel
-                  >
-              </label>
-            }
           </mat-cell>
         </ng-container>
 

@@ -109,7 +109,6 @@ mat-table {
   // Small vertical gap between stacked rows (e.g. the value row and the trend
   // row below it).
   gap: 0.25rem;
-  max-width: fit-content;
 }
 
 // Top-align the other (flex-row) cells too, so every column's first line lines
@@ -146,9 +145,13 @@ mat-table {
   flex: 0 0 11rem;
 }
 
+.mat-column-payment.mat-column-payment,
+.mat-column-commission.mat-column-commission {
+  flex: 0 0 8rem;
+}
+
 .mat-mdc-cell.mat-column-payment.mat-column-payment,
 .mat-mdc-cell.mat-column-commission.mat-column-commission {
-  flex: 0 0 9rem;
   justify-content: start;
 }
 

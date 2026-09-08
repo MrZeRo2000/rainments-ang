@@ -212,7 +212,21 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
           const updatedItem = currentItems.find(f => f.value.id === updateAmountData.id)
           if (r.body) {
             updatedItem!.loadingPath = undefined
-            updatedItem!.value.paymentAmount = r.body.amount
+
+            // what to update
+            const controlName = updateAmountData.body.path.substring(1) + 'Control'
+            if (controlName === InlineControl.PaymentAmount) {
+              updatedItem!.value.paymentAmount = r.body.amount
+            } else if (controlName === InlineControl.CommissionAmount) {
+              updatedItem!.value.commissionAmount = r.body.amount
+            } else if (controlName === InlineControl.ProductCounter) {
+              updatedItem!.value.productCounter = r.body.amount
+            } else {
+              console.error(`Unknown control name ${controlName}, reloading full table`)
+              this.loadRepositoryData()
+              return
+            }
+
             this.selectableItems.set([... currentItems])
           } else {
             this.loadRepositoryData()
@@ -412,6 +426,7 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   }
 
   productCounterOnClick(event: MouseEvent, item: Payment): void {
+    event.stopPropagation()
     let initialValue = (item.productCounter ?? 0).toString();
     if (item.productCounter === 0) {
       const prevProductCounter = this.getPrevPeriodProductCounter(item);
@@ -424,11 +439,13 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
   }
 
   paymentAmountOnClick(event: MouseEvent, item: Payment): void {
+    event.stopPropagation()
     this.inlineEditHandler.refOnClick(event);
     this.inlineEditHandler.start(item, InlineControl.PaymentAmount, (item.paymentAmount ?? 0).toFixed(2));
   }
 
   commissionAmountOnClick(event: MouseEvent, item: Payment): void {
+    event.stopPropagation()
     this.inlineEditHandler.refOnClick(event);
     this.inlineEditHandler.start(item, InlineControl.CommissionAmount, (item.commissionAmount ?? 0).toFixed(2));
   }
