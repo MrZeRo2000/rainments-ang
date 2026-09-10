@@ -103,6 +103,12 @@ a {
   cursor: move;
 }
 
+// The CDK adds this to the drop-list container for the duration of a drag, so
+// the grab cursor over the whole table needs no component state of its own.
+.cdk-drop-list-dragging {
+  @extend .cursor-grip;
+}
+
 .fa-grip {
   opacity: 0.5;
   @extend .cursor-grip;

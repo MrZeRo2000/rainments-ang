@@ -14,8 +14,7 @@
     [dataSource]="data"
     cdkDropList
     cdkDropListLockAxis="y"
-    (cdkDropListDropped)="onDrop($event)"
-    [class.cursor-grip]="dragHandlerService.dragging">
+    (cdkDropListDropped)="onDrop($event)">
 
     <ng-container matColumnDef="id">
       <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
@@ -47,7 +46,6 @@
       *matRowDef="let row; columns: displayedColumns"
       cdkDrag
       [cdkDragData]="row"
-      (cdkDragStarted)="dragHandlerService.startDrag()"
       [style.background-color]="row.color"></mat-row>
   </mat-table>
 }

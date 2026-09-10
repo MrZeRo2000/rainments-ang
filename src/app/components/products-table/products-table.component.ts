@@ -6,8 +6,7 @@ import {
   Validators
 } from '@angular/forms';
 import {duplicateNamesValidator, precisionValidator} from '../../core/validators/form-validators';
-import {DragHandlerService} from '../../core/services/drag-handler.service';
-import {CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList} from '@angular/cdk/drag-drop';
+import {CdkDrag, CdkDragHandle, CdkDropList} from '@angular/cdk/drag-drop';
 import {MatTableModule} from '@angular/material/table';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -47,7 +46,6 @@ import {PRODUCT_CRUD_REPOSITORY, PRODUCT_READ_REPOSITORY} from '../../repository
 })
 export class ProductsTableComponent extends CommonSimpleEditableTableComponent<Product> {
   private fb = inject(FormBuilder)
-  public dragHandlerService = inject(DragHandlerService)
 
   inputNameElement = viewChild<ElementRef<HTMLInputElement>>('inputName');
 
@@ -73,9 +71,4 @@ export class ProductsTableComponent extends CommonSimpleEditableTableComponent<P
       unitName: [''],
       counterPrecision: ['']},
     {validators: precisionValidator()});
-
-  onDrop(event: CdkDragDrop<unknown>): void {
-    this.dragHandlerService.stopDrag();
-    super.onDrop(event);
-  }
 }

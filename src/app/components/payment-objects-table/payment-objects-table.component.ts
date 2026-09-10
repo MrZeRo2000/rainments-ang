@@ -6,11 +6,10 @@ import {
   Validators
 } from '@angular/forms';
 import {duplicateNamesValidator, termValidator} from '../../core/validators/form-validators';
-import {DragHandlerService} from '../../core/services/drag-handler.service';
 import {TimePeriod, TimePeriodType} from '../../core/utils/time-period';
 import {AddPanelComponent} from "../../core/components/add-panel/add-panel.component";
 import {DropDownMoreMenuComponent} from "../../core/components/drop-down-more-menu/drop-down-more-menu.component";
-import {CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList} from "@angular/cdk/drag-drop";
+import {CdkDrag, CdkDragHandle, CdkDropList} from "@angular/cdk/drag-drop";
 import {MatTableModule} from "@angular/material/table";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
@@ -48,7 +47,6 @@ import {MatMenuItem} from "@angular/material/menu";
 })
 export class PaymentObjectsTableComponent extends CommonSimpleEditableTableComponent<PaymentObject> {
   private fb = inject(FormBuilder)
-  public dragHandlerService = inject(DragHandlerService)
 
   inputNameElement = viewChild<ElementRef<HTMLInputElement>>('inputName');
 
@@ -107,10 +105,5 @@ export class PaymentObjectsTableComponent extends CommonSimpleEditableTableCompo
     }
 
     return value;
-  }
-
-  onDrop(event: CdkDragDrop<unknown>): void {
-    this.dragHandlerService.stopDrag();
-    super.onDrop(event);
   }
 }
