@@ -25,12 +25,19 @@
 
   <div class="content-row">
     <div class="table-col" [class.with-summary]="displayOptions().showSummary()">
-      <mat-table [dataSource]="selectableItems()" [trackBy]="(_, row) => row.value.id" [class.compact-table]="displayOptions().compactTable()">
+      <mat-table
+        [dataSource]="selectableItems()"
+        cdkDropList
+        cdkDropListLockAxis="y"
+        [trackBy]="(_, row) => row.value.id"
+        [class.compact-table]="displayOptions().compactTable()">
 
         <!-- ID -->
         <ng-container matColumnDef="id">
           <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
-          <mat-cell *matCellDef="let item">{{item.value.id}}</mat-cell>
+          <mat-cell *matCellDef="let item">
+              <app-core-drag-grip cdkDragHandle></app-core-drag-grip>{{item.value.id}}
+          </mat-cell>
         </ng-container>
 
         <!-- Group -->
@@ -223,6 +230,8 @@
         <mat-row
           *matRowDef="let row; columns: displayedColumns()"
           class="payment-row"
+          cdkDrag
+          [cdkDragData]="row"
           (click)="tableRowClick(row)"
           [class.selected-row]="row.isSelected"
           [style.background]="row.isSelected || !displayOptions().displayColors() ? null : row.value.paymentGroup.color"></mat-row>

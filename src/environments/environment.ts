@@ -8,7 +8,7 @@ export const environment = {
   VERSION: packageJson.version,
   production: false,
   restUrl: 'http://localhost:8080/piastria-int-wss/',
-  httpDelay: 2000
+  httpDelay: 0
 };
 
 /*

@@ -45,6 +45,8 @@ import {MessagesService} from "../../messages/messages.service";
 import {AmountResult} from "../../model/result";
 import {RepositoryUtils} from "../../core/repository/repository-utils";
 import {ErrorMessage} from "../../messages/message.model";
+import {CdkDrag, CdkDragHandle, CdkDropList} from "@angular/cdk/drag-drop";
+import {DragGripComponent} from "../../core/components/drag-grip/drag-grip.component";
 
 enum InlineControl {
   ProductCounter = 'productCounterControl',
@@ -76,7 +78,11 @@ enum InlineControl {
     ReactiveFormsModule,
     InputPasteFloatControlDirective,
     SaveDialogPanelComponent,
-    LoadingProgressComponent
+    LoadingProgressComponent,
+    CdkDropList,
+    CdkDragHandle,
+    DragGripComponent,
+    CdkDrag
   ],
   providers: [AmountPipe],
   styleUrls: ['./payments-table.component.scss']

@@ -106,9 +106,6 @@ mat-table {
   justify-content: flex-start;
   text-align: right;
   white-space: nowrap;
-  // Small vertical gap between stacked rows (e.g. the value row and the trend
-  // row below it).
-  gap: 0.25rem;
 }
 
 // Top-align the other (flex-row) cells too, so every column's first line lines
@@ -125,16 +122,20 @@ mat-table {
 // independently and the column edges zig-zag). Product grows to fill whatever
 // horizontal space is left.
 .mat-column-id {
-  flex: 0 0 4rem;
+  flex: 0 0 6rem;
+  justify-content: center;
+  align-items: center !important;
   white-space: nowrap;
 }
 
 .mat-column-group {
   flex: 0 0 15%;
+  align-items: center !important;
 }
 
 .mat-column-product {
   flex: 1 1 auto;
+  align-items: center !important;
   min-width: 0;
 }
 
@@ -236,6 +237,9 @@ mat-table {
 
 .content-wrapper {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 .overlay {
