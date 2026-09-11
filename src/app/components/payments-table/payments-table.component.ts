@@ -82,8 +82,7 @@ enum InlineControl {
     LoadingProgressComponent,
     CdkDropList,
     CdkDragHandle,
-    DragGripComponent,
-    CdkDrag
+    DragGripComponent
   ],
   providers: [AmountPipe],
   styleUrls: ['./payments-table.component.scss']

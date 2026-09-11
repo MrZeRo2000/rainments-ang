@@ -231,8 +231,6 @@
         <mat-row
           *matRowDef="let row; columns: displayedColumns()"
           class="payment-row"
-          cdkDrag
-          [cdkDragData]="row.value"
           (click)="tableRowClick(row)"
           [class.selected-row]="row.isSelected"
           [style.background]="row.isSelected || !displayOptions().displayColors() ? null : row.value.paymentGroup.color"></mat-row>
