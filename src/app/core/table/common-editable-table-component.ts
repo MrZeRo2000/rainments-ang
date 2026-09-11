@@ -12,7 +12,7 @@ import {CrudActionType, CrudRepository, CrudStatus} from "../repository/crud-rep
 import {takeUntilDestroyed, toSignal} from "@angular/core/rxjs-interop";
 
 @Directive()
- 
+
 export abstract class CommonEditableTableComponent<R, W
   extends CommonEntity> extends CommonTableComponent<R>
   implements OnInit {
@@ -86,6 +86,10 @@ export abstract class CommonEditableTableComponent<R, W
     return value;
   }
 
+  protected getEntityByPosition(id: number): CommonEntity | undefined {
+    return this.readRepository.dataSignal()?.[id] as CommonEntity
+  }
+
   ngOnInit() {
     super.ngOnInit();
     // editFormAction$ is a side-effect-only stream (debounce form changes -> clear
@@ -149,8 +153,9 @@ export abstract class CommonEditableTableComponent<R, W
   }
 
   onDrop(event: CdkDragDrop<unknown>): void {
-    const fromEntity = this.readRepository.dataSignal()[event.previousIndex] as CommonEntity;
-    const toEntity = this.readRepository.dataSignal()[event.currentIndex] as CommonEntity;
+    const fromEntity = this.getEntityByPosition(event.previousIndex);
+    const toEntity = this.getEntityByPosition(event.currentIndex);
+    console.log(`event.previousIndex: ${event.previousIndex}, event.currentIndex: ${event.currentIndex}, From Entity: ${JSON.stringify(fromEntity)} to Entity: ${JSON.stringify(toEntity)}`);
 
     if (fromEntity && toEntity && fromEntity.id !== toEntity.id) {
       this.crudLoadingSignal.set(true);
@@ -167,7 +172,7 @@ export abstract class CommonEditableTableComponent<R, W
 }
 
 @Directive()
- 
+
 export abstract class CommonSimpleEditableTableComponent<T extends CommonEntity> extends CommonEditableTableComponent<T, T> {
 
   protected constructor(

@@ -47,6 +47,7 @@ import {RepositoryUtils} from "../../core/repository/repository-utils";
 import {ErrorMessage} from "../../messages/message.model";
 import {CdkDrag, CdkDragHandle, CdkDropList} from "@angular/cdk/drag-drop";
 import {DragGripComponent} from "../../core/components/drag-grip/drag-grip.component";
+import {CommonEntity} from "../../core/entity/common-entity";
 
 enum InlineControl {
   ProductCounter = 'productCounterControl',
@@ -367,6 +368,10 @@ export class PaymentsTableComponent extends CommonEditableTableComponent<Payment
       this.editForm.controls.productCounter.setErrors({lessThanPreviousPeriod: true});
     }
     super.onSave();
+  }
+
+  protected override getEntityByPosition(position: number): CommonEntity | undefined {
+    return this.payments()[position];
   }
 
   private getProductCounter(): number | undefined {

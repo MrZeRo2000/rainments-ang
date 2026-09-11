@@ -30,7 +30,8 @@
         cdkDropList
         cdkDropListLockAxis="y"
         [trackBy]="(_, row) => row.value.id"
-        [class.compact-table]="displayOptions().compactTable()">
+        [class.compact-table]="displayOptions().compactTable()"
+        (cdkDropListDropped)="onDrop($event)">
 
         <!-- ID -->
         <ng-container matColumnDef="id">
@@ -231,7 +232,7 @@
           *matRowDef="let row; columns: displayedColumns()"
           class="payment-row"
           cdkDrag
-          [cdkDragData]="row"
+          [cdkDragData]="row.value"
           (click)="tableRowClick(row)"
           [class.selected-row]="row.isSelected"
           [style.background]="row.isSelected || !displayOptions().displayColors() ? null : row.value.paymentGroup.color"></mat-row>
